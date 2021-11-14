@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>栏目模板1</h1>
+[@content_list_tag]
+[#list content_list as content]
+<a href="./${content.id!}">${content.contentTitle!}</a>
+[/#list]
+[/@content_list_tag]
+</body>
+</html>

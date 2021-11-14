@@ -1,0 +1,49 @@
+{
+  "scx": {
+    "port": 8080,
+    "allowed-origin": "*",
+    "tombstone": false,
+    "data-source": {
+      "host": "127.0.0.1",
+      "port": 3306,
+      "database": "scx",
+      "username": "root",
+      "password": "DECRYPT:gTNaUKkX4T0BRW0K8fnfh1t+ZKq/BIQ5XfHosseI7lW1P6S+Z/EmMi6hQWOxeVkK",
+      "#password": "root",
+      "parameters": [
+        "allowMultiQueries=true",
+        "rewriteBatchedStatements=true",
+        "createDatabaseIfNotExist=true"
+      ]
+    },
+    "https": {
+      "enabled": false,
+      "ssl-path": "AppRoot:ssl\\scx_dev.jks",
+      "ssl-password": "iBzM50VdFNVxANvc8Vks0JfHxenUHUQVx+xIqNj2D9y1XcgkM/ON69oYPeLhy6Tj"
+    },
+    "template": {
+      "root": "AppRoot:c"
+    },
+    "static-servers": [
+      {
+        "location": "/static/*",
+        "root": "AppRoot:c\\static"
+      },
+      {
+        "location": "/scx/admin/*",
+        "root": "AppRoot:admin"
+      }
+    ]
+  },
+  "message": {
+    "ytx-account-sid": "xxx",
+    "ytx-auth-token": "xxx",
+    "ytx-app-id": "xxx"
+  },
+  "fss": {
+    "physical-file-path": "C:\\Users\\public\\Documents\\scxFiles"
+  },
+  "organization": {
+    "confusion-login-error": false
+  }
+}

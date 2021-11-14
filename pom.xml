@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cool.scx</groupId>
+        <artifactId>scx-parent</artifactId>
+        <version>1.1.0</version>
+    </parent>
+
+    <artifactId>scx-ext</artifactId>
+    <packaging>jar</packaging>
+    <name>scx-ext</name>
+
+    <version>1.5.0</version>
+
+    <description>SCX-EXT : SCX 拓展包</description>
+    <url>https://github.com/scx567888/scx-ext</url>
+
+    <developers>
+        <developer>
+            <id>scx567888</id>
+            <name>scx567888</name>
+            <email>scx567888@outlook.com</email>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/scx567888/scx-ext/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/scx567888/scx-ext.git</connection>
+        <developerConnection>scm:git:https://github.com/scx567888/scx-ext.git</developerConnection>
+        <url>https://github.com/scx567888/scx-ext</url>
+    </scm>
+
+    <dependencies>
+
+        <!-- scx 核心包 -->
+        <dependency>
+            <groupId>cool.scx</groupId>
+            <artifactId>scx</artifactId>
+            <version>${scx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <properties>
+        <scx.mainClass>cool.scx.ext.AllExtApp</scx.mainClass>
+        <scx.version>1.9.0</scx.version>
+    </properties>
+
+</project>
