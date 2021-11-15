@@ -1,12 +1,8 @@
 package cool.scx.ext.fss;
 
-
 import cool.scx.ScxContext;
-import cool.scx.annotation.FromBody;
-import cool.scx.annotation.FromPath;
-import cool.scx.annotation.FromQuery;
-import cool.scx.annotation.ScxMapping;
-import cool.scx.bo.FileUpload;
+import cool.scx.annotation.*;
+import cool.scx.bo.UploadedEntity;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.exception.HttpRequestException;
 import cool.scx.vo.Download;
@@ -101,7 +97,7 @@ public class FSSController {
                        @FromBody String fileMD5,
                        @FromBody Integer chunkLength,
                        @FromBody Integer nowChunkIndex,
-                       FileUpload fileData) throws Exception {
+                       @FromUpload UploadedEntity fileData) throws Exception {
         return fssHandler.upload(fileName, fileSize, fileMD5, chunkLength, nowChunkIndex, fileData);
     }
 

@@ -1,10 +1,9 @@
 package cool.scx.ext.fss;
 
-
 import cool.scx.ScxContext;
 import cool.scx.annotation.ScxService;
-import cool.scx.bo.FileUpload;
 import cool.scx.bo.Query;
+import cool.scx.bo.UploadedEntity;
 import cool.scx.exception.HttpRequestException;
 import cool.scx.exception.NotFoundException;
 import cool.scx.util.FileUtils;
@@ -225,18 +224,18 @@ public abstract class FSSHandler {
      * @param fileMD5       a {@link java.lang.String} object
      * @param chunkLength   a {@link java.lang.Integer} object
      * @param nowChunkIndex a {@link java.lang.Integer} object
-     * @param fileData      a {@link cool.scx.bo.FileUpload} object
+     * @param fileData      a {@link cool.scx.bo.UploadedEntity} object
      * @return a {@link cool.scx.vo.Json} object
      * @throws SQLException if any.
      */
-    public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, FileUpload fileData) throws SQLException, IOException {
+    public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws SQLException, IOException {
         var uploadTempFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSTemp");
         var uploadConfigFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSUpload").toFile();
 
         //判断是否上传的是最后一个分块 (因为 索引是以 0 开头的所以这里 -1)
         if (nowChunkIndex == chunkLength - 1) {
             //先将数据写入临时文件中
-            FileUtils.fileAppend(uploadTempFile, fileData.buffer.getBytes());
+            FileUtils.fileAppend(uploadTempFile, fileData.buffer().getBytes());
             //获取文件信息描述对象
             var newFSSObject = getNewFSSObject(fileName, fileSize, fileMD5);
             //获取文件真实的存储路径
@@ -269,7 +268,7 @@ public abstract class FSSHandler {
             var needUploadChunkIndex = lastUploadChunk + 1;
             //当前的区块索引和需要的区块索引相同 就保存文件内容
             if (nowChunkIndex.equals(needUploadChunkIndex)) {
-                FileUtils.fileAppend(uploadTempFile, fileData.buffer.getBytes());
+                FileUtils.fileAppend(uploadTempFile, fileData.buffer().getBytes());
                 //将当前上传成功的区块索引和总区块长度保存到配置文件中
                 updateLastUploadChunk(uploadConfigFile, nowChunkIndex, chunkLength);
                 //像前台返回我们需要的下一个区块索引
