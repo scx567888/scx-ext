@@ -1,7 +1,8 @@
 package cool.scx.ext.cms.template;
 
 import cool.scx.ScxContext;
-import cool.scx.bo.FileUpload;
+import cool.scx.annotation.FromUpload;
+import cool.scx.bo.UploadedEntity;
 import cool.scx.util.FileUtils;
 import cool.scx.vo.Json;
 
@@ -165,9 +166,9 @@ public final class TemplateHelper {
      * @param filePath a {@link java.lang.String} object.
      * @return a {@link cool.scx.vo.Json} object.
      */
-    public static Json upload(FileUpload file, String filePath) {
+    public static Json upload(@FromUpload UploadedEntity file, String filePath) {
         if (checkPath(filePath)) {
-            FileUtils.fileAppend(Path.of(filePath, file.fileName), file.buffer.getBytes());
+            FileUtils.fileAppend(Path.of(filePath, file.fileName()), file.buffer().getBytes());
             return Json.ok();
         } else {
             return Json.fail("文件无法访问");
