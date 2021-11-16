@@ -33,7 +33,22 @@
         "location": "/scx/admin/*",
         "root": "AppRoot:admin"
       }
-    ]
+    ],
+    "log": {
+      "root": {
+        "level": "DEBUG",
+        "type": "CONSOLE",
+        "file-path": "AppRoot:logs"
+      },
+      "loggers": [
+        {
+          "name": "cool.scx.sql.SQLRunner",
+          "level": "DEBUG",
+          "type": "CONSOLE",
+          "file-path": "AppRoot:sql-logs"
+        }
+      ]
+    }
   },
   "message": {
     "ytx-account-sid": "xxx",
