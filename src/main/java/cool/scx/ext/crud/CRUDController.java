@@ -63,7 +63,7 @@ public class CRUDController {
      * @throws SQLException                            if any.
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.GET)
-    public Json info(@FromPath String modelName, @FromBody Long id) throws HttpRequestException, SQLException {
+    public Json info(@FromPath String modelName, @FromPath Long id) throws HttpRequestException, SQLException {
         var info = crudHandler.info(modelName, id);
         return Json.ok().put("info", info);
     }
@@ -108,7 +108,7 @@ public class CRUDController {
      * @throws SQLException         if any.
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.DELETE)
-    public Json delete(@FromPath String modelName, @FromBody Long id) throws HttpRequestException, SQLException {
+    public Json delete(@FromPath String modelName, @FromPath Long id) throws HttpRequestException, SQLException {
         var b = crudHandler.delete(modelName, id);
         return b ? Json.ok() : Json.fail();
     }
@@ -138,7 +138,7 @@ public class CRUDController {
      * @throws java.sql.SQLException                   SQLException
      */
     @ScxMapping(value = ":modelName/revoke-delete/:id", method = HttpMethod.GET)
-    public Json revokeDelete(@FromPath String modelName, @FromBody Long id) throws HttpRequestException, SQLException {
+    public Json revokeDelete(@FromPath String modelName, @FromPath Long id) throws HttpRequestException, SQLException {
         if (!ScxContext.easyConfig().tombstone()) {
             return Json.fail("not-used-tombstone");
         } else {
@@ -156,8 +156,8 @@ public class CRUDController {
      * @throws cool.scx.exception.HttpRequestException if any.
      * @throws java.sql.SQLException                   SQLException
      */
-    @ScxMapping(value = ":modelName/get-auto-complete/:fieldName", method = HttpMethod.POST)
-    public Json getAutoComplete(@FromPath String modelName, @FromBody String fieldName) throws HttpRequestException, SQLException {
+    @ScxMapping(value = ":modelName/get-auto-complete/:fieldName", method = HttpMethod.GET)
+    public Json getAutoComplete(@FromPath String modelName, @FromPath String fieldName) throws HttpRequestException, SQLException {
         var fieldList = crudHandler.getAutoComplete(modelName, fieldName);
         return Json.ok().put("fields", fieldList);
     }
@@ -172,8 +172,8 @@ public class CRUDController {
      * @throws cool.scx.exception.HttpRequestException if any.
      * @throws java.sql.SQLException                   SQLException
      */
-    @ScxMapping(value = ":modelName/check-unique", method = HttpMethod.POST)
-    public Json checkUnique(@FromPath String modelName, @FromBody String fieldName, @FromBody Object value, @FromBody(required = false) Long id) throws HttpRequestException, SQLException {
+    @ScxMapping(value = ":modelName/check-unique/:fieldName", method = HttpMethod.POST)
+    public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) throws HttpRequestException, SQLException {
         var b = crudHandler.checkUnique(modelName, fieldName, value, id);
         return Json.ok().put("isUnique", b);
     }
