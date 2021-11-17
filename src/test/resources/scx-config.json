@@ -37,15 +37,15 @@
     "log": {
       "root": {
         "level": "DEBUG",
-        "type": "CONSOLE",
-        "file-path": "AppRoot:logs"
+        "logging-type": "CONSOLE",
+        "stored-directory": "AppRoot:logs"
       },
       "loggers": [
         {
           "name": "cool.scx.sql.SQLRunner",
           "level": "DEBUG",
-          "type": "CONSOLE",
-          "file-path": "AppRoot:sql-logs"
+          "logging-type": "CONSOLE",
+          "stored-directory": "AppRoot:sql-logs"
         }
       ]
     }
