@@ -4,8 +4,8 @@ import cool.scx.ScxContext;
 import cool.scx.annotation.ScxService;
 import cool.scx.bo.Query;
 import cool.scx.bo.UploadedEntity;
-import cool.scx.exception.HttpRequestException;
 import cool.scx.exception.NotFoundException;
+import cool.scx.exception.ScxHttpException;
 import cool.scx.util.FileUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
@@ -176,10 +176,10 @@ public abstract class FSSHandler {
      *
      * @param fssObjectID a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Download} object
-     * @throws cool.scx.exception.HttpRequestException if any.
-     * @throws SQLException                            if any.
+     * @throws cool.scx.exception.ScxHttpException if any.
+     * @throws SQLException                        if any.
      */
-    public Download download(String fssObjectID) throws HttpRequestException, SQLException {
+    public Download download(String fssObjectID) throws ScxHttpException, SQLException {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
         return new Download(file, fssObject.fileName);
@@ -193,10 +193,10 @@ public abstract class FSSHandler {
      * @param height      a {@link java.lang.Integer} object
      * @param type        a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Image} object
-     * @throws cool.scx.exception.HttpRequestException if any.
-     * @throws SQLException                            if any.
+     * @throws cool.scx.exception.ScxHttpException if any.
+     * @throws SQLException                        if any.
      */
-    public Image image(String fssObjectID, Integer width, Integer height, String type) throws HttpRequestException, SQLException {
+    public Image image(String fssObjectID, Integer width, Integer height, String type) throws ScxHttpException, SQLException {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
         return new Image(file, width, height, type);
@@ -207,10 +207,10 @@ public abstract class FSSHandler {
      *
      * @param fssObjectID a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Raw} object
-     * @throws cool.scx.exception.HttpRequestException if any.
-     * @throws SQLException                            if any.
+     * @throws cool.scx.exception.ScxHttpException if any.
+     * @throws SQLException                        if any.
      */
-    public Raw raw(String fssObjectID) throws HttpRequestException, SQLException {
+    public Raw raw(String fssObjectID) throws ScxHttpException, SQLException {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
         return new Raw(file);

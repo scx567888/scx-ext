@@ -1,7 +1,8 @@
 package cool.scx.ext.core;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import cool.scx.util.ObjectUtils;
+import cool.scx.util.JacksonHelper;
+import cool.scx.util.VoHelper;
 import io.vertx.core.http.ServerWebSocket;
 
 /**
@@ -42,7 +43,7 @@ public class WSBody {
      * @param webSocket a {@link io.vertx.core.http.ServerWebSocket} object
      */
     public WSBody(String eventName, Object data, ServerWebSocket webSocket) {
-        this.body = new Body(eventName, ObjectUtils.valueToTreeUseAnnotations(data));
+        this.body = new Body(eventName, JacksonHelper.getObjectMapper().valueToTree(data));
         this.webSocket = webSocket;
     }
 
@@ -70,7 +71,7 @@ public class WSBody {
      * @return a {@link java.lang.String} object
      */
     public String toJson() {
-        return ObjectUtils.writeValueAsStringUseAnnotations(this.body, "");
+        return VoHelper.toJson(this.body, "");
     }
 
     /**
