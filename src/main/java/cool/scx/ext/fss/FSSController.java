@@ -4,7 +4,7 @@ import cool.scx.ScxContext;
 import cool.scx.annotation.*;
 import cool.scx.bo.UploadedEntity;
 import cool.scx.enumeration.HttpMethod;
-import cool.scx.exception.HttpRequestException;
+import cool.scx.exception.ScxHttpException;
 import cool.scx.vo.Download;
 import cool.scx.vo.Image;
 import cool.scx.vo.Json;
@@ -39,11 +39,11 @@ public class FSSController {
      *
      * @param fssObjectID a {@link java.lang.String} object.
      * @return a {@link cool.scx.vo.Download} object.
-     * @throws cool.scx.exception.HttpRequestException if any.
-     * @throws SQLException                            s
+     * @throws cool.scx.exception.ScxHttpException if any.
+     * @throws SQLException                        s
      */
     @ScxMapping(value = "/download/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
-    public Download download(@FromPath String fssObjectID) throws HttpRequestException, SQLException {
+    public Download download(@FromPath String fssObjectID) throws ScxHttpException, SQLException {
         return fssHandler.download(fssObjectID);
     }
 
@@ -55,14 +55,14 @@ public class FSSController {
      * @param height      a {@link java.lang.Integer} object.
      * @param type        a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Raw} object.
-     * @throws cool.scx.exception.HttpRequestException if any.
-     * @throws SQLException                            s
+     * @throws cool.scx.exception.ScxHttpException if any.
+     * @throws SQLException                        s
      */
     @ScxMapping(value = "/image/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Image image(@FromPath String fssObjectID,
                        @FromQuery(value = "w", required = false) Integer width,
                        @FromQuery(value = "h", required = false) Integer height,
-                       @FromQuery(value = "t", required = false) String type) throws HttpRequestException, SQLException {
+                       @FromQuery(value = "t", required = false) String type) throws ScxHttpException, SQLException {
         return fssHandler.image(fssObjectID, width, height, type);
     }
 
@@ -71,11 +71,11 @@ public class FSSController {
      *
      * @param fssObjectID id
      * @return a {@link cool.scx.vo.Raw} object.
-     * @throws cool.scx.exception.HttpRequestException if any.
-     * @throws SQLException                            s
+     * @throws cool.scx.exception.ScxHttpException if any.
+     * @throws SQLException                        s
      */
     @ScxMapping(value = "/raw/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
-    public Raw raw(@FromPath String fssObjectID) throws HttpRequestException, SQLException {
+    public Raw raw(@FromPath String fssObjectID) throws ScxHttpException, SQLException {
         return fssHandler.raw(fssObjectID);
     }
 

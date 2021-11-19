@@ -1,10 +1,10 @@
 package cool.scx.ext.crud;
 
-import cool.scx.exception.HttpRequestException;
+import cool.scx.exception.ScxHttpException;
 import cool.scx.vo.Json;
 import io.vertx.ext.web.RoutingContext;
 
-public final class UnknownCRUDModelException extends HttpRequestException {
+public final class UnknownCRUDModelException extends ScxHttpException {
 
     private final String modelName;
 

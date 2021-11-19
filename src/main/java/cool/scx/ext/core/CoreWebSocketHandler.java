@@ -3,7 +3,7 @@ package cool.scx.ext.core;
 import cool.scx.ScxContext;
 import cool.scx.annotation.ScxWebSocketMapping;
 import cool.scx.base.BaseWebSocketHandler;
-import cool.scx.util.ObjectUtils;
+import cool.scx.util.JacksonHelper;
 import cool.scx.util.ansi.Ansi;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
@@ -38,7 +38,7 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
      */
     private static WSBody createScxWebSocketEvent(String text, ServerWebSocket webSocket) {
         try {
-            var jsonNode = ObjectUtils.readTree(text);
+            var jsonNode = JacksonHelper.getObjectMapper().readTree(text);
             var eventName = jsonNode.get("eventName").asText();
             return new WSBody(eventName, jsonNode.get("data"), webSocket);
         } catch (Exception e) {

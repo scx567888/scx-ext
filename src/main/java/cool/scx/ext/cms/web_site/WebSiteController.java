@@ -53,7 +53,7 @@ public class WebSiteController {
         var indexTemplatePath = cmsConfig.defaultIndexTemplate;
         Html html;
         try {
-            html = Html.ofTemplate(indexTemplatePath);
+            html = Html.of(indexTemplatePath);
         } catch (IOException e) {//模板物理文件丢失了
             throw new NotFoundException();
         }
@@ -83,7 +83,7 @@ public class WebSiteController {
 
         Html html;
         try {
-            html = Html.ofTemplate(defaultChannelTemplate);
+            html = Html.of(defaultChannelTemplate);
         } catch (IOException e) {//模板物理文件丢失了
             throw new NotFoundException();
         }
@@ -121,7 +121,7 @@ public class WebSiteController {
         }
         Html html;
         try {
-            html = Html.ofTemplate(defaultContentTemplate);
+            html = Html.of(defaultContentTemplate);
         } catch (IOException e) {//模板物理文件丢失了
             throw new NotFoundException();
         }
