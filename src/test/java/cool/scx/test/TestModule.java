@@ -1,6 +1,7 @@
 package cool.scx.test;
 
 import cool.scx.Scx;
+import cool.scx.ScxConstant;
 import cool.scx.ScxContext;
 import cool.scx.ScxModule;
 import cool.scx.enumeration.ScxFeature;
@@ -14,7 +15,6 @@ import cool.scx.ext.fss.FSSModule;
 import cool.scx.ext.message.MessageModule;
 import cool.scx.ext.office.OfficeModule;
 import cool.scx.ext.organization.OrganizationModule;
-import cool.scx.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 
@@ -60,7 +60,7 @@ public class TestModule implements ScxModule {
         ScxContext.scheduleAtFixedRate(() -> {
             var onlineItemList = CoreOnlineItemHandler.getOnlineItemList();
             for (var onlineItem : onlineItemList) {
-                onlineItem.send(new WSBody("writeTime", ObjectUtils.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now()), null).toJson());
+                onlineItem.send(new WSBody("writeTime", ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now()), null).toJson());
             }
         }, 0, 1000);
 
