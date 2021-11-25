@@ -226,9 +226,8 @@ public abstract class FSSHandler {
      * @param nowChunkIndex a {@link java.lang.Integer} object
      * @param fileData      a {@link cool.scx.bo.UploadedEntity} object
      * @return a {@link cool.scx.vo.Json} object
-     * @throws SQLException if any.
      */
-    public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws SQLException, IOException {
+    public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws IOException {
         var uploadTempFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSTemp");
         var uploadConfigFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSUpload").toFile();
 
@@ -284,9 +283,8 @@ public abstract class FSSHandler {
      *
      * @param fssObjectIDs a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Json} object
-     * @throws SQLException if any.
      */
-    public Json delete(String fssObjectIDs) throws SQLException {
+    public Json delete(String fssObjectIDs) {
         //先获取文件的基本信息
         var needDeleteFile = fssObjectService.get(new Query().equal("fssObjectID", fssObjectIDs));
         if (needDeleteFile != null) {

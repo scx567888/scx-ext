@@ -8,7 +8,6 @@ import cool.scx.enumeration.HttpMethod;
 import cool.scx.exception.ScxHttpException;
 import cool.scx.vo.Json;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +37,6 @@ public class CRUDController {
      * @param sortType      a {@link java.lang.String} object.
      * @param whereBodyList a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws SQLException                        if any.
      */
     @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
     public Json list(@FromPath String modelName,
@@ -59,11 +56,9 @@ public class CRUDController {
      * @param modelName a {@link java.lang.String} object.
      * @param id        a {@link java.lang.Long} object.
      * @return a {@link cool.scx.vo.Json} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws SQLException                        if any.
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.GET)
-    public Json info(@FromPath String modelName, @FromPath Long id) throws ScxHttpException, SQLException {
+    public Json info(@FromPath String modelName, @FromPath Long id) {
         var info = crudHandler.info(modelName, id);
         return Json.ok().put("info", info);
     }
@@ -74,11 +69,9 @@ public class CRUDController {
      * @param modelName a {@link java.lang.String} object.
      * @param entityMap a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws SQLException                        if any.
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.POST)
-    public Json save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) throws ScxHttpException, SQLException {
+    public Json save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
         var savedModel = crudHandler.save(modelName, entityMap);
         return Json.ok().put("item", savedModel);
     }
@@ -89,11 +82,9 @@ public class CRUDController {
      * @param modelName a {@link java.lang.String} object.
      * @param entityMap a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
-     * @throws ScxHttpException if any.
-     * @throws SQLException     if any.
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.PUT)
-    public Json update(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) throws ScxHttpException, SQLException {
+    public Json update(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
         var updatedModel = crudHandler.update(modelName, entityMap);
         return Json.ok().put("item", updatedModel);
     }
@@ -105,10 +96,9 @@ public class CRUDController {
      * @param id        a
      * @return j
      * @throws ScxHttpException if any.
-     * @throws SQLException     if any.
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.DELETE)
-    public Json delete(@FromPath String modelName, @FromPath Long id) throws ScxHttpException, SQLException {
+    public Json delete(@FromPath String modelName, @FromPath Long id) {
         var b = crudHandler.delete(modelName, id);
         return b ? Json.ok() : Json.fail();
     }
@@ -120,10 +110,9 @@ public class CRUDController {
      * @param deleteIDs a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
      * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws java.sql.SQLException               SQLException
      */
     @ScxMapping(value = ":modelName/batch-delete", method = HttpMethod.DELETE)
-    public Json batchDelete(@FromPath String modelName, @FromBody long[] deleteIDs) throws ScxHttpException, SQLException {
+    public Json batchDelete(@FromPath String modelName, @FromBody long[] deleteIDs) {
         var deletedCount = crudHandler.batchDelete(modelName, deleteIDs);
         return Json.ok().put("deletedCount", deletedCount);
     }
@@ -135,10 +124,9 @@ public class CRUDController {
      * @param id        a {@link java.lang.Integer} object.
      * @return a {@link cool.scx.vo.Json} object.
      * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws java.sql.SQLException               SQLException
      */
     @ScxMapping(value = ":modelName/revoke-delete/:id", method = HttpMethod.GET)
-    public Json revokeDelete(@FromPath String modelName, @FromPath Long id) throws ScxHttpException, SQLException {
+    public Json revokeDelete(@FromPath String modelName, @FromPath Long id) {
         if (!ScxContext.easyConfig().tombstone()) {
             return Json.fail("not-used-tombstone");
         } else {
@@ -154,10 +142,9 @@ public class CRUDController {
      * @param fieldName a {@link java.lang.String} object.
      * @return a {@link cool.scx.vo.Json} object.
      * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws java.sql.SQLException               SQLException
      */
     @ScxMapping(value = ":modelName/get-auto-complete/:fieldName", method = HttpMethod.GET)
-    public Json getAutoComplete(@FromPath String modelName, @FromPath String fieldName) throws ScxHttpException, SQLException {
+    public Json getAutoComplete(@FromPath String modelName, @FromPath String fieldName) {
         var fieldList = crudHandler.getAutoComplete(modelName, fieldName);
         return Json.ok().put("fields", fieldList);
     }
@@ -169,11 +156,9 @@ public class CRUDController {
      * @param fieldName a {@link java.util.Map} object.
      * @param value     a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws java.sql.SQLException               SQLException
      */
     @ScxMapping(value = ":modelName/check-unique/:fieldName", method = HttpMethod.POST)
-    public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) throws ScxHttpException, SQLException {
+    public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) throws ScxHttpException {
         var b = crudHandler.checkUnique(modelName, fieldName, value, id);
         return Json.ok().put("isUnique", b);
     }

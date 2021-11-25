@@ -113,10 +113,9 @@ public class OrganizationAuthController {
      * @param username 前台发送的用户名
      * @param password 前台发送的密码
      * @return a {@link cool.scx.vo.Json} object.
-     * @throws java.sql.SQLException SQLException
      */
     @ScxMapping(method = HttpMethod.POST)
-    public Json signup(String username, String password) throws SQLException {
+    public Json signup(String username, String password) {
         //判断用户是否存在
         if (userService.get(new Query().equal("username", username)) != null) {
             return Json.fail("userAlreadyExists");
@@ -172,7 +171,7 @@ public class OrganizationAuthController {
      * @return 登录成功的用户
      * @throws OrganizationLoginException 登录失败的错误
      */
-    private User tryLogin(String username, String password) throws OrganizationLoginException, SQLException {
+    private User tryLogin(String username, String password) throws OrganizationLoginException {
         var user = userService.get(new Query().equal("username", username));
         if (user == null) {
             throw new UnknownUserException();
@@ -187,7 +186,7 @@ public class OrganizationAuthController {
      *
      * @param userID 用户ID
      */
-    private void updateLastLoginDateAndIP(Long userID) throws SQLException {
+    private void updateLastLoginDateAndIP(Long userID) {
         var oldUser = userService.get(userID);
         if (oldUser.lastLoginIPList == null) {
             oldUser.lastLoginIPList = new ArrayList<>();
@@ -205,7 +204,7 @@ public class OrganizationAuthController {
     }
 
     @ScxMapping(method = HttpMethod.POST)
-    public Json changeUserAvatar(@FromBody String newAvatar) throws UnauthorizedException, SQLException {
+    public Json changeUserAvatar(@FromBody String newAvatar) throws UnauthorizedException {
         var loginUser = OrganizationAuth.getLoginUser();
         if (loginUser != null) {
             var l = new User();
@@ -219,7 +218,7 @@ public class OrganizationAuthController {
     }
 
     @ScxMapping(method = HttpMethod.POST)
-    public Json changeUserUsername(@FromBody String newUsername, @FromBody String password) throws UnauthorizedException, SQLException {
+    public Json changeUserUsername(@FromBody String newUsername, @FromBody String password) throws UnauthorizedException {
         var loginUser = OrganizationAuth.getLoginUser();
         if (loginUser != null) {
             //密码正确
@@ -245,7 +244,7 @@ public class OrganizationAuthController {
     }
 
     @ScxMapping(method = HttpMethod.POST)
-    public Json changeUserPassword(@FromBody String newPassword, @FromBody String oldPassword) throws UnauthorizedException, SQLException {
+    public Json changeUserPassword(@FromBody String newPassword, @FromBody String oldPassword) throws UnauthorizedException {
         var loginUser = OrganizationAuth.getLoginUser();
         if (loginUser != null) {
             //密码正确

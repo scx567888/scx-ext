@@ -4,7 +4,6 @@ import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseService;
 import cool.scx.bo.Query;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,9 +51,8 @@ public class DeptService extends BaseService<Dept> {
      *
      * @param userID  a {@link java.lang.Long} object
      * @param deptIDs a {@link java.lang.String} object
-     * @throws SQLException s
      */
-    public void saveDeptListWithUserID(Long userID, List<Long> deptIDs) throws SQLException {
+    public void saveDeptListWithUserID(Long userID, List<Long> deptIDs) {
         if (deptIDs != null) {
             var idArr = deptIDs.stream().filter(Objects::nonNull).map(id -> {
                         var userDept = new UserDept();
@@ -72,7 +70,7 @@ public class DeptService extends BaseService<Dept> {
      *
      * @param id a {@link java.lang.Long} object
      */
-    public void deleteByUserID(Long id) throws SQLException {
+    public void deleteByUserID(Long id) {
         userDeptService.delete(new Query().equal("userID", id));
     }
 
@@ -82,7 +80,7 @@ public class DeptService extends BaseService<Dept> {
      * @param userID a {@link java.lang.Long} object
      * @return a {@link java.util.List} object
      */
-    public List<UserDept> findDeptByUserID(Long userID) throws SQLException {
+    public List<UserDept> findDeptByUserID(Long userID) {
         if (userID != null) {
             return userDeptService.list(new Query().equal("userID", userID));
         }

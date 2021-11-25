@@ -27,9 +27,8 @@ public class DeptController {
      * 递归删除 部门节点
      *
      * @param id id
-     * @throws SQLException q
      */
-    private void deleteDeptWithChildren(Long id) throws SQLException {
+    private void deleteDeptWithChildren(Long id) {
         //先删除当前节点
         deptService.delete(id);
         //拼一个查询条件先

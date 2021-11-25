@@ -5,7 +5,6 @@ import cool.scx.base.BaseService;
 import cool.scx.bo.Query;
 
 import java.nio.file.Path;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -26,9 +25,8 @@ public class FSSObjectService extends BaseService<FSSObject> {
      *
      * @param fileMD5 md5 值
      * @return 找的的数据
-     * @throws SQLException s
      */
-    public List<FSSObject> findFSSObjectListByMd5(String fileMD5) throws SQLException {
+    public List<FSSObject> findFSSObjectListByMd5(String fileMD5) {
         return list(new Query().equal("fileMD5", fileMD5).desc("uploadTime"));
     }
 
@@ -37,13 +35,12 @@ public class FSSObjectService extends BaseService<FSSObject> {
      *
      * @param fssObjectID a {@link java.lang.String} object
      * @return a {@link cool.scx.ext.fss.FSSObject} object
-     * @throws SQLException if any.
      */
-    public FSSObject findByFSSObjectID(String fssObjectID) throws SQLException {
+    public FSSObject findByFSSObjectID(String fssObjectID) {
         return get(new Query().equal("fssObjectID", fssObjectID));
     }
 
-    public List<FSSObject> findByFSSObjectIDs(List<String> fssObjectIDs) throws SQLException {
+    public List<FSSObject> findByFSSObjectIDs(List<String> fssObjectIDs) {
         return list(new Query().in("fssObjectID", fssObjectIDs));
     }
 

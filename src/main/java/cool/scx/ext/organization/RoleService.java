@@ -4,7 +4,6 @@ import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseService;
 import cool.scx.bo.Query;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -64,9 +63,8 @@ public class RoleService extends BaseService<Role> {
      *
      * @param userID  a {@link java.lang.Long} object
      * @param roleIDs a {@link java.lang.String} object
-     * @throws SQLException s
      */
-    public void saveRoleListWithUserID(Long userID, List<Long> roleIDs) throws SQLException {
+    public void saveRoleListWithUserID(Long userID, List<Long> roleIDs) {
         if (roleIDs != null) {
             var idArr = roleIDs.stream().filter(Objects::nonNull).map(id -> {
                         var userRole = new UserRole();
@@ -83,9 +81,8 @@ public class RoleService extends BaseService<Role> {
      * {@inheritDoc}
      *
      * @param id a {@link java.lang.Long} object
-     * @throws SQLException s
      */
-    public void deleteByUserID(Long id) throws SQLException {
+    public void deleteByUserID(Long id) {
         userRoleService.delete(new Query().equal("userID", id));
     }
 

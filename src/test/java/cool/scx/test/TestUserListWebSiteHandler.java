@@ -10,7 +10,6 @@ import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.vo.Html;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -39,7 +38,7 @@ public class TestUserListWebSiteHandler implements WebSiteHandler {
      * {@inheritDoc}
      */
     @Override
-    public void indexHandler(Html html) throws SQLException {
+    public void indexHandler(Html html) {
         long count = userService.count(new Query());
         if (count < 50) {
             var s1 = new ArrayList<User>();

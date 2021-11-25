@@ -26,7 +26,7 @@ public final class OrganizationAuthInterceptor implements ScxMappingInterceptor 
      * {@inheritDoc}
      */
     @Override
-    public void preHandle(RoutingContext context, ScxMappingHandler scxMappingHandler) throws Exception {
+    public void preHandle(RoutingContext context, ScxMappingHandler scxMappingHandler) {
         var p = getScxAuthPerms(scxMappingHandler);
         if (p.checkedLogin) {
             //先获取登录的用户

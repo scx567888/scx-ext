@@ -4,7 +4,6 @@ import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseService;
 import cool.scx.bo.Query;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ public class UserService extends BaseService<User> {
      * @param uniqueID a {@link java.lang.String} object
      * @return a {@link User} object
      */
-    public User getByUsername(String uniqueID) throws SQLException {
+    public User getByUsername(String uniqueID) {
         return get(new Query().equal("username", uniqueID));
     }
 
@@ -58,7 +57,7 @@ public class UserService extends BaseService<User> {
      * @param query a {@link cool.scx.bo.Query} object
      * @return a {@link java.util.List} object
      */
-    public List<User> listWithRoleAndDept(Query query) throws SQLException {
+    public List<User> listWithRoleAndDept(Query query) {
         List<User> userList = super.list(query);
         var userIDs = userList.stream().map(user -> user.id).collect(Collectors.toList());
         var userDeptListFuture = CompletableFuture.supplyAsync(() -> deptService.getUserDeptByUserIDs(userIDs));
