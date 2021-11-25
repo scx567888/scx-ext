@@ -111,7 +111,7 @@ public final class CRUDHelper {
     public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, String orderByColumn, String sortType, List<CRUDWhereBody> whereBodyList) throws CustomHttpException {
         var query = new Query();
         if (limit != null && limit >= 0) {
-            if (page != null && page >= 0) {
+            if (page != null && page >= 1) {
                 query.setPagination(page, limit);
             } else {
                 query.setPagination(limit);
