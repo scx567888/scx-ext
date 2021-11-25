@@ -4,7 +4,6 @@ import cool.scx.base.BaseModel;
 import cool.scx.bo.Query;
 import cool.scx.exception.ScxHttpException;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +20,8 @@ public interface CRUDHandler {
      * @param value     列值
      * @param id        id  (不为空时会排除此 id 进行唯一性检查)
      * @return 是否唯一
-     * @throws ScxHttpException e
-     * @throws SQLException     e
      */
-    default boolean checkUnique(String modelName, String fieldName, Object value, Long id) throws ScxHttpException, SQLException {
+    default boolean checkUnique(String modelName, String fieldName, Object value, Long id) {
         var baseService = CRUDHelper.getBaseService(modelName);
         var query = new Query().equal(fieldName, value);
         if (id != null) {
@@ -39,10 +36,8 @@ public interface CRUDHandler {
      * @param modelName model 名称
      * @param fieldName 列名称
      * @return r
-     * @throws ScxHttpException e
-     * @throws SQLException     e
      */
-    default List<Map<String, Object>> getAutoComplete(String modelName, String fieldName) throws ScxHttpException, SQLException {
+    default List<Map<String, Object>> getAutoComplete(String modelName, String fieldName) {
         var baseService = CRUDHelper.getBaseService(modelName);
         return baseService.getFieldList(fieldName);
     }
@@ -51,10 +46,8 @@ public interface CRUDHandler {
      * @param modelName model 名称
      * @param id        model 的 id
      * @return r
-     * @throws ScxHttpException r
-     * @throws SQLException     r
      */
-    default boolean revokeDelete(String modelName, Long id) throws ScxHttpException, SQLException {
+    default boolean revokeDelete(String modelName, Long id) {
         var baseService = CRUDHelper.getBaseService(modelName);
         var revokeDeleteCount = baseService.revokeDelete(id);
         return revokeDeleteCount == 1;
@@ -67,9 +60,8 @@ public interface CRUDHandler {
      * @param deleteIDs 批量删除的 id
      * @return r
      * @throws ScxHttpException e
-     * @throws SQLException     e
      */
-    default long batchDelete(String modelName, long[] deleteIDs) throws ScxHttpException, SQLException {
+    default long batchDelete(String modelName, long[] deleteIDs) {
         var baseService = CRUDHelper.getBaseService(modelName);
         return baseService.delete(deleteIDs);
     }
@@ -80,10 +72,8 @@ public interface CRUDHandler {
      * @param modelName model 名称
      * @param id        model 类的 id
      * @return r
-     * @throws ScxHttpException e
-     * @throws SQLException     e
      */
-    default boolean delete(String modelName, Long id) throws ScxHttpException, SQLException {
+    default boolean delete(String modelName, Long id) {
         var baseService = CRUDHelper.getBaseService(modelName);
         var deletedCount = baseService.delete(id);
         return deletedCount == 1;
@@ -95,10 +85,8 @@ public interface CRUDHandler {
      * @param modelName model 名称
      * @param entityMap 可以转换为 model类的 map (其中需要存在 id)
      * @return c
-     * @throws ScxHttpException e
-     * @throws SQLException     e
      */
-    default BaseModel update(String modelName, Map<String, Object> entityMap) throws ScxHttpException, SQLException {
+    default BaseModel update(String modelName, Map<String, Object> entityMap) {
         var baseService = CRUDHelper.getBaseService(modelName);
         var realObject = CRUDHelper.mapToBaseModel(entityMap, modelName);
         return baseService.update(realObject);
@@ -108,10 +96,8 @@ public interface CRUDHandler {
      * @param modelName model 名称
      * @param entityMap 可以转换为 model类的 map
      * @return c
-     * @throws ScxHttpException e
-     * @throws SQLException     e
      */
-    default BaseModel save(String modelName, Map<String, Object> entityMap) throws ScxHttpException, SQLException {
+    default BaseModel save(String modelName, Map<String, Object> entityMap) {
         var baseService = CRUDHelper.getBaseService(modelName);
         var realObject = CRUDHelper.mapToBaseModel(entityMap, modelName);
         return baseService.save(realObject);
@@ -124,9 +110,8 @@ public interface CRUDHandler {
      * @param id        查询的 id
      * @return 单条数据信息
      * @throws ScxHttpException e
-     * @throws SQLException     e
      */
-    default BaseModel info(String modelName, Long id) throws ScxHttpException, SQLException {
+    default BaseModel info(String modelName, Long id) {
         var baseService = CRUDHelper.getBaseService(modelName);
         return baseService.get(id);
     }
@@ -141,10 +126,8 @@ public interface CRUDHandler {
      * @param sortType      排序类型
      * @param whereBodyList 查询参数
      * @return 列表数据
-     * @throws ScxHttpException e
-     * @throws SQLException     e
      */
-    default CRUDListResult list(String modelName, Integer limit, Integer page, String orderByColumn, String sortType, List<CRUDWhereBody> whereBodyList) throws ScxHttpException, SQLException {
+    default CRUDListResult list(String modelName, Integer limit, Integer page, String orderByColumn, String sortType, List<CRUDWhereBody> whereBodyList) {
         var baseService = CRUDHelper.getBaseService(modelName);
         var query = CRUDHelper.getQuery(CRUDHelper.getBaseModelClassByName(modelName), limit, page, orderByColumn, sortType, whereBodyList);
         var list = baseService.list(query);

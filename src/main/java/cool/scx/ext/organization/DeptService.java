@@ -37,15 +37,13 @@ public class DeptService extends BaseService<Dept> {
      * @return a {@link java.util.List} object
      */
     public List<Dept> getDeptListByUser(User user) {
-        try {
-            var deptIDs = userDeptService.list(new Query().equal("userID", user.id))
-                    .stream().map(userRole -> userRole.deptID).toList();
-            if (deptIDs.size() > 0) {
-                return list(new Query().in("id", deptIDs));
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+
+        var deptIDs = userDeptService.list(new Query().equal("userID", user.id))
+                .stream().map(userRole -> userRole.deptID).toList();
+        if (deptIDs.size() > 0) {
+            return list(new Query().in("id", deptIDs));
         }
+
         return new ArrayList<>();
     }
 
@@ -98,11 +96,9 @@ public class DeptService extends BaseService<Dept> {
      * @return a {@link java.util.List} object
      */
     public List<UserDept> getUserDeptByUserIDs(List<Long> userIDs) {
-        try {
+        if (userIDs.size() > 0) {
             return userDeptService.list(new Query().in("userID", userIDs));
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-            return new ArrayList<>();
         }
+        return new ArrayList<>();
     }
 }

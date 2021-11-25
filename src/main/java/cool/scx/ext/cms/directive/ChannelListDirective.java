@@ -5,7 +5,6 @@ import cool.scx.base.BaseTemplateDirective;
 import cool.scx.bo.Query;
 import cool.scx.ext.cms.channel.ChannelService;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -72,12 +71,8 @@ public class ChannelListDirective implements BaseTemplateDirective {
             query.addOrderBy(orderByColumn.toString(), sortType.toString());
         }
 
-        try {
-            return channelService.list(query);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
+        return channelService.list(query);
+
     }
 
     /**

@@ -5,7 +5,7 @@ import cool.scx.annotation.FromBody;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.bo.Query;
 import cool.scx.enumeration.HttpMethod;
-import cool.scx.exception.UnauthorizedException;
+import cool.scx.exception.impl.UnauthorizedException;
 import cool.scx.ext.organization.OrganizationConfig;
 import cool.scx.ext.organization.User;
 import cool.scx.ext.organization.UserService;
@@ -144,7 +144,7 @@ public class OrganizationAuthController {
      * 拉取当前登录用户的信息 (包括权限)
      *
      * @return Json
-     * @throws cool.scx.exception.UnauthorizedException if any.
+     * @throws cool.scx.exception.impl.UnauthorizedException if any.
      */
     @ScxMapping(method = HttpMethod.GET)
     public Json info() throws UnauthorizedException {

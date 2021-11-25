@@ -4,7 +4,7 @@ import cool.scx.ScxContext;
 import cool.scx.annotation.FromPath;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
-import cool.scx.exception.NotFoundException;
+import cool.scx.exception.impl.NotFoundException;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.cms_config.CMSConfigService;
@@ -45,7 +45,7 @@ public class WebSiteController {
      * <p>index.</p>
      *
      * @return a {@link cool.scx.vo.Html} object
-     * @throws cool.scx.exception.NotFoundException if any.
+     * @throws cool.scx.exception.impl.NotFoundException if any.
      */
     @ScxMapping(value = "/", method = HttpMethod.GET)
     public Html index() throws Exception {
@@ -67,7 +67,7 @@ public class WebSiteController {
      *
      * @param channelPath a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Html} object
-     * @throws cool.scx.exception.NotFoundException if any.
+     * @throws cool.scx.exception.impl.NotFoundException if any.
      */
     @ScxMapping(value = "/:channelPath", method = HttpMethod.GET)
     public Html channel(@FromPath String channelPath) throws Exception {
@@ -100,7 +100,7 @@ public class WebSiteController {
      * @param channelPath a {@link java.lang.String} object
      * @param contentID   a {@link java.lang.Long} object
      * @return a {@link cool.scx.vo.Html} object
-     * @throws cool.scx.exception.NotFoundException if any.
+     * @throws cool.scx.exception.impl.NotFoundException if any.
      */
     @ScxMapping(value = "/:channelPath/:contentID", method = HttpMethod.GET)
     public Html content(@FromPath String channelPath, @FromPath Long contentID) throws Exception {

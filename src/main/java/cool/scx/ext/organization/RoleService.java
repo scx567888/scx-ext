@@ -37,14 +37,10 @@ public class RoleService extends BaseService<Role> {
      * @return a {@link java.util.List} object
      */
     public List<Role> getRoleListByUser(User user) {
-        try {
-            var roleIDs = userRoleService.list(new Query().equal("userID", user.id))
-                    .stream().map(userRole -> userRole.roleID).toList();
-            if (roleIDs.size() > 0) {
-                return list(new Query().in("id", roleIDs));
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+        var roleIDs = userRoleService.list(new Query().equal("userID", user.id))
+                .stream().map(userRole -> userRole.roleID).toList();
+        if (roleIDs.size() > 0) {
+            return list(new Query().in("id", roleIDs));
         }
         return new ArrayList<>();
     }
@@ -56,12 +52,10 @@ public class RoleService extends BaseService<Role> {
      * @return a {@link java.util.List} object
      */
     public List<UserRole> getUserRoleByUserIDs(List<Long> userIDs) {
-        try {
+        if (userIDs.size() > 0) {
             return userRoleService.list(new Query().in("userID", userIDs));
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-            return new ArrayList<>();
         }
+        return new ArrayList<>();
     }
 
 

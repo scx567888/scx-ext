@@ -5,7 +5,6 @@ import cool.scx.ext.organization.DeptService;
 import cool.scx.ext.organization.RoleService;
 import cool.scx.ext.organization.User;
 import cool.scx.ext.organization.UserService;
-import cool.scx.mvc.interceptor.ScxMappingInterceptorConfiguration;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.ansi.Ansi;
 import cool.scx.web.handler.ScxCookieHandlerConfiguration;
@@ -14,7 +13,6 @@ import io.vertx.core.http.impl.CookieImpl;
 import io.vertx.ext.web.RoutingContext;
 
 import java.io.*;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -65,7 +63,7 @@ public final class OrganizationAuth {
      */
     static void initAuth() {
         //设置处理器 ScxMapping 前置处理器
-        ScxMappingInterceptorConfiguration.setScxMappingInterceptor(new OrganizationAuthInterceptor());
+        ScxContext.scxMappingConfiguration().setScxMappingInterceptor(new OrganizationAuthInterceptor());
         //设置请求头
         ScxCorsHandlerConfiguration.allowedHeaders(authHeaders());
         //设置 cookie handler
@@ -184,12 +182,7 @@ public final class OrganizationAuth {
         if (sessionItem == null) {
             return null;
         }
-        try {
-            return userService.get(sessionItem.user.id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return userService.get(sessionItem.user.id);
     }
 
     /**

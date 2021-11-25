@@ -6,8 +6,8 @@ import cool.scx.annotation.NoColumn;
 import cool.scx.base.BaseModel;
 import cool.scx.base.BaseService;
 import cool.scx.bo.Query;
-import cool.scx.exception.BadRequestException;
-import cool.scx.exception.CustomHttpException;
+import cool.scx.exception.impl.BadRequestException;
+import cool.scx.exception.impl.CustomHttpException;
 import cool.scx.exception.ScxHttpException;
 import cool.scx.sql.WhereType;
 import cool.scx.util.ObjectUtils;
@@ -45,7 +45,7 @@ public final class CRUDHelper {
      * @return service
      * @throws ScxHttpException service 未找到
      */
-    public static BaseService<BaseModel> getBaseService(String modelName) throws ScxHttpException {
+    public static BaseService<BaseModel> getBaseService(String modelName)  {
         //先通过 modelName 获取 class
         var baseModelClass = getBaseModelClassByName(modelName);
         try {

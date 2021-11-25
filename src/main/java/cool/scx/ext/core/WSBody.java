@@ -2,7 +2,7 @@ package cool.scx.ext.core;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.scx.util.JacksonHelper;
-import cool.scx.util.VoHelper;
+import cool.scx.vo.VoHelper;
 import io.vertx.core.http.ServerWebSocket;
 
 /**
