@@ -2,7 +2,6 @@ package cool.scx.ext.crud;
 
 import cool.scx.base.BaseModel;
 import cool.scx.bo.Query;
-import cool.scx.exception.ScxHttpException;
 
 import java.util.List;
 import java.util.Map;
@@ -59,7 +58,6 @@ public interface CRUDHandler {
      * @param modelName model 名称
      * @param deleteIDs 批量删除的 id
      * @return r
-     * @throws ScxHttpException e
      */
     default long batchDelete(String modelName, long[] deleteIDs) {
         var baseService = CRUDHelper.getBaseService(modelName);
@@ -109,7 +107,6 @@ public interface CRUDHandler {
      * @param modelName model 名称
      * @param id        查询的 id
      * @return 单条数据信息
-     * @throws ScxHttpException e
      */
     default BaseModel info(String modelName, Long id) {
         var baseService = CRUDHelper.getBaseService(modelName);

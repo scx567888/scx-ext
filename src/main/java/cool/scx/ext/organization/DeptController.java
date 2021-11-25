@@ -6,8 +6,6 @@ import cool.scx.bo.Query;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.vo.Json;
 
-import java.sql.SQLException;
-
 @ScxMapping("api/dept")
 public class DeptController {
 
@@ -18,7 +16,7 @@ public class DeptController {
     }
 
     @ScxMapping(method = HttpMethod.DELETE)
-    public Json deleteDept(@FromBody Long id) throws SQLException {
+    public Json deleteDept(@FromBody Long id) {
         deleteDeptWithChildren(id);
         return Json.ok();
     }

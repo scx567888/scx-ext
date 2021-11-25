@@ -5,7 +5,6 @@ import cool.scx.annotation.FromBody;
 import cool.scx.annotation.FromPath;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
-import cool.scx.exception.ScxHttpException;
 import cool.scx.vo.Json;
 
 import java.util.List;
@@ -95,7 +94,6 @@ public class CRUDController {
      * @param modelName a
      * @param id        a
      * @return j
-     * @throws ScxHttpException if any.
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.DELETE)
     public Json delete(@FromPath String modelName, @FromPath Long id) {
@@ -158,7 +156,7 @@ public class CRUDController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName/check-unique/:fieldName", method = HttpMethod.POST)
-    public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) throws ScxHttpException {
+    public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {
         var b = crudHandler.checkUnique(modelName, fieldName, value, id);
         return Json.ok().put("isUnique", b);
     }

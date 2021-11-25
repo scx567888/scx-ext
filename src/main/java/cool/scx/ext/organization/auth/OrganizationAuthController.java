@@ -15,7 +15,6 @@ import cool.scx.util.RandomUtils;
 import cool.scx.vo.Json;
 import io.vertx.ext.web.RoutingContext;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -70,10 +69,9 @@ public class OrganizationAuthController {
      * @param password 密码
      * @param ctx      ctx
      * @return json
-     * @throws java.sql.SQLException SQLException
      */
     @ScxMapping(method = HttpMethod.POST)
-    public Json login(@FromBody String username, @FromBody String password, RoutingContext ctx) throws SQLException {
+    public Json login(@FromBody String username, @FromBody String password, RoutingContext ctx) {
         try {
             // 先获取登录的设备类型
             var loginDevice = OrganizationAuth.getDeviceTypeByHeader(ctx);
