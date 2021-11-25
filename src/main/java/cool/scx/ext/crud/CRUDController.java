@@ -48,7 +48,7 @@ public class CRUDController {
                      @FromBody(value = "orderBy.orderByColumn", required = false) String orderByColumn,
                      @FromBody(value = "orderBy.sortType", required = false) String sortType,
                      @FromBody(value = "whereBodyList", required = false) List<CRUDWhereBody> whereBodyList
-    )  {
+    ) {
         var crudListResult = crudHandler.list(modelName, limit, page, orderByColumn, sortType, whereBodyList);
         return Json.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }

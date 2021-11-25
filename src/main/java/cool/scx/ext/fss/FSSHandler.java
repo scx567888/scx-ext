@@ -4,8 +4,8 @@ import cool.scx.ScxContext;
 import cool.scx.annotation.ScxService;
 import cool.scx.bo.Query;
 import cool.scx.bo.UploadedEntity;
-import cool.scx.exception.impl.NotFoundException;
 import cool.scx.exception.ScxHttpException;
+import cool.scx.exception.impl.NotFoundException;
 import cool.scx.util.FileUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
@@ -146,7 +146,7 @@ public abstract class FSSHandler {
      * @param fssObjectID a {@link java.lang.String} object
      * @return a {@link cool.scx.ext.fss.FSSObject} object
      * @throws cool.scx.exception.impl.NotFoundException if any.
-     * @throws SQLException                         if any.
+     * @throws SQLException                              if any.
      */
     public FSSObject checkFSSObjectID(String fssObjectID) throws NotFoundException, SQLException {
         var fssObject = fssObjectService.findByFSSObjectID(fssObjectID);
