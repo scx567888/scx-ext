@@ -4,8 +4,7 @@ import cool.scx.ScxContext;
 import cool.scx.annotation.ScxService;
 import cool.scx.bo.Query;
 import cool.scx.bo.UploadedEntity;
-import cool.scx.exception.NotFoundException;
-import cool.scx.exception.ScxHttpException;
+import cool.scx.exception.impl.NotFoundException;
 import cool.scx.util.FileUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
@@ -17,7 +16,6 @@ import cool.scx.vo.Raw;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,10 +143,8 @@ public abstract class FSSHandler {
      *
      * @param fssObjectID a {@link java.lang.String} object
      * @return a {@link cool.scx.ext.fss.FSSObject} object
-     * @throws cool.scx.exception.NotFoundException if any.
-     * @throws SQLException                         if any.
      */
-    public FSSObject checkFSSObjectID(String fssObjectID) throws NotFoundException, SQLException {
+    public FSSObject checkFSSObjectID(String fssObjectID) {
         var fssObject = fssObjectService.findByFSSObjectID(fssObjectID);
         if (fssObject == null) {
             throw new NotFoundException();
@@ -161,7 +157,7 @@ public abstract class FSSHandler {
      *
      * @param fssObject a {@link cool.scx.ext.fss.FSSObject} object
      * @return a {@link java.io.File} object
-     * @throws cool.scx.exception.NotFoundException if any.
+     * @throws cool.scx.exception.impl.NotFoundException if any.
      */
     public File checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
         var physicalFile = FSSObjectService.getPhysicalFilePath(fssObject).toFile();
@@ -176,10 +172,8 @@ public abstract class FSSHandler {
      *
      * @param fssObjectID a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Download} object
-     * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws SQLException                        if any.
      */
-    public Download download(String fssObjectID) throws ScxHttpException, SQLException {
+    public Download download(String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
         return new Download(file, fssObject.fileName);
@@ -193,10 +187,8 @@ public abstract class FSSHandler {
      * @param height      a {@link java.lang.Integer} object
      * @param type        a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Image} object
-     * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws SQLException                        if any.
      */
-    public Image image(String fssObjectID, Integer width, Integer height, String type) throws ScxHttpException, SQLException {
+    public Image image(String fssObjectID, Integer width, Integer height, String type) {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
         return new Image(file, width, height, type);
@@ -207,10 +199,8 @@ public abstract class FSSHandler {
      *
      * @param fssObjectID a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Raw} object
-     * @throws cool.scx.exception.ScxHttpException if any.
-     * @throws SQLException                        if any.
      */
-    public Raw raw(String fssObjectID) throws ScxHttpException, SQLException {
+    public Raw raw(String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
         return new Raw(file);
@@ -226,9 +216,8 @@ public abstract class FSSHandler {
      * @param nowChunkIndex a {@link java.lang.Integer} object
      * @param fileData      a {@link cool.scx.bo.UploadedEntity} object
      * @return a {@link cool.scx.vo.Json} object
-     * @throws SQLException if any.
      */
-    public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws SQLException, IOException {
+    public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws IOException {
         var uploadTempFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSTemp");
         var uploadConfigFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSUpload").toFile();
 
@@ -284,9 +273,8 @@ public abstract class FSSHandler {
      *
      * @param fssObjectIDs a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Json} object
-     * @throws SQLException if any.
      */
-    public Json delete(String fssObjectIDs) throws SQLException {
+    public Json delete(String fssObjectIDs) {
         //先获取文件的基本信息
         var needDeleteFile = fssObjectService.get(new Query().equal("fssObjectID", fssObjectIDs));
         if (needDeleteFile != null) {
@@ -314,9 +302,8 @@ public abstract class FSSHandler {
      *
      * @param fssObjectIDs a {@link java.util.List} object
      * @return a {@link cool.scx.vo.Json} object
-     * @throws SQLException if any.
      */
-    public Json list(List<String> fssObjectIDs) throws SQLException {
+    public Json list(List<String> fssObjectIDs) {
         if (fssObjectIDs != null && fssObjectIDs.size() > 0) {
             return Json.ok().put("items", fssObjectService.findByFSSObjectIDs(fssObjectIDs));
         } else {
@@ -331,9 +318,8 @@ public abstract class FSSHandler {
      * @param fileSize f
      * @param fileMD5  f
      * @return f
-     * @throws SQLException f
      */
-    public Json checkAnyFileExistsByThisMD5(String fileName, Long fileSize, String fileMD5) throws SQLException, IOException {
+    public Json checkAnyFileExistsByThisMD5(String fileName, Long fileSize, String fileMD5) throws IOException {
         //可能有上传残留 这里准备清除一下
         var uploadTempFileParent = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSTemp").getParent();
         //先判断 文件是否已经上传过 并且文件可用

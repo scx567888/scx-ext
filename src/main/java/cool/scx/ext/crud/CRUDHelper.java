@@ -6,9 +6,8 @@ import cool.scx.annotation.NoColumn;
 import cool.scx.base.BaseModel;
 import cool.scx.base.BaseService;
 import cool.scx.bo.Query;
-import cool.scx.exception.BadRequestException;
-import cool.scx.exception.CustomHttpException;
-import cool.scx.exception.ScxHttpException;
+import cool.scx.exception.impl.BadRequestException;
+import cool.scx.exception.impl.CustomHttpException;
 import cool.scx.sql.WhereType;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
@@ -43,9 +42,8 @@ public final class CRUDHelper {
      *
      * @param modelName model 名称
      * @return service
-     * @throws ScxHttpException service 未找到
      */
-    public static BaseService<BaseModel> getBaseService(String modelName) throws ScxHttpException {
+    public static BaseService<BaseModel> getBaseService(String modelName) {
         //先通过 modelName 获取 class
         var baseModelClass = getBaseModelClassByName(modelName);
         try {
@@ -71,9 +69,8 @@ public final class CRUDHelper {
      *
      * @param entityMap e
      * @return a
-     * @throws ScxHttpException h
      */
-    public static BaseModel mapToBaseModel(Map<String, Object> entityMap, String baseModelName) throws ScxHttpException {
+    public static BaseModel mapToBaseModel(Map<String, Object> entityMap, String baseModelName) {
         var baseModelClass = getBaseModelClassByName(baseModelName);
         try {
             return ObjectUtils.convertValue(entityMap, baseModelClass);
@@ -114,7 +111,7 @@ public final class CRUDHelper {
     public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, String orderByColumn, String sortType, List<CRUDWhereBody> whereBodyList) throws CustomHttpException {
         var query = new Query();
         if (limit != null && limit >= 0) {
-            if (page != null && page >= 0) {
+            if (page != null && page >= 1) {
                 query.setPagination(page, limit);
             } else {
                 query.setPagination(limit);

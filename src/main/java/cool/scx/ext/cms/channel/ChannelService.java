@@ -4,8 +4,6 @@ import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseService;
 import cool.scx.bo.Query;
 
-import java.sql.SQLException;
-
 /**
  * ColumnService
  *
@@ -18,9 +16,8 @@ public class ChannelService extends BaseService<Channel> {
     /**
      * @param path a
      * @return a
-     * @throws java.sql.SQLException e
      */
-    public Channel getChannelByPath(String path) throws SQLException {
+    public Channel getChannelByPath(String path) {
         return get(new Query().equal("channelPath", path));
     }
 

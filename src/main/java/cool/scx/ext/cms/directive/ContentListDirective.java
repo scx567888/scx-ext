@@ -5,7 +5,6 @@ import cool.scx.base.BaseTemplateDirective;
 import cool.scx.bo.Query;
 import cool.scx.ext.cms.content.ContentService;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -70,12 +69,7 @@ public class ContentListDirective implements BaseTemplateDirective {
             query.addOrderBy(orderByColumn.toString(), sortType.toString());
         }
 
-        try {
-            return contentService.list();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
+        return contentService.list();
     }
 
     /**

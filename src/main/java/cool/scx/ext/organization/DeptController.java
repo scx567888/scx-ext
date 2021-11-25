@@ -6,8 +6,6 @@ import cool.scx.bo.Query;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.vo.Json;
 
-import java.sql.SQLException;
-
 @ScxMapping("api/dept")
 public class DeptController {
 
@@ -18,7 +16,7 @@ public class DeptController {
     }
 
     @ScxMapping(method = HttpMethod.DELETE)
-    public Json deleteDept(@FromBody Long id) throws SQLException {
+    public Json deleteDept(@FromBody Long id) {
         deleteDeptWithChildren(id);
         return Json.ok();
     }
@@ -27,9 +25,8 @@ public class DeptController {
      * 递归删除 部门节点
      *
      * @param id id
-     * @throws SQLException q
      */
-    private void deleteDeptWithChildren(Long id) throws SQLException {
+    private void deleteDeptWithChildren(Long id) {
         //先删除当前节点
         deptService.delete(id);
         //拼一个查询条件先

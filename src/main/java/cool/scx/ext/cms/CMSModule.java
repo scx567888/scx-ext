@@ -59,6 +59,7 @@ public class CMSModule implements ScxModule {
 
     /**
      * @param webSiteHandlerClass a
+     * @return s
      */
     public CMSModule setWebSiteHandler(Class<? extends WebSiteHandler> webSiteHandlerClass) {
         this.webSiteHandlerClass = webSiteHandlerClass;

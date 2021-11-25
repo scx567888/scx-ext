@@ -2,7 +2,7 @@ package cool.scx.ext.fixtable;
 
 import cool.scx.ScxContext;
 import cool.scx.ScxModule;
-import cool.scx.dao.FixTableUtils;
+import cool.scx.dao.ScxDaoHelper;
 
 /**
  * <p>FixTableModule class.</p>
@@ -17,7 +17,7 @@ public class FixTableModule implements ScxModule {
      */
     @Override
     public void start() {
-        ScxContext.execute(() -> FixTableUtils.fixAllTable(false));
+        ScxContext.execute(() -> ScxDaoHelper.fixAllTable(false));
     }
 
     /**

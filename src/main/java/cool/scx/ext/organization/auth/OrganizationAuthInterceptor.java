@@ -1,7 +1,7 @@
 package cool.scx.ext.organization.auth;
 
-import cool.scx.exception.NoPermException;
-import cool.scx.exception.UnauthorizedException;
+import cool.scx.exception.impl.NoPermException;
+import cool.scx.exception.impl.UnauthorizedException;
 import cool.scx.mvc.ScxMappingHandler;
 import cool.scx.mvc.interceptor.ScxMappingInterceptor;
 import io.vertx.ext.web.RoutingContext;
@@ -26,7 +26,7 @@ public final class OrganizationAuthInterceptor implements ScxMappingInterceptor 
      * {@inheritDoc}
      */
     @Override
-    public void preHandle(RoutingContext context, ScxMappingHandler scxMappingHandler) throws Exception {
+    public void preHandle(RoutingContext context, ScxMappingHandler scxMappingHandler) {
         var p = getScxAuthPerms(scxMappingHandler);
         if (p.checkedLogin) {
             //先获取登录的用户

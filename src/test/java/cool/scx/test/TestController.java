@@ -140,10 +140,9 @@ public class TestController {
      * 测试!!!
      *
      * @return a {@link BaseVo} object
-     * @throws java.lang.Exception if any.
      */
     @ScxMapping(method = HttpMethod.GET)
-    public BaseVo bigJson() throws Exception {
+    public BaseVo bigJson() {
         var users = userService.list();
         return Json.ok().put("items", users);
     }
@@ -192,10 +191,9 @@ public class TestController {
      * 测试!!!
      *
      * @return a {@link BaseVo} object
-     * @throws java.lang.Exception if any.
      */
     @ScxMapping(method = HttpMethod.GET)
-    public BaseVo testSelectJson() throws Exception {
+    public BaseVo testSelectJson() {
 
         var count = carService.count();
         if (count < 100) {
@@ -231,7 +229,7 @@ public class TestController {
      * @return a {@link BaseVo} object
      */
     @ScxMapping(method = HttpMethod.GET)
-    public BaseVo excel() throws IOException {
+    public BaseVo excel() {
         Excel excel = Excel.get07Excel("测试1", 1000);
         for (int i = 0; i < 999; i++) {
             for (int j = 0; j < 99; j++) {
