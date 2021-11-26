@@ -29,23 +29,21 @@ public class CRUDController {
     /**
      * 列表查询
      *
-     * @param modelName     a {@link java.lang.String} object.
-     * @param limit         a {@link java.lang.Integer} object.
-     * @param page          a {@link java.lang.Integer} object.
-     * @param orderByColumn a {@link java.lang.String} object.
-     * @param sortType      a {@link java.lang.String} object.
-     * @param whereBodyList a {@link java.util.Map} object.
+     * @param modelName       a {@link java.lang.String} object.
+     * @param limit           a {@link java.lang.Integer} object.
+     * @param page            a {@link java.lang.Integer} object.
+     * @param orderByBodyList a {@link java.lang.String} object.
+     * @param whereBodyList   a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
     public Json list(@FromPath String modelName,
                      @FromBody(value = "pagination.limit", required = false) Integer limit,
                      @FromBody(value = "pagination.page", required = false) Integer page,
-                     @FromBody(value = "orderBy.orderByColumn", required = false) String orderByColumn,
-                     @FromBody(value = "orderBy.sortType", required = false) String sortType,
+                     @FromBody(value = "orderByBodyList", required = false) List<CRUDOrderByBody> orderByBodyList,
                      @FromBody(value = "whereBodyList", required = false) List<CRUDWhereBody> whereBodyList
     ) {
-        var crudListResult = crudHandler.list(modelName, limit, page, orderByColumn, sortType, whereBodyList);
+        var crudListResult = crudHandler.list(modelName, limit, page, orderByBodyList, whereBodyList);
         return Json.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }
 

@@ -8,6 +8,7 @@ import cool.scx.base.BaseService;
 import cool.scx.bo.Query;
 import cool.scx.exception.impl.BadRequestException;
 import cool.scx.exception.impl.CustomHttpException;
+import cool.scx.sql.OrderByType;
 import cool.scx.sql.WhereType;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
@@ -101,14 +102,13 @@ public final class CRUDHelper {
     /**
      * 获取 Query
      *
-     * @param limit         l
-     * @param page          p
-     * @param orderByColumn or
-     * @param sortType      so
-     * @param whereBodyList wh
+     * @param limit           l
+     * @param page            p
+     * @param orderByBodyList or
+     * @param whereBodyList   wh
      * @return q
      */
-    public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, String orderByColumn, String sortType, List<CRUDWhereBody> whereBodyList) throws CustomHttpException {
+    public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) throws CustomHttpException {
         var query = new Query();
         if (limit != null && limit >= 0) {
             if (page != null && page >= 1) {
@@ -117,8 +117,16 @@ public final class CRUDHelper {
                 query.setPagination(limit);
             }
         }
-        if (orderByColumn != null && sortType != null) {
-            query.addOrderBy(orderByColumn, sortType);
+        if (orderByBodyList != null) {
+            for (var orderByBody : orderByBodyList) {
+                if (orderByBody.fieldName != null && orderByBody.sortType != null) {
+                    //校验 fieldName 是否正确
+                    checkFieldName(modelClass, orderByBody.fieldName);
+                    //检查 sortType 是否正确
+                    var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
+                    query.addOrderBy(orderByBody.fieldName, sortType);
+                }
+            }
         }
         if (whereBodyList != null) {
             for (var crudWhereBody : whereBodyList) {
@@ -173,6 +181,22 @@ public final class CRUDHelper {
             return WhereType.valueOf(strWhereType.toUpperCase());
         } catch (Exception ignored) {
             throw new CustomHttpException(ctx -> Json.fail("unknown-where-type").put("field-name", fieldName).put("where-type", strWhereType).handle(ctx));
+        }
+    }
+
+    /**
+     * a
+     *
+     * @param fieldName   a
+     * @param strSortType a
+     * @return a
+     * @throws CustomHttpException a
+     */
+    public static OrderByType checkSortType(String fieldName, String strSortType) throws CustomHttpException {
+        try {
+            return OrderByType.valueOf(strSortType.toUpperCase());
+        } catch (Exception ignored) {
+            throw new CustomHttpException(ctx -> Json.fail("unknown-sort-type").put("field-name", fieldName).put("sort-type", strSortType).handle(ctx));
         }
     }
 
