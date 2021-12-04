@@ -23,4 +23,26 @@ public class CRUDWhereBody {
      */
     public Object value2;
 
+    /**
+     * 便于序列化
+     */
+    public CRUDWhereBody() {
+
+    }
+
+    /**
+     * 便于开发人员使用
+     *
+     * @param fieldName f
+     * @param whereType w
+     * @param value1    v
+     * @param value2    v
+     */
+    public CRUDWhereBody(String fieldName, String whereType, Object value1, Object value2) {
+        this.fieldName = fieldName;
+        this.whereType = whereType;
+        this.value1 = value1;
+        this.value2 = value2;
+    }
+
 }
