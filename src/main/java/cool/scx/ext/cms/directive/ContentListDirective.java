@@ -4,6 +4,7 @@ import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseTemplateDirective;
 import cool.scx.bo.Query;
 import cool.scx.ext.cms.content.ContentService;
+import cool.scx.sql.order_by.OrderByType;
 
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class ContentListDirective implements BaseTemplateDirective {
         }
 
         if (orderByColumn != null && sortType != null) {
-            query.addOrderBy(orderByColumn.toString(), sortType.toString());
+            query.orderBy().add(orderByColumn.toString(), OrderByType.of(sortType.toString()));
         }
 
         return contentService.list();

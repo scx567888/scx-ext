@@ -4,6 +4,7 @@ import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseTemplateDirective;
 import cool.scx.bo.Query;
 import cool.scx.ext.cms.channel.ChannelService;
+import cool.scx.sql.order_by.OrderByType;
 
 import java.util.Map;
 
@@ -68,7 +69,7 @@ public class ChannelListDirective implements BaseTemplateDirective {
         }
 
         if (orderByColumn != null && sortType != null) {
-            query.addOrderBy(orderByColumn.toString(), sortType.toString());
+            query.orderBy().add(orderByColumn.toString(), OrderByType.of(sortType.toString()));
         }
 
         return channelService.list(query);
