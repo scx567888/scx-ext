@@ -8,8 +8,8 @@ import cool.scx.base.BaseService;
 import cool.scx.bo.Query;
 import cool.scx.exception.impl.BadRequestException;
 import cool.scx.exception.impl.CustomHttpException;
-import cool.scx.sql.OrderByType;
-import cool.scx.sql.WhereType;
+import cool.scx.sql.order_by.OrderByType;
+import cool.scx.sql.where.WhereType;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
 import cool.scx.util.ansi.Ansi;
@@ -124,7 +124,7 @@ public final class CRUDHelper {
                     checkFieldName(modelClass, orderByBody.fieldName);
                     //检查 sortType 是否正确
                     var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
-                    query.addOrderBy(orderByBody.fieldName, sortType);
+                    query.orderBy().add(orderByBody.fieldName, sortType);
                 }
             }
         }
@@ -138,11 +138,11 @@ public final class CRUDHelper {
                     //检查参数数量是否正确
                     checkWhereBodyParametersSize(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
                     if (whereType.paramSize() == 0) {
-                        query.where().add(crudWhereBody.fieldName, whereType);
+                        query.where().add0(crudWhereBody.fieldName, whereType);
                     } else if (whereType.paramSize() == 1) {
-                        query.where().add(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
+                        query.where().add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
                     } else if (whereType.paramSize() == 2) {
-                        query.where().add(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                        query.where().add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
                     }
                 }
             }
@@ -178,7 +178,7 @@ public final class CRUDHelper {
      */
     public static WhereType checkWhereType(String fieldName, String strWhereType) throws CustomHttpException {
         try {
-            return WhereType.valueOf(strWhereType.toUpperCase());
+            return WhereType.of(strWhereType);
         } catch (Exception ignored) {
             throw new CustomHttpException(ctx -> Json.fail("unknown-where-type").put("field-name", fieldName).put("where-type", strWhereType).handle(ctx));
         }
@@ -194,7 +194,7 @@ public final class CRUDHelper {
      */
     public static OrderByType checkSortType(String fieldName, String strSortType) throws CustomHttpException {
         try {
-            return OrderByType.valueOf(strSortType.toUpperCase());
+            return OrderByType.of(strSortType);
         } catch (Exception ignored) {
             throw new CustomHttpException(ctx -> Json.fail("unknown-sort-type").put("field-name", fieldName).put("sort-type", strSortType).handle(ctx));
         }
