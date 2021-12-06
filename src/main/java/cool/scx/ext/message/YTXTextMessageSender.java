@@ -2,7 +2,7 @@ package cool.scx.ext.message;
 
 import cool.scx.ScxContext;
 import cool.scx.annotation.ScxService;
-import cool.scx.util.CryptoUtils;
+import cool.scx.util.Base64Utils;
 import cool.scx.util.HttpUtils;
 import cool.scx.util.digest.DigestUtils;
 
@@ -75,7 +75,7 @@ public class YTXTextMessageSender {
     }
 
     private String getAuthorization(String TimeStampStr) {
-        return CryptoUtils.encodeBase64(YTX_ACCOUNT_SID + ":" + TimeStampStr);
+        return Base64Utils.encode(YTX_ACCOUNT_SID + ":" + TimeStampStr);
     }
 
     private String getTimeStampStr() {
