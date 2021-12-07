@@ -1,7 +1,7 @@
 package cool.scx.test.car;
 
 import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseService;
+import cool.scx.base.BaseModelService;
 
 /**
  * <p>CarService class.</p>
@@ -11,6 +11,6 @@ import cool.scx.base.BaseService;
  * @since 1.3.14
  */
 @ScxService
-public class CarService extends BaseService<Car> {
+public class CarService extends BaseModelService<Car> {
 
 }

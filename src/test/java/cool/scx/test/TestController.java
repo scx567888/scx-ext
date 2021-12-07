@@ -4,7 +4,7 @@ package cool.scx.test;
 import cool.scx.ScxContext;
 import cool.scx.annotation.FromQuery;
 import cool.scx.annotation.ScxMapping;
-import cool.scx.base.BaseService;
+import cool.scx.base.BaseModelService;
 import cool.scx.bo.Query;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.enumeration.RawType;
@@ -44,7 +44,7 @@ public class TestController {
 
     private final UserService userService;
 
-    private final BaseService<Car> carService = new BaseService<>(Car.class);
+    private final BaseModelService<Car> carService = new BaseModelService<>(Car.class);
 
     /**
      * TestController

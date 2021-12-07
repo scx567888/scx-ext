@@ -21,12 +21,12 @@ public interface CRUDHandler {
      * @return 是否唯一
      */
     default boolean checkUnique(String modelName, String fieldName, Object value, Long id) {
-        var baseService = CRUDHelper.getBaseService(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(modelName);
         var query = new Query().equal(fieldName, value);
         if (id != null) {
             query.notEqual("id", id);
         }
-        return baseService.count(query) == 0;
+        return baseModelService.count(query) == 0;
     }
 
     /**
@@ -37,8 +37,8 @@ public interface CRUDHandler {
      * @return r
      */
     default List<Map<String, Object>> getAutoComplete(String modelName, String fieldName) {
-        var baseService = CRUDHelper.getBaseService(modelName);
-        return baseService.getFieldList(fieldName);
+        var baseModelService = CRUDHelper.getBaseModelService(modelName);
+        return baseModelService.getFieldList(fieldName);
     }
 
     /**
@@ -47,8 +47,8 @@ public interface CRUDHandler {
      * @return r
      */
     default boolean revokeDelete(String modelName, Long id) {
-        var baseService = CRUDHelper.getBaseService(modelName);
-        var revokeDeleteCount = baseService.revokeDelete(id);
+        var baseModelService = CRUDHelper.getBaseModelService(modelName);
+        var revokeDeleteCount = baseModelService.revokeDelete(id);
         return revokeDeleteCount == 1;
     }
 
@@ -60,8 +60,8 @@ public interface CRUDHandler {
      * @return r
      */
     default long batchDelete(String modelName, long[] deleteIDs) {
-        var baseService = CRUDHelper.getBaseService(modelName);
-        return baseService.delete(deleteIDs);
+        var baseModelService = CRUDHelper.getBaseModelService(modelName);
+        return baseModelService.delete(deleteIDs);
     }
 
     /**
@@ -72,8 +72,8 @@ public interface CRUDHandler {
      * @return r
      */
     default boolean delete(String modelName, Long id) {
-        var baseService = CRUDHelper.getBaseService(modelName);
-        var deletedCount = baseService.delete(id);
+        var baseModelService = CRUDHelper.getBaseModelService(modelName);
+        var deletedCount = baseModelService.delete(id);
         return deletedCount == 1;
     }
 
@@ -85,9 +85,9 @@ public interface CRUDHandler {
      * @return c
      */
     default BaseModel update(String modelName, Map<String, Object> entityMap) {
-        var baseService = CRUDHelper.getBaseService(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(modelName);
         var realObject = CRUDHelper.mapToBaseModel(entityMap, modelName);
-        return baseService.update(realObject);
+        return baseModelService.update(realObject);
     }
 
     /**
@@ -96,9 +96,9 @@ public interface CRUDHandler {
      * @return c
      */
     default BaseModel save(String modelName, Map<String, Object> entityMap) {
-        var baseService = CRUDHelper.getBaseService(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(modelName);
         var realObject = CRUDHelper.mapToBaseModel(entityMap, modelName);
-        return baseService.save(realObject);
+        return baseModelService.save(realObject);
     }
 
     /**
@@ -109,8 +109,8 @@ public interface CRUDHandler {
      * @return 单条数据信息
      */
     default BaseModel info(String modelName, Long id) {
-        var baseService = CRUDHelper.getBaseService(modelName);
-        return baseService.get(id);
+        var baseModelService = CRUDHelper.getBaseModelService(modelName);
+        return baseModelService.get(id);
     }
 
     /**
@@ -124,10 +124,10 @@ public interface CRUDHandler {
      * @return 列表数据
      */
     default CRUDListResult list(String modelName, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) {
-        var baseService = CRUDHelper.getBaseService(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(modelName);
         var query = CRUDHelper.getQuery(CRUDHelper.getBaseModelClassByName(modelName), limit, page, orderByBodyList, whereBodyList);
-        var list = baseService.list(query);
-        var total = baseService.count(query);
+        var list = baseModelService.list(query);
+        var total = baseModelService.count(query);
         return new CRUDListResult(list, total);
     }
 

@@ -1,7 +1,7 @@
 package cool.scx.ext.organization;
 
 import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseService;
+import cool.scx.base.BaseModelService;
 import cool.scx.bo.Query;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @version 1.1.2
  */
 @ScxService
-public class RoleService extends BaseService<Role> {
+public class RoleService extends BaseModelService<Role> {
 
     private final UserRoleService userRoleService;
 

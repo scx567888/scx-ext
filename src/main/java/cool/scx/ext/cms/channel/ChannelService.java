@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.channel;
 
 import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseService;
+import cool.scx.base.BaseModelService;
 import cool.scx.bo.Query;
 
 /**
@@ -11,7 +11,7 @@ import cool.scx.bo.Query;
  * @version 0.3.6
  */
 @ScxService
-public class ChannelService extends BaseService<Channel> {
+public class ChannelService extends BaseModelService<Channel> {
 
     /**
      * @param path a

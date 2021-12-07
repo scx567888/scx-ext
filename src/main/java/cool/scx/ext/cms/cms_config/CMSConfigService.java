@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.cms_config;
 
 import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseService;
+import cool.scx.base.BaseModelService;
 import cool.scx.bo.Query;
 
 /**
@@ -11,7 +11,7 @@ import cool.scx.bo.Query;
  * @version 1.3.9
  */
 @ScxService
-public class CMSConfigService extends BaseService<CMSConfig> {
+public class CMSConfigService extends BaseModelService<CMSConfig> {
 
     /**
      * <p>getCmsConfig.</p>
