@@ -1,7 +1,7 @@
 package cool.scx.ext.organization;
 
 import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseService;
+import cool.scx.base.BaseModelService;
 
 /**
  * UserDeptService
@@ -10,6 +10,6 @@ import cool.scx.base.BaseService;
  * @version 0.3.6
  */
 @ScxService
-public class UserDeptService extends BaseService<UserDept> {
+public class UserDeptService extends BaseModelService<UserDept> {
 
 }

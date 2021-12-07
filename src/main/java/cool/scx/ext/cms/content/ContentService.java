@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.content;
 
 import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseService;
+import cool.scx.base.BaseModelService;
 
 /**
  * ArticleService
@@ -10,6 +10,6 @@ import cool.scx.base.BaseService;
  * @version 0.3.6
  */
 @ScxService
-public class ContentService extends BaseService<Content> {
+public class ContentService extends BaseModelService<Content> {
 
 }

@@ -1,7 +1,7 @@
 package cool.scx.ext.fss;
 
 import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseService;
+import cool.scx.base.BaseModelService;
 import cool.scx.bo.Query;
 
 import java.nio.file.Path;
@@ -14,7 +14,7 @@ import java.util.List;
  * @version 0.3.6
  */
 @ScxService
-public class FSSObjectService extends BaseService<FSSObject> {
+public class FSSObjectService extends BaseModelService<FSSObject> {
 
     public static Path getPhysicalFilePath(FSSObject fssObject) {
         return Path.of(FSSConfig.uploadFilePath().getPath(), fssObject.filePath);
