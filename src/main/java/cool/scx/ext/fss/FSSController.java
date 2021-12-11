@@ -10,7 +10,6 @@ import cool.scx.vo.Json;
 import cool.scx.vo.Raw;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -38,7 +37,6 @@ public class FSSController {
      *
      * @param fssObjectID a {@link java.lang.String} object.
      * @return a {@link cool.scx.vo.Download} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
      */
     @ScxMapping(value = "/download/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Download download(@FromPath String fssObjectID) {
@@ -53,7 +51,6 @@ public class FSSController {
      * @param height      a {@link java.lang.Integer} object.
      * @param type        a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Raw} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
      */
     @ScxMapping(value = "/image/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Image image(@FromPath String fssObjectID,
@@ -85,7 +82,7 @@ public class FSSController {
      * @param nowChunkIndex 当前分片
      * @param fileData      文件内容
      * @return r
-     * @throws SQLException s
+     * @throws Exception s
      */
     @ScxMapping(value = "/upload", method = HttpMethod.POST)
     public Json upload(@FromBody String fileName,
@@ -108,7 +105,6 @@ public class FSSController {
         return fssHandler.delete(fssObjectID);
     }
 
-
     /**
      * 检查一下这个 服务器里有没有和这个 可以直接使用 此 md5 的文件
      *
@@ -116,12 +112,12 @@ public class FSSController {
      * @param fileSize f
      * @param fileMD5  f
      * @return f
-     * @throws SQLException f
+     * @throws IOException f
      */
     @ScxMapping(value = "check-any-file-exists-by-this-md5", method = HttpMethod.POST)
     public Json checkAnyFileExistsByThisMD5(@FromBody String fileName,
                                             @FromBody Long fileSize,
-                                            @FromBody String fileMD5) throws SQLException, IOException {
+                                            @FromBody String fileMD5) throws IOException {
         return fssHandler.checkAnyFileExistsByThisMD5(fileName, fileSize, fileMD5);
     }
 
@@ -130,10 +126,9 @@ public class FSSController {
      *
      * @param fssObjectIDs a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
-     * @throws SQLException s
      */
     @ScxMapping(value = "/list", method = HttpMethod.POST)
-    public Json list(@FromBody List<String> fssObjectIDs) throws SQLException {
+    public Json list(@FromBody List<String> fssObjectIDs) {
         return fssHandler.list(fssObjectIDs);
     }
 
