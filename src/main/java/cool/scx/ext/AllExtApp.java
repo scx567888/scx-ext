@@ -6,7 +6,6 @@ import cool.scx.ext.core.CoreModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
-import cool.scx.ext.organization.OrganizationModule;
 
 /**
  * 运行所有核心包提供的模块 (演示用,不要用于生产环境)
@@ -29,8 +28,7 @@ public class AllExtApp {
                         new CoreModule(),
                         new CRUDModule(),
                         new FixTableModule(),
-                        new FSSModule(),
-                        new OrganizationModule())
+                        new FSSModule())
                 .setArgs(args)
                 .build().run();
     }
