@@ -4,16 +4,13 @@ package cool.scx.test.cms;
 import cool.scx.ScxContext;
 import cool.scx.annotation.FromQuery;
 import cool.scx.annotation.ScxMapping;
-import cool.scx.base.BaseModelService;
-import cool.scx.bo.Query;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.enumeration.RawType;
-import cool.scx.ext.office.Excel;
-import cool.scx.ext.office.QRCodeUtils;
+import cool.scx.ext.organization.annotation.OrganizationPerms;
 import cool.scx.ext.organization.user.User;
 import cool.scx.ext.organization.user.UserService;
-import cool.scx.ext.organization.auth.OrganizationPerms;
-import cool.scx.test.car.Car;
+import cool.scx.ext.util.Excel;
+import cool.scx.ext.util.QRCodeUtils;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.HttpUtils;
 import cool.scx.util.RandomUtils;
@@ -28,9 +25,7 @@ import io.vertx.ext.web.RoutingContext;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * 简单测试

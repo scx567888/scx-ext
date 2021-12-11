@@ -23,6 +23,7 @@ public class CMSModule implements ScxModule {
      * 指令
      */
     private final List<Class<? extends BaseTemplateDirective>> userDirectiveList = new ArrayList<>();
+
     /**
      * WebSiteHandler 列表 访问页面时会按照顺序执行 一般用来向首页添加自定义的信息
      */

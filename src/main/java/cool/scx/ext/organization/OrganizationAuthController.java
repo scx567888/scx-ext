@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.auth;
+package cool.scx.ext.organization;
 
 import cool.scx.ScxContext;
 import cool.scx.annotation.FromBody;
@@ -6,10 +6,7 @@ import cool.scx.annotation.ScxMapping;
 import cool.scx.bo.Query;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.exception.impl.UnauthorizedException;
-import cool.scx.ext.organization.auth.exception.OrganizationLoginException;
-import cool.scx.ext.organization.auth.exception.UnknownDeviceException;
-import cool.scx.ext.organization.auth.exception.UnknownUserException;
-import cool.scx.ext.organization.auth.exception.WrongPasswordException;
+import cool.scx.ext.organization.exception.*;
 import cool.scx.ext.organization.user.User;
 import cool.scx.ext.organization.user.UserService;
 import cool.scx.util.CryptoUtils;
@@ -54,7 +51,7 @@ public class OrganizationAuthController {
      * @return token
      * @throws OrganizationLoginException c
      */
-    private static String tryGetAuthToken(RoutingContext ctx, OrganizationAuthDeviceType loginDevice) throws OrganizationLoginException {
+    private static String tryGetAuthToken(RoutingContext ctx, DeviceType loginDevice) throws OrganizationLoginException {
         //查看登录的设备以判断如何获取 token
         return switch (loginDevice) {
             case ADMIN, ANDROID, APPLE ->
@@ -93,18 +90,20 @@ public class OrganizationAuthController {
             //更新用户的最后一次登录的 时间和ip
             updateLastLoginDateAndIP(loginUser.id);
             //这里根据登录设备向客户端返回不同的信息
-            if (loginDevice == OrganizationAuthDeviceType.WEBSITE) {
+            if (loginDevice == DeviceType.WEBSITE) {
                 return Json.fail("login-successful");
             } else {
                 return Json.ok().put("token", token);
             }
         } catch (OrganizationLoginException organizationLoginException) {
             if (organizationLoginException instanceof UnknownDeviceException) {
-                return Json.fail("未知设备");
+                return Json.fail("unknown-device");
             } else if (organizationLoginException instanceof UnknownUserException) {
                 return Json.fail("user-not-found");
             } else if (organizationLoginException instanceof WrongPasswordException) {
                 return Json.fail("password-error");
+            } else if (organizationLoginException instanceof MaximumAtLoginInSameTimeException) {
+                return Json.fail("maximum-at-login-in-same-time");
             } else {
                 logger.error("登录出错 : {}", organizationLoginException.getMessage());
                 return Json.fail("logon-failure");

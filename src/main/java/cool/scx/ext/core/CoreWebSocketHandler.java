@@ -11,6 +11,9 @@ import io.vertx.core.http.WebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 时间总线 websocket 连接处理类
  * <p>
@@ -28,6 +31,11 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
      * 心跳检测字符
      */
     private static final String LOVE = "❤";
+
+    /**
+     * 存储所有在线的 连接
+     */
+    private static final List<ServerWebSocket> SERVER_WEB_SOCKETS = new ArrayList<>();
 
     /**
      * 根据 前台发送的字符串封装实体
@@ -48,14 +56,33 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
     }
 
     /**
+     * 根据 binaryHandlerID 获取 ServerWebSocket
+     *
+     * @param binaryHandlerID a
+     * @return a
+     */
+    public static ServerWebSocket getWebSocket(String binaryHandlerID) {
+        return SERVER_WEB_SOCKETS.stream().filter(f -> f.binaryHandlerID().equals(binaryHandlerID)).findAny().orElse(null);
+    }
+
+    /**
+     * 获取当前所有在线的连接对象
+     *
+     * @return 当前所有在线的连接对象
+     */
+    public static List<ServerWebSocket> getAllWebSockets() {
+        return SERVER_WEB_SOCKETS;
+    }
+
+    /**
      * {@inheritDoc}
      * <p>
      * onOpen
      */
     @Override
     public void onOpen(ServerWebSocket webSocket) {
-        CoreOnlineItemHandler.addOnlineItem(webSocket, null);
-        logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), CoreOnlineItemHandler.getOnlineItemList().size());
+        SERVER_WEB_SOCKETS.add(webSocket);
+        logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), getAllWebSockets().size());
     }
 
     /**
@@ -66,8 +93,8 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
     @Override
     public void onClose(ServerWebSocket webSocket) {
         //如果客户端终止连接 将此条连接作废
-        CoreOnlineItemHandler.removeOnlineItemByWebSocket(webSocket);
-        logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), CoreOnlineItemHandler.getOnlineItemList().size());
+        SERVER_WEB_SOCKETS.removeIf(f -> f.binaryHandlerID().equals(webSocket.binaryHandlerID()));
+        logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), getAllWebSockets().size());
     }
 
     /**
@@ -95,10 +122,12 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
     }
 
     /**
+     * 连接错误 打印错误 同时移除 连接
      * {@inheritDoc}
      */
     @Override
     public void onError(Throwable event, ServerWebSocket webSocket) {
+        SERVER_WEB_SOCKETS.removeIf(f -> f.binaryHandlerID().equals(webSocket.binaryHandlerID()));
         event.printStackTrace();
     }
 

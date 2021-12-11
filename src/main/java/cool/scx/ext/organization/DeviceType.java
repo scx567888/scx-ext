@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.auth;
+package cool.scx.ext.organization;
 
 /**
  * 登录设备类型
@@ -6,7 +6,8 @@ package cool.scx.ext.organization.auth;
  * @author scx567888
  * @version 1.0.2
  */
-enum OrganizationAuthDeviceType {
+public enum DeviceType {
+
     /**
      * 安卓设备
      */
@@ -36,10 +37,10 @@ enum OrganizationAuthDeviceType {
      * <p>of.</p>
      *
      * @param name a {@link java.lang.String} object
-     * @return a {@link OrganizationAuthDeviceType} object
+     * @return a {@link DeviceType} object
      */
-    public static OrganizationAuthDeviceType of(String name) {
-        var upperCaseName = name.toUpperCase();
+    public static DeviceType of(String name) {
+        var upperCaseName = name.trim().toUpperCase();
         return switch (upperCaseName) {
             case "WEBSITE" -> WEBSITE;
             case "APPLE" -> APPLE;

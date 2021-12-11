@@ -1,16 +1,14 @@
-package cool.scx.ext.organization.auth;
+package cool.scx.ext.organization;
 
 import cool.scx.ScxContext;
-import cool.scx.ScxHandler;
-import cool.scx.exception.impl.NoPermException;
-import cool.scx.exception.impl.UnauthorizedException;
+import cool.scx.ext.core.WSBody;
 import cool.scx.ext.organization.dept.DeptService;
+import cool.scx.ext.organization.exception.MaximumAtLoginInSameTimeException;
 import cool.scx.ext.organization.role.RoleService;
 import cool.scx.ext.organization.user.User;
 import cool.scx.ext.organization.user.UserService;
-import cool.scx.mvc.ScxMappingHandler;
-import cool.scx.mvc.interceptor.ScxMappingInterceptor;
 import cool.scx.util.RandomUtils;
+import cool.scx.util.StringUtils;
 import cool.scx.util.ansi.Ansi;
 import cool.scx.web.handler.ScxCookieHandlerConfiguration;
 import cool.scx.web.handler.ScxCorsHandlerConfiguration;
@@ -19,7 +17,6 @@ import io.vertx.core.http.impl.CookieImpl;
 import io.vertx.ext.web.RoutingContext;
 
 import java.io.*;
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -41,9 +38,9 @@ public final class OrganizationAuth {
     private static final String SCX_AUTH_DEVICE_KEY = "S-Device";
 
     /**
-     * 存储所有的登录用户
+     * 存储所有的登录的客户端
      */
-    private static final List<LoginItem> LOGIN_ITEMS = new ArrayList<>();
+    private static final List<AlreadyLoginClient> ALREADY_LOGIN_CLIENTS = new ArrayList<>();
 
     /**
      * SESSION_CACHE 存储路径 默认为 AppRoot 下的  scx-session.cache 文件
@@ -66,9 +63,19 @@ public final class OrganizationAuth {
     private static DeptService deptService;
 
     /**
+     * 当用户的登录数量达到设定的最大值时如何处理新登录的用户
+     * 取值 0 ,阻止新用户登录 (默认值)
+     * 取值 1 ,踢出原有的老用户
+     */
+    private static int whenTheNumberOfLoginsInSameTimeReachesTheMaximum = 0;
+
+    /**
      * 初始化 auth 模块
      */
     static void initAuth() {
+        initWhenTheNumberOfLoginsInSameTimeReachesTheMaximum();
+        //绑定事件
+        ScxContext.eventBus().consumer("bind-websocket-by-token", OrganizationAuth::bindWebSocketByToken);
         //设置处理器 ScxMapping 前置处理器
         ScxContext.scxMappingConfiguration().setScxMappingInterceptor(new OrganizationAuthInterceptor());
         //设置请求头
@@ -106,8 +113,8 @@ public final class OrganizationAuth {
     static void readSessionFromFile() {
         var sessionCache = ScxContext.getFileByAppRoot(SCX_ORGANIZATION_SESSION_PATH);
         try (var f = new FileInputStream(sessionCache); var o = new ObjectInputStream(f)) {
-            var loginItems = (LoginItem[]) o.readObject();
-            Collections.addAll(LOGIN_ITEMS, loginItems);
+            var loginItems = (AlreadyLoginClient[]) o.readObject();
+            Collections.addAll(ALREADY_LOGIN_CLIENTS, loginItems);
             Ansi.out().brightGreen("成功从 " + sessionCache.getPath() + " 中恢复 " + loginItems.length + " 条数据!!!").println();
         } catch (Exception ignored) {
 
@@ -121,7 +128,7 @@ public final class OrganizationAuth {
         var sessionCache = ScxContext.getFileByAppRoot(SCX_ORGANIZATION_SESSION_PATH);
         try (var f = new FileOutputStream(sessionCache); var o = new ObjectOutputStream(f)) {
             // 执行模块的 stop 生命周期
-            o.writeObject(LOGIN_ITEMS.toArray(new LoginItem[0]));
+            o.writeObject(ALREADY_LOGIN_CLIENTS.toArray());
             Ansi.out().red("保存 Session 到 " + sessionCache.getPath() + " 中!!!").println();
         } catch (IOException ignored) {
 
@@ -145,16 +152,26 @@ public final class OrganizationAuth {
     /**
      * 添加用户到 登录列表中
      *
-     * @param token       a {@link io.vertx.ext.web.RoutingContext} object
-     * @param authUser    a {@link User} object
-     * @param loginDevice a {@link User} object
+     * @param token       token
+     * @param authUser    认证成功的用户
+     * @param loginDevice 登录设备
      */
-    static void addLoginItem(String token, User authUser, OrganizationAuthDeviceType loginDevice) {
-        var sessionItem = LOGIN_ITEMS.stream().filter(u -> authUser.id.equals(u.user.id) && loginDevice == u.loginDevice).findAny().orElse(null);
-        if (sessionItem == null) {
-            LOGIN_ITEMS.add(new OrganizationAuth.LoginItem(token, authUser, loginDevice));
+    static void addLoginItem(String token, User authUser, DeviceType loginDevice) {
+        var thisUserLoginItemCount = ALREADY_LOGIN_CLIENTS.stream().filter(u -> authUser.id.equals(u.user().id)).count();
+        if (thisUserLoginItemCount >= authUser.maxNumberToLoginInSameTime) {
+            //阻止新用户登录
+            if (whenTheNumberOfLoginsInSameTimeReachesTheMaximum == 0) {
+                throw new MaximumAtLoginInSameTimeException();
+            } else if (whenTheNumberOfLoginsInSameTimeReachesTheMaximum == 1) {//踢出老用户
+                //寻找到第一个老用户
+                var firstOldUser = ALREADY_LOGIN_CLIENTS.stream().filter(u -> authUser.id.equals(u.user().id)).findFirst().orElse(null);
+                ALREADY_LOGIN_CLIENTS.remove(firstOldUser);
+                //添加新用户
+                ALREADY_LOGIN_CLIENTS.add(new AlreadyLoginClient(token, authUser, loginDevice));
+            }
         } else {
-            sessionItem.token = token;
+            //添加新用户
+            ALREADY_LOGIN_CLIENTS.add(new AlreadyLoginClient(token, authUser, loginDevice));
         }
     }
 
@@ -165,11 +182,11 @@ public final class OrganizationAuth {
      * @return a {@link User} object.
      */
     public static User getLoginUserByToken(String token) {
-        var sessionItem = LOGIN_ITEMS.stream().filter(u -> u.token.equals(token)).findAny().orElse(null);
+        var sessionItem = ALREADY_LOGIN_CLIENTS.stream().filter(u -> u.token().equals(token)).findAny().orElse(null);
         if (sessionItem == null) {
             return null;
         }
-        return userService.get(sessionItem.user.id);
+        return userService.get(sessionItem.user().id);
     }
 
     /**
@@ -196,14 +213,13 @@ public final class OrganizationAuth {
      * 获取用户的设备
      *
      * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
-     * @return a {@link OrganizationAuthDeviceType} object
      */
-    static OrganizationAuthDeviceType getDeviceTypeByHeader(RoutingContext routingContext) {
+    static DeviceType getDeviceTypeByHeader(RoutingContext routingContext) {
         String device = routingContext.request().getHeader(SCX_AUTH_DEVICE_KEY);
         if (device == null) {
-            return OrganizationAuthDeviceType.WEBSITE;
+            return DeviceType.WEBSITE;
         }
-        return OrganizationAuthDeviceType.of(device);
+        return DeviceType.of(device);
     }
 
     /**
@@ -248,54 +264,39 @@ public final class OrganizationAuth {
      */
     static boolean removeAuthUser(RoutingContext ctx) {
         String token = getToken(ctx);
-        return LOGIN_ITEMS.removeIf(i -> i.token.equals(token));
+        return ALREADY_LOGIN_CLIENTS.removeIf(i -> i.token().equals(token));
     }
-
-    static List<LoginItem> getAllLoginItem() {
-        return LOGIN_ITEMS;
-    }
-
 
     /**
-     * 已登录用户对象
+     * 根据 token 绑定 websocket
      *
-     * @author scx567888
-     * @version 1.0.10
+     * @param o a {@link java.lang.Object} object
      */
-    private static final class LoginItem implements Serializable {
-
-        /**
-         * 唯一 ID 用于标识用户
-         */
-        public final User user;
-
-        /**
-         * 登陆的设备类型
-         */
-        public final OrganizationAuthDeviceType loginDevice;
-
-        /**
-         * 本质上一个是一个随机字符串
-         * <p>
-         * 前端 通过此值获取登录用户
-         * <p>
-         * 来源可以多种 header , cookie , url 等
-         */
-        public String token;
-
-        /**
-         * 构造函数
-         *
-         * @param loginDevice {@link #loginDevice}
-         * @param token       {@link #token}
-         * @param user        {@link #user}
-         */
-        public LoginItem(String token, User user, OrganizationAuthDeviceType loginDevice) {
-            this.token = token;
-            this.user = user;
-            this.loginDevice = loginDevice;
+    private static void bindWebSocketByToken(Object o) {
+        var wsBody = (WSBody) o;
+        //获取 token
+        var token = wsBody.data().get("token").asText();
+        //获取 binaryHandlerID
+        var binaryHandlerID = wsBody.webSocket().binaryHandlerID();
+        //判断 token 是否有效
+        if (StringUtils.isNotBlank(token)) {
+            //这条 websocket 连接所携带的 token 验证通过
+            ALREADY_LOGIN_CLIENTS.stream()
+                    .filter(u -> u.token().equals(token))
+                    .forEach(c -> c.webSocketBinaryHandlerID(binaryHandlerID));
         }
+    }
 
+    /**
+     * 初始化 initWhenTheNumberOfLoginsInSameTimeReachesTheMaximum 值
+     */
+    private static void initWhenTheNumberOfLoginsInSameTimeReachesTheMaximum() {
+        var s = ScxContext.config().get("organization.when-the-number-of-logins-in-same-time-reaches-the-maximum", String.class);
+        if ("block-new-users-login".equalsIgnoreCase(s)) {
+            whenTheNumberOfLoginsInSameTimeReachesTheMaximum = 0;
+        } else if ("kick-out-old-users".equalsIgnoreCase(s)) {
+            whenTheNumberOfLoginsInSameTimeReachesTheMaximum = 1;
+        }
     }
 
     private static final class OrganizationAuthCookieHandler implements Handler<RoutingContext> {
@@ -308,88 +309,6 @@ public final class OrganizationAuth {
                 ctx.request().response().addCookie(cookie);
             }
             ctx.next();
-        }
-
-    }
-
-    private static final class OrganizationAuthInterceptor implements ScxMappingInterceptor {
-
-        /**
-         * 缓存池
-         */
-        private final Map<ScxMappingHandler, OrganizationAuthPerms> SCX_AUTH_PERMS_CACHE = new HashMap<>();
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void preHandle(RoutingContext context, ScxMappingHandler scxMappingHandler) {
-            var p = getScxAuthPerms(scxMappingHandler);
-            if (p.checkedLogin) {
-                //先获取登录的用户
-                var currentUser = OrganizationAuth.getLoginUser(context);
-                //如果用户为空 则执行未登录处理器
-                if (currentUser == null) {
-                    throw new UnauthorizedException();
-                } else if (p.checkedPerms && !currentUser.isAdmin && !OrganizationAuth.getPerms(currentUser).contains(p.permStr)) {
-                    //否则先查看是否需要校验权限 然后查看是否不为 admin 再查看是否权限串中不包含当前权限 都满足则表示需要执行没权限的 handler
-                    throw new NoPermException();
-                }
-            }
-        }
-
-        /**
-         * 根据 ScxMappingHandler 获取  ScxAuthPerms (内部使用了简单的缓存)
-         *
-         * @param s s
-         * @return s
-         */
-        private OrganizationAuthPerms getScxAuthPerms(ScxMappingHandler s) {
-            var p = SCX_AUTH_PERMS_CACHE.get(s);
-            if (p == null) {
-                var scxMappingHandlerPerms = new OrganizationAuthPerms(s.clazz, s.method);
-                SCX_AUTH_PERMS_CACHE.put(s, scxMappingHandlerPerms);
-                return scxMappingHandlerPerms;
-            }
-            return p;
-        }
-
-    }
-
-
-    private static final class OrganizationAuthPerms {
-
-        /**
-         * 当前 的权限字符串 规则是  {类名}:{方法名}
-         */
-        public final String permStr;
-
-        /**
-         * 是否检查登录
-         */
-        public final boolean checkedLogin;
-
-        /**
-         * 是否检查权限
-         */
-        public final boolean checkedPerms;
-
-        /**
-         * <p>Constructor for ScxAuthPerms.</p>
-         *
-         * @param clazz  c
-         * @param method m
-         */
-        public OrganizationAuthPerms(Class<?> clazz, Method method) {
-            this.permStr = clazz.getSimpleName() + ":" + method.getName();
-            var scxPerms = method.getAnnotation(OrganizationPerms.class);
-            if (scxPerms != null) {
-                this.checkedPerms = scxPerms.checkedPerms();
-                this.checkedLogin = scxPerms.checkedLogin();
-            } else {
-                this.checkedPerms = false;
-                this.checkedLogin = false;
-            }
         }
 
     }

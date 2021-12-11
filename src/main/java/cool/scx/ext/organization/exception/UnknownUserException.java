@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.auth.exception;
+package cool.scx.ext.organization.exception;
 
 /**
  * 未知 (未找到) 用户异常

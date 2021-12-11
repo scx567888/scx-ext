@@ -1,7 +1,7 @@
 package cool.scx.ext.crud;
 
 import cool.scx.ScxModule;
-import cool.scx.util.ansi.Ansi;
+import org.slf4j.LoggerFactory;
 
 /**
  * 提供一些简单的增删改查功能
@@ -32,7 +32,8 @@ public class CRUDModule implements ScxModule {
 
     @Override
     public void start() {
-        Ansi.out().brightBlue("CRUDHandler 实现类  -->  " + this.crudHandlerClass.getName()).println();
+        var logger = LoggerFactory.getLogger(CRUDModule.class);
+        logger.info("CRUDHandler 实现类  -->  {}", this.crudHandlerClass.getName());
     }
 
     /**

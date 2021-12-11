@@ -59,6 +59,7 @@
     "physical-file-path": "C:\\Users\\public\\Documents\\scxFiles"
   },
   "organization": {
-    "confusion-login-error": false
+    "#when-the-number-of-logins-in-same-time-reaches-the-maximum": "取值 [block-new-users-login, kick-out-old-users]",
+    "when-the-number-of-logins-in-same-time-reaches-the-maximum": false
   }
 }

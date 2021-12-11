@@ -2,7 +2,7 @@ package cool.scx.test.chat_room;
 
 import cool.scx.ScxConstant;
 import cool.scx.ScxContext;
-import cool.scx.ext.core.CoreOnlineItemHandler;
+import cool.scx.ext.core.CoreWebSocketHandler;
 import cool.scx.ext.core.WSBody;
 
 import java.time.LocalDateTime;
@@ -19,9 +19,9 @@ public class ChatRoomHandler {
         var message = wsBody.data().asText();
 
         //向所有在线用户发送
-        var onlineItemList = CoreOnlineItemHandler.getOnlineItemList();
+        var onlineItemList = CoreWebSocketHandler.getAllWebSockets();
         for (var onlineItem : onlineItemList) {
-            onlineItem.send(new WSBody("writeMessage", message, null).toJson());
+            onlineItem.writeTextMessage(new WSBody("writeMessage", message, null).toJson());
         }
     }
 
@@ -32,9 +32,9 @@ public class ChatRoomHandler {
         //注册事件
         ScxContext.eventBus().consumer("sendMessage", (m) -> sendMessage((WSBody) m));
         ScxContext.scheduleAtFixedRate(() -> {
-            var onlineItemList = CoreOnlineItemHandler.getOnlineItemList();
+            var onlineItemList = CoreWebSocketHandler.getAllWebSockets();
             for (var onlineItem : onlineItemList) {
-                onlineItem.send(new WSBody("writeTime", ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now()), null).toJson());
+                onlineItem.writeTextMessage(new WSBody("writeTime", ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now()), null).toJson());
             }
         }, 0, 1000);
     }

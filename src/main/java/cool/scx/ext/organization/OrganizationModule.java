@@ -1,8 +1,6 @@
 package cool.scx.ext.organization;
 
 import cool.scx.ScxModule;
-import cool.scx.ext.organization.auth.OrganizationAuth;
-import cool.scx.ext.organization.auth.OrganizationAuthWrapper;
 
 /**
  * 拓展模块 (组织机构)
@@ -18,8 +16,8 @@ public class OrganizationModule implements ScxModule {
      */
     @Override
     public void start() {
-        OrganizationAuthWrapper.initAuth();
-        OrganizationAuthWrapper.readSessionFromFile();
+        OrganizationAuth.initAuth();
+        OrganizationAuth.readSessionFromFile();
     }
 
     /**
@@ -27,7 +25,7 @@ public class OrganizationModule implements ScxModule {
      */
     @Override
     public void stop() {
-        OrganizationAuthWrapper.writeSessionToFile();
+        OrganizationAuth.writeSessionToFile();
     }
 
     /**

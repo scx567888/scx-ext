@@ -1,4 +1,4 @@
-package cool.scx.ext.office;
+package cool.scx.ext.util;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -236,4 +236,5 @@ public final class Excel {
             return null;
         }
     }
+
 }

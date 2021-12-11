@@ -1,4 +1,4 @@
-package cool.scx.ext.crud;
+package cool.scx.ext.crud.exception;
 
 import cool.scx.exception.ScxHttpException;
 import cool.scx.vo.Json;

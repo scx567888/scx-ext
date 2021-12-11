@@ -8,8 +8,6 @@ import cool.scx.ext.core.CoreModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
-import cool.scx.ext.message.MessageModule;
-import cool.scx.ext.office.OfficeModule;
 import cool.scx.ext.organization.OrganizationModule;
 import cool.scx.test.chat_room.ChatRoomHandler;
 import cool.scx.test.cms.UserListWebSiteHandler;
@@ -38,8 +36,6 @@ public class TestModule implements ScxModule {
                         new CRUDModule(),
                         new FixTableModule(),
                         new FSSModule(),
-                        new MessageModule(),
-                        new OfficeModule(),
                         new OrganizationModule(),
                         new TestModule())
                 .setArgs(args)

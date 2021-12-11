@@ -1,6 +1,6 @@
 package cool.scx.ext.crud;
 
-public class CRUDWhereBody {
+public final class CRUDWhereBody {
 
     /**
      * 字段名称 (注意不是数据库名称)

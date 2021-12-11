@@ -42,6 +42,12 @@ public class User extends BaseModel {
     public String avatar;
 
     /**
+     * 同一时间允许登录的最大数量 默认为 10
+     */
+    @Column(notNull = true, defaultValue = "10")
+    public Integer maxNumberToLoginInSameTime;
+
+    /**
      * 最后登录成功的时间 , 这里通过代码控制使其只存储最后10次
      */
     @JsonIgnore

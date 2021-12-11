@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.auth.exception;
+package cool.scx.ext.organization.exception;
 
 /**
  * 密码错误异常

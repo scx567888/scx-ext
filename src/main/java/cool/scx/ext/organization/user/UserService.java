@@ -43,16 +43,6 @@ public class UserService extends BaseModelService<User> {
 
     /**
      * {@inheritDoc}
-     *
-     * @param uniqueID a {@link java.lang.String} object
-     * @return a {@link User} object
-     */
-    public User getByUsername(String uniqueID) {
-        return get(new Query().equal("username", uniqueID));
-    }
-
-    /**
-     * {@inheritDoc}
      * <p>
      * 重写方法
      *

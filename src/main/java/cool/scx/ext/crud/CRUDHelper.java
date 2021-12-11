@@ -8,6 +8,8 @@ import cool.scx.base.BaseModelService;
 import cool.scx.bo.Query;
 import cool.scx.exception.impl.BadRequestException;
 import cool.scx.exception.impl.CustomHttpException;
+import cool.scx.ext.crud.annotation.NoCRUD;
+import cool.scx.ext.crud.exception.UnknownCRUDModelException;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.sql.where.WhereType;
 import cool.scx.util.ObjectUtils;
@@ -233,6 +235,10 @@ public final class CRUDHelper {
         var tempMap = new HashMap<String, Class<BaseModel>>();
         for (var scxModuleInfo : ScxContext.scxModuleInfos()) {
             for (var c : scxModuleInfo.scxBaseModelClassList()) {
+                NoCRUD noCRUDAnnotation = c.getAnnotation(NoCRUD.class);
+                if (noCRUDAnnotation != null) {
+                    continue;
+                }
                 var className = c.getSimpleName().toLowerCase();
                 var aClass = tempMap.get(className);
                 tempMap.put(className, (Class<BaseModel>) c);
