@@ -50,15 +50,7 @@
       ]
     }
   },
-  "message": {
-    "ytx-account-sid": "xxx",
-    "ytx-auth-token": "xxx",
-    "ytx-app-id": "xxx"
-  },
   "fss": {
-    "physical-file-path": "C:\\Users\\public\\Documents\\scxFiles"
-  },
-  "organization": {
-    "confusion-login-error": false
+    "physical-file-path": "AppRoot:/FSS_FILES/"
   }
 }

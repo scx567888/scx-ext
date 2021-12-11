@@ -50,15 +50,11 @@
       ]
     }
   },
-  "message": {
-    "ytx-account-sid": "xxx",
-    "ytx-auth-token": "xxx",
-    "ytx-app-id": "xxx"
-  },
   "fss": {
-    "physical-file-path": "C:\\Users\\public\\Documents\\scxFiles"
+    "physical-file-path": "AppRoot:/FSS_FILES/"
   },
-  "organization": {
-    "confusion-login-error": false
+  "test": {
+    "#when-the-number-of-logins-in-same-time-reaches-the-maximum": "取值 [block-new-users-login, kick-out-old-users]",
+    "when-the-number-of-logins-in-same-time-reaches-the-maximum": false
   }
 }

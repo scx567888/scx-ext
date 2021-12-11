@@ -92,4 +92,5 @@ public class WSBody {
     private record Body(String eventName, JsonNode data) {
 
     }
+
 }

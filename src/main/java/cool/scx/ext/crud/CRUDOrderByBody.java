@@ -1,6 +1,6 @@
 package cool.scx.ext.crud;
 
-public class CRUDOrderByBody {
+public final class CRUDOrderByBody {
 
     /**
      * 字段名称 (注意不是数据库名称)

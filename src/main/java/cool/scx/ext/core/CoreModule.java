@@ -1,6 +1,5 @@
 package cool.scx.ext.core;
 
-import cool.scx.ScxContext;
 import cool.scx.ScxModule;
 
 /**
@@ -10,14 +9,6 @@ import cool.scx.ScxModule;
  * @version 1.3.0
  */
 public class CoreModule implements ScxModule {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void start() {
-        ScxContext.eventBus().consumer("auth-token", CoreAuthLoginHandler::loginByWebSocket);
-    }
 
     /**
      * {@inheritDoc}

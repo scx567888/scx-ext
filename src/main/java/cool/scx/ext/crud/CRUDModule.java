@@ -1,10 +1,10 @@
 package cool.scx.ext.crud;
 
 import cool.scx.ScxModule;
-import cool.scx.util.ansi.Ansi;
+import org.slf4j.LoggerFactory;
 
 /**
- * 提供一些简单的增删改查功能
+ * 为 BaseModel 的实现类 提供一套简单的 "单表" 的增删改查 api
  *
  * @author scx567888
  * @version 1.3.0
@@ -32,7 +32,8 @@ public class CRUDModule implements ScxModule {
 
     @Override
     public void start() {
-        Ansi.out().brightBlue("CRUDHandler 实现类  -->  " + this.crudHandlerClass.getName()).println();
+        var logger = LoggerFactory.getLogger(CRUDModule.class);
+        logger.info("CRUDHandler 实现类  -->  {}", this.crudHandlerClass.getName());
     }
 
     /**
