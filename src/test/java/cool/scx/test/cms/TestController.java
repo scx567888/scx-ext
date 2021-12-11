@@ -1,4 +1,4 @@
-package cool.scx.test;
+package cool.scx.test.cms;
 
 
 import cool.scx.ScxContext;
@@ -10,8 +10,8 @@ import cool.scx.enumeration.HttpMethod;
 import cool.scx.enumeration.RawType;
 import cool.scx.ext.office.Excel;
 import cool.scx.ext.office.QRCodeUtils;
-import cool.scx.ext.organization.User;
-import cool.scx.ext.organization.UserService;
+import cool.scx.ext.organization.user.User;
+import cool.scx.ext.organization.user.UserService;
 import cool.scx.ext.organization.auth.OrganizationPerms;
 import cool.scx.test.car.Car;
 import cool.scx.util.CryptoUtils;
@@ -43,8 +43,6 @@ import java.util.List;
 public class TestController {
 
     private final UserService userService;
-
-    private final BaseModelService<Car> carService = new BaseModelService<>(Car.class);
 
     /**
      * TestController
@@ -186,42 +184,6 @@ public class TestController {
     public BaseVo d() {
         return Json.ok().put("items", "b");
     }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link BaseVo} object
-     */
-    @ScxMapping(method = HttpMethod.GET)
-    public BaseVo testSelectJson() {
-
-        var count = carService.count();
-        if (count < 100) {
-            var list = new ArrayList<Car>();
-            for (int i = 0; i < 100; i++) {
-                Car car = new Car();
-                car.name = "小汽车" + i;
-                car.tags = List.of("tag" + i, "tag" + (i + 1));
-                list.add(car);
-            }
-            carService.save(list);
-        }
-
-        var q = new Query();
-        //方法1
-        q.jsonContains("tags", "tag97,tag98");
-        //方法2
-//        var s = new HashSet<String>();
-//        s.add("tag97");
-//        q.jsonContains("tags", s);
-        //方法3
-//        q.jsonContains("tags", new String[]{"tag97"});
-//        q.in("id", new User());
-        var carList = carService.list(q);
-
-        return Json.ok().put("items", carList);
-    }
-
 
     /**
      * <p>excel.</p>

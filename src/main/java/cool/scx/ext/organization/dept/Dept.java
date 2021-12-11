@@ -1,7 +1,5 @@
-package cool.scx.ext.organization;
+package cool.scx.ext.organization.dept;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import cool.scx.annotation.Column;
 import cool.scx.annotation.ScxModel;
 import cool.scx.base.BaseModel;
 
@@ -25,13 +23,6 @@ public class Dept extends BaseModel {
      * 部门权限
      */
     public List<String> perms;
-
-    /**
-     * 排序
-     */
-    @Column(notNull = true, defaultValue = "0", needIndex = true)
-    @JsonIgnore
-    public Integer deptOrder;
 
     /**
      * 父id 用作构建树形结构

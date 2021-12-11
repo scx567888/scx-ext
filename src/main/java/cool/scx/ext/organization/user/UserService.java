@@ -1,8 +1,10 @@
-package cool.scx.ext.organization;
+package cool.scx.ext.organization.user;
 
 import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseModelService;
 import cool.scx.bo.Query;
+import cool.scx.ext.organization.dept.DeptService;
+import cool.scx.ext.organization.role.RoleService;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

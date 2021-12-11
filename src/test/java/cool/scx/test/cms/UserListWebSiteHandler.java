@@ -1,10 +1,10 @@
-package cool.scx.test;
+package cool.scx.test.cms;
 
 import cool.scx.annotation.ScxService;
 import cool.scx.bo.Query;
 import cool.scx.ext.cms.web_site.WebSiteHandler;
-import cool.scx.ext.organization.User;
-import cool.scx.ext.organization.UserService;
+import cool.scx.ext.organization.user.User;
+import cool.scx.ext.organization.user.UserService;
 import cool.scx.ext.organization.auth.OrganizationAuth;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
@@ -21,16 +21,16 @@ import java.util.ArrayList;
  * @since 1.3.14
  */
 @ScxService
-public class TestUserListWebSiteHandler implements WebSiteHandler {
+public class UserListWebSiteHandler implements WebSiteHandler {
 
     private final UserService userService;
 
     /**
      * <p>Constructor for TestUserListWebSiteHandler.</p>
      *
-     * @param userService a {@link cool.scx.ext.organization.UserService} object
+     * @param userService a {@link UserService} object
      */
-    public TestUserListWebSiteHandler(UserService userService) {
+    public UserListWebSiteHandler(UserService userService) {
         this.userService = userService;
     }
 
@@ -78,4 +78,5 @@ public class TestUserListWebSiteHandler implements WebSiteHandler {
     public void contentHandler(Html contentTemplate, String channelPath, Long contentID) throws Exception {
         WebSiteHandler.super.contentHandler(contentTemplate, channelPath, contentID);
     }
+
 }

@@ -1,4 +1,4 @@
-package cool.scx.ext.organization;
+package cool.scx.ext.organization.dept;
 
 import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseModelService;

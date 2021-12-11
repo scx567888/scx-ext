@@ -1,8 +1,9 @@
-package cool.scx.ext.organization;
+package cool.scx.ext.organization.role;
 
 import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseModelService;
 import cool.scx.bo.Query;
+import cool.scx.ext.organization.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,25 +24,22 @@ public class RoleService extends BaseModelService<Role> {
     /**
      * <p>Constructor for CoreRoleService.</p>
      *
-     * @param userRoleService a {@link cool.scx.ext.organization.UserRoleService} object.
+     * @param userRoleService a {@link UserRoleService} object.
      */
     public RoleService(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
     }
 
     /**
-     * getRoleListByUser
+     * 根据 用户获取 角色
      *
-     * @param user a {@link cool.scx.ext.organization.User} object
+     * @param user a {@link User} object
      * @return a {@link java.util.List} object
      */
     public List<Role> getRoleListByUser(User user) {
         var roleIDs = userRoleService.list(new Query().equal("userID", user.id))
                 .stream().map(userRole -> userRole.roleID).toList();
-        if (roleIDs.size() > 0) {
-            return list(new Query().in("id", roleIDs));
-        }
-        return new ArrayList<>();
+        return roleIDs.size() > 0 ? list(new Query().in("id", roleIDs)) : new ArrayList<>();
     }
 
     /**

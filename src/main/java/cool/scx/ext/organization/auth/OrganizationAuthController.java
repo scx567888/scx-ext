@@ -6,14 +6,19 @@ import cool.scx.annotation.ScxMapping;
 import cool.scx.bo.Query;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.exception.impl.UnauthorizedException;
-import cool.scx.ext.organization.OrganizationConfig;
-import cool.scx.ext.organization.User;
-import cool.scx.ext.organization.UserService;
+import cool.scx.ext.organization.auth.exception.OrganizationLoginException;
+import cool.scx.ext.organization.auth.exception.UnknownDeviceException;
+import cool.scx.ext.organization.auth.exception.UnknownUserException;
+import cool.scx.ext.organization.auth.exception.WrongPasswordException;
+import cool.scx.ext.organization.user.User;
+import cool.scx.ext.organization.user.UserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.NetUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.vo.Json;
 import io.vertx.ext.web.RoutingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +32,8 @@ import java.util.ArrayList;
  */
 @ScxMapping("/api/auth")
 public class OrganizationAuthController {
+
+    private final Logger logger = LoggerFactory.getLogger(OrganizationAuthController.class);
 
     /**
      * 用户
@@ -95,12 +102,12 @@ public class OrganizationAuthController {
             if (organizationLoginException instanceof UnknownDeviceException) {
                 return Json.fail("未知设备");
             } else if (organizationLoginException instanceof UnknownUserException) {
-                return Json.fail(OrganizationConfig.confusionLoginError() ? "usernameOrPasswordError" : "userNotFound");
+                return Json.fail("user-not-found");
             } else if (organizationLoginException instanceof WrongPasswordException) {
-                return Json.fail(OrganizationConfig.confusionLoginError() ? "usernameOrPasswordError" : "passwordError");
+                return Json.fail("password-error");
             } else {
-                System.err.println("登录出错 : " + organizationLoginException.getMessage());
-                return Json.fail("logonFailure");
+                logger.error("登录出错 : {}", organizationLoginException.getMessage());
+                return Json.fail("logon-failure");
             }
         }
     }
@@ -116,7 +123,7 @@ public class OrganizationAuthController {
     public Json signup(String username, String password) {
         //判断用户是否存在
         if (userService.get(new Query().equal("username", username)) != null) {
-            return Json.fail("userAlreadyExists");
+            return Json.fail("user-already-exists");
         }
         var user = new User();
         user.username = username;
@@ -133,7 +140,6 @@ public class OrganizationAuthController {
     @ScxMapping(method = HttpMethod.POST)
     public Json logout() {
         var b = OrganizationAuth.removeAuthUser(ScxContext.routingContext());
-        System.err.println("当前总登录用户数量 : " + OrganizationAuth.getAllLoginItem().size() + " 个");
         return b ? Json.ok() : Json.fail();
     }
 

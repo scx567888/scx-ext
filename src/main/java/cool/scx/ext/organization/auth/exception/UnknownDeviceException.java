@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.auth;
+package cool.scx.ext.organization.auth.exception;
 
 /**
  * 未知设备异常
@@ -9,6 +9,6 @@ package cool.scx.ext.organization.auth;
  * @author scx567888
  * @version 1.1.5
  */
-class UnknownDeviceException extends OrganizationLoginException {
+public final class UnknownDeviceException extends OrganizationLoginException {
 
 }

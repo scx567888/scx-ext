@@ -1,18 +1,25 @@
 package cool.scx.ext.organization.auth;
 
 import cool.scx.ScxContext;
-import cool.scx.ext.organization.DeptService;
-import cool.scx.ext.organization.RoleService;
-import cool.scx.ext.organization.User;
-import cool.scx.ext.organization.UserService;
+import cool.scx.ScxHandler;
+import cool.scx.exception.impl.NoPermException;
+import cool.scx.exception.impl.UnauthorizedException;
+import cool.scx.ext.organization.dept.DeptService;
+import cool.scx.ext.organization.role.RoleService;
+import cool.scx.ext.organization.user.User;
+import cool.scx.ext.organization.user.UserService;
+import cool.scx.mvc.ScxMappingHandler;
+import cool.scx.mvc.interceptor.ScxMappingInterceptor;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.ansi.Ansi;
 import cool.scx.web.handler.ScxCookieHandlerConfiguration;
 import cool.scx.web.handler.ScxCorsHandlerConfiguration;
+import io.vertx.core.Handler;
 import io.vertx.core.http.impl.CookieImpl;
 import io.vertx.ext.web.RoutingContext;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -65,16 +72,10 @@ public final class OrganizationAuth {
         //设置处理器 ScxMapping 前置处理器
         ScxContext.scxMappingConfiguration().setScxMappingInterceptor(new OrganizationAuthInterceptor());
         //设置请求头
-        ScxCorsHandlerConfiguration.allowedHeaders(authHeaders());
+        ScxCorsHandlerConfiguration.allowedHeader(SCX_AUTH_TOKEN_KEY);
+        ScxCorsHandlerConfiguration.allowedHeader(SCX_AUTH_DEVICE_KEY);
         //设置 cookie handler
-        ScxCookieHandlerConfiguration.setScxCookieHandler((ctx) -> {
-            if (ctx.request().getCookie(SCX_AUTH_TOKEN_KEY) == null) {
-                var cookie = new CookieImpl(SCX_AUTH_TOKEN_KEY, RandomUtils.getUUID());
-                cookie.setMaxAge(60 * 60 * 24 * 7);
-                ctx.request().response().addCookie(cookie);
-            }
-            ctx.next();
-        });
+        ScxCookieHandlerConfiguration.setScxCookieHandler(new OrganizationAuthCookieHandler());
         // 初始化 service
         userService = ScxContext.beanFactory().getBean(UserService.class);
         roleService = ScxContext.beanFactory().getBean(RoleService.class);
@@ -88,20 +89,6 @@ public final class OrganizationAuth {
      */
     public static User getLoginUser() {
         return getLoginUser(ScxContext.routingContext());
-    }
-
-    /**
-     * 是否为管理员
-     *
-     * @return c
-     */
-    public static Boolean isAdmin() {
-        var user = getLoginUser();
-        if (user != null) {
-            return user.isAdmin;
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -220,18 +207,6 @@ public final class OrganizationAuth {
     }
 
     /**
-     * 其他认证字段 方便拓展
-     *
-     * @return a {@link java.util.Set} object
-     */
-    private static Set<String> authHeaders() {
-        var set = new HashSet<String>();
-        set.add(SCX_AUTH_TOKEN_KEY);
-        set.add(SCX_AUTH_DEVICE_KEY);
-        return set;
-    }
-
-    /**
      * 根据 设备类型自行判断 获取 token
      *
      * @param ctx a {@link io.vertx.ext.web.RoutingContext} object
@@ -319,6 +294,102 @@ public final class OrganizationAuth {
             this.token = token;
             this.user = user;
             this.loginDevice = loginDevice;
+        }
+
+    }
+
+    private static final class OrganizationAuthCookieHandler implements Handler<RoutingContext> {
+
+        @Override
+        public void handle(RoutingContext ctx) {
+            if (ctx.request().getCookie(SCX_AUTH_TOKEN_KEY) == null) {
+                var cookie = new CookieImpl(SCX_AUTH_TOKEN_KEY, RandomUtils.getUUID());
+                cookie.setMaxAge(60 * 60 * 24 * 7);
+                ctx.request().response().addCookie(cookie);
+            }
+            ctx.next();
+        }
+
+    }
+
+    private static final class OrganizationAuthInterceptor implements ScxMappingInterceptor {
+
+        /**
+         * 缓存池
+         */
+        private final Map<ScxMappingHandler, OrganizationAuthPerms> SCX_AUTH_PERMS_CACHE = new HashMap<>();
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void preHandle(RoutingContext context, ScxMappingHandler scxMappingHandler) {
+            var p = getScxAuthPerms(scxMappingHandler);
+            if (p.checkedLogin) {
+                //先获取登录的用户
+                var currentUser = OrganizationAuth.getLoginUser(context);
+                //如果用户为空 则执行未登录处理器
+                if (currentUser == null) {
+                    throw new UnauthorizedException();
+                } else if (p.checkedPerms && !currentUser.isAdmin && !OrganizationAuth.getPerms(currentUser).contains(p.permStr)) {
+                    //否则先查看是否需要校验权限 然后查看是否不为 admin 再查看是否权限串中不包含当前权限 都满足则表示需要执行没权限的 handler
+                    throw new NoPermException();
+                }
+            }
+        }
+
+        /**
+         * 根据 ScxMappingHandler 获取  ScxAuthPerms (内部使用了简单的缓存)
+         *
+         * @param s s
+         * @return s
+         */
+        private OrganizationAuthPerms getScxAuthPerms(ScxMappingHandler s) {
+            var p = SCX_AUTH_PERMS_CACHE.get(s);
+            if (p == null) {
+                var scxMappingHandlerPerms = new OrganizationAuthPerms(s.clazz, s.method);
+                SCX_AUTH_PERMS_CACHE.put(s, scxMappingHandlerPerms);
+                return scxMappingHandlerPerms;
+            }
+            return p;
+        }
+
+    }
+
+
+    private static final class OrganizationAuthPerms {
+
+        /**
+         * 当前 的权限字符串 规则是  {类名}:{方法名}
+         */
+        public final String permStr;
+
+        /**
+         * 是否检查登录
+         */
+        public final boolean checkedLogin;
+
+        /**
+         * 是否检查权限
+         */
+        public final boolean checkedPerms;
+
+        /**
+         * <p>Constructor for ScxAuthPerms.</p>
+         *
+         * @param clazz  c
+         * @param method m
+         */
+        public OrganizationAuthPerms(Class<?> clazz, Method method) {
+            this.permStr = clazz.getSimpleName() + ":" + method.getName();
+            var scxPerms = method.getAnnotation(OrganizationPerms.class);
+            if (scxPerms != null) {
+                this.checkedPerms = scxPerms.checkedPerms();
+                this.checkedLogin = scxPerms.checkedLogin();
+            } else {
+                this.checkedPerms = false;
+                this.checkedLogin = false;
+            }
         }
 
     }

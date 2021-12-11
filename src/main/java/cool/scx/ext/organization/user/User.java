@@ -1,4 +1,4 @@
-package cool.scx.ext.organization;
+package cool.scx.ext.organization.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.annotation.Column;
