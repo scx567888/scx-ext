@@ -4,8 +4,14 @@ import cool.scx.ScxConstant;
 import cool.scx.ScxContext;
 import cool.scx.ext.core.CoreWebSocketHandler;
 import cool.scx.ext.core.WSBody;
+import cool.scx.test.auth.AlreadyLoginClient;
+import cool.scx.test.auth.TestAuth;
+import cool.scx.util.ObjectUtils;
+import io.vertx.core.http.ServerWebSocket;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ChatRoomHandler {
 
@@ -15,14 +21,22 @@ public class ChatRoomHandler {
      * @param wsBody a {@link io.vertx.core.json.JsonObject} object
      */
     private static void sendMessage(WSBody wsBody) {
-        //先获取消息
-        var message = wsBody.data().asText();
-
-        //向所有在线用户发送
-        var onlineItemList = CoreWebSocketHandler.getAllWebSockets();
-        for (var onlineItem : onlineItemList) {
-            onlineItem.writeTextMessage(new WSBody("writeMessage", message, null).toJson());
+        //待接收的用户 id
+        SendMessageBody sendMessageBody = new SendMessageBody();
+        try {
+            sendMessageBody = ObjectUtils.readValue(wsBody.data(), SendMessageBody.class);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        for (Long userID : sendMessageBody.userIDs) {
+            List<AlreadyLoginClient> alreadyLoginClients = TestAuth.alreadyLoginClients().stream().filter(c -> c.user().id.equals(userID)).toList();
+            for (AlreadyLoginClient alreadyLoginClient : alreadyLoginClients) {
+                ServerWebSocket webSocket = CoreWebSocketHandler.getWebSocket(alreadyLoginClient.webSocketBinaryHandlerID());
+                webSocket.writeTextMessage(new WSBody("writeMessage", sendMessageBody.message, null).toJson());
+            }
+        }
+
     }
 
     /**
@@ -37,6 +51,11 @@ public class ChatRoomHandler {
                 onlineItem.writeTextMessage(new WSBody("writeTime", ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now()), null).toJson());
             }
         }, 0, 1000);
+    }
+
+    public static class SendMessageBody {
+        public List<Long> userIDs;
+        public Object message;
     }
 
 }

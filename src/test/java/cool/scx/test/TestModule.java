@@ -8,9 +8,9 @@ import cool.scx.ext.core.CoreModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
-import cool.scx.ext.organization.OrganizationModule;
+import cool.scx.test.auth.TestAuth;
 import cool.scx.test.chat_room.ChatRoomHandler;
-import cool.scx.test.cms.UserListWebSiteHandler;
+import cool.scx.test.website.UserListWebSiteHandler;
 
 /**
  * <p>TestModule class.</p>
@@ -36,7 +36,6 @@ public class TestModule implements ScxModule {
                         new CRUDModule(),
                         new FixTableModule(),
                         new FSSModule(),
-                        new OrganizationModule(),
                         new TestModule())
                 .setArgs(args)
                 .build().run();
@@ -48,6 +47,24 @@ public class TestModule implements ScxModule {
     @Override
     public void start() {
         ChatRoomHandler.registerAllHandler();
+        TestAuth.initAuth();
+        TestAuth.readSessionFromFile();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void stop() {
+        TestAuth.writeSessionToFile();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String name() {
+        return "SCX_EXT-" + ScxModule.super.name();
     }
 
 }

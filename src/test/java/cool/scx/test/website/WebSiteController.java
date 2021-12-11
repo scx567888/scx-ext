@@ -1,4 +1,4 @@
-package cool.scx.test.cms;
+package cool.scx.test.website;
 
 
 import cool.scx.ScxContext;
@@ -6,11 +6,11 @@ import cool.scx.annotation.FromQuery;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.enumeration.RawType;
-import cool.scx.ext.organization.annotation.OrganizationPerms;
-import cool.scx.ext.organization.user.User;
-import cool.scx.ext.organization.user.UserService;
 import cool.scx.ext.util.Excel;
 import cool.scx.ext.util.QRCodeUtils;
+import cool.scx.test.auth.annotation.Perms;
+import cool.scx.test.user.User;
+import cool.scx.test.user.UserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.HttpUtils;
 import cool.scx.util.RandomUtils;
@@ -35,7 +35,7 @@ import java.util.HashMap;
  * @since 1.3.14
  */
 @ScxMapping("/")
-public class TestController {
+public class WebSiteController {
 
     private final UserService userService;
 
@@ -44,7 +44,7 @@ public class TestController {
      *
      * @param userService a
      */
-    public TestController(UserService userService) {
+    public WebSiteController(UserService userService) {
         this.userService = userService;
     }
 
@@ -74,7 +74,7 @@ public class TestController {
      *
      * @return a {@link cool.scx.vo.Html} object
      */
-    @OrganizationPerms()
+    @Perms
     @ScxMapping(value = "/baidu", method = HttpMethod.GET)
     public Html TestHttpUtils() throws IOException, InterruptedException {
         HttpResponse<String> stringHttpResponse = HttpUtils.get("https://www.baidu.com/", new HashMap<>());
