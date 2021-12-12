@@ -2,11 +2,11 @@
   "scx": {
     "port": 8080,
     "allowed-origin": "*",
-    "tombstone": false,
+    "tombstone": true,
     "data-source": {
       "host": "127.0.0.1",
       "port": 3306,
-      "database": "scx",
+      "database": "scx_test",
       "username": "root",
       "password": "DECRYPT:gTNaUKkX4T0BRW0K8fnfh1t+ZKq/BIQ5XfHosseI7lW1P6S+Z/EmMi6hQWOxeVkK",
       "#password": "root",
@@ -52,9 +52,5 @@
   },
   "fss": {
     "physical-file-path": "AppRoot:/FSS_FILES/"
-  },
-  "test": {
-    "#when-the-number-of-logins-in-same-time-reaches-the-maximum": "取值 [block-new-users-login, kick-out-old-users]",
-    "when-the-number-of-logins-in-same-time-reaches-the-maximum": false
   }
 }

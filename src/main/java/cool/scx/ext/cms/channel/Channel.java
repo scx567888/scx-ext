@@ -1,5 +1,6 @@
 package cool.scx.ext.cms.channel;
 
+import cool.scx.annotation.Column;
 import cool.scx.annotation.ScxModel;
 import cool.scx.base.BaseModel;
 
@@ -42,6 +43,7 @@ public class Channel extends BaseModel {
     /**
      * 栏目路径
      */
+    @Column(unique = true)
     public String channelPath;
 
     /**

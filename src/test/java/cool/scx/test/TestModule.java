@@ -9,8 +9,9 @@ import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.test.auth.TestAuth;
-import cool.scx.test.chat_room.ChatRoomHandler;
 import cool.scx.test.website.UserListWebSiteHandler;
+import cool.scx.test.website.WriteTimeHandler;
+import org.testng.annotations.BeforeTest;
 
 /**
  * <p>TestModule class.</p>
@@ -26,6 +27,7 @@ public class TestModule implements ScxModule {
      *
      * @param args an array of {@link java.lang.String} objects
      */
+    @BeforeTest
     public static void main(String[] args) {
         Scx.builder()
                 .setMainClass(TestModule.class)
@@ -46,7 +48,7 @@ public class TestModule implements ScxModule {
      */
     @Override
     public void start() {
-        ChatRoomHandler.registerAllHandler();
+        WriteTimeHandler.registerHandler();
         TestAuth.initAuth();
         TestAuth.readSessionFromFile();
     }
