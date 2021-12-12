@@ -34,7 +34,6 @@ public class TestModule implements ScxModule {
      *
      * @param args an array of {@link java.lang.String} objects
      */
-    @BeforeTest
     public static void main(String[] args) {
         runModule();
     }
