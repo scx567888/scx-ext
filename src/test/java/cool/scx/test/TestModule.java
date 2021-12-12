@@ -1,7 +1,9 @@
 package cool.scx.test;
 
 import cool.scx.Scx;
+import cool.scx.ScxContext;
 import cool.scx.ScxModule;
+import cool.scx.dao.ScxDaoHelper;
 import cool.scx.enumeration.ScxFeature;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.core.CoreModule;
@@ -9,8 +11,15 @@ import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.test.auth.TestAuth;
-import cool.scx.test.chat_room.ChatRoomHandler;
+import cool.scx.test.user.UserService;
 import cool.scx.test.website.UserListWebSiteHandler;
+import cool.scx.test.website.WriteTimeHandler;
+import cool.scx.util.HttpUtils;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * <p>TestModule class.</p>
@@ -27,18 +36,30 @@ public class TestModule implements ScxModule {
      * @param args an array of {@link java.lang.String} objects
      */
     public static void main(String[] args) {
+        runModule();
+    }
+
+    @BeforeTest
+    public static void runModule() {
         Scx.builder()
                 .setMainClass(TestModule.class)
                 .configure(ScxFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
                 .addModules(
+                        new TestModule(),
                         new CMSModule().setWebSiteHandler(UserListWebSiteHandler.class),
                         new CoreModule(),
                         new CRUDModule(),
                         new FixTableModule(),
-                        new FSSModule(),
-                        new TestModule())
-                .setArgs(args)
+                        new FSSModule())
                 .build().run();
+    }
+
+    @Test
+    public static void test0() throws IOException, InterruptedException {
+        var userService = ScxContext.beanFactory().getBean(UserService.class);
+        System.out.println("访问页面前数据条数 : " + userService.list().size());
+        HttpUtils.get("http://localhost:8080/", new HashMap<>());
+        System.out.println("访问页面后数据条数 : " + userService.list().size());
     }
 
     /**
@@ -46,7 +67,8 @@ public class TestModule implements ScxModule {
      */
     @Override
     public void start() {
-        ChatRoomHandler.registerAllHandler();
+        ScxDaoHelper.fixTable();
+        WriteTimeHandler.registerHandler();
         TestAuth.initAuth();
         TestAuth.readSessionFromFile();
     }

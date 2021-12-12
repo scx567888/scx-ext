@@ -1,31 +1,31 @@
 package cool.scx.test.website;
 
-
 import cool.scx.ScxContext;
 import cool.scx.annotation.FromQuery;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.enumeration.RawType;
+import cool.scx.ext.cms.channel.Channel;
+import cool.scx.ext.cms.channel.ChannelService;
+import cool.scx.ext.cms.content.Content;
+import cool.scx.ext.cms.content.ContentService;
 import cool.scx.ext.util.Excel;
 import cool.scx.ext.util.QRCodeUtils;
-import cool.scx.test.auth.annotation.Perms;
 import cool.scx.test.user.User;
 import cool.scx.test.user.UserService;
 import cool.scx.util.CryptoUtils;
-import cool.scx.util.HttpUtils;
 import cool.scx.util.RandomUtils;
-import cool.scx.util.digest.DigestUtils;
 import cool.scx.util.zip.IVirtualFile;
 import cool.scx.util.zip.VirtualDirectory;
 import cool.scx.util.zip.VirtualFile;
 import cool.scx.util.zip.ZipAction;
-import cool.scx.vo.*;
+import cool.scx.vo.BaseVo;
+import cool.scx.vo.Download;
+import cool.scx.vo.Html;
+import cool.scx.vo.Raw;
 import io.vertx.ext.web.RoutingContext;
 
-import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 
 /**
  * 简单测试
@@ -36,17 +36,6 @@ import java.util.HashMap;
  */
 @ScxMapping("/")
 public class WebSiteController {
-
-    private final UserService userService;
-
-    /**
-     * TestController
-     *
-     * @param userService a
-     */
-    public WebSiteController(UserService userService) {
-        this.userService = userService;
-    }
 
     @ScxMapping(method = HttpMethod.GET)
     public static void TestTransaction(RoutingContext ctx) throws Exception {
@@ -69,116 +58,6 @@ public class WebSiteController {
         Html.ofString(sb.toString()).handle(ctx);
     }
 
-    /**
-     * 测试!!!
-     *
-     * @return a {@link cool.scx.vo.Html} object
-     */
-    @Perms
-    @ScxMapping(value = "/baidu", method = HttpMethod.GET)
-    public Html TestHttpUtils() throws IOException, InterruptedException {
-        HttpResponse<String> stringHttpResponse = HttpUtils.get("https://www.baidu.com/", new HashMap<>());
-        return Html.ofString(stringHttpResponse.body());
-    }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link cool.scx.vo.Download} object
-     */
-    @ScxMapping(value = "/download", method = HttpMethod.GET)
-    public Download TestDownload() {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < 9999; i++) {
-            s.append("download ").append(i);
-        }
-        return new Download(s.toString().getBytes(StandardCharsets.UTF_8), "测试中 + - ~!文 a😊😂 🤣 ghj ❤😍😒👌.txt");
-    }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link BaseVo} object
-     */
-    @ScxMapping(value = "/binary", method = HttpMethod.GET)
-    public BaseVo TestBinary() {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < 9999; i++) {
-            s.append("download ").append(i);
-        }
-        return new Raw(s.toString().getBytes(StandardCharsets.UTF_8), RawType.TXT);
-    }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link java.lang.String} object
-     */
-    @ScxMapping(value = "/md5", method = HttpMethod.GET)
-    public String TestMd5() {
-        return DigestUtils.md5("123");
-    }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link java.lang.String} object
-     */
-    @ScxMapping(method = HttpMethod.GET)
-    public String getRandomCode() {
-        return RandomUtils.getRandomString(9999, true);
-    }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link BaseVo} object
-     */
-    @ScxMapping(method = HttpMethod.GET)
-    public BaseVo bigJson() {
-        var users = userService.list();
-        return Json.ok().put("items", users);
-    }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link BaseVo} object
-     */
-    @ScxMapping(method = HttpMethod.GET)
-    public BaseVo a() {
-        return Json.ok().put("items", "a");
-    }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link BaseVo} object
-     */
-    @ScxMapping(value = "a", method = HttpMethod.GET)
-    public BaseVo b() {
-        return Json.ok().put("items", "b");
-    }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link BaseVo} object
-     */
-    @ScxMapping(value = "/v/:aaa", method = HttpMethod.GET)
-    public BaseVo c() {
-        return Json.ok().put("items", "b");
-    }
-
-    /**
-     * 测试!!!
-     *
-     * @return a {@link BaseVo} object
-     */
-    @ScxMapping(value = "/v/:bbb", method = HttpMethod.GET)
-    public BaseVo d() {
-        return Json.ok().put("items", "b");
-    }
 
     /**
      * <p>excel.</p>
@@ -232,6 +111,41 @@ public class WebSiteController {
         }
         byte[] bytes = ZipAction.toZipFileByteArray(virtualDirectory);
         return new Download(bytes, "测试压缩包.zip");
+    }
+
+    @ScxMapping(method = HttpMethod.GET)
+    public Object initCMS() {
+        var s = ScxContext.beanFactory().getBean(ChannelService.class);
+        var c = ScxContext.beanFactory().getBean(ContentService.class);
+        for (int i = 0; i < 3; i++) {
+            var s1 = new Channel();
+            s1.channelName = "早间新闻" + i;
+            s1.channelPath = "news" + i;
+            Channel save1 = s.save(s1);
+            for (int j = 0; j < 10; j++) {
+                var c1 = new Content();
+                c1.content = "重大早间新闻的内容<span style='color:green'>绿色的文字</span>" + j;
+                c1.contentTitle = "重大早间新闻的标题👍" + j;
+                c1.channelID = save1.id;
+                c.save(c1);
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            var s1 = new Channel();
+            s1.channelName = "晚间新闻" + i;
+            s1.channelPath = "night-news" + i;
+            Channel save1 = s.save(s1);
+            for (int j = 0; j < 10; j++) {
+                var c1 = new Content();
+                c1.content = "重大晚间新闻的内容<span style='color:red'>红色的文字</span>" + j;
+                c1.contentTitle = "重大晚间新闻的标题👍" + j;
+                c1.channelID = save1.id;
+                c.save(c1);
+            }
+        }
+
+        return "初始化成功";
     }
 
 }

@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>${channel.channelName}</title>
 </head>
 <body>
 <h1>栏目模板1</h1>
-[@content_list_tag]
+<h2>${channel.channelName}</h2>
+[@content_list_tag channelID=channel.id]
 [#list content_list as content]
-<a href="./${content.id!}">${content.contentTitle!}</a>
+<a href="${channel.channelPath}/${content.id!}">${content.contentTitle!}</a>
 [/#list]
 [/@content_list_tag]
 </body>

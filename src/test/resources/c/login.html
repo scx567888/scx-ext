@@ -1,6 +1,5 @@
 [#if loginUser??]
 用户名 : ${loginUser.username!}
-<img src="/api/picture/${loginUser.avatar!}"/>
 <button onclick="logout()">退出登录</button>
 [#else]
 <input id="username"/>
@@ -24,6 +23,8 @@
             res.json().then((data) => {
                 if (data.message === "login-successful") {
                     location.reload();
+                } else {
+                    alert(data.message)
                 }
             });
         })

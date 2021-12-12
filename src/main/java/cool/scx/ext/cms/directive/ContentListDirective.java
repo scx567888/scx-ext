@@ -70,7 +70,7 @@ public class ContentListDirective implements BaseTemplateDirective {
             query.orderBy().add(orderByColumn.toString(), OrderByType.of(sortType.toString()));
         }
 
-        return contentService.list();
+        return contentService.list(query);
     }
 
     /**

@@ -49,7 +49,6 @@ public class UserListWebSiteHandler implements WebSiteHandler {
                 s.username = uuid + "👶";
                 s.nickname = uuid + "🥝";
                 s.password = CryptoUtils.encryptPassword(uuid);
-                s.maxNumberToLoginInSameTime = 2;
                 s.isAdmin = true;
                 s1.add(s);
             }
@@ -60,7 +59,6 @@ public class UserListWebSiteHandler implements WebSiteHandler {
                 s.username = uuid;
                 s.nickname = uuid;
                 s.password = CryptoUtils.encryptPassword(uuid);
-                s.maxNumberToLoginInSameTime = 2;
                 userService.save(s);
             }
         }
