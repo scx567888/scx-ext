@@ -36,6 +36,11 @@ public class TestModule implements ScxModule {
      */
     @BeforeTest
     public static void main(String[] args) {
+        runModule();
+    }
+
+    @BeforeTest
+    public static void runModule() {
         Scx.builder()
                 .setMainClass(TestModule.class)
                 .configure(ScxFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
@@ -46,7 +51,6 @@ public class TestModule implements ScxModule {
                         new FixTableModule(),
                         new FSSModule(),
                         new TestModule())
-                .setArgs(args)
                 .build().run();
     }
 
