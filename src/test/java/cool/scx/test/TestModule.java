@@ -1,6 +1,7 @@
 package cool.scx.test;
 
 import cool.scx.Scx;
+import cool.scx.ScxContext;
 import cool.scx.ScxModule;
 import cool.scx.enumeration.ScxFeature;
 import cool.scx.ext.cms.CMSModule;
@@ -9,9 +10,15 @@ import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.test.auth.TestAuth;
+import cool.scx.test.user.UserService;
 import cool.scx.test.website.UserListWebSiteHandler;
 import cool.scx.test.website.WriteTimeHandler;
+import cool.scx.util.HttpUtils;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * <p>TestModule class.</p>
@@ -41,6 +48,14 @@ public class TestModule implements ScxModule {
                         new TestModule())
                 .setArgs(args)
                 .build().run();
+    }
+
+    @Test
+    public static void test0() throws IOException, InterruptedException {
+        var userService = ScxContext.beanFactory().getBean(UserService.class);
+        System.out.println("访问页面前数据条数 : " + userService.list().size());
+        HttpUtils.get("http://localhost:8080/", new HashMap<>());
+        System.out.println("访问页面后数据条数 : " + userService.list().size());
     }
 
     /**
