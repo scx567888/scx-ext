@@ -3,6 +3,7 @@ package cool.scx.test;
 import cool.scx.Scx;
 import cool.scx.ScxContext;
 import cool.scx.ScxModule;
+import cool.scx.dao.ScxDaoHelper;
 import cool.scx.enumeration.ScxFeature;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.core.CoreModule;
@@ -44,12 +45,12 @@ public class TestModule implements ScxModule {
                 .setMainClass(TestModule.class)
                 .configure(ScxFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
                 .addModules(
+                        new TestModule(),
                         new CMSModule().setWebSiteHandler(UserListWebSiteHandler.class),
                         new CoreModule(),
                         new CRUDModule(),
                         new FixTableModule(),
-                        new FSSModule(),
-                        new TestModule())
+                        new FSSModule())
                 .build().run();
     }
 
@@ -66,6 +67,7 @@ public class TestModule implements ScxModule {
      */
     @Override
     public void start() {
+        ScxDaoHelper.fixTable();
         WriteTimeHandler.registerHandler();
         TestAuth.initAuth();
         TestAuth.readSessionFromFile();
