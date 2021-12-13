@@ -4,6 +4,7 @@ import cool.scx.ScxContext;
 import cool.scx.ScxModule;
 import cool.scx.dao.ScxDaoHelper;
 import cool.scx.util.ConsoleUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -13,6 +14,8 @@ import org.slf4j.LoggerFactory;
  * @version 1.3.0
  */
 public class FixTableModule implements ScxModule {
+
+    private static final Logger logger = LoggerFactory.getLogger(FixTableModule.class);
 
     /**
      * a
@@ -39,7 +42,6 @@ public class FixTableModule implements ScxModule {
      */
     @Override
     public void start() {
-        var logger = LoggerFactory.getLogger(FixTableModule.class);
         ScxContext.execute(() -> {
             if (!ScxContext.dao().checkDataSource()) {
                 logger.error("数据源连接失败!!! 已跳过修复表!!!");

@@ -1,6 +1,7 @@
 package cool.scx.ext.crud;
 
 import cool.scx.ScxModule;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -10,6 +11,8 @@ import org.slf4j.LoggerFactory;
  * @version 1.3.0
  */
 public class CRUDModule implements ScxModule {
+
+    private static final Logger logger = LoggerFactory.getLogger(CRUDModule.class);
 
     /**
      * 默认实现类
@@ -32,7 +35,6 @@ public class CRUDModule implements ScxModule {
 
     @Override
     public void start() {
-        var logger = LoggerFactory.getLogger(CRUDModule.class);
         logger.info("CRUDHandler 实现类  -->  {}", this.crudHandlerClass.getName());
     }
 
