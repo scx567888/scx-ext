@@ -1,7 +1,8 @@
 package cool.scx.ext.fss;
 
 import cool.scx.ScxModule;
-import cool.scx.util.ansi.Ansi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 提供基本的文件上传及下载 (展示)的功能
@@ -10,6 +11,8 @@ import cool.scx.util.ansi.Ansi;
  * @version 1.0.10
  */
 public class FSSModule implements ScxModule {
+
+    private static final Logger logger = LoggerFactory.getLogger(FSSModule.class);
 
     private final Class<? extends FSSHandler> fssHandlerClass;
 
@@ -36,7 +39,7 @@ public class FSSModule implements ScxModule {
      */
     @Override
     public void start() {
-        Ansi.out().brightBlue("FSSHandler 实现类  -->  " + this.fssHandlerClass.getName()).println();
+        logger.info("FSSHandler 实现类  -->  {}", this.fssHandlerClass.getName());
         FSSConfig.initConfig();
     }
 
