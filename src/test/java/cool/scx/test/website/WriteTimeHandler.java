@@ -5,6 +5,8 @@ import cool.scx.ScxContext;
 import cool.scx.ext.core.CoreWebSocketHandler;
 import cool.scx.ext.core.WSBody;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class WriteTimeHandler {
@@ -14,12 +16,12 @@ public class WriteTimeHandler {
      */
     public static void registerHandler() {
         //注册事件
-        ScxContext.scheduleAtFixedRate(() -> {
+        ScxContext.scheduler().scheduleAtFixedRate((status) -> {
             var onlineItemList = CoreWebSocketHandler.getAllWebSockets();
             for (var onlineItem : onlineItemList) {
                 onlineItem.writeTextMessage(new WSBody("writeTime", ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now()), null).toJson());
             }
-        }, 0, 1000);
+        }, Instant.now(), Duration.ofSeconds(1));
     }
 
 }

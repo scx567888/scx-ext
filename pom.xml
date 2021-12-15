@@ -6,14 +6,14 @@
     <parent>
         <groupId>cool.scx</groupId>
         <artifactId>scx-parent</artifactId>
-        <version>1.1.4</version>
+        <version>1.1.6</version>
     </parent>
 
     <artifactId>scx-ext</artifactId>
     <packaging>jar</packaging>
     <name>scx-ext</name>
 
-    <version>1.5.18</version>
+    <version>1.5.19</version>
 
     <description>SCX-EXT : SCX 拓展包</description>
     <url>https://github.com/scx567888/scx-ext</url>
@@ -73,7 +73,7 @@
 
     <properties>
         <scx.mainClass>cool.scx.ext.AllExtApp</scx.mainClass>
-        <scx.version>1.9.20</scx.version>
+        <scx.version>1.9.21</scx.version>
     </properties>
 
 </project>

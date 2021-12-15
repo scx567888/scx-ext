@@ -24,7 +24,16 @@ public class FixTableModule implements ScxModule {
      */
     private static boolean confirmFixTable() {
         while (true) {
-            System.err.println("Y 检测到需要修复数据表 , 是否修复? [Y]修复数据表 [N]忽略 [Q]退出 ");
+            var errMessage = """
+                    *******************************************************
+                    *                                                     *
+                    *           Y 检测到需要修复数据表 , 是否修复 ?             *
+                    *                                                     *
+                    *         [Y]修复数据表  |  [N]忽略  |  [Q]退出           *
+                    *                                                     *
+                    *******************************************************
+                    """;
+            System.err.println(errMessage);
             var result = ConsoleUtils.readLine().trim();
             if ("Y".equalsIgnoreCase(result)) {
                 return true;
@@ -42,7 +51,7 @@ public class FixTableModule implements ScxModule {
      */
     @Override
     public void start() {
-        ScxContext.execute(() -> {
+        ScxContext.scheduler().submit(() -> {
             if (!ScxContext.dao().checkDataSource()) {
                 logger.error("数据源连接失败!!! 已跳过修复表!!!");
                 return;
