@@ -6,7 +6,6 @@ import cool.scx.ext.core.CoreWebSocketHandler;
 import cool.scx.ext.core.WSBody;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class WriteTimeHandler {
@@ -21,7 +20,7 @@ public class WriteTimeHandler {
             for (var onlineItem : onlineItemList) {
                 onlineItem.writeTextMessage(new WSBody("writeTime", ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now()), null).toJson());
             }
-        }, Instant.now(), Duration.ofSeconds(1));
+        }, Duration.ofSeconds(1));
     }
 
 }
