@@ -132,20 +132,6 @@ public class CRUDController {
     }
 
     /**
-     * 获取自动完成字段
-     *
-     * @param modelName a {@link java.lang.String} object.
-     * @param fieldName a {@link java.lang.String} object.
-     * @return a {@link cool.scx.vo.Json} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
-     */
-    @ScxMapping(value = ":modelName/get-auto-complete/:fieldName", method = HttpMethod.GET)
-    public Json getAutoComplete(@FromPath String modelName, @FromPath String fieldName) {
-        var fieldList = crudHandler.getAutoComplete(modelName, fieldName);
-        return Json.ok().put("fields", fieldList);
-    }
-
-    /**
      * 校验唯一性
      *
      * @param modelName a {@link java.lang.String} object.
