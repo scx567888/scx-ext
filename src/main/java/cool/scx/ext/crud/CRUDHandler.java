@@ -30,18 +30,6 @@ public interface CRUDHandler {
     }
 
     /**
-     * 获取自动完成框 (获取此列的所有数据)
-     *
-     * @param modelName model 名称
-     * @param fieldName 列名称
-     * @return r
-     */
-    default List<Map<String, Object>> getAutoComplete(String modelName, String fieldName) {
-        var baseModelService = CRUDHelper.getBaseModelService(modelName);
-        return baseModelService.getFieldList(fieldName);
-    }
-
-    /**
      * @param modelName model 名称
      * @param id        model 的 id
      * @return r

@@ -19,7 +19,7 @@ public class FSSObject extends BaseModel {
     /**
      * 这里为了防止用户可以根据 id 猜测出来文件 业务中不使用 BaseModel 的 id
      */
-    @Column(needIndex = true, excludeOnUpdate = true, unique = true, notNull = true)
+    @Column(needIndex = true, unique = true, notNull = true)
     public String fssObjectID;
 
     /**
@@ -52,7 +52,7 @@ public class FSSObject extends BaseModel {
     /**
      * 文件的 md5 值
      */
-    @Column(needIndex = true, excludeOnUpdate = true, notNull = true)
+    @Column(needIndex = true, notNull = true)
     public String fileMD5;
 
 }
