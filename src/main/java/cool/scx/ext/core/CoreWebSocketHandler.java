@@ -1,9 +1,7 @@
 package cool.scx.ext.core;
 
-import cool.scx.ScxContext;
 import cool.scx.annotation.ScxWebSocketMapping;
 import cool.scx.base.BaseWebSocketHandler;
-import cool.scx.util.ObjectUtils;
 import cool.scx.util.ansi.Ansi;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
@@ -36,24 +34,6 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
      * 存储所有在线的 连接
      */
     private static final List<ServerWebSocket> SERVER_WEB_SOCKETS = new ArrayList<>();
-
-    /**
-     * 根据 前台发送的字符串封装实体
-     *
-     * @param text      text
-     * @param webSocket w
-     * @return w
-     */
-    private static WSBody createScxWebSocketEvent(String text, ServerWebSocket webSocket) {
-        try {
-            var jsonNode = ObjectUtils.mapper().readTree(text);
-            var eventName = jsonNode.get("eventName").asText();
-            return new WSBody(eventName, jsonNode.get("data"), webSocket);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     /**
      * 根据 binaryHandlerID 获取 ServerWebSocket
@@ -102,14 +82,10 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
      */
     @Override
     public void onTextMessage(String textData, WebSocketFrame h, ServerWebSocket webSocket) {
-        //这里是心跳检测
-        if (LOVE.equals(textData)) {
+        if (LOVE.equals(textData)) { //这里是心跳检测
             webSocket.writeTextMessage(LOVE);
-        } else { //这里是其他事件
-            var event = createScxWebSocketEvent(textData, webSocket);
-            if (event != null) {
-                ScxContext.eventBus().publish(event.eventName(), event);
-            }
+        } else { //这里是事件
+            WSParamHandlerRegister.findAndHandle(textData, webSocket);
         }
     }
 
