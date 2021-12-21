@@ -1,5 +1,7 @@
 package cool.scx.ext.fss;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import cool.scx.ScxContext;
 import cool.scx.annotation.ScxService;
 import cool.scx.bo.Query;
@@ -19,6 +21,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>Abstract FSSHandler class.</p>
@@ -29,6 +32,17 @@ import java.util.List;
 @ScxService
 public abstract class FSSHandler {
 
+    /**
+     * 图片缓存 此处做一些初始设置
+     * 设置缓存的最大容量 为 10000 .
+     * 设置缓存在一天后没有读取则失效 .
+     * 使用 cpu 核心数作为并发级别 .
+     */
+    private static final Cache<String, Image> IMAGE_CACHE = CacheBuilder.newBuilder().maximumSize(10000).expireAfterAccess(1, TimeUnit.DAYS).concurrencyLevel(Runtime.getRuntime().availableProcessors()).build();
+
+    /**
+     * a
+     */
     private final FSSObjectService fssObjectService;
 
     /**
@@ -189,9 +203,16 @@ public abstract class FSSHandler {
      * @return a {@link cool.scx.vo.Image} object
      */
     public Image image(String fssObjectID, Integer width, Integer height, String type) {
-        var fssObject = checkFSSObjectID(fssObjectID);
-        var file = checkPhysicalFile(fssObject);
-        return new Image(file, width, height, type);
+        var cacheKey = fssObjectID + " " + width + " " + height + " " + type;
+        //尝试通过缓存获取
+        var image = IMAGE_CACHE.getIfPresent(cacheKey);
+        if (image == null) {
+            var fssObject = checkFSSObjectID(fssObjectID);
+            var file = checkPhysicalFile(fssObject);
+            image = new Image(file, width, height, type);
+            IMAGE_CACHE.put(cacheKey, image);
+        }
+        return image;
     }
 
     /**
