@@ -1,8 +1,12 @@
 当前时间<span id="time-show"></span>
 <script>
     const timeShow = document.querySelector("#time-show");
-    var ws = new WebSocket("ws://localhost:8080/scx");
+    const ws = new WebSocket("ws://localhost:8080/scx");
     ws.onmessage = (d) => {
         timeShow.innerHTML = (JSON.parse(d.data).data)
+    }
+    window.onresize = (d) => {
+        const wsBody = {name: 'onResizeBrowser', data: {height: d.target.innerHeight, width: d.target.innerWidth}};
+        ws.send(JSON.stringify(wsBody))
     }
 </script>
