@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.ScxHandler;
 import cool.scx.util.ObjectUtils;
+import cool.scx.util.StringUtils;
 import io.vertx.core.http.ServerWebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +32,11 @@ public final class WSParamHandlerRegister {
      */
     static void findAndHandle(String textData, ServerWebSocket webSocket) {
         try {
-            var jsonNode = ObjectUtils.mapper().readTree(textData);
+            var wsBody = ObjectUtils.mapper().readValue(textData, WSBody.class);
             //先获取名称
-            var name = jsonNode.get("name").asText();
-            if (name != null) {
-                var wsParam = new WSParam(jsonNode.get("data"), webSocket);
-                NAME_SCX_HANDLER_MAPPING.get(name).forEach(scxHandler -> ScxContext.scheduler().submit(() -> scxHandler.handle(wsParam)));
+            if (StringUtils.isNotBlank(wsBody.name())) {
+                var wsParam = new WSParam(wsBody.data(), webSocket);
+                NAME_SCX_HANDLER_MAPPING.get(wsBody.name()).forEach(scxHandler -> ScxContext.scheduler().submit(() -> scxHandler.handle(wsParam)));
             }
         } catch (Exception e) {
             logger.debug("执行 Handler 出错", e);
