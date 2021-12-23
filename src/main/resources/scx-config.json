@@ -19,7 +19,7 @@
     "https": {
       "enabled": false,
       "ssl-path": "AppRoot:ssl\\scx_dev.jks",
-      "ssl-password": "iBzM50VdFNVxANvc8Vks0JfHxenUHUQVx+xIqNj2D9y1XcgkM/ON69oYPeLhy6Tj"
+      "ssl-password": "DECRYPT:iBzM50VdFNVxANvc8Vks0JfHxenUHUQVx+xIqNj2D9y1XcgkM/ON69oYPeLhy6Tj"
     },
     "template": {
       "root": "AppRoot:c"
