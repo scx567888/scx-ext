@@ -55,7 +55,7 @@ public class YourModule implements ScxModule {
 
     //使用提供的拓展模块
     public static void main(String[] args) {
-        // 使用 ScxApp 构建器 ,构建并运行 项目
+        // 使用 Scx 构建器 ,构建并运行 项目
         Scx.builder()
                 .setMainClass(YourModule.class) //1, Main 方法的 Class
                 .addModules(                    //2, 引入拓展模块和您自己的模块
