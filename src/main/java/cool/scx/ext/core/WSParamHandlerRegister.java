@@ -32,7 +32,7 @@ public final class WSParamHandlerRegister {
      */
     static void findAndHandle(String textData, ServerWebSocket webSocket) {
         try {
-            var wsBody = ObjectUtils.mapper().readValue(textData, WSBody.class);
+            var wsBody = ObjectUtils.jsonMapper().readValue(textData, WSBody.class);
             //先获取名称
             if (StringUtils.isNotBlank(wsBody.name())) {
                 var wsParam = new WSParam(wsBody.data(), webSocket);
