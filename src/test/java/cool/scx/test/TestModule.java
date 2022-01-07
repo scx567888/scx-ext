@@ -14,7 +14,7 @@ import cool.scx.test.auth.TestAuth;
 import cool.scx.test.user.UserService;
 import cool.scx.test.website.UserListWebSiteHandler;
 import cool.scx.test.website.WriteTimeHandler;
-import cool.scx.util.HttpClientHelper;
+import cool.scx.util.http.HttpClientHelper;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
