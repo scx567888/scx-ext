@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>scx-ext</name>
 
-    <version>1.6.9</version>
+    <version>1.7.0</version>
 
     <description>SCX-EXT : SCX 拓展包</description>
     <url>https://github.com/scx567888/scx-ext</url>
@@ -38,6 +38,40 @@
         <developerConnection>scm:git:https://github.com/scx567888/scx-ext.git</developerConnection>
         <url>https://github.com/scx567888/scx-ext</url>
     </scm>
+
+    <build>
+        <plugins>
+
+            <!-- 此插件用于将项目打包为 可执行 jar 包-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <!-- 此处因为没有类似 maven-source-plugin 插件中 excludeResources 的选项 -->
+                    <!-- 所以在这里手动排除资源文件 , 具体文件说明见下方 -->
+                    <excludes>
+                        <!-- 默认模板测试文件 -->
+                        <exclude>/c/</exclude>
+                        <!-- 默认 ssl 占位空文件 -->
+                        <exclude>/ssl/</exclude>
+                        <!-- 默认 配置文件 -->
+                        <exclude>/*.json</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <!-- 对 jar 包等文件进行 gpg 签名  -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <!-- 这里启用签名 -->
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 
     <dependencies>
 
