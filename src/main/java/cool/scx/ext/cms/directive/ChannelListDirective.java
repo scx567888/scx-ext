@@ -2,9 +2,7 @@ package cool.scx.ext.cms.directive;
 
 import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseTemplateDirective;
-import cool.scx.bo.Query;
 import cool.scx.ext.cms.channel.ChannelService;
-import cool.scx.sql.order_by.OrderByType;
 
 import java.util.Map;
 
@@ -38,17 +36,10 @@ public class ChannelListDirective implements BaseTemplateDirective {
      */
     @Override
     public Object handle(Map<String, Object> params) {
-        var query = new Query();
-        Object id = params.get("id");
+        var query = ListDirectiveHelper.createNormalListQuery(params);
         Object parentID = params.get("parentID");
         Object hasChannelTitleImage = params.get("hasChannelTitleImage");
-        Object orderByColumn = params.get("orderByColumn");
-        Object sortType = params.get("sortType");
-        Integer limit = params.get("limit") != null ? Integer.valueOf(params.get("limit").toString()) : null;
-        Integer page = params.get("page") != null ? Integer.valueOf(params.get("page").toString()) : null;
-        if (id != null) {
-            query.equal("id", Long.valueOf(id.toString()));
-        }
+
         if (parentID != null) {
             query.equal("parentID", Long.valueOf(parentID.toString()));
         }
@@ -60,20 +51,7 @@ public class ChannelListDirective implements BaseTemplateDirective {
             }
         }
 
-        if (limit != null && limit >= 0) {
-            if (page != null && page >= 0) {
-                query.setPagination(page, limit);
-            } else {
-                query.setPagination(limit);
-            }
-        }
-
-        if (orderByColumn != null && sortType != null) {
-            query.orderBy().add(orderByColumn.toString(), OrderByType.of(sortType.toString()));
-        }
-
         return channelService.list(query);
-
     }
 
     /**
