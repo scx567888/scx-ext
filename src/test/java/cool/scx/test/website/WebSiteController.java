@@ -1,5 +1,6 @@
 package cool.scx.test.website;
 
+import cool.scx.ScxConstant;
 import cool.scx.ScxContext;
 import cool.scx.annotation.FromQuery;
 import cool.scx.annotation.ScxMapping;
@@ -25,6 +26,7 @@ import cool.scx.vo.Raw;
 import io.vertx.ext.web.RoutingContext;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 /**
  * 简单测试
@@ -144,7 +146,7 @@ public class WebSiteController {
             }
         }
 
-        return "初始化成功";
+        return "初始化成功 : " + ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now());
     }
 
 }

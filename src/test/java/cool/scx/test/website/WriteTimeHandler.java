@@ -38,6 +38,7 @@ public class WriteTimeHandler {
             logger.error("有延迟 : " + wsParam.data());
         });
         WSParamHandlerRegister.addHandler("onResizeBrowser", (wsParam) -> {
+            //测试
             logger.error("无延迟 : " + wsParam.data());
         });
     }

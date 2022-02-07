@@ -99,7 +99,7 @@ public final class TemplateHelper {
         var allTemplateList = getTemplateList(ScxContext.easyConfig().templateRoot().getPath());
         // 让文件夹永远在前边
         var directoryList = allTemplateList.stream().filter(templateInfo -> "Directory".equals(templateInfo.type)).collect(Collectors.toList());
-        var fileList = allTemplateList.stream().filter(templateInfo -> "File".equals(templateInfo.type)).collect(Collectors.toList());
+        var fileList = allTemplateList.stream().filter(templateInfo -> "File".equals(templateInfo.type)).toList();
         directoryList.addAll(fileList);
         return Json.ok().put("cmsRootTreeList", directoryList);
     }
