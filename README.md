@@ -50,6 +50,12 @@
 #### 2. 编写您自己的模块并运行 main 方法 。
 
 ``` java
+import cool.scx.Scx;
+import cool.scx.ScxModule;
+import cool.scx.ext.cms.CMSModule;
+import cool.scx.ext.crud.CRUDModule;
+import cool.scx.ext.fss.FSSModule;
+
 //注意 : 自定义的模块需要继承 ScxModule
 public class YourModule implements ScxModule {
 
