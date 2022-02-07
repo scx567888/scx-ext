@@ -3,6 +3,7 @@ package cool.scx.ext.cms.directive;
 import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseTemplateDirective;
 import cool.scx.ext.cms.content.ContentService;
+import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
 
@@ -35,14 +36,14 @@ public class ContentListDirective implements BaseTemplateDirective {
     @Override
     public Object handle(Map<String, Object> params) {
         var query = ListDirectiveHelper.createNormalListQuery(params);
-        Object channelID = params.get("channelID");
-        Object hasContentTitleImage = params.get("hasContentTitleImage");
+        var channelID = ObjectUtils.convertValue(params.get("channelID"), Long.class);
+        var hasContentTitleImage = ObjectUtils.convertValue(params.get("hasContentTitleImage"), Boolean.class);
 
         if (channelID != null) {
-            query.equal("channelID", Long.valueOf(channelID.toString()));
+            query.equal("channelID", channelID);
         }
         if (hasContentTitleImage != null) {
-            if (Boolean.parseBoolean(hasContentTitleImage.toString())) {
+            if (hasContentTitleImage) {
                 query.isNotNull("contentTitleImage");
             } else {
                 query.isNull("contentTitleImage");

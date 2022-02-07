@@ -2,6 +2,7 @@ package cool.scx.ext.cms.directive;
 
 import cool.scx.bo.Query;
 import cool.scx.sql.order_by.OrderByType;
+import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
 
@@ -9,13 +10,13 @@ public final class ListDirectiveHelper {
 
     public static Query createNormalListQuery(Map<?, ?> params) {
         var query = new Query();
-        Object id = params.get("id");
-        Object orderByColumn = params.get("orderByColumn");
-        Object sortType = params.get("sortType");
-        Integer limit = params.get("limit") != null ? Integer.valueOf(params.get("limit").toString()) : null;
-        Integer page = params.get("page") != null ? Integer.valueOf(params.get("page").toString()) : null;
+        var id = ObjectUtils.convertValue(params.get("id"), Long.class);
+        var orderByColumn = ObjectUtils.convertValue(params.get("orderByColumn"), String.class);
+        var sortType = ObjectUtils.convertValue(params.get("sortType"), String.class);
+        var limit = ObjectUtils.convertValue(params.get("limit"), Integer.class);
+        var page = ObjectUtils.convertValue(params.get("page"), Integer.class);
         if (id != null) {
-            query.equal("id", Long.valueOf(id.toString()));
+            query.equal("id", id);
         }
 
         if (limit != null && limit >= 0) {
@@ -27,7 +28,7 @@ public final class ListDirectiveHelper {
         }
 
         if (orderByColumn != null && sortType != null) {
-            query.orderBy().add(orderByColumn.toString(), OrderByType.of(sortType.toString()));
+            query.orderBy().add(orderByColumn, OrderByType.of(sortType));
         }
         return query;
     }

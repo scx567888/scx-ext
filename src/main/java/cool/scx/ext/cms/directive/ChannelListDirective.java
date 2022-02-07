@@ -3,6 +3,7 @@ package cool.scx.ext.cms.directive;
 import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseTemplateDirective;
 import cool.scx.ext.cms.channel.ChannelService;
+import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
 
@@ -37,14 +38,14 @@ public class ChannelListDirective implements BaseTemplateDirective {
     @Override
     public Object handle(Map<String, Object> params) {
         var query = ListDirectiveHelper.createNormalListQuery(params);
-        Object parentID = params.get("parentID");
-        Object hasChannelTitleImage = params.get("hasChannelTitleImage");
+        var parentID = ObjectUtils.convertValue(params.get("parentID"), Long.class);
+        var hasChannelTitleImage = ObjectUtils.convertValue(params.get("hasChannelTitleImage"), Boolean.class);
 
         if (parentID != null) {
-            query.equal("parentID", Long.valueOf(parentID.toString()));
+            query.equal("parentID", parentID);
         }
         if (hasChannelTitleImage != null) {
-            if (Boolean.parseBoolean(hasChannelTitleImage.toString())) {
+            if (hasChannelTitleImage) {
                 query.isNotNull("channelTitleImage");
             } else {
                 query.isNull("channelTitleImage");
