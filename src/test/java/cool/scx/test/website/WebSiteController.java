@@ -146,7 +146,7 @@ public class WebSiteController {
             }
         }
 
-        return "初始化成功 : "+ ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now());
+        return "初始化成功 : " + ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now());
     }
 
 }
