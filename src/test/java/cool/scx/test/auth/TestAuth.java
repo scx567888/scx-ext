@@ -5,8 +5,6 @@ import cool.scx.test.user.User;
 import cool.scx.test.user.UserService;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.ansi.Ansi;
-import cool.scx.web.handler.ScxCookieHandlerConfiguration;
-import cool.scx.web.handler.ScxCorsHandlerConfiguration;
 import io.vertx.core.Handler;
 import io.vertx.core.http.impl.CookieImpl;
 import io.vertx.ext.web.RoutingContext;
@@ -53,10 +51,11 @@ public final class TestAuth {
      */
     public static void initAuth() {
         //设置请求头
-        ScxCorsHandlerConfiguration.allowedHeader(SCX_AUTH_TOKEN_KEY);
-        ScxCorsHandlerConfiguration.allowedHeader(SCX_AUTH_DEVICE_KEY);
+        ScxContext.routeRegistry().corsHandler()
+                .allowedHeader(SCX_AUTH_TOKEN_KEY)
+                .allowedHeader(SCX_AUTH_DEVICE_KEY);
         //设置 cookie handler
-        ScxCookieHandlerConfiguration.setScxCookieHandler(new TestAuthCookieHandler());
+        ScxContext.router().route().order(1).handler(new TestAuthCookieHandler());
         // 初始化 service
         userService = ScxContext.beanFactory().getBean(UserService.class);
     }
