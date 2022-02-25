@@ -2,8 +2,8 @@ package cool.scx.ext.fss;
 
 import cool.scx.ScxContext;
 import cool.scx.annotation.*;
-import cool.scx.bo.UploadedEntity;
 import cool.scx.enumeration.HttpMethod;
+import cool.scx.type.UploadedEntity;
 import cool.scx.vo.Download;
 import cool.scx.vo.Image;
 import cool.scx.vo.Json;
@@ -28,7 +28,7 @@ public class FSSController {
      */
     public FSSController() {
         var fssModuleExample = ScxContext.findScxModuleInfo(FSSModule.class).scxModuleExample();
-        this.fssHandler = ScxContext.beanFactory().getBean(fssModuleExample.fssHandlerClass());
+        this.fssHandler = ScxContext.getBean(fssModuleExample.fssHandlerClass());
     }
 
     /**

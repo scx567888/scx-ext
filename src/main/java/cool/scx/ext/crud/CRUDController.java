@@ -23,7 +23,7 @@ public class CRUDController {
 
     public CRUDController() {
         var crudHandlerClass = ScxContext.findScxModuleInfo(CRUDModule.class).scxModuleExample().crudHandlerClass();
-        this.crudHandler = ScxContext.beanFactory().getBean(crudHandlerClass);
+        this.crudHandler = ScxContext.getBean(crudHandlerClass);
     }
 
     /**

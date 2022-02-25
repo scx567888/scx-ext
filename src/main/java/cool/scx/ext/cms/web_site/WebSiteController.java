@@ -4,11 +4,11 @@ import cool.scx.ScxContext;
 import cool.scx.annotation.FromPath;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
-import cool.scx.exception.impl.NotFoundException;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.cms_config.CMSConfigService;
 import cool.scx.ext.cms.content.ContentService;
+import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.vo.Html;
 
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class WebSiteController {
         this.contentService = contentService;
         this.channelService = channelService;
         this.cmsConfigService = cmsConfigService;
-        this.webSiteHandler = ScxContext.beanFactory().getBean(ScxContext.findScxModuleInfo(CMSModule.class).scxModuleExample().getWebSiteHandlerClass());
+        this.webSiteHandler = ScxContext.getBean(ScxContext.findScxModuleInfo(CMSModule.class).scxModuleExample().getWebSiteHandlerClass());
     }
 
     /**

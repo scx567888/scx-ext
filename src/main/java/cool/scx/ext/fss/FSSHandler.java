@@ -4,9 +4,9 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import cool.scx.ScxContext;
 import cool.scx.annotation.ScxService;
-import cool.scx.bo.Query;
-import cool.scx.bo.UploadedEntity;
-import cool.scx.exception.impl.NotFoundException;
+import cool.scx.base.Query;
+import cool.scx.http.exception.impl.NotFoundException;
+import cool.scx.type.UploadedEntity;
 import cool.scx.util.FileUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
@@ -58,7 +58,7 @@ public abstract class FSSHandler {
      * <p>Constructor for FSSHandler.</p>
      */
     public FSSHandler() {
-        this.fssObjectService = ScxContext.beanFactory().getBean(FSSObjectService.class);
+        this.fssObjectService = ScxContext.getBean(FSSObjectService.class);
     }
 
     /**

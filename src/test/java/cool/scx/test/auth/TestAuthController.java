@@ -3,7 +3,7 @@ package cool.scx.test.auth;
 import cool.scx.ScxContext;
 import cool.scx.annotation.FromBody;
 import cool.scx.annotation.ScxMapping;
-import cool.scx.bo.Query;
+import cool.scx.base.Query;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.test.auth.exception.LoginException;
 import cool.scx.test.auth.exception.UnknownUserException;

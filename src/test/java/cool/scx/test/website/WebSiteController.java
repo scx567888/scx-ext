@@ -41,7 +41,7 @@ public class WebSiteController {
     @ScxMapping(method = HttpMethod.GET)
     public static void TestTransaction(RoutingContext ctx) throws Exception {
         var sb = new StringBuilder();
-        UserService bean = ScxContext.beanFactory().getBean(UserService.class);
+        UserService bean = ScxContext.getBean(UserService.class);
         try {
             ScxContext.sqlRunner().autoTransaction((con) -> {
                 sb.append("事务开始前数据库中 数据条数 : ").append(bean.list(con).size()).append("</br>");
@@ -116,8 +116,8 @@ public class WebSiteController {
 
     @ScxMapping(method = HttpMethod.GET)
     public Object initCMS() {
-        var s = ScxContext.beanFactory().getBean(ChannelService.class);
-        var c = ScxContext.beanFactory().getBean(ContentService.class);
+        var s = ScxContext.getBean(ChannelService.class);
+        var c = ScxContext.getBean(ContentService.class);
         for (int i = 0; i < 3; i++) {
             var s1 = new Channel();
             s1.channelName = "早间新闻" + i;

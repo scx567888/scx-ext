@@ -1,6 +1,6 @@
 package cool.scx.ext.cms.directive;
 
-import cool.scx.bo.Query;
+import cool.scx.base.Query;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.util.ObjectUtils;
 

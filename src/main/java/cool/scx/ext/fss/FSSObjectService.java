@@ -2,7 +2,7 @@ package cool.scx.ext.fss;
 
 import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseModelService;
-import cool.scx.bo.Query;
+import cool.scx.base.Query;
 
 import java.nio.file.Path;
 import java.util.List;
