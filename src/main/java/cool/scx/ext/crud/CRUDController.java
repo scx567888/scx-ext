@@ -21,6 +21,9 @@ public class CRUDController {
 
     private final CRUDHandler crudHandler;
 
+    /**
+     * a
+     */
     public CRUDController() {
         var crudHandlerClass = ScxContext.findScxModuleInfo(CRUDModule.class).scxModuleExample().crudHandlerClass();
         this.crudHandler = ScxContext.getBean(crudHandlerClass);
@@ -105,7 +108,6 @@ public class CRUDController {
      * @param modelName a {@link java.lang.String} object.
      * @param deleteIDs a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
      */
     @ScxMapping(value = ":modelName/batch-delete", method = HttpMethod.DELETE)
     public Json batchDelete(@FromPath String modelName, @FromBody long[] deleteIDs) {
@@ -119,7 +121,6 @@ public class CRUDController {
      * @param modelName a {@link java.lang.String} object.
      * @param id        a {@link java.lang.Integer} object.
      * @return a {@link cool.scx.vo.Json} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
      */
     @ScxMapping(value = ":modelName/revoke-delete/:id", method = HttpMethod.GET)
     public Json revokeDelete(@FromPath String modelName, @FromPath Long id) {
@@ -134,10 +135,11 @@ public class CRUDController {
     /**
      * 校验唯一性
      *
-     * @param modelName a {@link java.lang.String} object.
-     * @param fieldName a {@link java.util.Map} object.
-     * @param value     a {@link java.util.Map} object.
-     * @return a {@link cool.scx.vo.Json} object.
+     * @param modelName a
+     * @param fieldName a
+     * @param value     a
+     * @param id        a
+     * @return a
      */
     @ScxMapping(value = ":modelName/check-unique/:fieldName", method = HttpMethod.POST)
     public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {

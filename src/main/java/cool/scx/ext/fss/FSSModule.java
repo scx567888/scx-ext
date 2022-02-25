@@ -14,6 +14,9 @@ public class FSSModule implements ScxModule {
 
     private static final Logger logger = LoggerFactory.getLogger(FSSModule.class);
 
+    /**
+     * a
+     */
     private final Class<? extends FSSHandler> fssHandlerClass;
 
     /**

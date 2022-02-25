@@ -16,6 +16,12 @@ import java.util.List;
 @ScxService
 public class FSSObjectService extends BaseModelService<FSSObject> {
 
+    /**
+     * a
+     *
+     * @param fssObject a
+     * @return a
+     */
     public static Path getPhysicalFilePath(FSSObject fssObject) {
         return Path.of(FSSConfig.uploadFilePath().getPath(), fssObject.filePath);
     }
@@ -40,6 +46,12 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
         return get(new Query().equal("fssObjectID", fssObjectID));
     }
 
+    /**
+     * a
+     *
+     * @param fssObjectIDs a
+     * @return a
+     */
     public List<FSSObject> findByFSSObjectIDs(List<String> fssObjectIDs) {
         return list(new Query().in("fssObjectID", fssObjectIDs));
     }

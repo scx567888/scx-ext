@@ -45,7 +45,7 @@ public class WebSiteController {
      * <p>index.</p>
      *
      * @return a {@link cool.scx.vo.Html} object
-     * @throws cool.scx.exception.impl.NotFoundException if any.
+     * @throws Exception if any.
      */
     @ScxMapping(value = "/", method = HttpMethod.GET)
     public Html index() throws Exception {
@@ -67,7 +67,7 @@ public class WebSiteController {
      *
      * @param channelPath a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Html} object
-     * @throws cool.scx.exception.impl.NotFoundException if any.
+     * @throws Exception if any.
      */
     @ScxMapping(value = "/:channelPath", method = HttpMethod.GET)
     public Html channel(@FromPath String channelPath) throws Exception {
@@ -100,7 +100,7 @@ public class WebSiteController {
      * @param channelPath a {@link java.lang.String} object
      * @param contentID   a {@link java.lang.Long} object
      * @return a {@link cool.scx.vo.Html} object
-     * @throws cool.scx.exception.impl.NotFoundException if any.
+     * @throws Exception if any.
      */
     @ScxMapping(value = "/:channelPath/:contentID", method = HttpMethod.GET)
     public Html content(@FromPath String channelPath, @FromPath Long contentID) throws Exception {

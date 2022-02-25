@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * a
+ */
 public final class CRUDHelper {
 
     /**
@@ -68,7 +71,8 @@ public final class CRUDHelper {
     /**
      * 获取 baseModel
      *
-     * @param entityMap e
+     * @param entityMap     a
+     * @param baseModelName a
      * @return a
      */
     public static BaseModel mapToBaseModel(Map<String, Object> entityMap, String baseModelName) {
@@ -102,11 +106,13 @@ public final class CRUDHelper {
     /**
      * 获取 Query
      *
-     * @param limit           l
-     * @param page            p
-     * @param orderByBodyList or
-     * @param whereBodyList   wh
-     * @return q
+     * @param modelClass      a
+     * @param limit           a
+     * @param page            a
+     * @param orderByBodyList a
+     * @param whereBodyList   a
+     * @return a
+     * @throws BadRequestException a
      */
     public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) throws BadRequestException {
         var query = new Query();
@@ -155,7 +161,7 @@ public final class CRUDHelper {
      *
      * @param modelClass m
      * @param fieldName  f
-     * @throws CustomHttpException c
+     * @throws UnknownFieldName c
      */
     public static void checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldName {
         try {
@@ -174,7 +180,7 @@ public final class CRUDHelper {
      * @param fieldName    f
      * @param strWhereType s
      * @return s
-     * @throws CustomHttpException s
+     * @throws UnknownWhereType s
      */
     public static WhereType checkWhereType(String fieldName, String strWhereType) throws UnknownWhereType {
         try {
@@ -190,7 +196,7 @@ public final class CRUDHelper {
      * @param fieldName   a
      * @param strSortType a
      * @return a
-     * @throws CustomHttpException a
+     * @throws UnknownSortType a
      */
     public static OrderByType checkSortType(String fieldName, String strSortType) throws UnknownSortType {
         try {
@@ -207,7 +213,7 @@ public final class CRUDHelper {
      * @param whereType w
      * @param value1    v
      * @param value2    v
-     * @throws CustomHttpException v
+     * @throws WhereBodyParametersSizeError v
      */
     public static void checkWhereBodyParametersSize(String fieldName, WhereType whereType, Object value1, Object value2) throws WhereBodyParametersSizeError {
         AtomicInteger paramSize = new AtomicInteger();

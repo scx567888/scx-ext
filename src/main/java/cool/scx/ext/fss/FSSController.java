@@ -65,7 +65,6 @@ public class FSSController {
      *
      * @param fssObjectID id
      * @return a {@link cool.scx.vo.Raw} object.
-     * @throws cool.scx.exception.ScxHttpException if any.
      */
     @ScxMapping(value = "/raw/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Raw raw(@FromPath String fssObjectID) {

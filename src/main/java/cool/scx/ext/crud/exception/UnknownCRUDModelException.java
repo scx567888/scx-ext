@@ -3,10 +3,21 @@ package cool.scx.ext.crud.exception;
 import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.vo.Json;
 
+/**
+ * a
+ */
 public final class UnknownCRUDModelException extends BadRequestException {
 
+    /**
+     * a
+     */
     private final String modelName;
 
+    /**
+     * a
+     *
+     * @param modelName a
+     */
     public UnknownCRUDModelException(String modelName) {
         super(Json.fail("unknown-crud-model").put("model-name", modelName).toJson(""));
         this.modelName = modelName;

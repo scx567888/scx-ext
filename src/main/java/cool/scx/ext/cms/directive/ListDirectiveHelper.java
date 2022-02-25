@@ -6,8 +6,17 @@ import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
 
+/**
+ * a
+ */
 public final class ListDirectiveHelper {
 
+    /**
+     * a
+     *
+     * @param params a
+     * @return a
+     */
     public static Query createNormalListQuery(Map<?, ?> params) {
         var query = new Query();
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
@@ -32,4 +41,5 @@ public final class ListDirectiveHelper {
         }
         return query;
     }
+
 }
