@@ -1,20 +1,26 @@
 package cool.scx.ext.crud.exception;
 
-import cool.scx.exception.ScxHttpException;
+import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.vo.Json;
-import io.vertx.ext.web.RoutingContext;
 
-public final class UnknownCRUDModelException extends ScxHttpException {
+/**
+ * a
+ */
+public final class UnknownCRUDModelException extends BadRequestException {
 
+    /**
+     * a
+     */
     private final String modelName;
 
+    /**
+     * a
+     *
+     * @param modelName a
+     */
     public UnknownCRUDModelException(String modelName) {
+        super(Json.fail("unknown-crud-model").put("model-name", modelName).toJson(""));
         this.modelName = modelName;
-    }
-
-    @Override
-    public void handle(RoutingContext ctx) {
-        Json.fail("unknown-crud-model").put("model-name", modelName).handle(ctx);
     }
 
     @Override

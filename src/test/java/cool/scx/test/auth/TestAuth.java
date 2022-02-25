@@ -51,13 +51,13 @@ public final class TestAuth {
      */
     public static void initAuth() {
         //设置请求头
-        ScxContext.routeRegistry().corsHandler()
+        ScxContext.router().corsHandler()
                 .allowedHeader(SCX_AUTH_TOKEN_KEY)
                 .allowedHeader(SCX_AUTH_DEVICE_KEY);
         //设置 cookie handler
-        ScxContext.router().route().order(1).handler(new TestAuthCookieHandler());
+        ScxContext.router().vertxRouter().route().order(1).handler(new TestAuthCookieHandler());
         // 初始化 service
-        userService = ScxContext.beanFactory().getBean(UserService.class);
+        userService = ScxContext.getBean(UserService.class);
     }
 
     /**

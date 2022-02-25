@@ -1,5 +1,8 @@
 package cool.scx.ext.crud;
 
+/**
+ * a
+ */
 public final class CRUDOrderByBody {
 
     /**

@@ -3,7 +3,6 @@ package cool.scx.ext.core;
 import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.ScxHandler;
-import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
 import io.vertx.core.http.ServerWebSocket;
 import org.slf4j.Logger;
@@ -27,19 +26,22 @@ public final class WSParamHandlerRegister {
     /**
      * 查找并执行
      *
-     * @param textData  text
+     * @param wsBody    wsBody
      * @param webSocket web
      */
-    static void findAndHandle(String textData, ServerWebSocket webSocket) {
-        try {
-            var wsBody = ObjectUtils.jsonMapper().readValue(textData, WSBody.class);
-            //先获取名称
-            if (StringUtils.isNotBlank(wsBody.name())) {
-                var wsParam = new WSParam(wsBody.data(), webSocket);
-                NAME_SCX_HANDLER_MAPPING.get(wsBody.name()).forEach(scxHandler -> ScxContext.scheduler().submit(() -> scxHandler.handle(wsParam)));
+    static void findAndHandle(WSBody wsBody, ServerWebSocket webSocket) {
+        //先获取名称
+        if (StringUtils.isNotBlank(wsBody.name())) {
+            var wsParam = new WSParam(wsBody.data(), webSocket);
+            for (var scxHandler : NAME_SCX_HANDLER_MAPPING.get(wsBody.name())) {
+                ScxContext.scheduler().submit(() -> {
+                    try {
+                        scxHandler.handle(wsParam);
+                    } catch (Throwable throwable) {
+                        logger.error("执行 Handler 出错 !!!", throwable);
+                    }
+                });
             }
-        } catch (Exception e) {
-            logger.debug("执行 Handler 出错", e);
         }
     }
 

@@ -1,7 +1,9 @@
 package cool.scx.ext.core;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import cool.scx.annotation.ScxWebSocketMapping;
 import cool.scx.base.BaseWebSocketHandler;
+import cool.scx.util.ObjectUtils;
 import cool.scx.util.ansi.Ansi;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
@@ -81,11 +83,12 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
      * {@inheritDoc}
      */
     @Override
-    public void onTextMessage(String textData, WebSocketFrame h, ServerWebSocket webSocket) {
+    public void onTextMessage(String textData, WebSocketFrame h, ServerWebSocket webSocket) throws JsonProcessingException {
         if (LOVE.equals(textData)) { //这里是心跳检测
             webSocket.writeTextMessage(LOVE);
         } else { //这里是事件
-            WSParamHandlerRegister.findAndHandle(textData, webSocket);
+            var wsBody = ObjectUtils.jsonMapper().readValue(textData, WSBody.class);
+            WSParamHandlerRegister.findAndHandle(wsBody, webSocket);
         }
     }
 

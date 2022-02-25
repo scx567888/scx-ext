@@ -1,13 +1,22 @@
 package cool.scx.ext.cms.directive;
 
-import cool.scx.bo.Query;
+import cool.scx.base.Query;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
 
+/**
+ * a
+ */
 public final class ListDirectiveHelper {
 
+    /**
+     * a
+     *
+     * @param params a
+     * @return a
+     */
     public static Query createNormalListQuery(Map<?, ?> params) {
         var query = new Query();
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
@@ -32,4 +41,5 @@ public final class ListDirectiveHelper {
         }
         return query;
     }
+
 }

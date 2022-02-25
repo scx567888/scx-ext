@@ -10,6 +10,11 @@ import cool.scx.vo.VoHelper;
  */
 public record WSBody(String name, Object data) {
 
+    /**
+     * a
+     *
+     * @return a
+     */
     public String toJson() {
         return VoHelper.toJson(this, "");
     }

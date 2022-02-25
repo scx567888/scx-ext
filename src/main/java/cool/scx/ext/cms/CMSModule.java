@@ -70,6 +70,7 @@ public class CMSModule implements ScxModule {
     /**
      * 获取默认指令
      *
+     * @param userDirectiveClass a
      * @return r
      */
     public CMSModule addUserDirective(Class<? extends BaseTemplateDirective> userDirectiveClass) {

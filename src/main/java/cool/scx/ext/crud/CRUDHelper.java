@@ -5,17 +5,15 @@ import cool.scx.ScxContext;
 import cool.scx.annotation.NoColumn;
 import cool.scx.base.BaseModel;
 import cool.scx.base.BaseModelService;
-import cool.scx.bo.Query;
-import cool.scx.exception.impl.BadRequestException;
-import cool.scx.exception.impl.CustomHttpException;
+import cool.scx.base.Query;
 import cool.scx.ext.crud.annotation.NoCRUD;
-import cool.scx.ext.crud.exception.UnknownCRUDModelException;
+import cool.scx.ext.crud.exception.*;
+import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.sql.where.WhereType;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
 import cool.scx.util.ansi.Ansi;
-import cool.scx.vo.Json;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
@@ -23,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * a
+ */
 public final class CRUDHelper {
 
     /**
@@ -56,7 +57,7 @@ public final class CRUDHelper {
             if (baseModelService == null) {
                 var baseModelServiceClass = BASE_MODEL_CLASS_BASE_SERVICE_CLASS_MAPPING.get(baseModelClass);
                 //查看映射中是否存在 存在 则通过 spring 获取 不存在则通过 手动 new
-                baseModelService = baseModelServiceClass != null ? ScxContext.beanFactory().getBean(baseModelServiceClass) : new BaseModelService<>(baseModelClass);
+                baseModelService = baseModelServiceClass != null ? ScxContext.getBean(baseModelServiceClass) : new BaseModelService<>(baseModelClass);
                 //添加到缓存中
                 BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE.put(baseModelClass, baseModelService);
             }
@@ -70,7 +71,8 @@ public final class CRUDHelper {
     /**
      * 获取 baseModel
      *
-     * @param entityMap e
+     * @param entityMap     a
+     * @param baseModelName a
      * @return a
      */
     public static BaseModel mapToBaseModel(Map<String, Object> entityMap, String baseModelName) {
@@ -104,13 +106,15 @@ public final class CRUDHelper {
     /**
      * 获取 Query
      *
-     * @param limit           l
-     * @param page            p
-     * @param orderByBodyList or
-     * @param whereBodyList   wh
-     * @return q
+     * @param modelClass      a
+     * @param limit           a
+     * @param page            a
+     * @param orderByBodyList a
+     * @param whereBodyList   a
+     * @return a
+     * @throws BadRequestException a
      */
-    public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) throws CustomHttpException {
+    public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) throws BadRequestException {
         var query = new Query();
         if (limit != null && limit >= 0) {
             if (page != null && page >= 1) {
@@ -157,16 +161,16 @@ public final class CRUDHelper {
      *
      * @param modelClass m
      * @param fieldName  f
-     * @throws CustomHttpException c
+     * @throws UnknownFieldName c
      */
-    public static void checkFieldName(Class<?> modelClass, String fieldName) throws CustomHttpException {
+    public static void checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldName {
         try {
             var field = modelClass.getField(fieldName);
             if (field.isAnnotationPresent(NoColumn.class)) {
-                throw new CustomHttpException(ctx -> Json.fail("unknown-field-name").put("field-name", fieldName).handle(ctx));
+                throw new UnknownFieldName(fieldName);
             }
         } catch (Exception e) {
-            throw new CustomHttpException(ctx -> Json.fail("unknown-field-name").put("field-name", fieldName).handle(ctx));
+            throw new UnknownFieldName(fieldName);
         }
     }
 
@@ -176,13 +180,13 @@ public final class CRUDHelper {
      * @param fieldName    f
      * @param strWhereType s
      * @return s
-     * @throws CustomHttpException s
+     * @throws UnknownWhereType s
      */
-    public static WhereType checkWhereType(String fieldName, String strWhereType) throws CustomHttpException {
+    public static WhereType checkWhereType(String fieldName, String strWhereType) throws UnknownWhereType {
         try {
             return WhereType.of(strWhereType);
         } catch (Exception ignored) {
-            throw new CustomHttpException(ctx -> Json.fail("unknown-where-type").put("field-name", fieldName).put("where-type", strWhereType).handle(ctx));
+            throw new UnknownWhereType(fieldName, strWhereType);
         }
     }
 
@@ -192,13 +196,13 @@ public final class CRUDHelper {
      * @param fieldName   a
      * @param strSortType a
      * @return a
-     * @throws CustomHttpException a
+     * @throws UnknownSortType a
      */
-    public static OrderByType checkSortType(String fieldName, String strSortType) throws CustomHttpException {
+    public static OrderByType checkSortType(String fieldName, String strSortType) throws UnknownSortType {
         try {
             return OrderByType.of(strSortType);
         } catch (Exception ignored) {
-            throw new CustomHttpException(ctx -> Json.fail("unknown-sort-type").put("field-name", fieldName).put("sort-type", strSortType).handle(ctx));
+            throw new UnknownSortType(fieldName, strSortType);
         }
     }
 
@@ -209,9 +213,9 @@ public final class CRUDHelper {
      * @param whereType w
      * @param value1    v
      * @param value2    v
-     * @throws CustomHttpException v
+     * @throws WhereBodyParametersSizeError v
      */
-    public static void checkWhereBodyParametersSize(String fieldName, WhereType whereType, Object value1, Object value2) throws CustomHttpException {
+    public static void checkWhereBodyParametersSize(String fieldName, WhereType whereType, Object value1, Object value2) throws WhereBodyParametersSizeError {
         AtomicInteger paramSize = new AtomicInteger();
         if (value1 != null) {
             paramSize.set(paramSize.get() + 1);
@@ -221,12 +225,7 @@ public final class CRUDHelper {
         }
 
         if (whereType.paramSize() != paramSize.get()) {
-            throw new CustomHttpException(ctx -> Json.fail("where-body-parameters-size-error")
-                    .put("field-name", fieldName)
-                    .put("where-type", whereType)
-                    .put("need-parameters-size", whereType.paramSize())
-                    .put("got-parameters-size", paramSize.get())
-                    .handle(ctx));
+            throw new WhereBodyParametersSizeError(fieldName, whereType, paramSize.get());
         }
     }
 

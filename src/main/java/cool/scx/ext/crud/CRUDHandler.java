@@ -1,7 +1,7 @@
 package cool.scx.ext.crud;
 
 import cool.scx.base.BaseModel;
-import cool.scx.bo.Query;
+import cool.scx.base.Query;
 
 import java.util.List;
 import java.util.Map;

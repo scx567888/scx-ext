@@ -1,7 +1,7 @@
 package cool.scx.test.website;
 
 import cool.scx.annotation.ScxService;
-import cool.scx.bo.Query;
+import cool.scx.base.Query;
 import cool.scx.ext.cms.web_site.WebSiteHandler;
 import cool.scx.test.auth.TestAuth;
 import cool.scx.test.user.User;

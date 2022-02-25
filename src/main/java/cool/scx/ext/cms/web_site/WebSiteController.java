@@ -4,11 +4,11 @@ import cool.scx.ScxContext;
 import cool.scx.annotation.FromPath;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
-import cool.scx.exception.impl.NotFoundException;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.cms_config.CMSConfigService;
 import cool.scx.ext.cms.content.ContentService;
+import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.vo.Html;
 
 import java.io.IOException;
@@ -38,14 +38,14 @@ public class WebSiteController {
         this.contentService = contentService;
         this.channelService = channelService;
         this.cmsConfigService = cmsConfigService;
-        this.webSiteHandler = ScxContext.beanFactory().getBean(ScxContext.findScxModuleInfo(CMSModule.class).scxModuleExample().getWebSiteHandlerClass());
+        this.webSiteHandler = ScxContext.getBean(ScxContext.findScxModuleInfo(CMSModule.class).scxModuleExample().getWebSiteHandlerClass());
     }
 
     /**
      * <p>index.</p>
      *
      * @return a {@link cool.scx.vo.Html} object
-     * @throws cool.scx.exception.impl.NotFoundException if any.
+     * @throws Exception if any.
      */
     @ScxMapping(value = "/", method = HttpMethod.GET)
     public Html index() throws Exception {
@@ -67,7 +67,7 @@ public class WebSiteController {
      *
      * @param channelPath a {@link java.lang.String} object
      * @return a {@link cool.scx.vo.Html} object
-     * @throws cool.scx.exception.impl.NotFoundException if any.
+     * @throws Exception if any.
      */
     @ScxMapping(value = "/:channelPath", method = HttpMethod.GET)
     public Html channel(@FromPath String channelPath) throws Exception {
@@ -100,7 +100,7 @@ public class WebSiteController {
      * @param channelPath a {@link java.lang.String} object
      * @param contentID   a {@link java.lang.Long} object
      * @return a {@link cool.scx.vo.Html} object
-     * @throws cool.scx.exception.impl.NotFoundException if any.
+     * @throws Exception if any.
      */
     @ScxMapping(value = "/:channelPath/:contentID", method = HttpMethod.GET)
     public Html content(@FromPath String channelPath, @FromPath Long contentID) throws Exception {
