@@ -28,7 +28,7 @@ public final class TemplateHelper {
      *
      * @param filePath 文件路径
      * @return 文件列表
-     * @throws IOException if any.
+     * @throws java.io.IOException if any.
      */
     private static List<TemplateInfo> getTemplateList(String filePath) throws IOException {
         var fileList = new LinkedList<TemplateInfo>();
@@ -67,6 +67,14 @@ public final class TemplateHelper {
         return fileList;
     }
 
+    /**
+     * <p>getFileVisitResult.</p>
+     *
+     * @param file         a {@link java.nio.file.Path} object
+     * @param templateInfo a {@link cool.scx.ext.cms.template.TemplateInfo} object
+     * @param path         a {@link java.nio.file.Path} object
+     * @param fileList     a {@link java.util.LinkedList} object
+     */
     private static void getFileVisitResult(Path file, TemplateInfo templateInfo, Path path, LinkedList<TemplateInfo> fileList) {
         templateInfo.id = file.getFileName().toString();
         templateInfo.parentID = file.getParent().toFile().getPath();

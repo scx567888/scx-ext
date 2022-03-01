@@ -81,7 +81,7 @@ public class FSSController {
      * @param nowChunkIndex 当前分片
      * @param fileData      文件内容
      * @return r
-     * @throws Exception s
+     * @throws java.lang.Exception s
      */
     @ScxMapping(value = "/upload", method = HttpMethod.POST)
     public Json upload(@FromBody String fileName,
@@ -111,7 +111,7 @@ public class FSSController {
      * @param fileSize f
      * @param fileMD5  f
      * @return f
-     * @throws IOException f
+     * @throws java.io.IOException f
      */
     @ScxMapping(value = "check-any-file-exists-by-this-md5", method = HttpMethod.POST)
     public Json checkAnyFileExistsByThisMD5(@FromBody String fileName,

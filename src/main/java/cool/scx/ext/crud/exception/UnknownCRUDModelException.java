@@ -5,6 +5,9 @@ import cool.scx.vo.Json;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.7.7
  */
 public final class UnknownCRUDModelException extends BadRequestException {
 
@@ -23,6 +26,9 @@ public final class UnknownCRUDModelException extends BadRequestException {
         this.modelName = modelName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getMessage() {
         return "未找到对应名称为 : [" + modelName + "] 的 BaseModelClass !!!";

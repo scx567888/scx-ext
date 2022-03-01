@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
  */
 public class FixTableModule implements ScxModule {
 
+    /**
+     * Constant <code>logger</code>
+     */
     private static final Logger logger = LoggerFactory.getLogger(FixTableModule.class);
 
     /**

@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
  */
 public final class WSParamHandlerRegister {
 
+    /**
+     * Constant <code>logger</code>
+     */
     private static final Logger logger = LoggerFactory.getLogger(WSParamHandlerRegister.class);
 
     /**

@@ -8,6 +8,9 @@ import java.util.Map;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.7.7
  */
 public final class ListDirectiveHelper {
 

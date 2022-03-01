@@ -23,6 +23,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.7.7
  */
 public final class CRUDHelper {
 
@@ -91,6 +94,7 @@ public final class CRUDHelper {
      *
      * @param baseModelName a {@link java.lang.String} object.
      * @return a {@link java.lang.Class} object.
+     * @throws cool.scx.ext.crud.exception.UnknownCRUDModelException if any.
      */
     public static Class<BaseModel> getBaseModelClassByName(String baseModelName) throws UnknownCRUDModelException {
         if (StringUtils.isBlank(baseModelName)) {
@@ -112,7 +116,7 @@ public final class CRUDHelper {
      * @param orderByBodyList a
      * @param whereBodyList   a
      * @return a
-     * @throws BadRequestException a
+     * @throws cool.scx.http.exception.impl.BadRequestException a
      */
     public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) throws BadRequestException {
         var query = new Query();
@@ -161,7 +165,7 @@ public final class CRUDHelper {
      *
      * @param modelClass m
      * @param fieldName  f
-     * @throws UnknownFieldName c
+     * @throws cool.scx.ext.crud.exception.UnknownFieldName c
      */
     public static void checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldName {
         try {
@@ -180,7 +184,7 @@ public final class CRUDHelper {
      * @param fieldName    f
      * @param strWhereType s
      * @return s
-     * @throws UnknownWhereType s
+     * @throws cool.scx.ext.crud.exception.UnknownWhereType s
      */
     public static WhereType checkWhereType(String fieldName, String strWhereType) throws UnknownWhereType {
         try {
@@ -196,7 +200,7 @@ public final class CRUDHelper {
      * @param fieldName   a
      * @param strSortType a
      * @return a
-     * @throws UnknownSortType a
+     * @throws cool.scx.ext.crud.exception.UnknownSortType a
      */
     public static OrderByType checkSortType(String fieldName, String strSortType) throws UnknownSortType {
         try {
@@ -213,7 +217,7 @@ public final class CRUDHelper {
      * @param whereType w
      * @param value1    v
      * @param value2    v
-     * @throws WhereBodyParametersSizeError v
+     * @throws cool.scx.ext.crud.exception.WhereBodyParametersSizeError v
      */
     public static void checkWhereBodyParametersSize(String fieldName, WhereType whereType, Object value1, Object value2) throws WhereBodyParametersSizeError {
         AtomicInteger paramSize = new AtomicInteger();
@@ -229,6 +233,11 @@ public final class CRUDHelper {
         }
     }
 
+    /**
+     * <p>initBaseModelNameClassMapping.</p>
+     *
+     * @return a {@link java.util.Map} object
+     */
     @SuppressWarnings("unchecked")
     private static Map<String, Class<BaseModel>> initBaseModelNameClassMapping() {
         var tempMap = new HashMap<String, Class<BaseModel>>();
@@ -249,6 +258,11 @@ public final class CRUDHelper {
         return tempMap;
     }
 
+    /**
+     * <p>initBaseModelClassBaseModelServiceClassMapping.</p>
+     *
+     * @return a {@link java.util.Map} object
+     */
     @SuppressWarnings("unchecked")
     private static Map<Class<BaseModel>, Class<BaseModelService<BaseModel>>> initBaseModelClassBaseModelServiceClassMapping() {
         // 因为一个 BaseModel 可能由多个 BaseModelService 的实现 这里使用 HashSetValuedHashMap 存储

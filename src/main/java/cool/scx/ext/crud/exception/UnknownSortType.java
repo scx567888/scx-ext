@@ -5,6 +5,9 @@ import cool.scx.vo.Json;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.7.7
  */
 public final class UnknownSortType extends BadRequestException {
 

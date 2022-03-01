@@ -171,7 +171,7 @@ public abstract class FSSHandler {
      *
      * @param fssObject a {@link cool.scx.ext.fss.FSSObject} object
      * @return a {@link java.io.File} object
-     * @throws NotFoundException if any.
+     * @throws cool.scx.http.exception.impl.NotFoundException if any.
      */
     public File checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
         var physicalFile = FSSObjectService.getPhysicalFilePath(fssObject).toFile();
@@ -237,7 +237,7 @@ public abstract class FSSHandler {
      * @param nowChunkIndex a {@link java.lang.Integer} object
      * @param fileData      a {@link cool.scx.type.UploadedEntity} object
      * @return a {@link cool.scx.vo.Json} object
-     * @throws IOException a
+     * @throws java.io.IOException a
      */
     public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws IOException {
         var uploadTempFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSTemp");
@@ -340,7 +340,7 @@ public abstract class FSSHandler {
      * @param fileSize f
      * @param fileMD5  f
      * @return f
-     * @throws IOException e
+     * @throws java.io.IOException e
      */
     public Json checkAnyFileExistsByThisMD5(String fileName, Long fileSize, String fileMD5) throws IOException {
         //可能有上传残留 这里准备清除一下

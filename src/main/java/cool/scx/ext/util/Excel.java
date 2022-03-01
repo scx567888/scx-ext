@@ -36,6 +36,13 @@ public final class Excel {
      */
     public final Map<Integer, Row> rowMap;
 
+    /**
+     * <p>Constructor for Excel.</p>
+     *
+     * @param workbook  a {@link org.apache.poi.ss.usermodel.Workbook} object
+     * @param sheetName a {@link java.lang.String} object
+     * @param rowSize   a int
+     */
     private Excel(Workbook workbook, String sheetName, int rowSize) {
         this.workbook = workbook;
         this.sheet = workbook.createSheet(sheetName);
@@ -68,7 +75,9 @@ public final class Excel {
      * 创建 行的 map 方便后续操作
      * key 是索引 , value 是 当前行
      *
-     * @param size 创建的行数
+     * @param size  创建的行数
+     * @param sheet a {@link org.apache.poi.ss.usermodel.Sheet} object
+     * @return a {@link java.util.Map} object
      */
     private static Map<Integer, Row> getRowMap(int size, Sheet sheet) {
         var rowMap = new HashMap<Integer, Row>(size);

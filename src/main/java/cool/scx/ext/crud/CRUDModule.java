@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
  */
 public class CRUDModule implements ScxModule {
 
+    /**
+     * Constant <code>logger</code>
+     */
     private static final Logger logger = LoggerFactory.getLogger(CRUDModule.class);
 
     /**
@@ -27,12 +30,17 @@ public class CRUDModule implements ScxModule {
     }
 
     /**
+     * <p>Constructor for CRUDModule.</p>
+     *
      * @param c c
      */
     public CRUDModule(Class<? extends CRUDHandler> c) {
         crudHandlerClass = c;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         logger.info("CRUDHandler 实现类  -->  {}", this.crudHandlerClass.getName());

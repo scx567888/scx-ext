@@ -25,6 +25,9 @@ import java.util.List;
 @ScxWebSocketMapping("/scx")
 public class CoreWebSocketHandler implements BaseWebSocketHandler {
 
+    /**
+     * Constant <code>logger</code>
+     */
     private static final Logger logger = LoggerFactory.getLogger(CoreWebSocketHandler.class);
 
     /**
