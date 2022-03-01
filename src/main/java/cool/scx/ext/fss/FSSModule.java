@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
  */
 public class FSSModule implements ScxModule {
 
+    /**
+     * Constant <code>logger</code>
+     */
     private static final Logger logger = LoggerFactory.getLogger(FSSModule.class);
 
     /**

@@ -15,6 +15,9 @@ import java.io.File;
  */
 public class FSSConfig {
 
+    /**
+     * Constant <code>logger</code>
+     */
     private static final Logger logger = LoggerFactory.getLogger(FSSConfig.class);
 
     /**

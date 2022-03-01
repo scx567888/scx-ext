@@ -14,7 +14,7 @@ public interface WebSiteHandler {
      * cms 访问 index 会执行此方法
      *
      * @param indexTemplate a {@link cool.scx.vo.Html} object
-     * @throws Exception s
+     * @throws java.lang.Exception s
      */
     default void indexHandler(Html indexTemplate) throws Exception {
 
@@ -25,7 +25,7 @@ public interface WebSiteHandler {
      *
      * @param channelTemplate a {@link cool.scx.vo.Html} object
      * @param channelPath     a {@link java.lang.String} object
-     * @throws Exception s
+     * @throws java.lang.Exception s
      */
     default void channelHandler(Html channelTemplate, String channelPath) throws Exception {
 
@@ -37,7 +37,7 @@ public interface WebSiteHandler {
      * @param contentTemplate a
      * @param channelPath     a
      * @param contentID       a
-     * @throws Exception s
+     * @throws java.lang.Exception s
      */
     default void contentHandler(Html contentTemplate, String channelPath, Long contentID) throws Exception {
 

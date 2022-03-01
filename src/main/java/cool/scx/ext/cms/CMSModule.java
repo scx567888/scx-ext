@@ -52,6 +52,8 @@ public class CMSModule implements ScxModule {
     }
 
     /**
+     * <p>Getter for the field <code>webSiteHandlerClass</code>.</p>
+     *
      * @return a
      */
     public Class<? extends WebSiteHandler> getWebSiteHandlerClass() {
@@ -59,6 +61,8 @@ public class CMSModule implements ScxModule {
     }
 
     /**
+     * <p>setWebSiteHandler.</p>
+     *
      * @param webSiteHandlerClass a
      * @return s
      */

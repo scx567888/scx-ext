@@ -2,6 +2,9 @@ package cool.scx.ext.crud;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.7.7
  */
 public final class CRUDOrderByBody {
 

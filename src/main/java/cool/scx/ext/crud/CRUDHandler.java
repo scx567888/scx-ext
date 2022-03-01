@@ -8,6 +8,9 @@ import java.util.Map;
 
 /**
  * crud 各个逻辑的 handler
+ *
+ * @author scx567888
+ * @version 1.7.7
  */
 public interface CRUDHandler {
 
@@ -30,6 +33,8 @@ public interface CRUDHandler {
     }
 
     /**
+     * <p>revokeDelete.</p>
+     *
      * @param modelName model 名称
      * @param id        model 的 id
      * @return r
@@ -79,6 +84,8 @@ public interface CRUDHandler {
     }
 
     /**
+     * <p>save.</p>
+     *
      * @param modelName model 名称
      * @param entityMap 可以转换为 model类的 map
      * @return c
