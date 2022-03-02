@@ -107,7 +107,7 @@
 
     <properties>
         <scx.mainClass>cool.scx.ext.AllExtApp</scx.mainClass>
-        <scx.version>1.11.9</scx.version>
+        <scx.version>1.11.10</scx.version>
     </properties>
 
 </project>
