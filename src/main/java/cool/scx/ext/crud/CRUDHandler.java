@@ -24,6 +24,7 @@ public interface CRUDHandler {
      * @return 是否唯一
      */
     default boolean checkUnique(String modelName, String fieldName, Object value, Long id) {
+        CRUDHelper.checkFieldName(CRUDHelper.getBaseModelClassByName(modelName), fieldName);
         var baseModelService = CRUDHelper.getBaseModelService(modelName);
         var query = new Query().equal(fieldName, value);
         if (id != null) {
