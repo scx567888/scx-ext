@@ -79,6 +79,7 @@ public abstract class FSSHandler {
      * @param uploadConfigFile a {@link java.io.File} object.
      * @param chunkLength      a {@link java.lang.Integer} object.
      * @return a {@link java.lang.Integer} object.
+     * @throws IOException e
      */
     public static Integer getLastUploadChunk(File uploadConfigFile, Integer chunkLength) throws IOException {
         try (var fr = new FileReader(uploadConfigFile); var br = new BufferedReader(fr)) {
@@ -96,6 +97,7 @@ public abstract class FSSHandler {
      * @param uploadConfigFile a {@link java.io.File} object.
      * @param nowChunkIndex    a {@link java.lang.Integer} object.
      * @param chunkLength      a {@link java.lang.Integer} object.
+     * @throws IOException e
      */
     public static void updateLastUploadChunk(File uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
         Files.createDirectories(Path.of(uploadConfigFile.getParent()));

@@ -54,7 +54,7 @@ public final class CRUDHelper {
      * @param modelName model 名称
      * @return service
      */
-    public static BaseModelService<BaseModel> getBaseModelService(String modelName) throws UnknownCRUDModelException {
+    public static BaseModelService<BaseModel> getBaseModelService(String modelName) {
         //先通过 modelName 获取 class
         var baseModelClass = getBaseModelClassByName(modelName);
         try {
