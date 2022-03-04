@@ -14,6 +14,8 @@ import cool.scx.sql.where.WhereType;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
 import cool.scx.util.ansi.Ansi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
@@ -28,6 +30,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version 1.7.7
  */
 public final class CRUDHelper {
+
+    private static final Logger logger = LoggerFactory.getLogger(CRUDHelper.class);
 
     /**
      * scx bean 名称 和 class 对应映射
@@ -50,7 +54,7 @@ public final class CRUDHelper {
      * @param modelName model 名称
      * @return service
      */
-    public static BaseModelService<BaseModel> getBaseModelService(String modelName) {
+    public static BaseModelService<BaseModel> getBaseModelService(String modelName) throws UnknownCRUDModelException {
         //先通过 modelName 获取 class
         var baseModelClass = getBaseModelClassByName(modelName);
         try {
@@ -66,7 +70,7 @@ public final class CRUDHelper {
             }
             return baseModelService;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("获取 BaseModelService 时发生异常 : ", e);
             throw new UnknownCRUDModelException(modelName);
         }
     }
@@ -83,7 +87,7 @@ public final class CRUDHelper {
         try {
             return ObjectUtils.convertValue(entityMap, baseModelClass);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("将 Map 转换为 BaseModel 时发生异常 : ", e);
             //这里一般就是 参数转换错误
             throw new BadRequestException(e);
         }

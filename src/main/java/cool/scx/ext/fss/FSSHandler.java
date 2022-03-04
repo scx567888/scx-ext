@@ -3,7 +3,6 @@ package cool.scx.ext.fss;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import cool.scx.ScxContext;
-import cool.scx.annotation.ScxService;
 import cool.scx.base.Query;
 import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.type.UploadedEntity;
@@ -29,7 +28,6 @@ import java.util.concurrent.TimeUnit;
  * @author scx567888
  * @version 1.3.7
  */
-@ScxService
 public abstract class FSSHandler {
 
     /**
@@ -82,7 +80,7 @@ public abstract class FSSHandler {
      * @param chunkLength      a {@link java.lang.Integer} object.
      * @return a {@link java.lang.Integer} object.
      */
-    public static Integer getLastUploadChunk(File uploadConfigFile, Integer chunkLength) {
+    public static Integer getLastUploadChunk(File uploadConfigFile, Integer chunkLength) throws IOException {
         try (var fr = new FileReader(uploadConfigFile); var br = new BufferedReader(fr)) {
             return Integer.parseInt(br.readLine().split("_")[0]);
         } catch (Exception e) {
@@ -99,17 +97,11 @@ public abstract class FSSHandler {
      * @param nowChunkIndex    a {@link java.lang.Integer} object.
      * @param chunkLength      a {@link java.lang.Integer} object.
      */
-    public static void updateLastUploadChunk(File uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) {
-        try {
-            Files.createDirectories(Path.of(uploadConfigFile.getParent()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void updateLastUploadChunk(File uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
+        Files.createDirectories(Path.of(uploadConfigFile.getParent()));
         try (var fw = new FileWriter(uploadConfigFile, false); var bw = new BufferedWriter(fw)) {
             bw.write(nowChunkIndex + "_" + chunkLength);
             bw.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
