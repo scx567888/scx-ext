@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>scx-ext</name>
 
-    <version>1.7.11</version>
+    <version>1.8.0</version>
 
     <description>SCX-EXT : SCX 拓展包</description>
     <url>https://github.com/scx567888/scx-ext</url>
@@ -83,11 +83,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
         </dependency>
@@ -107,7 +102,7 @@
 
     <properties>
         <scx.mainClass>cool.scx.ext.AllExtApp</scx.mainClass>
-        <scx.version>1.11.12</scx.version>
+        <scx.version>1.12.0</scx.version>
     </properties>
 
 </project>
