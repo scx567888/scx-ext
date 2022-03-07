@@ -48,41 +48,33 @@ public final class CRUDHelper {
     private static final Map<Class<BaseModel>, BaseModelService<BaseModel>> BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE = new HashMap<>();
 
     /**
-     * 获取 service
+     * a
      *
-     * @param modelName model 名称
-     * @return service
+     * @param baseModelClass a
+     * @return a
      */
-    public static BaseModelService<BaseModel> getBaseModelService(String modelName) {
-        //先通过 modelName 获取 class
-        var baseModelClass = getBaseModelClassByName(modelName);
-        try {
-            // 从缓存中获取 baseModelService
-            var baseModelService = BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE.get(baseModelClass);
-            // 缓存未命中
-            if (baseModelService == null) {
-                var baseModelServiceClass = BASE_MODEL_CLASS_BASE_SERVICE_CLASS_MAPPING.get(baseModelClass);
-                //查看映射中是否存在 存在 则通过 spring 获取 不存在则通过 手动 new
-                baseModelService = baseModelServiceClass != null ? ScxContext.getBean(baseModelServiceClass) : new BaseModelService<>(baseModelClass);
-                //添加到缓存中
-                BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE.put(baseModelClass, baseModelService);
-            }
-            return baseModelService;
-        } catch (Exception e) {
-            logger.error("获取 BaseModelService 时发生异常 : ", e);
-            throw new UnknownCRUDModelException(modelName);
+    public static BaseModelService<BaseModel> getBaseModelService(Class<BaseModel> baseModelClass) {
+        // 从缓存中获取 baseModelService
+        var baseModelService = BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE.get(baseModelClass);
+        // 缓存未命中
+        if (baseModelService == null) {
+            var baseModelServiceClass = BASE_MODEL_CLASS_BASE_SERVICE_CLASS_MAPPING.get(baseModelClass);
+            //查看映射中是否存在 存在 则通过 spring 获取 不存在则通过 手动 new
+            baseModelService = baseModelServiceClass != null ? ScxContext.getBean(baseModelServiceClass) : new BaseModelService<>(baseModelClass);
+            //添加到缓存中
+            BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE.put(baseModelClass, baseModelService);
         }
+        return baseModelService;
     }
 
     /**
      * 获取 baseModel
      *
-     * @param entityMap     a
-     * @param baseModelName a
+     * @param entityMap      a
+     * @param baseModelClass a
      * @return a
      */
-    public static BaseModel mapToBaseModel(Map<String, Object> entityMap, String baseModelName) {
-        var baseModelClass = getBaseModelClassByName(baseModelName);
+    public static BaseModel mapToBaseModel(Map<String, Object> entityMap, Class<BaseModel> baseModelClass) {
         try {
             return ObjectUtils.convertValue(entityMap, baseModelClass);
         } catch (Exception e) {
@@ -99,7 +91,7 @@ public final class CRUDHelper {
      * @return a {@link java.lang.Class} object.
      * @throws cool.scx.ext.crud.exception.UnknownCRUDModelException if any.
      */
-    public static Class<BaseModel> getBaseModelClassByName(String baseModelName) throws UnknownCRUDModelException {
+    public static Class<BaseModel> getBaseModelClass(String baseModelName) throws UnknownCRUDModelException {
         if (StringUtils.isBlank(baseModelName)) {
             throw new UnknownCRUDModelException(baseModelName);
         }

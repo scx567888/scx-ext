@@ -2,6 +2,7 @@ package cool.scx.ext.crud;
 
 import cool.scx.base.BaseModel;
 import cool.scx.base.Query;
+import cool.scx.sql.where.WhereOption;
 
 import java.util.List;
 import java.util.Map;
@@ -24,12 +25,10 @@ public interface CRUDHandler {
      * @return 是否唯一
      */
     default boolean checkUnique(String modelName, String fieldName, Object value, Long id) {
-        CRUDHelper.checkFieldName(CRUDHelper.getBaseModelClassByName(modelName), fieldName);
-        var baseModelService = CRUDHelper.getBaseModelService(modelName);
-        var query = new Query().equal(fieldName, value);
-        if (id != null) {
-            query.notEqual("id", id);
-        }
+        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        CRUDHelper.checkFieldName(baseModelClass, fieldName);
+        var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
+        var query = new Query().equal(fieldName, value).notEqual("id", id, WhereOption.SKIP_IF_NULL);
         return baseModelService.count(query) == 0;
     }
 
@@ -41,9 +40,9 @@ public interface CRUDHandler {
      * @return r
      */
     default boolean revokeDelete(String modelName, Long id) {
-        var baseModelService = CRUDHelper.getBaseModelService(modelName);
-        var revokeDeleteCount = baseModelService.revokeDelete(id);
-        return revokeDeleteCount == 1;
+        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
+        return baseModelService.revokeDelete(id) == 1;
     }
 
     /**
@@ -54,7 +53,8 @@ public interface CRUDHandler {
      * @return r
      */
     default long batchDelete(String modelName, long[] deleteIDs) {
-        var baseModelService = CRUDHelper.getBaseModelService(modelName);
+        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         return baseModelService.delete(deleteIDs);
     }
 
@@ -66,9 +66,9 @@ public interface CRUDHandler {
      * @return r
      */
     default boolean delete(String modelName, Long id) {
-        var baseModelService = CRUDHelper.getBaseModelService(modelName);
-        var deletedCount = baseModelService.delete(id);
-        return deletedCount == 1;
+        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
+        return baseModelService.delete(id) == 1;
     }
 
     /**
@@ -79,8 +79,9 @@ public interface CRUDHandler {
      * @return c
      */
     default BaseModel update(String modelName, Map<String, Object> entityMap) {
-        var baseModelService = CRUDHelper.getBaseModelService(modelName);
-        var realObject = CRUDHelper.mapToBaseModel(entityMap, modelName);
+        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
+        var realObject = CRUDHelper.mapToBaseModel(entityMap, baseModelClass);
         return baseModelService.update(realObject);
     }
 
@@ -92,8 +93,9 @@ public interface CRUDHandler {
      * @return c
      */
     default BaseModel save(String modelName, Map<String, Object> entityMap) {
-        var baseModelService = CRUDHelper.getBaseModelService(modelName);
-        var realObject = CRUDHelper.mapToBaseModel(entityMap, modelName);
+        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
+        var realObject = CRUDHelper.mapToBaseModel(entityMap, baseModelClass);
         return baseModelService.save(realObject);
     }
 
@@ -105,7 +107,8 @@ public interface CRUDHandler {
      * @return 单条数据信息
      */
     default BaseModel info(String modelName, Long id) {
-        var baseModelService = CRUDHelper.getBaseModelService(modelName);
+        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         return baseModelService.get(id);
     }
 
@@ -121,8 +124,8 @@ public interface CRUDHandler {
      * @return 列表数据
      */
     default CRUDListResult list(String modelName, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList, CRUDSelectFilterBody selectFilterBody) {
-        var baseModelService = CRUDHelper.getBaseModelService(modelName);
-        var baseModelClass = CRUDHelper.getBaseModelClassByName(modelName);
+        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var query = CRUDHelper.getQuery(baseModelClass, limit, page, orderByBodyList, whereBodyList);
         var selectFilter = CRUDHelper.getSelectFilter(baseModelClass, selectFilterBody, baseModelService._scxDaoTableInfo());
         var list = baseModelService.list(query, selectFilter);
