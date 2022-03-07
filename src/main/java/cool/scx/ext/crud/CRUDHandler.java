@@ -116,17 +116,17 @@ public interface CRUDHandler {
      * 获取列表数据
      *
      * @param modelName        model 名称
-     * @param limit            分页:每页数据
-     * @param page             分页:页码
+     * @param currentPage      分页:页码
+     * @param pageSize         分页:每页数据条数
      * @param orderByBodyList  排序参数 (字段,类型)
      * @param whereBodyList    查询参数
      * @param selectFilterBody 查询列过滤项
      * @return 列表数据
      */
-    default CRUDListResult list(String modelName, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList, CRUDSelectFilterBody selectFilterBody) {
+    default CRUDListResult list(String modelName, Integer currentPage, Integer pageSize, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList, CRUDSelectFilterBody selectFilterBody) {
         var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
-        var query = CRUDHelper.getQuery(baseModelClass, limit, page, orderByBodyList, whereBodyList);
+        var query = CRUDHelper.getQuery(baseModelClass, currentPage, pageSize, orderByBodyList, whereBodyList);
         var selectFilter = CRUDHelper.getSelectFilter(baseModelClass, selectFilterBody, baseModelService._scxDaoTableInfo());
         var list = baseModelService.list(query, selectFilter);
         var total = baseModelService.count(query);

@@ -35,21 +35,21 @@ public class CRUDController {
      * 列表查询
      *
      * @param modelName       a {@link java.lang.String} object.
-     * @param limit           a {@link java.lang.Integer} object.
-     * @param page            a {@link java.lang.Integer} object.
+     * @param currentPage     a {@link java.lang.Integer} object.
+     * @param pageSize        a {@link java.lang.Integer} object.
      * @param orderByBodyList a {@link java.lang.String} object.
      * @param whereBodyList   a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
     public Json list(@FromPath String modelName,
-                     @FromBody(value = "pagination.limit", required = false) Integer limit,
-                     @FromBody(value = "pagination.page", required = false) Integer page,
+                     @FromBody(value = "pagination.currentPage", required = false) Integer currentPage,
+                     @FromBody(value = "pagination.pageSize", required = false) Integer pageSize,
                      @FromBody(value = "orderByBodyList", required = false) List<CRUDOrderByBody> orderByBodyList,
                      @FromBody(value = "whereBodyList", required = false) List<CRUDWhereBody> whereBodyList,
                      @FromBody(value = "selectFilterBody", required = false) CRUDSelectFilterBody selectFilterBody
     ) {
-        var crudListResult = crudHandler.list(modelName, limit, page, orderByBodyList, whereBodyList, selectFilterBody);
+        var crudListResult = crudHandler.list(modelName, currentPage, pageSize, orderByBodyList, whereBodyList, selectFilterBody);
         return Json.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }
 

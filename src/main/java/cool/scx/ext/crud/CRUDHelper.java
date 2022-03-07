@@ -106,22 +106,17 @@ public final class CRUDHelper {
      * 获取 Query
      *
      * @param modelClass      a
-     * @param limit           a
-     * @param page            a
+     * @param currentPage     a
+     * @param pageSize        a
      * @param orderByBodyList a
      * @param whereBodyList   a
      * @return a
      * @throws cool.scx.http.exception.impl.BadRequestException a
      */
-    public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) throws BadRequestException {
+    public static Query getQuery(Class<? extends BaseModel> modelClass, Integer currentPage, Integer pageSize, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) throws BadRequestException {
         var query = new Query();
-        if (limit != null && limit >= 0) {
-            if (page != null && page >= 0) {
-                query.setPagination(page, limit);
-            } else {
-                query.setPagination(limit);
-            }
-        }
+        //先处理一下分页
+        checkPagination(query, currentPage, pageSize);
         if (orderByBodyList != null) {
             for (var orderByBody : orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
@@ -346,6 +341,29 @@ public final class CRUDHelper {
             return AbstractFilter.FilterMode.of(filterMode);
         } catch (Exception ignored) {
             throw new UnknownFilterMode(filterMode);
+        }
+    }
+
+    /**
+     * 处理分页
+     *
+     * @param query       a
+     * @param currentPage
+     * @param pageSize    a
+     */
+    private static void checkPagination(Query query, Integer currentPage, Integer pageSize) {
+        if (pageSize != null) {
+            if (pageSize >= 0) {
+                if (currentPage == null) {
+                    query.setPagination(pageSize);
+                } else if (currentPage >= 0) {
+                    query.setPagination(currentPage, pageSize);
+                } else {
+                    throw new PaginationParametersError(currentPage, pageSize);
+                }
+            } else {
+                throw new PaginationParametersError(currentPage, pageSize);
+            }
         }
     }
 
