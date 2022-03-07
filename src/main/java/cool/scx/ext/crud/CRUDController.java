@@ -5,6 +5,8 @@ import cool.scx.annotation.FromBody;
 import cool.scx.annotation.FromPath;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
+import cool.scx.vo.BaseVo;
+import cool.scx.vo.CustomJson;
 import cool.scx.vo.Json;
 
 import java.util.List;
@@ -59,9 +61,9 @@ public class CRUDController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.GET)
-    public Json info(@FromPath String modelName, @FromPath Long id) {
+    public BaseVo info(@FromPath String modelName, @FromPath Long id) {
         var info = crudHandler.info(modelName, id);
-        return Json.ok().put("info", info);
+        return CustomJson.ok().data(info);
     }
 
     /**
@@ -72,9 +74,9 @@ public class CRUDController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.POST)
-    public Json save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
+    public BaseVo save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
         var savedModel = crudHandler.save(modelName, entityMap);
-        return Json.ok().put("item", savedModel);
+        return CustomJson.ok().data(savedModel);
     }
 
     /**
@@ -85,9 +87,9 @@ public class CRUDController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.PUT)
-    public Json update(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
+    public BaseVo update(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
         var updatedModel = crudHandler.update(modelName, entityMap);
-        return Json.ok().put("item", updatedModel);
+        return CustomJson.ok().data(updatedModel);
     }
 
     /**
@@ -144,8 +146,8 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName/check-unique/:fieldName", method = HttpMethod.POST)
     public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {
-        var b = crudHandler.checkUnique(modelName, fieldName, value, id);
-        return Json.ok().put("isUnique", b);
+        var isUnique = crudHandler.checkUnique(modelName, fieldName, value, id);
+        return Json.ok().put("isUnique", isUnique);
     }
 
 }
