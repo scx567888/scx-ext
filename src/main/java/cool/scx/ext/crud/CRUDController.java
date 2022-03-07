@@ -6,7 +6,7 @@ import cool.scx.annotation.FromPath;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.vo.BaseVo;
-import cool.scx.vo.CustomJson;
+import cool.scx.vo.DataJson;
 import cool.scx.vo.Json;
 
 import java.util.List;
@@ -63,7 +63,7 @@ public class CRUDController {
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.GET)
     public BaseVo info(@FromPath String modelName, @FromPath Long id) {
         var info = crudHandler.info(modelName, id);
-        return CustomJson.ok().data(info);
+        return DataJson.ok().data(info);
     }
 
     /**
@@ -76,7 +76,7 @@ public class CRUDController {
     @ScxMapping(value = ":modelName", method = HttpMethod.POST)
     public BaseVo save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
         var savedModel = crudHandler.save(modelName, entityMap);
-        return CustomJson.ok().data(savedModel);
+        return DataJson.ok().data(savedModel);
     }
 
     /**
@@ -89,7 +89,7 @@ public class CRUDController {
     @ScxMapping(value = ":modelName", method = HttpMethod.PUT)
     public BaseVo update(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
         var updatedModel = crudHandler.update(modelName, entityMap);
-        return CustomJson.ok().data(updatedModel);
+        return DataJson.ok().data(updatedModel);
     }
 
     /**
