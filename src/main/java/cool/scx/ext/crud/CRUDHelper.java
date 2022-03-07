@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.annotation.NoColumn;
 import cool.scx.base.*;
+import cool.scx.dao.ScxDaoTableInfo;
 import cool.scx.ext.crud.annotation.NoCRUD;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.http.exception.impl.BadRequestException;
@@ -311,7 +312,15 @@ public final class CRUDHelper {
         return tempMap;
     }
 
-    public static SelectFilter getSelectFilter(Class<BaseModel> modelClass, CRUDSelectFilterBody selectFilterBody) {
+    /**
+     * 获取 b
+     *
+     * @param modelClass       a
+     * @param selectFilterBody a
+     * @param scxDaoTableInfo  a
+     * @return a
+     */
+    public static SelectFilter getSelectFilter(Class<BaseModel> modelClass, CRUDSelectFilterBody selectFilterBody, ScxDaoTableInfo scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
@@ -326,12 +335,23 @@ public final class CRUDHelper {
                 selectFilter.add(fieldName);
             }
         }
+        //防止空列查询
+        if (selectFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
+            throw new EmptySelectColumn(filterMode, selectFilterBody.fieldNames);
+        }
         return selectFilter;
     }
 
+    /**
+     * 检查 filterMode 是否正确
+     *
+     * @param filterMode f
+     * @return a
+     * @throws UnknownWhereType a
+     */
     public static AbstractFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereType {
         try {
-            return AbstractFilter.FilterMode.valueOf(filterMode.trim().toUpperCase());
+            return AbstractFilter.FilterMode.of(filterMode);
         } catch (Exception ignored) {
             throw new UnknownFilterMode(filterMode);
         }

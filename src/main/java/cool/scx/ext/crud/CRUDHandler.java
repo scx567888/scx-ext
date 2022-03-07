@@ -124,7 +124,7 @@ public interface CRUDHandler {
         var baseModelService = CRUDHelper.getBaseModelService(modelName);
         var baseModelClass = CRUDHelper.getBaseModelClassByName(modelName);
         var query = CRUDHelper.getQuery(baseModelClass, limit, page, orderByBodyList, whereBodyList);
-        var selectFilter = CRUDHelper.getSelectFilter(baseModelClass, selectFilterBody);
+        var selectFilter = CRUDHelper.getSelectFilter(baseModelClass, selectFilterBody, baseModelService._scxDaoTableInfo());
         var list = baseModelService.list(query, selectFilter);
         var total = baseModelService.count(query);
         return new CRUDListResult(list, total);
