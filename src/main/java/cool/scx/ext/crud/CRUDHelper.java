@@ -3,9 +3,8 @@ package cool.scx.ext.crud;
 import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.annotation.NoColumn;
-import cool.scx.base.BaseModel;
-import cool.scx.base.BaseModelService;
-import cool.scx.base.Query;
+import cool.scx.base.*;
+import cool.scx.dao.ScxDaoTableInfo;
 import cool.scx.ext.crud.annotation.NoCRUD;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.http.exception.impl.BadRequestException;
@@ -49,41 +48,33 @@ public final class CRUDHelper {
     private static final Map<Class<BaseModel>, BaseModelService<BaseModel>> BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE = new HashMap<>();
 
     /**
-     * 获取 service
+     * a
      *
-     * @param modelName model 名称
-     * @return service
+     * @param baseModelClass a
+     * @return a
      */
-    public static BaseModelService<BaseModel> getBaseModelService(String modelName) {
-        //先通过 modelName 获取 class
-        var baseModelClass = getBaseModelClassByName(modelName);
-        try {
-            // 从缓存中获取 baseModelService
-            var baseModelService = BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE.get(baseModelClass);
-            // 缓存未命中
-            if (baseModelService == null) {
-                var baseModelServiceClass = BASE_MODEL_CLASS_BASE_SERVICE_CLASS_MAPPING.get(baseModelClass);
-                //查看映射中是否存在 存在 则通过 spring 获取 不存在则通过 手动 new
-                baseModelService = baseModelServiceClass != null ? ScxContext.getBean(baseModelServiceClass) : new BaseModelService<>(baseModelClass);
-                //添加到缓存中
-                BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE.put(baseModelClass, baseModelService);
-            }
-            return baseModelService;
-        } catch (Exception e) {
-            logger.error("获取 BaseModelService 时发生异常 : ", e);
-            throw new UnknownCRUDModelException(modelName);
+    public static BaseModelService<BaseModel> getBaseModelService(Class<BaseModel> baseModelClass) {
+        // 从缓存中获取 baseModelService
+        var baseModelService = BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE.get(baseModelClass);
+        // 缓存未命中
+        if (baseModelService == null) {
+            var baseModelServiceClass = BASE_MODEL_CLASS_BASE_SERVICE_CLASS_MAPPING.get(baseModelClass);
+            //查看映射中是否存在 存在 则通过 spring 获取 不存在则通过 手动 new
+            baseModelService = baseModelServiceClass != null ? ScxContext.getBean(baseModelServiceClass) : new BaseModelService<>(baseModelClass);
+            //添加到缓存中
+            BASE_MODEL_CLASS_BASE_MODEL_SERVICE_CACHE.put(baseModelClass, baseModelService);
         }
+        return baseModelService;
     }
 
     /**
      * 获取 baseModel
      *
-     * @param entityMap     a
-     * @param baseModelName a
+     * @param entityMap      a
+     * @param baseModelClass a
      * @return a
      */
-    public static BaseModel mapToBaseModel(Map<String, Object> entityMap, String baseModelName) {
-        var baseModelClass = getBaseModelClassByName(baseModelName);
+    public static BaseModel mapToBaseModel(Map<String, Object> entityMap, Class<BaseModel> baseModelClass) {
         try {
             return ObjectUtils.convertValue(entityMap, baseModelClass);
         } catch (Exception e) {
@@ -100,7 +91,7 @@ public final class CRUDHelper {
      * @return a {@link java.lang.Class} object.
      * @throws cool.scx.ext.crud.exception.UnknownCRUDModelException if any.
      */
-    public static Class<BaseModel> getBaseModelClassByName(String baseModelName) throws UnknownCRUDModelException {
+    public static Class<BaseModel> getBaseModelClass(String baseModelName) throws UnknownCRUDModelException {
         if (StringUtils.isBlank(baseModelName)) {
             throw new UnknownCRUDModelException(baseModelName);
         }
@@ -115,22 +106,17 @@ public final class CRUDHelper {
      * 获取 Query
      *
      * @param modelClass      a
-     * @param limit           a
-     * @param page            a
+     * @param currentPage     a
+     * @param pageSize        a
      * @param orderByBodyList a
      * @param whereBodyList   a
      * @return a
      * @throws cool.scx.http.exception.impl.BadRequestException a
      */
-    public static Query getQuery(Class<? extends BaseModel> modelClass, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) throws BadRequestException {
+    public static Query getQuery(Class<? extends BaseModel> modelClass, Integer currentPage, Integer pageSize, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) throws BadRequestException {
         var query = new Query();
-        if (limit != null && limit >= 0) {
-            if (page != null && page >= 1) {
-                query.setPagination(page, limit);
-            } else {
-                query.setPagination(limit);
-            }
-        }
+        //先处理一下分页
+        checkPagination(query, currentPage, pageSize);
         if (orderByBodyList != null) {
             for (var orderByBody : orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
@@ -311,6 +297,74 @@ public final class CRUDHelper {
         }
 
         return tempMap;
+    }
+
+    /**
+     * 获取 b
+     *
+     * @param modelClass       a
+     * @param selectFilterBody a
+     * @param scxDaoTableInfo  a
+     * @return a
+     */
+    public static SelectFilter getSelectFilter(Class<BaseModel> modelClass, CRUDSelectFilterBody selectFilterBody, ScxDaoTableInfo scxDaoTableInfo) {
+        if (selectFilterBody == null) {
+            return SelectFilter.ofExcluded();
+        }
+        var filterMode = checkFilterMode(selectFilterBody.filterMode);
+        var selectFilter = switch (filterMode) {
+            case EXCLUDED -> SelectFilter.ofExcluded();
+            case INCLUDED -> SelectFilter.ofIncluded();
+        };
+        if (selectFilterBody.fieldNames != null) {
+            for (var fieldName : selectFilterBody.fieldNames) {
+                checkFieldName(modelClass, fieldName);
+                selectFilter.add(fieldName);
+            }
+        }
+        //防止空列查询
+        if (selectFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
+            throw new EmptySelectColumn(filterMode, selectFilterBody.fieldNames);
+        }
+        return selectFilter;
+    }
+
+    /**
+     * 检查 filterMode 是否正确
+     *
+     * @param filterMode f
+     * @return a
+     * @throws UnknownWhereType a
+     */
+    public static AbstractFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereType {
+        try {
+            return AbstractFilter.FilterMode.of(filterMode);
+        } catch (Exception ignored) {
+            throw new UnknownFilterMode(filterMode);
+        }
+    }
+
+    /**
+     * 处理分页
+     *
+     * @param query       a
+     * @param currentPage
+     * @param pageSize    a
+     */
+    private static void checkPagination(Query query, Integer currentPage, Integer pageSize) {
+        if (pageSize != null) {
+            if (pageSize >= 0) {
+                if (currentPage == null) {
+                    query.setPagination(pageSize);
+                } else if (currentPage >= 0) {
+                    query.setPagination(currentPage, pageSize);
+                } else {
+                    throw new PaginationParametersError(currentPage, pageSize);
+                }
+            } else {
+                throw new PaginationParametersError(currentPage, pageSize);
+            }
+        }
     }
 
 }

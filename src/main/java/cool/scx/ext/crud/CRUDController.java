@@ -5,6 +5,8 @@ import cool.scx.annotation.FromBody;
 import cool.scx.annotation.FromPath;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
+import cool.scx.vo.BaseVo;
+import cool.scx.vo.DataJson;
 import cool.scx.vo.Json;
 
 import java.util.List;
@@ -33,20 +35,21 @@ public class CRUDController {
      * 列表查询
      *
      * @param modelName       a {@link java.lang.String} object.
-     * @param limit           a {@link java.lang.Integer} object.
-     * @param page            a {@link java.lang.Integer} object.
+     * @param currentPage     a {@link java.lang.Integer} object.
+     * @param pageSize        a {@link java.lang.Integer} object.
      * @param orderByBodyList a {@link java.lang.String} object.
      * @param whereBodyList   a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
     public Json list(@FromPath String modelName,
-                     @FromBody(value = "pagination.limit", required = false) Integer limit,
-                     @FromBody(value = "pagination.page", required = false) Integer page,
+                     @FromBody(value = "pagination.currentPage", required = false) Integer currentPage,
+                     @FromBody(value = "pagination.pageSize", required = false) Integer pageSize,
                      @FromBody(value = "orderByBodyList", required = false) List<CRUDOrderByBody> orderByBodyList,
-                     @FromBody(value = "whereBodyList", required = false) List<CRUDWhereBody> whereBodyList
+                     @FromBody(value = "whereBodyList", required = false) List<CRUDWhereBody> whereBodyList,
+                     @FromBody(value = "selectFilterBody", required = false) CRUDSelectFilterBody selectFilterBody
     ) {
-        var crudListResult = crudHandler.list(modelName, limit, page, orderByBodyList, whereBodyList);
+        var crudListResult = crudHandler.list(modelName, currentPage, pageSize, orderByBodyList, whereBodyList, selectFilterBody);
         return Json.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }
 
@@ -58,9 +61,9 @@ public class CRUDController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.GET)
-    public Json info(@FromPath String modelName, @FromPath Long id) {
+    public BaseVo info(@FromPath String modelName, @FromPath Long id) {
         var info = crudHandler.info(modelName, id);
-        return Json.ok().put("info", info);
+        return DataJson.ok().data(info);
     }
 
     /**
@@ -71,9 +74,9 @@ public class CRUDController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.POST)
-    public Json save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
+    public BaseVo save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
         var savedModel = crudHandler.save(modelName, entityMap);
-        return Json.ok().put("item", savedModel);
+        return DataJson.ok().data(savedModel);
     }
 
     /**
@@ -84,9 +87,9 @@ public class CRUDController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.PUT)
-    public Json update(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
+    public BaseVo update(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
         var updatedModel = crudHandler.update(modelName, entityMap);
-        return Json.ok().put("item", updatedModel);
+        return DataJson.ok().data(updatedModel);
     }
 
     /**
@@ -143,8 +146,8 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName/check-unique/:fieldName", method = HttpMethod.POST)
     public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {
-        var b = crudHandler.checkUnique(modelName, fieldName, value, id);
-        return Json.ok().put("isUnique", b);
+        var isUnique = crudHandler.checkUnique(modelName, fieldName, value, id);
+        return Json.ok().put("isUnique", isUnique);
     }
 
 }
