@@ -3,9 +3,7 @@ package cool.scx.ext.crud;
 import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.annotation.NoColumn;
-import cool.scx.base.BaseModel;
-import cool.scx.base.BaseModelService;
-import cool.scx.base.Query;
+import cool.scx.base.*;
 import cool.scx.ext.crud.annotation.NoCRUD;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.http.exception.impl.BadRequestException;
@@ -311,6 +309,32 @@ public final class CRUDHelper {
         }
 
         return tempMap;
+    }
+
+    public static SelectFilter getSelectFilter(Class<BaseModel> modelClass, CRUDSelectFilterBody selectFilterBody) {
+        if (selectFilterBody == null) {
+            return SelectFilter.ofExcluded();
+        }
+        var filterMode = checkFilterMode(selectFilterBody.filterMode);
+        var selectFilter = switch (filterMode) {
+            case EXCLUDED -> SelectFilter.ofExcluded();
+            case INCLUDED -> SelectFilter.ofIncluded();
+        };
+        if (selectFilterBody.fieldNames != null) {
+            for (var fieldName : selectFilterBody.fieldNames) {
+                checkFieldName(modelClass, fieldName);
+                selectFilter.add(fieldName);
+            }
+        }
+        return selectFilter;
+    }
+
+    public static AbstractFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereType {
+        try {
+            return AbstractFilter.FilterMode.valueOf(filterMode.trim().toUpperCase());
+        } catch (Exception ignored) {
+            throw new UnknownFilterMode(filterMode);
+        }
     }
 
 }

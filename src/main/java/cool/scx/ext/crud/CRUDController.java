@@ -44,9 +44,10 @@ public class CRUDController {
                      @FromBody(value = "pagination.limit", required = false) Integer limit,
                      @FromBody(value = "pagination.page", required = false) Integer page,
                      @FromBody(value = "orderByBodyList", required = false) List<CRUDOrderByBody> orderByBodyList,
-                     @FromBody(value = "whereBodyList", required = false) List<CRUDWhereBody> whereBodyList
+                     @FromBody(value = "whereBodyList", required = false) List<CRUDWhereBody> whereBodyList,
+                     @FromBody(value = "selectFilterBody", required = false) CRUDSelectFilterBody selectFilterBody
     ) {
-        var crudListResult = crudHandler.list(modelName, limit, page, orderByBodyList, whereBodyList);
+        var crudListResult = crudHandler.list(modelName, limit, page, orderByBodyList, whereBodyList, selectFilterBody);
         return Json.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }
 

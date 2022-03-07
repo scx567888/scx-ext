@@ -112,17 +112,20 @@ public interface CRUDHandler {
     /**
      * 获取列表数据
      *
-     * @param modelName       model 名称
-     * @param limit           分页:每页数据
-     * @param page            分页:页码
-     * @param orderByBodyList 排序参数 (字段,类型)
-     * @param whereBodyList   查询参数
+     * @param modelName        model 名称
+     * @param limit            分页:每页数据
+     * @param page             分页:页码
+     * @param orderByBodyList  排序参数 (字段,类型)
+     * @param whereBodyList    查询参数
+     * @param selectFilterBody 查询列过滤项
      * @return 列表数据
      */
-    default CRUDListResult list(String modelName, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList) {
+    default CRUDListResult list(String modelName, Integer limit, Integer page, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList, CRUDSelectFilterBody selectFilterBody) {
         var baseModelService = CRUDHelper.getBaseModelService(modelName);
-        var query = CRUDHelper.getQuery(CRUDHelper.getBaseModelClassByName(modelName), limit, page, orderByBodyList, whereBodyList);
-        var list = baseModelService.list(query);
+        var baseModelClass = CRUDHelper.getBaseModelClassByName(modelName);
+        var query = CRUDHelper.getQuery(baseModelClass, limit, page, orderByBodyList, whereBodyList);
+        var selectFilter = CRUDHelper.getSelectFilter(baseModelClass, selectFilterBody);
+        var list = baseModelService.list(query, selectFilter);
         var total = baseModelService.count(query);
         return new CRUDListResult(list, total);
     }
