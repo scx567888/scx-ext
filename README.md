@@ -56,21 +56,21 @@ import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fss.FSSModule;
 
-//注意 : 自定义的模块需要继承 ScxModule
+// 注意 : 自定义的模块需要继承 ScxModule
 public class YourModule implements ScxModule {
 
-    //使用提供的拓展模块
+    // 使用提供的拓展模块
     public static void main(String[] args) {
         // 使用 Scx 构建器 ,构建并运行 项目
         Scx.builder()
-                .setMainClass(YourModule.class) //1, Main 方法的 Class
-                .addModules(                    //2, 引入拓展模块和您自己的模块
+                .setMainClass(YourModule.class) // 1, Main 方法的 Class
+                .addModules(                    // 2, 引入拓展模块和您自己的模块
                         new CRUDModule(),       //     CRUD 模块
                         new FSSModule(),        //     文件存储模块
                         new CMSModule(),        //     CMS 模块
                         new YourModule())       //     您自己的模块
-                .setArgs(args)                  //3, 外部参数
-                .build().run();                 //4, 构建并运行项目
+                .setArgs(args)                  // 3, 外部参数
+                .run();                         // 4, 构建并运行项目
     }
 
 }
