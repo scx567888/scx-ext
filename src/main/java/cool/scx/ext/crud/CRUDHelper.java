@@ -348,7 +348,7 @@ public final class CRUDHelper {
      * 处理分页
      *
      * @param query       a
-     * @param currentPage
+     * @param currentPage a
      * @param pageSize    a
      */
     private static void checkPagination(Query query, Integer currentPage, Integer pageSize) {

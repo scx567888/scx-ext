@@ -42,7 +42,6 @@ public class TestModule implements ScxModule {
     public static void runModule() {
         Scx.builder()
                 .setMainClass(TestModule.class)
-                .configure(ScxFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
                 .addModules(
                         new TestModule(),
                         new CMSModule().setWebSiteHandler(UserListWebSiteHandler.class),
@@ -50,7 +49,8 @@ public class TestModule implements ScxModule {
                         new CRUDModule(),
                         new FixTableModule(),
                         new FSSModule())
-                .build().run();
+                .configure(ScxFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
+                .run();
     }
 
     @Test

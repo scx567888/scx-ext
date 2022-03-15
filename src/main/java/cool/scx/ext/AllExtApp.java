@@ -30,7 +30,7 @@ public class AllExtApp {
                         new FixTableModule(),
                         new FSSModule())
                 .setArgs(args)
-                .build().run();
+                .run();
     }
 
 }
