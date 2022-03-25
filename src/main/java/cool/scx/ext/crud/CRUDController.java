@@ -34,11 +34,12 @@ public class CRUDController {
     /**
      * 列表查询
      *
-     * @param modelName       a {@link java.lang.String} object.
-     * @param currentPage     a {@link java.lang.Integer} object.
-     * @param pageSize        a {@link java.lang.Integer} object.
-     * @param orderByBodyList a {@link java.lang.String} object.
-     * @param whereBodyList   a {@link java.util.Map} object.
+     * @param modelName        a {@link java.lang.String} object.
+     * @param currentPage      a {@link java.lang.Integer} object.
+     * @param pageSize         a {@link java.lang.Integer} object.
+     * @param orderByBodyList  a {@link java.lang.String} object.
+     * @param whereBodyList    a {@link java.util.Map} object.
+     * @param selectFilterBody a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
