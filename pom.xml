@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>scx-ext</name>
 
-    <version>1.8.3</version>
+    <version>1.8.4</version>
 
     <description>SCX-EXT : SCX 拓展包</description>
     <url>https://github.com/scx567888/scx-ext</url>
