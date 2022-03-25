@@ -3,6 +3,7 @@ package cool.scx.ext.core;
 import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.ScxHandler;
+import cool.scx.ScxHandlerV;
 import cool.scx.util.StringUtils;
 import io.vertx.core.http.ServerWebSocket;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public final class WSParamHandlerRegister {
     /**
      * 存储所有的 websocket 事件处理器 (方便前台调用) , key 为事件名 value 为事件
      */
-    private static final ArrayListMultimap<String, ScxHandler<WSParam>> NAME_SCX_HANDLER_MAPPING = ArrayListMultimap.create();
+    private static final ArrayListMultimap<String, ScxHandler<WSParam>> NAME_WS_PARAM_HANDLER_MAPPING = ArrayListMultimap.create();
 
     /**
      * 查找并执行
@@ -36,14 +37,8 @@ public final class WSParamHandlerRegister {
         //先获取名称
         if (StringUtils.isNotBlank(wsBody.name())) {
             var wsParam = new WSParam(wsBody.data(), webSocket);
-            for (var scxHandler : NAME_SCX_HANDLER_MAPPING.get(wsBody.name())) {
-                ScxContext.scheduler().submit(() -> {
-                    try {
-                        scxHandler.handle(wsParam);
-                    } catch (Throwable throwable) {
-                        logger.error("执行 Handler 出错 !!!", throwable);
-                    }
-                });
+            for (var wsParamHandler : NAME_WS_PARAM_HANDLER_MAPPING.get(wsBody.name())) {
+                ScxContext.scheduler().submit(new WSParamHandlerWrapper(wsParamHandler, wsParam));
             }
         }
     }
@@ -55,7 +50,7 @@ public final class WSParamHandlerRegister {
      * @param scxHandler handler (用于处理前台传过来的 websocket 连接)
      */
     public static void addHandler(String name, ScxHandler<WSParam> scxHandler) {
-        NAME_SCX_HANDLER_MAPPING.put(name, scxHandler);
+        NAME_WS_PARAM_HANDLER_MAPPING.put(name, scxHandler);
     }
 
     /**
@@ -64,7 +59,7 @@ public final class WSParamHandlerRegister {
      * @param name 名称
      */
     public static void removeAllHandler(String name) {
-        NAME_SCX_HANDLER_MAPPING.removeAll(name);
+        NAME_WS_PARAM_HANDLER_MAPPING.removeAll(name);
     }
 
     /**
@@ -74,7 +69,20 @@ public final class WSParamHandlerRegister {
      * @param scxHandler handler
      */
     public static void removeHandler(String name, ScxHandler<WSParam> scxHandler) {
-        NAME_SCX_HANDLER_MAPPING.remove(name, scxHandler);
+        NAME_WS_PARAM_HANDLER_MAPPING.remove(name, scxHandler);
+    }
+
+    record WSParamHandlerWrapper(ScxHandler<WSParam> wsParamHandler, WSParam wsParam) implements ScxHandlerV {
+
+        @Override
+        public void handle() {
+            try {
+                wsParamHandler.handle(wsParam);
+            } catch (Throwable throwable) {
+                logger.error("执行 WSParamHandler 出错 !!!", throwable);
+            }
+        }
+
     }
 
 }
