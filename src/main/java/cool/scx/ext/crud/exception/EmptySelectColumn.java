@@ -4,6 +4,9 @@ import cool.scx.base.AbstractFilter;
 import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.vo.Json;
 
+/**
+ * a
+ */
 public class EmptySelectColumn extends BadRequestException {
 
     /**
