@@ -33,9 +33,9 @@
     </a>
 </p>
 
-English | [简体中文](./README.zh-CN.md)
+简体中文 | [English](./README.md)
 
-> Extension modules for SCX
+> SCX 的拓展模块
 
 ## Maven
 
@@ -47,9 +47,9 @@ English | [简体中文](./README.zh-CN.md)
 </dependency>
 ```
 
-## Quick start
+## 快速开始
 
-#### 1. Write your own module and run the main method .
+#### 1. 编写您自己的模块并运行 main 方法 。
 
 ``` java
 import cool.scx.Scx;
@@ -58,24 +58,24 @@ import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fss.FSSModule;
 
-// Note : Custom modules need implements ScxModule
+// 注意 : 自定义的模块需要继承 ScxModule
 public class YourModule implements ScxModule {
 
-    // Use the provided extension modules 
+    // 使用提供的拓展模块
     public static void main(String[] args) {
-        // Use Scx Builder, build and run project
+        // 使用 Scx 构建器 ,构建并运行 项目
         Scx.builder()
-                .setMainClass(YourModule.class) // 1, The class of the Main method
-                .addModules(                    // 2, Extension modules and your own modules
-                        new CRUDModule(),       //     CRUD module
-                        new FSSModule(),        //     FFS  module
-                        new CMSModule(),        //     CMS  module
-                        new YourModule())       //     Your own modules
-                .setArgs(args)                  // 3, External parameters
-                .run();                         // 4, Build and run project
+                .setMainClass(YourModule.class) // 1, Main 方法的 Class
+                .addModules(                    // 2, 引入拓展模块和您自己的模块
+                        new CRUDModule(),       //     CRUD 模块
+                        new FSSModule(),        //     文件存储模块
+                        new CMSModule(),        //     CMS 模块
+                        new YourModule())       //     您自己的模块
+                .setArgs(args)                  // 3, 外部参数
+                .run();                         // 4, 构建并运行项目
     }
 
 }
 ```
 
-For more information, see [docs](https://scx.cool/docs/scx/index.html)
+有关更多信息，请参阅 [文档](https://scx.cool/docs/scx/index.html)
