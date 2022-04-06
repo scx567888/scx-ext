@@ -24,16 +24,6 @@
     "template": {
       "root": "AppRoot:c"
     },
-    "static-servers": [
-      {
-        "location": "/static/*",
-        "root": "AppRoot:c\\static"
-      },
-      {
-        "location": "/scx/admin/*",
-        "root": "AppRoot:admin"
-      }
-    ],
     "logging": {
       "default": {
         "level": "DEBUG",
@@ -52,5 +42,15 @@
   },
   "fss": {
     "physical-file-path": "AppRoot:/FSS_FILES/"
-  }
+  },
+  "static-servers": [
+    {
+      "location": "/static/*",
+      "root": "AppRoot:c\\static"
+    },
+    {
+      "location": "/scx/admin/*",
+      "root": "AppRoot:admin"
+    }
+  ]
 }
