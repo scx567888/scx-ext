@@ -18,13 +18,6 @@ public class StaticServerModule implements ScxModule {
      */
     private static final Logger logger = LoggerFactory.getLogger(StaticServerModule.class);
 
-    @Override
-    public void start() {
-        var staticServers = getStaticServersByConfig();
-        logger.info("静态资源服务器 -->  {}", staticServers.stream().map(StaticServer::location).collect(Collectors.joining(", ", "[", "]")));
-        registerStaticServerHandler(ScxContext.router().vertxRouter(), staticServers);
-    }
-
     /**
      * a
      *
@@ -46,6 +39,13 @@ public class StaticServerModule implements ScxModule {
                     .handler(StaticHandler.create(FileSystemAccess.ROOT, staticServer.root().getPath())
                             .setFilesReadOnly(false));
         }
+    }
+
+    @Override
+    public void start() {
+        var staticServers = getStaticServersByConfig();
+        logger.info("静态资源服务器 -->  {}", staticServers.stream().map(StaticServer::location).collect(Collectors.joining(", ", "[", "]")));
+        registerStaticServerHandler(ScxContext.router().vertxRouter(), staticServers);
     }
 
 }
