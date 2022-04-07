@@ -19,22 +19,22 @@ public class CRUDListParam {
     /**
      * 分页参数
      */
-    CRUDPagination pagination;
+    public CRUDPagination pagination;
 
     /**
      * 排序参数
      */
-    List<CRUDOrderByBody> orderByBodyList;
+    public List<CRUDOrderByBody> orderByBodyList;
 
     /**
      * 查询参数
      */
-    List<CRUDWhereBody> whereBodyList;
+    public List<CRUDWhereBody> whereBodyList;
 
     /**
      * 查询列过滤参数
      */
-    CRUDSelectFilterBody selectFilterBody;
+    public CRUDSelectFilterBody selectFilterBody;
 
     /**
      * 检查 fieldName 是否合法
@@ -199,7 +199,7 @@ public class CRUDListParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public SelectFilter getSelectFilter(Class<BaseModel> modelClass, ScxDaoTableInfo scxDaoTableInfo) {
+    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, ScxDaoTableInfo scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
