@@ -74,7 +74,7 @@ public final class CRUDHelper {
      * @param baseModelClass a
      * @return a
      */
-    public static BaseModel mapToBaseModel(Map<String, Object> entityMap, Class<BaseModel> baseModelClass) {
+    public static <B extends BaseModel> B mapToBaseModel(Map<String, Object> entityMap, Class<B> baseModelClass) {
         try {
             return ObjectUtils.convertValue(entityMap, baseModelClass);
         } catch (Exception e) {
@@ -307,7 +307,7 @@ public final class CRUDHelper {
      * @param scxDaoTableInfo  a
      * @return a
      */
-    public static SelectFilter getSelectFilter(Class<BaseModel> modelClass, CRUDSelectFilterBody selectFilterBody, ScxDaoTableInfo scxDaoTableInfo) {
+    public static SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, CRUDSelectFilterBody selectFilterBody, ScxDaoTableInfo scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
