@@ -6,7 +6,7 @@
     <parent>
         <groupId>cool.scx</groupId>
         <artifactId>scx-parent</artifactId>
-        <version>2</version>
+        <version>3</version>
     </parent>
 
     <artifactId>scx-ext</artifactId>
@@ -102,7 +102,7 @@
 
     <properties>
         <scx.mainClass>cool.scx.ext.AllExtApp</scx.mainClass>
-        <scx.version>1.12.7</scx.version>
+        <scx.version>1.12.8</scx.version>
     </properties>
 
 </project>
