@@ -4,7 +4,6 @@ import cool.scx.base.BaseModel;
 import cool.scx.base.Query;
 import cool.scx.sql.where.WhereOption;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,7 +25,7 @@ public interface CRUDHandler {
      */
     default boolean checkUnique(String modelName, String fieldName, Object value, Long id) {
         var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
-        CRUDHelper.checkFieldName(baseModelClass, fieldName);
+        CRUDListParam.checkFieldName(baseModelClass, fieldName);
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var query = new Query().equal(fieldName, value).notEqual("id", id, WhereOption.SKIP_IF_NULL);
         return baseModelService.count(query) == 0;
@@ -115,19 +114,15 @@ public interface CRUDHandler {
     /**
      * 获取列表数据
      *
-     * @param modelName        model 名称
-     * @param currentPage      分页:页码
-     * @param pageSize         分页:每页数据条数
-     * @param orderByBodyList  排序参数 (字段,类型)
-     * @param whereBodyList    查询参数
-     * @param selectFilterBody 查询列过滤项
+     * @param modelName     model 名称
+     * @param crudListParam list 查询参数
      * @return 列表数据
      */
-    default CRUDListResult list(String modelName, Integer currentPage, Integer pageSize, List<CRUDOrderByBody> orderByBodyList, List<CRUDWhereBody> whereBodyList, CRUDSelectFilterBody selectFilterBody) {
+    default CRUDListResult list(String modelName, CRUDListParam crudListParam) {
         var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
-        var query = CRUDHelper.getQuery(baseModelClass, currentPage, pageSize, orderByBodyList, whereBodyList);
-        var selectFilter = CRUDHelper.getSelectFilter(baseModelClass, selectFilterBody, baseModelService._scxDaoTableInfo());
+        var query = crudListParam.getQuery(baseModelClass);
+        var selectFilter = crudListParam.getSelectFilter(baseModelClass, baseModelService._scxDaoTableInfo());
         var list = baseModelService.list(query, selectFilter);
         var total = baseModelService.count(query);
         return new CRUDListResult(list, total);

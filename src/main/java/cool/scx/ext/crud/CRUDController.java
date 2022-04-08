@@ -9,7 +9,6 @@ import cool.scx.vo.BaseVo;
 import cool.scx.vo.DataJson;
 import cool.scx.vo.Json;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,30 +26,20 @@ public class CRUDController {
      * a
      */
     public CRUDController() {
-        var crudHandlerClass = ScxContext.findScxModuleInfo(CRUDModule.class).scxModuleExample().crudHandlerClass();
+        var crudHandlerClass = ScxContext.findScxModule(CRUDModule.class).crudHandlerClass();
         this.crudHandler = ScxContext.getBean(crudHandlerClass);
     }
 
     /**
      * 列表查询
      *
-     * @param modelName        a {@link java.lang.String} object.
-     * @param currentPage      a {@link java.lang.Integer} object.
-     * @param pageSize         a {@link java.lang.Integer} object.
-     * @param orderByBodyList  a {@link java.lang.String} object.
-     * @param whereBodyList    a {@link java.util.Map} object.
-     * @param selectFilterBody a {@link java.util.Map} object.
+     * @param modelName     a {@link java.lang.String} object.
+     * @param crudListParam a
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
-    public Json list(@FromPath String modelName,
-                     @FromBody(value = "pagination.currentPage", required = false) Integer currentPage,
-                     @FromBody(value = "pagination.pageSize", required = false) Integer pageSize,
-                     @FromBody(value = "orderByBodyList", required = false) List<CRUDOrderByBody> orderByBodyList,
-                     @FromBody(value = "whereBodyList", required = false) List<CRUDWhereBody> whereBodyList,
-                     @FromBody(value = "selectFilterBody", required = false) CRUDSelectFilterBody selectFilterBody
-    ) {
-        var crudListResult = crudHandler.list(modelName, currentPage, pageSize, orderByBodyList, whereBodyList, selectFilterBody);
+    public Json list(@FromPath String modelName, CRUDListParam crudListParam) {
+        var crudListResult = crudHandler.list(modelName, crudListParam);
         return Json.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }
 

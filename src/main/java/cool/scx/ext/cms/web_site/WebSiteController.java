@@ -38,7 +38,8 @@ public class WebSiteController {
         this.contentService = contentService;
         this.channelService = channelService;
         this.cmsConfigService = cmsConfigService;
-        this.webSiteHandler = ScxContext.getBean(ScxContext.findScxModuleInfo(CMSModule.class).scxModuleExample().getWebSiteHandlerClass());
+        var webSiteHandlerClass = ScxContext.findScxModule(CMSModule.class).getWebSiteHandlerClass();
+        this.webSiteHandler = ScxContext.getBean(webSiteHandlerClass);
     }
 
     /**
