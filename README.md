@@ -22,14 +22,14 @@
     <a target="_blank" href="https://github.com/scx567888/scx">
         <img src="https://img.shields.io/badge/SCX-f44336" alt="SCX"/>
     </a>
-    <a target="_blank" href="https://github.com/google/guava">
-        <img src="https://img.shields.io/badge/Guava-44be16" alt="Guava"/>
-    </a>
     <a target="_blank" href="https://github.com/zxing/zxing">
-        <img src="https://img.shields.io/badge/ZXing-6269d3" alt="ZXing"/>
+        <img src="https://img.shields.io/badge/ZXing-44be16" alt="ZXing"/>
     </a>
     <a target="_blank" href="https://github.com/apache/poi">
-        <img src="https://img.shields.io/badge/Apache POI-9c27b0" alt="Apache POI"/>
+        <img src="https://img.shields.io/badge/Apache POI-6269d3" alt="Apache POI"/>
+    </a>
+    <a target="_blank" href="https://github.com/cbeust/testng">
+        <img src="https://img.shields.io/badge/TestNG-9c27b0" alt="TestNG"/>
     </a>
 </p>
 
