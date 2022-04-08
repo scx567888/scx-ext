@@ -26,7 +26,7 @@ public class CRUDController {
      * a
      */
     public CRUDController() {
-        var crudHandlerClass = ScxContext.findScxModuleInfo(CRUDModule.class).scxModuleExample().crudHandlerClass();
+        var crudHandlerClass = ScxContext.findScxModule(CRUDModule.class).crudHandlerClass();
         this.crudHandler = ScxContext.getBean(crudHandlerClass);
     }
 
@@ -38,7 +38,7 @@ public class CRUDController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
-    public Json list(@FromPath String modelName, @FromBody(useAllBody = true) CRUDListParam crudListParam) {
+    public Json list(@FromPath String modelName, CRUDListParam crudListParam) {
         var crudListResult = crudHandler.list(modelName, crudListParam);
         return Json.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }

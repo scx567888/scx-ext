@@ -27,8 +27,8 @@ public class FSSController {
      * 构造函数
      */
     public FSSController() {
-        var fssModuleExample = ScxContext.findScxModuleInfo(FSSModule.class).scxModuleExample();
-        this.fssHandler = ScxContext.getBean(fssModuleExample.fssHandlerClass());
+        var fssHandlerClass = ScxContext.findScxModule(FSSModule.class).fssHandlerClass();
+        this.fssHandler = ScxContext.getBean(fssHandlerClass);
     }
 
     /**

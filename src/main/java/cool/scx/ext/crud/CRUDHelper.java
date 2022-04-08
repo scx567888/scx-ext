@@ -105,8 +105,8 @@ public final class CRUDHelper {
     @SuppressWarnings("unchecked")
     private static Map<String, Class<BaseModel>> initBaseModelNameClassMapping() {
         var tempMap = new HashMap<String, Class<BaseModel>>();
-        for (var scxModuleInfo : ScxContext.scxModuleInfos()) {
-            for (var c : scxModuleInfo.scxBaseModelClassList()) {
+        for (var m : ScxContext.scxModuleMetadataList()) {
+            for (var c : m.scxBaseModelClassList()) {
                 NoCRUD noCRUDAnnotation = c.getAnnotation(NoCRUD.class);
                 if (noCRUDAnnotation != null) {
                     continue;
@@ -134,8 +134,8 @@ public final class CRUDHelper {
         // baseModelClassList
         var baseModelClassList = CRUDHelper.BASE_MODEL_NAME_CLASS_MAPPING.values();
         //循环读取
-        for (var allModule : ScxContext.scxModuleInfos()) {
-            for (var c : allModule.scxBaseModelServiceClassList()) {
+        for (var m : ScxContext.scxModuleMetadataList()) {
+            for (var c : m.scxBaseModelServiceClassList()) {
                 //这里获取 泛型
                 var typeArguments = ((ParameterizedType) c.getGenericSuperclass()).getActualTypeArguments();
 

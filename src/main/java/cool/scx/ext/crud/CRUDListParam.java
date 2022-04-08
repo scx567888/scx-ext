@@ -14,7 +14,7 @@ import cool.scx.sql.where.WhereType;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CRUDListParam {
+public final class CRUDListParam {
 
     /**
      * 分页参数
@@ -158,7 +158,9 @@ public class CRUDListParam {
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var query = new Query();
         //先处理一下分页
-        checkPagination(query, this.pagination);
+        if (this.pagination != null) {
+            checkPagination(query, this.pagination);
+        }
         if (this.orderByBodyList != null) {
             for (var orderByBody : this.orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
