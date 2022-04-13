@@ -9,10 +9,7 @@ import cool.scx.type.UploadedEntity;
 import cool.scx.util.FileUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
-import cool.scx.vo.Download;
-import cool.scx.vo.Image;
-import cool.scx.vo.Json;
-import cool.scx.vo.Raw;
+import cool.scx.vo.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -319,11 +316,25 @@ public abstract class FSSHandler {
      * @param fssObjectIDs a {@link java.util.List} object
      * @return a {@link cool.scx.vo.Json} object
      */
-    public Json list(List<String> fssObjectIDs) {
+    public BaseVo listInfo(List<String> fssObjectIDs) {
         if (fssObjectIDs != null && fssObjectIDs.size() > 0) {
-            return Json.ok().put("items", fssObjectService.findByFSSObjectIDs(fssObjectIDs));
+            return DataJson.ok().data(fssObjectService.findByFSSObjectIDs(fssObjectIDs));
         } else {
-            return Json.ok().put("items", new ArrayList<>());
+            return DataJson.ok().data(new ArrayList<>());
+        }
+    }
+
+    /**
+     * a
+     *
+     * @param fssObjectID a
+     * @return a
+     */
+    public BaseVo info(String fssObjectID) {
+        if (fssObjectID != null) {
+            return DataJson.ok().data(fssObjectService.findByFSSObjectID(fssObjectID));
+        } else {
+            return DataJson.ok().data(null);
         }
     }
 

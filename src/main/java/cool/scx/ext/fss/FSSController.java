@@ -4,10 +4,7 @@ import cool.scx.ScxContext;
 import cool.scx.annotation.*;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.type.UploadedEntity;
-import cool.scx.vo.Download;
-import cool.scx.vo.Image;
-import cool.scx.vo.Json;
-import cool.scx.vo.Raw;
+import cool.scx.vo.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -123,12 +120,23 @@ public class FSSController {
     /**
      * <p>listFile.</p>
      *
-     * @param fssObjectIDs a {@link java.util.Map} object.
+     * @param fssObjectID a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
      */
-    @ScxMapping(value = "/list", method = HttpMethod.POST)
-    public Json list(@FromBody List<String> fssObjectIDs) {
-        return fssHandler.list(fssObjectIDs);
+    @ScxMapping(value = "/info", method = HttpMethod.POST)
+    public BaseVo info(@FromBody String fssObjectID) {
+        return fssHandler.info(fssObjectID);
+    }
+
+    /**
+     * s
+     *
+     * @param fssObjectIDs a
+     * @return a
+     */
+    @ScxMapping(value = "/list-info", method = HttpMethod.POST)
+    public BaseVo listInfo(@FromBody List<String> fssObjectIDs) {
+        return fssHandler.listInfo(fssObjectIDs);
     }
 
 }
