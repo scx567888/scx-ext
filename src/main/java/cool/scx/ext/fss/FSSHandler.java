@@ -57,20 +57,6 @@ public abstract class FSSHandler {
     }
 
     /**
-     * 获取 文件存储路径
-     * <br>
-     * 规则 年份/月份/天/文件ID/文件真实名称
-     *
-     * @param uploadTime  上传时间
-     * @param fssObjectID id
-     * @param fileName    文件名称
-     * @return s
-     */
-    public static String[] getNewFSSObjectPath(LocalDateTime uploadTime, String fssObjectID, String fileName) {
-        return new String[]{String.valueOf(uploadTime.getYear()), String.valueOf(uploadTime.getMonthValue()), String.valueOf(uploadTime.getDayOfMonth()), fssObjectID, fileName};
-    }
-
-    /**
      * <p>getLastUploadChunk.</p>
      *
      * @param uploadConfigFile a {@link java.io.File} object.
@@ -105,22 +91,32 @@ public abstract class FSSHandler {
     }
 
     /**
-     * <p>getNewUpload.</p>
+     * 根据文件信息 创建 FSSObject 实例
+     * 规则如下
+     * fssObjectID (文件 id)        : 随机字符串
+     * filePath (文件物理文件存储路径) : 年份(以上传时间为标准)/月份(以上传时间为标准)/天(以上传时间为标准)/文件MD5/文件真实名称
+     * 其他字段和字面意义相同
      *
-     * @param fileName a {@link java.lang.String} object.
-     * @param fileSize a {@link java.lang.Long} object.
-     * @param fileMD5  a {@link java.lang.String} object.
+     * @param fileName    a {@link String} object.
+     * @param fileSize    a {@link Long} object.
+     * @param fileMD5     a {@link String} object.
+     * @param contentType a
      * @return a {@link cool.scx.ext.fss.FSSObject} object.
      */
-    public static FSSObject getNewFSSObject(String fileName, Long fileSize, String fileMD5) {
+    public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileMD5, String contentType) {
+        var now = LocalDateTime.now();
+        var yearStr = now.getYear() + "";
+        var monthStr = now.getMonthValue() + "";
+        var dayStr = now.getDayOfMonth() + "";
         var fssObject = new FSSObject();
         fssObject.fssObjectID = RandomUtils.getUUID();
         fssObject.fileName = fileName;
-        fssObject.uploadTime = LocalDateTime.now();
+        fssObject.uploadTime = now;
         fssObject.fileSizeDisplay = FileUtils.longToDisplaySize(fileSize);
         fssObject.fileSize = fileSize;
         fssObject.fileMD5 = fileMD5;
-        fssObject.filePath = getNewFSSObjectPath(fssObject.uploadTime, fssObject.fssObjectID, fssObject.fileName);
+        fssObject.fileContentType = contentType;
+        fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileMD5, fileName};
         return fssObject;
     }
 
@@ -238,8 +234,8 @@ public abstract class FSSHandler {
         if (nowChunkIndex == chunkLength - 1) {
             //先将数据写入临时文件中
             FileUtils.fileAppend(uploadTempFile, fileData.buffer().getBytes());
-            //获取文件信息描述对象
-            var newFSSObject = getNewFSSObject(fileName, fileSize, fileMD5);
+            //获取文件描述信息创建 fssObject 对象
+            var newFSSObject = createFSSObjectByFileInfo(fileName, fileSize, fileMD5, fileData.contentType());
             //获取文件真实的存储路径
             var fileStoragePath = Path.of(FSSConfig.uploadFilePath().getPath(), newFSSObject.filePath);
             //计算 md5 只有前后台 md5 相同文件才算 正确

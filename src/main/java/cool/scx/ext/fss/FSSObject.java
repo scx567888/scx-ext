@@ -55,4 +55,9 @@ public class FSSObject extends BaseModel {
     @Column(needIndex = true, notNull = true)
     public String fileMD5;
 
+    /**
+     * 文件内容类型
+     */
+    public String fileContentType;
+
 }

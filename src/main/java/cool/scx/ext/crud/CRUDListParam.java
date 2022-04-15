@@ -14,6 +14,9 @@ import cool.scx.sql.where.WhereType;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * a
+ */
 public final class CRUDListParam {
 
     /**
@@ -223,6 +226,9 @@ public final class CRUDListParam {
         return selectFilter;
     }
 
+    /**
+     * a
+     */
     public static final class CRUDPagination {
 
         /**
