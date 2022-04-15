@@ -67,6 +67,7 @@ public final class CRUDHelper {
      *
      * @param entityMap      a
      * @param baseModelClass a
+     * @param <B>            b
      * @return a
      */
     public static <B extends BaseModel> B mapToBaseModel(Map<String, Object> entityMap, Class<B> baseModelClass) {

@@ -6,8 +6,14 @@ import cool.scx.mvc.parameter_handler.impl.FromBodyMethodParameterHandler;
 
 import java.lang.reflect.Parameter;
 
+/**
+ * a
+ */
 public final class CRUDListParamMethodParameterHandler implements ScxMappingMethodParameterHandler {
 
+    /**
+     * a
+     */
     public static final CRUDListParamMethodParameterHandler DEFAULT_INSTANCE = new CRUDListParamMethodParameterHandler();
 
     @Override
