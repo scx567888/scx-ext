@@ -56,8 +56,9 @@ public class FSSObject extends BaseModel {
     public String fileMD5;
 
     /**
-     * 文件内容类型
+     * 文件拓展名
      */
-    public String fileContentType;
+    @Column(type = "TEXT")
+    public String fileExtension;
 
 }

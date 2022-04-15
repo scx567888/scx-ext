@@ -97,13 +97,12 @@ public abstract class FSSHandler {
      * filePath (文件物理文件存储路径) : 年份(以上传时间为标准)/月份(以上传时间为标准)/天(以上传时间为标准)/文件MD5/文件真实名称
      * 其他字段和字面意义相同
      *
-     * @param fileName    a {@link String} object.
-     * @param fileSize    a {@link Long} object.
-     * @param fileMD5     a {@link String} object.
-     * @param contentType a
+     * @param fileName a {@link String} object.
+     * @param fileSize a {@link Long} object.
+     * @param fileMD5  a {@link String} object.
      * @return a {@link cool.scx.ext.fss.FSSObject} object.
      */
-    public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileMD5, String contentType) {
+    public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileMD5) {
         var now = LocalDateTime.now();
         var yearStr = now.getYear() + "";
         var monthStr = now.getMonthValue() + "";
@@ -115,7 +114,7 @@ public abstract class FSSHandler {
         fssObject.fileSizeDisplay = FileUtils.longToDisplaySize(fileSize);
         fssObject.fileSize = fileSize;
         fssObject.fileMD5 = fileMD5;
-        fssObject.fileContentType = contentType;
+        fssObject.fileExtension = FileUtils.getExt(fssObject.fileName);
         fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileMD5, fileName};
         return fssObject;
     }
@@ -136,6 +135,7 @@ public abstract class FSSHandler {
         fssObject.fileSizeDisplay = oldFSSObject.fileSizeDisplay;
         fssObject.fileSize = oldFSSObject.fileSize;
         fssObject.fileMD5 = oldFSSObject.fileMD5;
+        fssObject.fileExtension = FileUtils.getExt(fssObject.fileName);
         return fssObject;
     }
 
@@ -235,7 +235,7 @@ public abstract class FSSHandler {
             //先将数据写入临时文件中
             FileUtils.fileAppend(uploadTempFile, fileData.buffer().getBytes());
             //获取文件描述信息创建 fssObject 对象
-            var newFSSObject = createFSSObjectByFileInfo(fileName, fileSize, fileMD5, fileData.contentType());
+            var newFSSObject = createFSSObjectByFileInfo(fileName, fileSize, fileMD5);
             //获取文件真实的存储路径
             var fileStoragePath = Path.of(FSSConfig.uploadFilePath().getPath(), newFSSObject.filePath);
             //计算 md5 只有前后台 md5 相同文件才算 正确
