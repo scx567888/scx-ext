@@ -79,3 +79,7 @@ public class YourModule implements ScxModule {
 ```
 
 有关更多信息，请参阅 [文档](https://scx.cool/docs/scx/index.html)
+
+## Stats
+
+![Alt](https://repobeats.axiom.co/api/embed/0f2641577ec3946348ea80315059aba02e1fd31e.svg "Repobeats analytics image")
