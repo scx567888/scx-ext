@@ -227,8 +227,8 @@ public abstract class FSSHandler {
      * @throws java.io.IOException a
      */
     public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws IOException {
-        var uploadTempFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSTemp");
-        var uploadConfigFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSUpload").toFile();
+        var uploadTempFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5, ".SCXFSSTemp");
+        var uploadConfigFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5, ".SCXFSSUpload").toFile();
 
         //判断是否上传的是最后一个分块 (因为 索引是以 0 开头的所以这里 -1)
         if (nowChunkIndex == chunkLength - 1) {
@@ -345,7 +345,7 @@ public abstract class FSSHandler {
      */
     public Json checkAnyFileExistsByThisMD5(String fileName, Long fileSize, String fileMD5) throws IOException {
         //可能有上传残留 这里准备清除一下
-        var uploadTempFileParent = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5 + "_" + fileName, ".SCXFSSTemp").getParent();
+        var uploadTempFileParent = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5, ".SCXFSSTemp").getParent();
         //先判断 文件是否已经上传过 并且文件可用
         var fssObjectListByMd5 = fssObjectService.findFSSObjectListByMd5(fileMD5);
         if (fssObjectListByMd5 != null && fssObjectListByMd5.size() > 0) {
