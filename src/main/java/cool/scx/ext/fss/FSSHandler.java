@@ -125,7 +125,17 @@ public abstract class FSSHandler {
      * @return a
      */
     public static Path getUploadTempPath(String fileMD5) {
-        return Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5);
+        return FSSConfig.uploadFilePath().resolve("TEMP").resolve(fileMD5);
+    }
+
+    /**
+     * a
+     *
+     * @param fssObject a
+     * @return a
+     */
+    public static Path getPhysicalFilePath(FSSObject fssObject) {
+        return Path.of(FSSConfig.uploadFilePath().toString(), fssObject.filePath);
     }
 
     /**
@@ -170,7 +180,7 @@ public abstract class FSSHandler {
      * @throws cool.scx.http.exception.impl.NotFoundException if any.
      */
     public File checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
-        var physicalFile = FSSObjectService.getPhysicalFilePath(fssObject).toFile();
+        var physicalFile = getPhysicalFilePath(fssObject).toFile();
         if (!physicalFile.exists()) {
             throw new NotFoundException();
         }
@@ -246,7 +256,7 @@ public abstract class FSSHandler {
             //获取文件描述信息创建 fssObject 对象
             var newFSSObject = createFSSObjectByFileInfo(fileName, fileSize, fileMD5);
             //获取文件真实的存储路径
-            var fileStoragePath = Path.of(FSSConfig.uploadFilePath().getPath(), newFSSObject.filePath);
+            var fileStoragePath = Path.of(FSSConfig.uploadFilePath().toString(), newFSSObject.filePath);
             //计算 md5 只有前后台 md5 相同文件才算 正确
             var serverMd5Str = DigestUtils.md5(uploadTempFile.toFile());
             if (!fileMD5.equalsIgnoreCase(serverMd5Str)) {
@@ -300,7 +310,7 @@ public abstract class FSSHandler {
             long count = fssObjectService.count(new Query().equal("fileMD5", needDeleteFile.fileMD5));
             //没有被其他人引用过 可以删除物理文件
             if (count <= 1) {
-                var filePath = Path.of(FSSConfig.uploadFilePath().getPath(), needDeleteFile.filePath);
+                var filePath = Path.of(FSSConfig.uploadFilePath().toString(), needDeleteFile.filePath);
                 if (Files.exists(filePath)) {
                     //删除失败 (可能文件正在使用)
                     if (!FileUtils.deleteFiles(filePath.getParent())) {
@@ -360,7 +370,7 @@ public abstract class FSSHandler {
             //循环处理
             for (var fssObject : fssObjectListByMd5) {
                 //获取物理文件
-                var physicalFile = Path.of(FSSConfig.uploadFilePath().getPath(), fssObject.filePath).toFile();
+                var physicalFile = getPhysicalFilePath(fssObject).toFile();
                 //这里多校验一些内容避免出先差错
                 //第一 文件必须存在 第二 文件大小必须和前台获得的文件大小相同 第三 文件的 md5 校验结果也必须和前台发送过来的 md5 相同
                 if (physicalFile.exists() && physicalFile.length() == fileSize && fileMD5.equalsIgnoreCase(DigestUtils.md5(physicalFile))) {
