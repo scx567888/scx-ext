@@ -119,6 +119,16 @@ public abstract class FSSHandler {
     }
 
     /**
+     * a
+     *
+     * @param fileMD5 a
+     * @return a
+     */
+    public static Path getUploadTempPath(String fileMD5) {
+        return Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5);
+    }
+
+    /**
      * <p>copyUploadFile.</p>
      *
      * @param fileName     a {@link java.lang.String} object.
@@ -370,16 +380,6 @@ public abstract class FSSHandler {
         }
         //通知前台 没找到任何 和此 MD5 相同并且文件内容未损害的 文件
         return Json.fail("no-any-file-exists-for-this-md5");
-    }
-
-    /**
-     * a
-     *
-     * @param fileMD5 a
-     * @return a
-     */
-    public final Path getUploadTempPath(String fileMD5) {
-        return Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5);
     }
 
 }
