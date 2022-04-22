@@ -11,7 +11,8 @@ import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
 import cool.scx.vo.*;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -64,9 +65,10 @@ public abstract class FSSHandler {
      * @return a {@link java.lang.Integer} object.
      * @throws IOException e
      */
-    public static Integer getLastUploadChunk(File uploadConfigFile, Integer chunkLength) throws IOException {
-        try (var fr = new FileReader(uploadConfigFile); var br = new BufferedReader(fr)) {
-            return Integer.parseInt(br.readLine().split("_")[0]);
+    public static Integer getLastUploadChunk(Path uploadConfigFile, Integer chunkLength) throws IOException {
+        try {
+            var allStr = Files.readString(uploadConfigFile);
+            return Integer.parseInt(allStr.split("_")[0]);
         } catch (Exception e) {
             //-1 表示文件从未上传过
             updateLastUploadChunk(uploadConfigFile, -1, chunkLength);
@@ -82,12 +84,9 @@ public abstract class FSSHandler {
      * @param chunkLength      a {@link java.lang.Integer} object.
      * @throws IOException e
      */
-    public static void updateLastUploadChunk(File uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
-        Files.createDirectories(Path.of(uploadConfigFile.getParent()));
-        try (var fw = new FileWriter(uploadConfigFile, false); var bw = new BufferedWriter(fw)) {
-            bw.write(nowChunkIndex + "_" + chunkLength);
-            bw.flush();
-        }
+    public static void updateLastUploadChunk(Path uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
+        Files.createDirectories(uploadConfigFile.getParent());
+        Files.writeString(uploadConfigFile, nowChunkIndex + "_" + chunkLength);
     }
 
     /**
@@ -117,6 +116,26 @@ public abstract class FSSHandler {
         fssObject.fileExtension = FileUtils.getExt(fssObject.fileName);
         fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileMD5, fileName};
         return fssObject;
+    }
+
+    /**
+     * a
+     *
+     * @param fileMD5 a
+     * @return a
+     */
+    public static Path getUploadTempPath(String fileMD5) {
+        return FSSConfig.uploadFilePath().resolve("TEMP").resolve(fileMD5);
+    }
+
+    /**
+     * a
+     *
+     * @param fssObject a
+     * @return a
+     */
+    public static Path getPhysicalFilePath(FSSObject fssObject) {
+        return Path.of(FSSConfig.uploadFilePath().toString(), fssObject.filePath);
     }
 
     /**
@@ -161,7 +180,7 @@ public abstract class FSSHandler {
      * @throws cool.scx.http.exception.impl.NotFoundException if any.
      */
     public File checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
-        var physicalFile = FSSObjectService.getPhysicalFilePath(fssObject).toFile();
+        var physicalFile = getPhysicalFilePath(fssObject).toFile();
         if (!physicalFile.exists()) {
             throw new NotFoundException();
         }
@@ -227,8 +246,8 @@ public abstract class FSSHandler {
      * @throws java.io.IOException a
      */
     public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws IOException {
-        var uploadTempFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5, ".SCXFSSTemp");
-        var uploadConfigFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5, ".SCXFSSUpload").toFile();
+        var uploadTempFile = getUploadTempPath(fileMD5).resolve("scx_fss.temp");
+        var uploadConfigFile = uploadTempFile.resolveSibling("scx_fss.upload_state");
 
         //判断是否上传的是最后一个分块 (因为 索引是以 0 开头的所以这里 -1)
         if (nowChunkIndex == chunkLength - 1) {
@@ -237,7 +256,7 @@ public abstract class FSSHandler {
             //获取文件描述信息创建 fssObject 对象
             var newFSSObject = createFSSObjectByFileInfo(fileName, fileSize, fileMD5);
             //获取文件真实的存储路径
-            var fileStoragePath = Path.of(FSSConfig.uploadFilePath().getPath(), newFSSObject.filePath);
+            var fileStoragePath = Path.of(FSSConfig.uploadFilePath().toString(), newFSSObject.filePath);
             //计算 md5 只有前后台 md5 相同文件才算 正确
             var serverMd5Str = DigestUtils.md5(uploadTempFile.toFile());
             if (!fileMD5.equalsIgnoreCase(serverMd5Str)) {
@@ -291,7 +310,7 @@ public abstract class FSSHandler {
             long count = fssObjectService.count(new Query().equal("fileMD5", needDeleteFile.fileMD5));
             //没有被其他人引用过 可以删除物理文件
             if (count <= 1) {
-                var filePath = Path.of(FSSConfig.uploadFilePath().getPath(), needDeleteFile.filePath);
+                var filePath = Path.of(FSSConfig.uploadFilePath().toString(), needDeleteFile.filePath);
                 if (Files.exists(filePath)) {
                     //删除失败 (可能文件正在使用)
                     if (!FileUtils.deleteFiles(filePath.getParent())) {
@@ -344,8 +363,6 @@ public abstract class FSSHandler {
      * @throws java.io.IOException e
      */
     public Json checkAnyFileExistsByThisMD5(String fileName, Long fileSize, String fileMD5) throws IOException {
-        //可能有上传残留 这里准备清除一下
-        var uploadTempFileParent = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5, ".SCXFSSTemp").getParent();
         //先判断 文件是否已经上传过 并且文件可用
         var fssObjectListByMd5 = fssObjectService.findFSSObjectListByMd5(fileMD5);
         if (fssObjectListByMd5 != null && fssObjectListByMd5.size() > 0) {
@@ -353,7 +370,7 @@ public abstract class FSSHandler {
             //循环处理
             for (var fssObject : fssObjectListByMd5) {
                 //获取物理文件
-                var physicalFile = Path.of(FSSConfig.uploadFilePath().getPath(), fssObject.filePath).toFile();
+                var physicalFile = getPhysicalFilePath(fssObject).toFile();
                 //这里多校验一些内容避免出先差错
                 //第一 文件必须存在 第二 文件大小必须和前台获得的文件大小相同 第三 文件的 md5 校验结果也必须和前台发送过来的 md5 相同
                 if (physicalFile.exists() && physicalFile.length() == fileSize && fileMD5.equalsIgnoreCase(DigestUtils.md5(physicalFile))) {
@@ -366,7 +383,7 @@ public abstract class FSSHandler {
             if (canUseFssObject != null) {
                 var save = fssObjectService.save(copyFSSObject(fileName, canUseFssObject));
                 //有可能有之前的残留临时文件 再此一并清除
-                FileUtils.deleteFiles(uploadTempFileParent);
+                FileUtils.deleteFiles(getUploadTempPath(fileMD5));
                 //通知前台秒传成功
                 return Json.ok().put("type", "upload-by-md5-success").put("item", save);
             }
