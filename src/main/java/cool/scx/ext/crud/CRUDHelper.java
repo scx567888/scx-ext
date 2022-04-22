@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * a
@@ -26,6 +27,11 @@ import java.util.Map;
 public final class CRUDHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(CRUDHelper.class);
+
+    /**
+     * 忽略的分割符
+     */
+    private static final Pattern IgnoredSeparatorRegex = Pattern.compile("[-_]");
 
     /**
      * scx bean 名称 和 class 对应映射
@@ -91,7 +97,8 @@ public final class CRUDHelper {
         if (StringUtils.isBlank(baseModelName)) {
             throw new UnknownCRUDModelException(baseModelName);
         }
-        var baseModelClass = BASE_MODEL_NAME_CLASS_MAPPING.get(baseModelName.toLowerCase());
+        var finalBaseModelName = IgnoredSeparatorRegex.matcher(baseModelName).replaceAll("").toLowerCase();
+        var baseModelClass = BASE_MODEL_NAME_CLASS_MAPPING.get(finalBaseModelName);
         if (baseModelClass == null) {
             throw new UnknownCRUDModelException(baseModelName);
         }

@@ -11,7 +11,8 @@ import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
 import cool.scx.vo.*;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -64,9 +65,10 @@ public abstract class FSSHandler {
      * @return a {@link java.lang.Integer} object.
      * @throws IOException e
      */
-    public static Integer getLastUploadChunk(File uploadConfigFile, Integer chunkLength) throws IOException {
-        try (var fr = new FileReader(uploadConfigFile); var br = new BufferedReader(fr)) {
-            return Integer.parseInt(br.readLine().split("_")[0]);
+    public static Integer getLastUploadChunk(Path uploadConfigFile, Integer chunkLength) throws IOException {
+        try {
+            var allStr = Files.readString(uploadConfigFile);
+            return Integer.parseInt(allStr.split("_")[0]);
         } catch (Exception e) {
             //-1 表示文件从未上传过
             updateLastUploadChunk(uploadConfigFile, -1, chunkLength);
@@ -82,12 +84,9 @@ public abstract class FSSHandler {
      * @param chunkLength      a {@link java.lang.Integer} object.
      * @throws IOException e
      */
-    public static void updateLastUploadChunk(File uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
-        Files.createDirectories(Path.of(uploadConfigFile.getParent()));
-        try (var fw = new FileWriter(uploadConfigFile, false); var bw = new BufferedWriter(fw)) {
-            bw.write(nowChunkIndex + "_" + chunkLength);
-            bw.flush();
-        }
+    public static void updateLastUploadChunk(Path uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
+        Files.createDirectories(uploadConfigFile.getParent());
+        Files.writeString(uploadConfigFile, nowChunkIndex + "_" + chunkLength);
     }
 
     /**
@@ -227,8 +226,8 @@ public abstract class FSSHandler {
      * @throws java.io.IOException a
      */
     public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws IOException {
-        var uploadTempFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5, ".SCXFSSTemp");
-        var uploadConfigFile = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5, ".SCXFSSUpload").toFile();
+        var uploadTempFile = getUploadTempPath(fileMD5).resolve("scx_fss.temp");
+        var uploadConfigFile = uploadTempFile.resolveSibling("scx_fss.upload_state");
 
         //判断是否上传的是最后一个分块 (因为 索引是以 0 开头的所以这里 -1)
         if (nowChunkIndex == chunkLength - 1) {
@@ -344,8 +343,6 @@ public abstract class FSSHandler {
      * @throws java.io.IOException e
      */
     public Json checkAnyFileExistsByThisMD5(String fileName, Long fileSize, String fileMD5) throws IOException {
-        //可能有上传残留 这里准备清除一下
-        var uploadTempFileParent = Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5, ".SCXFSSTemp").getParent();
         //先判断 文件是否已经上传过 并且文件可用
         var fssObjectListByMd5 = fssObjectService.findFSSObjectListByMd5(fileMD5);
         if (fssObjectListByMd5 != null && fssObjectListByMd5.size() > 0) {
@@ -366,13 +363,23 @@ public abstract class FSSHandler {
             if (canUseFssObject != null) {
                 var save = fssObjectService.save(copyFSSObject(fileName, canUseFssObject));
                 //有可能有之前的残留临时文件 再此一并清除
-                FileUtils.deleteFiles(uploadTempFileParent);
+                FileUtils.deleteFiles(getUploadTempPath(fileMD5));
                 //通知前台秒传成功
                 return Json.ok().put("type", "upload-by-md5-success").put("item", save);
             }
         }
         //通知前台 没找到任何 和此 MD5 相同并且文件内容未损害的 文件
         return Json.fail("no-any-file-exists-for-this-md5");
+    }
+
+    /**
+     * a
+     *
+     * @param fileMD5 a
+     * @return a
+     */
+    public final Path getUploadTempPath(String fileMD5) {
+        return Path.of(FSSConfig.uploadFilePath().getPath(), "TEMP", fileMD5);
     }
 
 }
