@@ -50,7 +50,10 @@ public class FSSController {
      * @return a {@link cool.scx.vo.Raw} object.
      */
     @ScxMapping(value = "/image/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
-    public Image image(@FromPath String fssObjectID, @FromQuery(value = "w", required = false) Integer width, @FromQuery(value = "h", required = false) Integer height, @FromQuery(value = "t", required = false) String type) {
+    public Image image(@FromPath String fssObjectID,
+                       @FromQuery(value = "w", required = false) Integer width,
+                       @FromQuery(value = "h", required = false) Integer height,
+                       @FromQuery(value = "t", required = false) String type) {
         return fssHandler.image(fssObjectID, width, height, type);
     }
 
@@ -78,7 +81,12 @@ public class FSSController {
      * @throws java.lang.Exception s
      */
     @ScxMapping(value = "/upload", method = HttpMethod.POST)
-    public Json upload(@FromBody String fileName, @FromBody Long fileSize, @FromBody String fileMD5, @FromBody Integer chunkLength, @FromBody Integer nowChunkIndex, @FromUpload UploadedEntity fileData) throws Exception {
+    public Json upload(@FromBody String fileName,
+                       @FromBody Long fileSize,
+                       @FromBody String fileMD5,
+                       @FromBody Integer chunkLength,
+                       @FromBody Integer nowChunkIndex,
+                       @FromUpload UploadedEntity fileData) throws Exception {
         return fssHandler.upload(fileName, fileSize, fileMD5, chunkLength, nowChunkIndex, fileData);
     }
 
