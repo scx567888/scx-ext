@@ -3,17 +3,18 @@ package cool.scx.ext.fss;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import cool.scx.ScxContext;
-import cool.scx.base.Query;
+import cool.scx.http.exception.impl.InternalServerErrorException;
 import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.type.UploadedEntity;
-import cool.scx.util.FileUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
+import cool.scx.util.file.FileUtils;
 import cool.scx.vo.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -215,7 +216,7 @@ public abstract class FSSHandler {
         if (image == null) {
             var fssObject = checkFSSObjectID(fssObjectID);
             var file = checkPhysicalFile(fssObject);
-            image = new Image(file, width, height, type);
+            image = Image.of(file, width, height, type);
             IMAGE_CACHE.put(cacheKey, image);
         }
         return image;
@@ -252,7 +253,7 @@ public abstract class FSSHandler {
         //判断是否上传的是最后一个分块 (因为 索引是以 0 开头的所以这里 -1)
         if (nowChunkIndex == chunkLength - 1) {
             //先将数据写入临时文件中
-            FileUtils.fileAppend(uploadTempFile, fileData.buffer().getBytes());
+            FileUtils.write(uploadTempFile, fileData.buffer().getBytes());
             //获取文件描述信息创建 fssObject 对象
             var newFSSObject = createFSSObjectByFileInfo(fileName, fileSize, fileMD5);
             //获取文件真实的存储路径
@@ -261,23 +262,18 @@ public abstract class FSSHandler {
             var serverMd5Str = DigestUtils.md5(uploadTempFile.toFile());
             if (!fileMD5.equalsIgnoreCase(serverMd5Str)) {
                 //md5 不相同 说明临时文件可能损坏 删除临时文件
-                FileUtils.deleteFiles(uploadTempFile.getParent());
-                return Json.fail("upload-fail");
+                FileUtils.delete(uploadTempFile.getParent());
+                throw new InternalServerErrorException("上传文件失败 : MD5 校验失败 , 文件 : " + fileMD5);
             }
-            //将临时文件移动并重命名到 真实的存储路径
-            var renameSuccess = FileUtils.fileMove(uploadTempFile, fileStoragePath);
             //移动成功 说明文件上传成功
-            if (renameSuccess) {
-                //删除临时文件夹
-                FileUtils.deleteFiles(uploadTempFile.getParent());
-                //存储到数据库
-                var save = fssObjectService.save(newFSSObject);
-                //像前台发送上传成功的消息
-                return Json.ok().put("type", "upload-success").put("item", save);
-            } else {
-                //移动失败 返回上传失败的信息
-                return Json.fail("upload-fail");
-            }
+            //将临时文件移动并重命名到 真实的存储路径
+            FileUtils.move(uploadTempFile, fileStoragePath);
+            //删除临时文件夹
+            FileUtils.delete(uploadTempFile.getParent());
+            //存储到数据库
+            var save = fssObjectService.save(newFSSObject);
+            //像前台发送上传成功的消息
+            return Json.ok().put("type", "upload-success").put("item", save);
         } else {
             //这里我们从文件中读取上次(最后一次)上传到了哪个区块
             var lastUploadChunk = getLastUploadChunk(uploadConfigFile, chunkLength);
@@ -285,7 +281,7 @@ public abstract class FSSHandler {
             var needUploadChunkIndex = lastUploadChunk + 1;
             //当前的区块索引和需要的区块索引相同 就保存文件内容
             if (nowChunkIndex.equals(needUploadChunkIndex)) {
-                FileUtils.fileAppend(uploadTempFile, fileData.buffer().getBytes());
+                FileUtils.write(uploadTempFile, fileData.buffer().getBytes());
                 //将当前上传成功的区块索引和总区块长度保存到配置文件中
                 updateLastUploadChunk(uploadConfigFile, nowChunkIndex, chunkLength);
                 //像前台返回我们需要的下一个区块索引
@@ -297,31 +293,30 @@ public abstract class FSSHandler {
     }
 
     /**
-     * <p>delete.</p>
+     * a
      *
-     * @param fssObjectIDs a {@link java.lang.String} object
-     * @return a {@link cool.scx.vo.Json} object
+     * @param fssObjectID a
+     * @return a
+     * @throws IOException a
      */
-    public Json delete(String fssObjectIDs) {
+    public Json delete(String fssObjectID) throws IOException {
         //先获取文件的基本信息
-        var needDeleteFile = fssObjectService.get(new Query().equal("fssObjectID", fssObjectIDs));
+        var needDeleteFile = fssObjectService.findByFSSObjectID(fssObjectID);
         if (needDeleteFile != null) {
             //判断文件是否被其他人引用过
-            long count = fssObjectService.count(new Query().equal("fileMD5", needDeleteFile.fileMD5));
+            long count = fssObjectService.countByMD5(needDeleteFile.fileMD5);
             //没有被其他人引用过 可以删除物理文件
             if (count <= 1) {
-                var filePath = Path.of(FSSConfig.uploadFilePath().toString(), needDeleteFile.filePath);
-                if (Files.exists(filePath)) {
-                    //删除失败 (可能文件正在使用)
-                    if (!FileUtils.deleteFiles(filePath.getParent())) {
-                        return Json.fail();
-                    }
+                var filePath = getPhysicalFilePath(needDeleteFile);
+                try {
+                    FileUtils.delete(filePath.getParent());
+                } catch (NoSuchFileException ignore) {
+                    //文件不存在时忽略错误
                 }
             }
             //删除数据库中的文件数据
             fssObjectService.delete(needDeleteFile.id);
         }
-
         return Json.ok();
     }
 
@@ -364,8 +359,8 @@ public abstract class FSSHandler {
      */
     public Json checkAnyFileExistsByThisMD5(String fileName, Long fileSize, String fileMD5) throws IOException {
         //先判断 文件是否已经上传过 并且文件可用
-        var fssObjectListByMd5 = fssObjectService.findFSSObjectListByMd5(fileMD5);
-        if (fssObjectListByMd5 != null && fssObjectListByMd5.size() > 0) {
+        var fssObjectListByMd5 = fssObjectService.findFSSObjectListByMD5(fileMD5);
+        if (fssObjectListByMd5.size() > 0) {
             FSSObject canUseFssObject = null;//先假设一个可以使用的文件
             //循环处理
             for (var fssObject : fssObjectListByMd5) {
@@ -383,7 +378,7 @@ public abstract class FSSHandler {
             if (canUseFssObject != null) {
                 var save = fssObjectService.save(copyFSSObject(fileName, canUseFssObject));
                 //有可能有之前的残留临时文件 再此一并清除
-                FileUtils.deleteFiles(getUploadTempPath(fileMD5));
+                FileUtils.delete(getUploadTempPath(fileMD5));
                 //通知前台秒传成功
                 return Json.ok().put("type", "upload-by-md5-success").put("item", save);
             }

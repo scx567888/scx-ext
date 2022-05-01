@@ -91,13 +91,14 @@ public class FSSController {
     }
 
     /**
-     * <p>deleteFile.</p>
+     * a
      *
-     * @param fssObjectID a {@link java.lang.String} object.
-     * @return a {@link cool.scx.vo.Json} object.
+     * @param fssObjectID a
+     * @return a
+     * @throws IOException a
      */
     @ScxMapping(value = "/delete", method = HttpMethod.DELETE)
-    public Json delete(@FromBody String fssObjectID) {
+    public Json delete(@FromBody String fssObjectID) throws IOException {
         return fssHandler.delete(fssObjectID);
     }
 
