@@ -10,8 +10,6 @@ import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
 import cool.scx.util.file.FileUtils;
 import cool.scx.vo.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +28,6 @@ import java.util.concurrent.TimeUnit;
  * @version 1.3.7
  */
 public abstract class FSSHandler {
-
-    public static final Logger logger = LoggerFactory.getLogger(FSSHandler.class);
 
     /**
      * 图片缓存 此处做一些初始设置
@@ -297,10 +293,11 @@ public abstract class FSSHandler {
     }
 
     /**
-     * <p>delete.</p>
+     * a
      *
-     * @param fssObjectID a {@link java.lang.String} object
-     * @return a {@link cool.scx.vo.Json} object
+     * @param fssObjectID a
+     * @return a
+     * @throws IOException a
      */
     public Json delete(String fssObjectID) throws IOException {
         //先获取文件的基本信息

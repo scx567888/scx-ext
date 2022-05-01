@@ -50,10 +50,7 @@ public class FSSController {
      * @return a {@link cool.scx.vo.Raw} object.
      */
     @ScxMapping(value = "/image/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
-    public Image image(@FromPath String fssObjectID,
-                       @FromQuery(value = "w", required = false) Integer width,
-                       @FromQuery(value = "h", required = false) Integer height,
-                       @FromQuery(value = "t", required = false) String type) {
+    public Image image(@FromPath String fssObjectID, @FromQuery(value = "w", required = false) Integer width, @FromQuery(value = "h", required = false) Integer height, @FromQuery(value = "t", required = false) String type) {
         return fssHandler.image(fssObjectID, width, height, type);
     }
 
@@ -81,20 +78,16 @@ public class FSSController {
      * @throws java.lang.Exception s
      */
     @ScxMapping(value = "/upload", method = HttpMethod.POST)
-    public Json upload(@FromBody String fileName,
-                       @FromBody Long fileSize,
-                       @FromBody String fileMD5,
-                       @FromBody Integer chunkLength,
-                       @FromBody Integer nowChunkIndex,
-                       @FromUpload UploadedEntity fileData) throws Exception {
+    public Json upload(@FromBody String fileName, @FromBody Long fileSize, @FromBody String fileMD5, @FromBody Integer chunkLength, @FromBody Integer nowChunkIndex, @FromUpload UploadedEntity fileData) throws Exception {
         return fssHandler.upload(fileName, fileSize, fileMD5, chunkLength, nowChunkIndex, fileData);
     }
 
     /**
-     * <p>deleteFile.</p>
+     * a
      *
-     * @param fssObjectID a {@link java.lang.String} object.
-     * @return a {@link cool.scx.vo.Json} object.
+     * @param fssObjectID a
+     * @return a
+     * @throws IOException a
      */
     @ScxMapping(value = "/delete", method = HttpMethod.DELETE)
     public Json delete(@FromBody String fssObjectID) throws IOException {
@@ -111,9 +104,7 @@ public class FSSController {
      * @throws java.io.IOException f
      */
     @ScxMapping(value = "check-any-file-exists-by-this-md5", method = HttpMethod.POST)
-    public Json checkAnyFileExistsByThisMD5(@FromBody String fileName,
-                                            @FromBody Long fileSize,
-                                            @FromBody String fileMD5) throws IOException {
+    public Json checkAnyFileExistsByThisMD5(@FromBody String fileName, @FromBody Long fileSize, @FromBody String fileMD5) throws IOException {
         return fssHandler.checkAnyFileExistsByThisMD5(fileName, fileSize, fileMD5);
     }
 

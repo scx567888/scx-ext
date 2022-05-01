@@ -133,11 +133,12 @@ public final class TemplateHelper {
     }
 
     /**
-     * <p>setFileContent.</p>
+     * a
      *
-     * @param filePath    文件路径
-     * @param fileContent 文件内容
-     * @return a {@link cool.scx.vo.Json} object.
+     * @param filePath    a
+     * @param fileContent a
+     * @return a
+     * @throws IOException a
      */
     public static Json setFileContent(String filePath, String fileContent) throws IOException {
         boolean b = checkPath(filePath);
@@ -167,11 +168,12 @@ public final class TemplateHelper {
     }
 
     /**
-     * <p>upload.</p>
+     * a
      *
-     * @param file     a {@link java.io.File} object.
-     * @param filePath a {@link java.lang.String} object.
-     * @return a {@link cool.scx.vo.Json} object.
+     * @param file     a
+     * @param filePath a
+     * @return a
+     * @throws IOException a
      */
     public static Json upload(@FromUpload UploadedEntity file, String filePath) throws IOException {
         if (checkPath(filePath)) {
