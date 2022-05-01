@@ -112,7 +112,9 @@ public class FSSController {
      * @throws java.io.IOException f
      */
     @ScxMapping(value = "check-any-file-exists-by-this-md5", method = HttpMethod.POST)
-    public Json checkAnyFileExistsByThisMD5(@FromBody String fileName, @FromBody Long fileSize, @FromBody String fileMD5) throws IOException {
+    public Json checkAnyFileExistsByThisMD5(@FromBody String fileName,
+                                            @FromBody Long fileSize,
+                                            @FromBody String fileMD5) throws IOException {
         return fssHandler.checkAnyFileExistsByThisMD5(fileName, fileSize, fileMD5);
     }
 
