@@ -97,7 +97,7 @@ public class FSSController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = "/delete", method = HttpMethod.DELETE)
-    public Json delete(@FromBody String fssObjectID) {
+    public Json delete(@FromBody String fssObjectID) throws IOException {
         return fssHandler.delete(fssObjectID);
     }
 

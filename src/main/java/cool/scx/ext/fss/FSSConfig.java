@@ -1,7 +1,7 @@
 package cool.scx.ext.fss;
 
 import cool.scx.ScxContext;
-import cool.scx.config.handler.impl.AppRootHandler;
+import cool.scx.config.handler.AppRootHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

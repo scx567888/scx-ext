@@ -21,8 +21,18 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * @param fileMD5 md5 值
      * @return 找的的数据
      */
-    public List<FSSObject> findFSSObjectListByMd5(String fileMD5) {
+    public List<FSSObject> findFSSObjectListByMD5(String fileMD5) {
         return list(new Query().equal("fileMD5", fileMD5).desc("uploadTime"));
+    }
+
+    /**
+     * a
+     *
+     * @param fileMD5 a
+     * @return a
+     */
+    public long countByMD5(String fileMD5) {
+        return count(new Query().equal("fileMD5", fileMD5));
     }
 
     /**

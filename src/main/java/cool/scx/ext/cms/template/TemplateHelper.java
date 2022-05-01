@@ -3,7 +3,7 @@ package cool.scx.ext.cms.template;
 import cool.scx.ScxContext;
 import cool.scx.annotation.FromUpload;
 import cool.scx.type.UploadedEntity;
-import cool.scx.util.FileUtils;
+import cool.scx.util.file.FileUtils;
 import cool.scx.vo.Json;
 
 import java.io.File;
@@ -139,10 +139,10 @@ public final class TemplateHelper {
      * @param fileContent 文件内容
      * @return a {@link cool.scx.vo.Json} object.
      */
-    public static Json setFileContent(String filePath, String fileContent) {
+    public static Json setFileContent(String filePath, String fileContent) throws IOException {
         boolean b = checkPath(filePath);
         if (b) {
-            FileUtils.setFileContent(filePath, fileContent);
+            Files.writeString(Path.of(filePath), fileContent);
             return getFileContent(filePath);
         } else {
             return Json.fail("文件无法访问");
@@ -159,8 +159,7 @@ public final class TemplateHelper {
     public static Json delete(String filePath) throws IOException {
         boolean b = checkPath(filePath);
         if (b) {
-            var file = Paths.get(filePath);
-            FileUtils.deleteIfExists(file);
+            FileUtils.delete(Path.of(filePath));
             return Json.ok();
         } else {
             return Json.fail("文件无法访问");
@@ -174,9 +173,9 @@ public final class TemplateHelper {
      * @param filePath a {@link java.lang.String} object.
      * @return a {@link cool.scx.vo.Json} object.
      */
-    public static Json upload(@FromUpload UploadedEntity file, String filePath) {
+    public static Json upload(@FromUpload UploadedEntity file, String filePath) throws IOException {
         if (checkPath(filePath)) {
-            FileUtils.fileAppend(Path.of(filePath, file.fileName()), file.buffer().getBytes());
+            FileUtils.write(Path.of(filePath, file.fileName()), file.buffer().getBytes());
             return Json.ok();
         } else {
             return Json.fail("文件无法访问");
