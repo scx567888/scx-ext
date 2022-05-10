@@ -1,6 +1,6 @@
 package cool.scx.ext.crud.exception;
 
-import cool.scx.http.exception.impl.BadRequestException;
+import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.vo.Json;
 
 /**
@@ -9,7 +9,7 @@ import cool.scx.vo.Json;
  * @author scx567888
  * @version 1.7.7
  */
-public final class UnknownCRUDModelException extends BadRequestException {
+public final class UnknownCRUDModelException extends NotFoundException {
 
     /**
      * a

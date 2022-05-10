@@ -7,7 +7,7 @@ import cool.scx.vo.Json;
 /**
  * a
  */
-public class EmptySelectColumn extends BadRequestException {
+public final class EmptySelectColumn extends BadRequestException {
 
     /**
      * a
