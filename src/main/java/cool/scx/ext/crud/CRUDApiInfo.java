@@ -18,42 +18,42 @@ public final class CRUDApiInfo {
     /**
      * a
      */
-    public final boolean list;
+    public boolean list;
 
     /**
      * a
      */
-    public final boolean info;
+    public boolean info;
 
     /**
      * a
      */
-    public final boolean save;
+    public boolean save;
 
     /**
      * a
      */
-    public final boolean update;
+    public boolean update;
 
     /**
      * a
      */
-    public final boolean delete;
+    public boolean delete;
 
     /**
      * a
      */
-    public final boolean batchDelete;
+    public boolean batchDelete;
 
     /**
      * a
      */
-    public final boolean revokeDelete;
+    public boolean revokeDelete;
 
     /**
      * a
      */
-    public final boolean checkUnique;
+    public boolean checkUnique;
 
     public CRUDApiInfo(UseCRUDApi useCRUDApi, Class<BaseModel> baseModelClass) {
         this.baseModelClass = baseModelClass;

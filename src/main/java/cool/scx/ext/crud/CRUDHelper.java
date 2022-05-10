@@ -27,17 +27,20 @@ import java.util.regex.Pattern;
  */
 public final class CRUDHelper {
 
+    /**
+     * scx bean 名称 和 CRUDApiInfo 对应映射 (此处公开此字段 保证外界在特殊情况下能够动态修改 某些 crudApi 的处理情况)
+     */
+    public static final Map<String, CRUDApiInfo> BASE_MODEL_NAME_CRUD_API_INFO_MAPPING = initBaseModelNameCRUDApiInfoMapping();
+
+    /**
+     * a
+     */
     private static final Logger logger = LoggerFactory.getLogger(CRUDHelper.class);
 
     /**
      * 忽略的分割符
      */
     private static final Pattern IgnoredSeparatorRegex = Pattern.compile("[-_]");
-
-    /**
-     * scx bean 名称 和 class 对应映射
-     */
-    private static final Map<String, CRUDApiInfo> BASE_MODEL_NAME_CRUD_API_INFO_MAPPING = initBaseModelNameCRUDApiInfoMapping();
 
     /**
      * scx bean 的 class 和对应的 scxService 的 class 的映射
