@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.annotation.Column;
 import cool.scx.annotation.ScxModel;
 import cool.scx.base.BaseModel;
+import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * @author scx567888
  * @version 0.3.6
  */
+@UseCRUDApi
 @ScxModel(tablePrefix = "fss")
 public class FSSObject extends BaseModel {
 
