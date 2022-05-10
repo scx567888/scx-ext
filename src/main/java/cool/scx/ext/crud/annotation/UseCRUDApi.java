@@ -20,41 +20,41 @@ public @interface UseCRUDApi {
     /**
      * list
      */
-    boolean list = true;
+    boolean list() default true;
 
     /**
      * info
      */
-    boolean info = true;
+    boolean info() default true;
 
     /**
      * save
      */
-    boolean save = true;
+    boolean save() default true;
 
     /**
      * update
      */
-    boolean update = true;
+    boolean update() default true;
 
     /**
      * delete
      */
-    boolean delete = true;
+    boolean delete() default true;
 
     /**
      * batchDelete
      */
-    boolean batchDelete = true;
+    boolean batchDelete() default true;
 
     /**
      * revokeDelete
      */
-    boolean revokeDelete = true;
+    boolean revokeDelete() default true;
 
     /**
      * checkUnique
      */
-    boolean checkUnique = true;
+    boolean checkUnique() default true;
 
 }
