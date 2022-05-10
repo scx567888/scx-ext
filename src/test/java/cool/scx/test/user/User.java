@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.annotation.Column;
 import cool.scx.annotation.ScxModel;
 import cool.scx.base.BaseModel;
+import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 /**
  * 核心用户类 (演示用,建议不要用于真实生产环境)
@@ -11,6 +12,7 @@ import cool.scx.base.BaseModel;
  * @author scx567888
  * @version 1.1.2
  */
+@UseCRUDApi
 @ScxModel(tablePrefix = "test")
 public class User extends BaseModel {
 

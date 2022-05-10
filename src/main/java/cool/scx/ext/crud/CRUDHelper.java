@@ -4,9 +4,10 @@ import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.base.BaseModel;
 import cool.scx.base.BaseModelService;
-import cool.scx.ext.crud.annotation.NoCRUD;
+import cool.scx.ext.crud.annotation.UseCRUDApi;
 import cool.scx.ext.crud.exception.UnknownCRUDModelException;
 import cool.scx.http.exception.impl.BadRequestException;
+import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
 import cool.scx.util.ansi.Ansi;
@@ -26,17 +27,20 @@ import java.util.regex.Pattern;
  */
 public final class CRUDHelper {
 
+    /**
+     * scx bean 名称 和 CRUDApiInfo 对应映射 (此处公开此字段 保证外界在特殊情况下能够动态修改 某些 crudApi 的处理情况)
+     */
+    public static final Map<String, CRUDApiInfo> BASE_MODEL_NAME_CRUD_API_INFO_MAPPING = initBaseModelNameCRUDApiInfoMapping();
+
+    /**
+     * a
+     */
     private static final Logger logger = LoggerFactory.getLogger(CRUDHelper.class);
 
     /**
      * 忽略的分割符
      */
     private static final Pattern IgnoredSeparatorRegex = Pattern.compile("[-_]");
-
-    /**
-     * scx bean 名称 和 class 对应映射
-     */
-    private static final Map<String, Class<BaseModel>> BASE_MODEL_NAME_CLASS_MAPPING = initBaseModelNameClassMapping();
 
     /**
      * scx bean 的 class 和对应的 scxService 的 class 的映射
@@ -89,16 +93,16 @@ public final class CRUDHelper {
     /**
      * <p>getClassByName.</p>
      *
-     * @param baseModelName a {@link java.lang.String} object.
+     * @param baseModelName a {@link String} object.
      * @return a {@link java.lang.Class} object.
-     * @throws cool.scx.ext.crud.exception.UnknownCRUDModelException if any.
+     * @throws NotFoundException if any.
      */
-    public static Class<BaseModel> getBaseModelClass(String baseModelName) throws UnknownCRUDModelException {
+    public static CRUDApiInfo getCRUDApiInfo(String baseModelName) throws NotFoundException {
         if (StringUtils.isBlank(baseModelName)) {
             throw new UnknownCRUDModelException(baseModelName);
         }
         var finalBaseModelName = IgnoredSeparatorRegex.matcher(baseModelName).replaceAll("").toLowerCase();
-        var baseModelClass = BASE_MODEL_NAME_CLASS_MAPPING.get(finalBaseModelName);
+        var baseModelClass = BASE_MODEL_NAME_CRUD_API_INFO_MAPPING.get(finalBaseModelName);
         if (baseModelClass == null) {
             throw new UnknownCRUDModelException(baseModelName);
         }
@@ -111,19 +115,19 @@ public final class CRUDHelper {
      * @return a {@link java.util.Map} object
      */
     @SuppressWarnings("unchecked")
-    private static Map<String, Class<BaseModel>> initBaseModelNameClassMapping() {
-        var tempMap = new HashMap<String, Class<BaseModel>>();
+    private static HashMap<String, CRUDApiInfo> initBaseModelNameCRUDApiInfoMapping() {
+        var tempMap = new HashMap<String, CRUDApiInfo>();
         for (var m : ScxContext.scxModuleMetadataList()) {
             for (var c : m.scxBaseModelClassList()) {
-                NoCRUD noCRUDAnnotation = c.getAnnotation(NoCRUD.class);
-                if (noCRUDAnnotation != null) {
-                    continue;
-                }
-                var className = c.getSimpleName().toLowerCase();
-                var aClass = tempMap.get(className);
-                tempMap.put(className, (Class<BaseModel>) c);
-                if (aClass != null) {
-                    Ansi.out().brightRed("检测到重复名称的 BaseModel ").brightYellow("[" + aClass.getName() + "] ").blue("[" + c.getName() + "]").brightRed(" 可能会导致根据名称调用时意义不明确 !!! 建议修改 !!!").println();
+                var useCRUDApiAnnotation = c.getAnnotation(UseCRUDApi.class);
+                if (useCRUDApiAnnotation != null) {
+                    var crudApiInfo = new CRUDApiInfo(useCRUDApiAnnotation, (Class<BaseModel>) c);
+                    //获取上一个重名的
+                    var last = tempMap.get(crudApiInfo.baseModelName);
+                    tempMap.put(crudApiInfo.baseModelName, crudApiInfo);
+                    if (last != null) {
+                        Ansi.out().brightRed("检测到重复名称的 BaseModel ").brightYellow("[" + last.baseModelClass.getName() + "] ").blue("[" + c.getName() + "]").brightRed(" 可能会导致根据名称调用时意义不明确 !!! 建议修改 !!!").println();
+                    }
                 }
             }
         }
@@ -140,7 +144,7 @@ public final class CRUDHelper {
         // 因为一个 BaseModel 可能由多个 BaseModelService 的实现 这里使用 HashSetValuedHashMap 存储
         ArrayListMultimap<Class<BaseModel>, Class<BaseModelService<BaseModel>>> classClassHashSetValuedHashMap = ArrayListMultimap.create();
         // baseModelClassList
-        var baseModelClassList = CRUDHelper.BASE_MODEL_NAME_CLASS_MAPPING.values();
+        var baseModelClassList = CRUDHelper.BASE_MODEL_NAME_CRUD_API_INFO_MAPPING.values().stream().map(c -> c.baseModelClass).toList();
         //循环读取
         for (var m : ScxContext.scxModuleMetadataList()) {
             for (var c : m.scxBaseModelServiceClassList()) {

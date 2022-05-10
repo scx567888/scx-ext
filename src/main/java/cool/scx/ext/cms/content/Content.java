@@ -3,6 +3,7 @@ package cool.scx.ext.cms.content;
 import cool.scx.annotation.Column;
 import cool.scx.annotation.ScxModel;
 import cool.scx.base.BaseModel;
+import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author scx567888
  * @version 0.3.6
  */
+@UseCRUDApi
 @ScxModel(tablePrefix = "cms")
 public class Content extends BaseModel {
 

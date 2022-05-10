@@ -24,7 +24,7 @@ public interface CRUDHandler {
      * @return 是否唯一
      */
     default boolean checkUnique(String modelName, String fieldName, Object value, Long id) {
-        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         CRUDListParam.checkFieldName(baseModelClass, fieldName);
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var query = new Query().equal(fieldName, value).notEqual("id", id, WhereOption.SKIP_IF_NULL);
@@ -39,7 +39,7 @@ public interface CRUDHandler {
      * @return r
      */
     default boolean revokeDelete(String modelName, Long id) {
-        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         return baseModelService.revokeDelete(id) == 1;
     }
@@ -52,7 +52,7 @@ public interface CRUDHandler {
      * @return r
      */
     default long batchDelete(String modelName, long[] deleteIDs) {
-        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         return baseModelService.delete(deleteIDs);
     }
@@ -65,7 +65,7 @@ public interface CRUDHandler {
      * @return r
      */
     default boolean delete(String modelName, Long id) {
-        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         return baseModelService.delete(id) == 1;
     }
@@ -78,7 +78,7 @@ public interface CRUDHandler {
      * @return c
      */
     default BaseModel update(String modelName, Map<String, Object> entityMap) {
-        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = CRUDHelper.mapToBaseModel(entityMap, baseModelClass);
         return baseModelService.update(realObject);
@@ -92,7 +92,7 @@ public interface CRUDHandler {
      * @return c
      */
     default BaseModel save(String modelName, Map<String, Object> entityMap) {
-        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = CRUDHelper.mapToBaseModel(entityMap, baseModelClass);
         return baseModelService.save(realObject);
@@ -106,7 +106,7 @@ public interface CRUDHandler {
      * @return 单条数据信息
      */
     default BaseModel info(String modelName, Long id) {
-        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         return baseModelService.get(id);
     }
@@ -119,7 +119,7 @@ public interface CRUDHandler {
      * @return 列表数据
      */
     default CRUDListResult list(String modelName, CRUDListParam crudListParam) {
-        var baseModelClass = CRUDHelper.getBaseModelClass(modelName);
+        var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var query = crudListParam.getQuery(baseModelClass);
         var selectFilter = crudListParam.getSelectFilter(baseModelClass, baseModelService._scxDaoTableInfo());

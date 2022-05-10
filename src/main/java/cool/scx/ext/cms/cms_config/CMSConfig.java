@@ -3,6 +3,7 @@ package cool.scx.ext.cms.cms_config;
 import cool.scx.annotation.Column;
 import cool.scx.annotation.ScxModel;
 import cool.scx.base.BaseModel;
+import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 /**
  * <p>CmsConfig class.</p>
@@ -10,6 +11,7 @@ import cool.scx.base.BaseModel;
  * @author scx567888
  * @version 1.3.9
  */
+@UseCRUDApi
 @ScxModel(tablePrefix = "cms")
 public class CMSConfig extends BaseModel {
 

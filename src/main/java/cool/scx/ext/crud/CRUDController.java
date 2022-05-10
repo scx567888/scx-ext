@@ -5,11 +5,14 @@ import cool.scx.annotation.FromBody;
 import cool.scx.annotation.FromPath;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
+import cool.scx.ext.crud.exception.CRUDApiAlreadyDisableException;
 import cool.scx.vo.BaseVo;
 import cool.scx.vo.DataJson;
 import cool.scx.vo.Json;
 
 import java.util.Map;
+
+import static cool.scx.ext.crud.CRUDApiType.*;
 
 /**
  * 通用 Crud的 controller
@@ -30,6 +33,14 @@ public class CRUDController {
         this.crudHandler = ScxContext.getBean(crudHandlerClass);
     }
 
+    private static void checkHasThisApi(String modelName, CRUDApiType apiType) {
+        var crudApiInfo = CRUDHelper.getCRUDApiInfo(modelName);
+        var hasThisApi = crudApiInfo.hasThisApi(apiType);
+        if (!hasThisApi) {
+            throw new CRUDApiAlreadyDisableException(modelName, apiType);
+        }
+    }
+
     /**
      * 列表查询
      *
@@ -39,6 +50,7 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
     public Json list(@FromPath String modelName, CRUDListParam crudListParam) {
+        checkHasThisApi(modelName, LIST);
         var crudListResult = crudHandler.list(modelName, crudListParam);
         return Json.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }
@@ -52,6 +64,7 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.GET)
     public BaseVo info(@FromPath String modelName, @FromPath Long id) {
+        checkHasThisApi(modelName, INFO);
         var info = crudHandler.info(modelName, id);
         return DataJson.ok().data(info);
     }
@@ -65,6 +78,7 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.POST)
     public BaseVo save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
+        checkHasThisApi(modelName, SAVE);
         var savedModel = crudHandler.save(modelName, entityMap);
         return DataJson.ok().data(savedModel);
     }
@@ -78,6 +92,7 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.PUT)
     public BaseVo update(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
+        checkHasThisApi(modelName, UPDATE);
         var updatedModel = crudHandler.update(modelName, entityMap);
         return DataJson.ok().data(updatedModel);
     }
@@ -91,6 +106,7 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.DELETE)
     public Json delete(@FromPath String modelName, @FromPath Long id) {
+        checkHasThisApi(modelName, DELETE);
         var b = crudHandler.delete(modelName, id);
         return b ? Json.ok() : Json.fail();
     }
@@ -104,6 +120,7 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName/batch-delete", method = HttpMethod.DELETE)
     public Json batchDelete(@FromPath String modelName, @FromBody long[] deleteIDs) {
+        checkHasThisApi(modelName, BATCH_DELETE);
         var deletedCount = crudHandler.batchDelete(modelName, deleteIDs);
         return Json.ok().put("deletedCount", deletedCount);
     }
@@ -117,6 +134,7 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName/revoke-delete/:id", method = HttpMethod.GET)
     public Json revokeDelete(@FromPath String modelName, @FromPath Long id) {
+        checkHasThisApi(modelName, REVOKE_DELETE);
         if (!ScxContext.easyConfig().tombstone()) {
             return Json.fail("not-used-tombstone");
         } else {
@@ -136,6 +154,7 @@ public class CRUDController {
      */
     @ScxMapping(value = ":modelName/check-unique/:fieldName", method = HttpMethod.POST)
     public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {
+        checkHasThisApi(modelName, CHECK_UNIQUE);
         var isUnique = crudHandler.checkUnique(modelName, fieldName, value, id);
         return Json.ok().put("isUnique", isUnique);
     }
