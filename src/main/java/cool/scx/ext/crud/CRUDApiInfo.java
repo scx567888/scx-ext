@@ -58,14 +58,14 @@ public final class CRUDApiInfo {
     public CRUDApiInfo(UseCRUDApi useCRUDApi, Class<BaseModel> baseModelClass) {
         this.baseModelClass = baseModelClass;
         this.baseModelName = baseModelClass.getSimpleName().toLowerCase();
-        this.list = useCRUDApi.list;
-        this.info = useCRUDApi.info;
-        this.save = useCRUDApi.save;
-        this.update = useCRUDApi.update;
-        this.delete = useCRUDApi.delete;
-        this.batchDelete = useCRUDApi.batchDelete;
-        this.revokeDelete = useCRUDApi.revokeDelete;
-        this.checkUnique = useCRUDApi.checkUnique;
+        this.list = useCRUDApi.list();
+        this.info = useCRUDApi.info();
+        this.save = useCRUDApi.save();
+        this.update = useCRUDApi.update();
+        this.delete = useCRUDApi.delete();
+        this.batchDelete = useCRUDApi.batchDelete();
+        this.revokeDelete = useCRUDApi.revokeDelete();
+        this.checkUnique = useCRUDApi.checkUnique();
     }
 
     public boolean hasThisApi(CRUDApiType crudApiType) {
