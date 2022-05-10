@@ -8,6 +8,7 @@ import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.type.UploadedEntity;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
+import cool.scx.util.exception.ScxExceptionHelper;
 import cool.scx.util.file.FileUtils;
 import cool.scx.vo.*;
 
@@ -378,7 +379,7 @@ public abstract class FSSHandler {
             if (canUseFssObject != null) {
                 var save = fssObjectService.save(copyFSSObject(fileName, canUseFssObject));
                 //有可能有之前的残留临时文件 再此一并清除
-                FileUtils.delete(getUploadTempPath(fileMD5));
+                ScxExceptionHelper.noException(() -> FileUtils.delete(getUploadTempPath(fileMD5)));
                 //通知前台秒传成功
                 return Json.ok().put("type", "upload-by-md5-success").put("item", save);
             }
