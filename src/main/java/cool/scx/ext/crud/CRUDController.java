@@ -73,27 +73,27 @@ public class CRUDController {
      * 保存
      *
      * @param modelName a {@link java.lang.String} object.
-     * @param entityMap a {@link java.util.Map} object.
+     * @param saveModel a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.POST)
-    public BaseVo save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
+    public BaseVo save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> saveModel) {
         checkHasThisApi(modelName, SAVE);
-        var savedModel = crudHandler.save(modelName, entityMap);
+        var savedModel = crudHandler.save(modelName, saveModel);
         return DataJson.ok().data(savedModel);
     }
 
     /**
      * 更新
      *
-     * @param modelName a {@link java.lang.String} object.
-     * @param entityMap a {@link java.util.Map} object.
+     * @param modelName       a {@link java.lang.String} object.
+     * @param crudUpdateParam a {@link java.util.Map} object.
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.PUT)
-    public BaseVo update(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> entityMap) {
+    public BaseVo update(@FromPath String modelName, CRUDUpdateParam crudUpdateParam) {
         checkHasThisApi(modelName, UPDATE);
-        var updatedModel = crudHandler.update(modelName, entityMap);
+        var updatedModel = crudHandler.update(modelName, crudUpdateParam);
         return DataJson.ok().data(updatedModel);
     }
 

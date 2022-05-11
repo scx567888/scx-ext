@@ -46,7 +46,9 @@ public class CRUDModule implements ScxModule {
     public void start() {
         //这里添加额外的参数处理器 保证 CRUDListParam 类型的参数永不为空
         ScxContext.scxMappingConfiguration().addMethodParameterHandler(0, CRUDListParamMethodParameterHandler.DEFAULT_INSTANCE);
-        logger.info("已添加用于处理类型为 CRUDListParam 的 MethodParameterHandler  -->  {}", CRUDListParamMethodParameterHandler.class.getName());
+        ScxContext.scxMappingConfiguration().addMethodParameterHandler(0, CRUDUpdateParamMethodParameterHandler.DEFAULT_INSTANCE);
+        logger.info("已添加用于处理类型为 CRUDListParam   的 MethodParameterHandler  -->  {}", CRUDListParamMethodParameterHandler.class.getName());
+        logger.info("已添加用于处理类型为 CRUDUpdateParam 的 MethodParameterHandler  -->  {}", CRUDUpdateParamMethodParameterHandler.class.getName());
         logger.info("CRUDHandler 实现类  -->  {}", this.crudHandlerClass.getName());
     }
 

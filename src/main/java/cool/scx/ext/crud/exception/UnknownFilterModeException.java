@@ -9,14 +9,14 @@ import cool.scx.vo.Json;
  * @author scx567888
  * @version 1.8.1
  */
-public final class UnknownFilterMode extends BadRequestException {
+public final class UnknownFilterModeException extends BadRequestException {
 
     /**
      * a
      *
      * @param filterMode a
      */
-    public UnknownFilterMode(String filterMode) {
+    public UnknownFilterModeException(String filterMode) {
         super(Json.fail("unknown-filter-mode").put("filter-mode", filterMode).toJson(""));
     }
 

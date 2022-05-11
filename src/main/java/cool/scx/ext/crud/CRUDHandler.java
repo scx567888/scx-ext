@@ -25,7 +25,7 @@ public interface CRUDHandler {
      */
     default boolean checkUnique(String modelName, String fieldName, Object value, Long id) {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
-        CRUDListParam.checkFieldName(baseModelClass, fieldName);
+        CRUDHelper.checkFieldName(baseModelClass, fieldName);
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var query = new Query().equal(fieldName, value).notEqual("id", id, WhereOption.SKIP_IF_NULL);
         return baseModelService.count(query) == 0;
@@ -73,28 +73,29 @@ public interface CRUDHandler {
     /**
      * 更新数据
      *
-     * @param modelName model 名称
-     * @param entityMap 可以转换为 model类的 map (其中需要存在 id)
+     * @param modelName       model 名称
+     * @param crudUpdateParam 可以转换为 model类的 map (其中需要存在 id)
      * @return c
      */
-    default BaseModel update(String modelName, Map<String, Object> entityMap) {
+    default BaseModel update(String modelName, CRUDUpdateParam crudUpdateParam) {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
-        var realObject = CRUDHelper.mapToBaseModel(entityMap, baseModelClass);
-        return baseModelService.update(realObject);
+        var realObject = crudUpdateParam.getBaseModel(baseModelClass);
+        var updateFilter = crudUpdateParam.getUpdateFilter(baseModelClass, baseModelService._scxDaoTableInfo());
+        return baseModelService.update(realObject, updateFilter);
     }
 
     /**
      * <p>save.</p>
      *
      * @param modelName model 名称
-     * @param entityMap 可以转换为 model类的 map
+     * @param saveModel 可以转换为 model类的 map
      * @return c
      */
-    default BaseModel save(String modelName, Map<String, Object> entityMap) {
+    default BaseModel save(String modelName, Map<String, Object> saveModel) {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
-        var realObject = CRUDHelper.mapToBaseModel(entityMap, baseModelClass);
+        var realObject = CRUDHelper.mapToBaseModel(saveModel, baseModelClass);
         return baseModelService.save(realObject);
     }
 

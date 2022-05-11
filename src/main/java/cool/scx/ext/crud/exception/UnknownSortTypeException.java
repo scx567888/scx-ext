@@ -9,7 +9,7 @@ import cool.scx.vo.Json;
  * @author scx567888
  * @version 1.7.7
  */
-public final class UnknownSortType extends BadRequestException {
+public final class UnknownSortTypeException extends BadRequestException {
 
     /**
      * a
@@ -17,7 +17,7 @@ public final class UnknownSortType extends BadRequestException {
      * @param fieldName   a
      * @param strSortType a
      */
-    public UnknownSortType(String fieldName, String strSortType) {
+    public UnknownSortTypeException(String fieldName, String strSortType) {
         super(Json.fail("unknown-sort-type").put("field-name", fieldName).put("sort-type", strSortType).toJson(""));
     }
 

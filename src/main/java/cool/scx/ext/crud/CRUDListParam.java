@@ -1,6 +1,5 @@
 package cool.scx.ext.crud;
 
-import cool.scx.annotation.NoColumn;
 import cool.scx.base.AbstractFilter;
 import cool.scx.base.BaseModel;
 import cool.scx.base.Query;
@@ -41,37 +40,18 @@ public final class CRUDListParam {
     public CRUDSelectFilterBody selectFilterBody;
 
     /**
-     * 检查 fieldName 是否合法
-     *
-     * @param modelClass m
-     * @param fieldName  f
-     * @throws cool.scx.ext.crud.exception.UnknownFieldName c
-     */
-    public static String checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldName {
-        try {
-            var field = modelClass.getField(fieldName);
-            if (field.isAnnotationPresent(NoColumn.class)) {
-                throw new UnknownFieldName(fieldName);
-            }
-        } catch (Exception e) {
-            throw new UnknownFieldName(fieldName);
-        }
-        return fieldName;
-    }
-
-    /**
      * 检查 where 类型
      *
      * @param fieldName    f
      * @param strWhereType s
      * @return s
-     * @throws cool.scx.ext.crud.exception.UnknownWhereType s
+     * @throws UnknownWhereTypeException s
      */
-    public static WhereType checkWhereType(String fieldName, String strWhereType) throws UnknownWhereType {
+    public static WhereType checkWhereType(String fieldName, String strWhereType) throws UnknownWhereTypeException {
         try {
             return WhereType.of(strWhereType);
         } catch (Exception ignored) {
-            throw new UnknownWhereType(fieldName, strWhereType);
+            throw new UnknownWhereTypeException(fieldName, strWhereType);
         }
     }
 
@@ -81,13 +61,13 @@ public final class CRUDListParam {
      * @param fieldName   a
      * @param strSortType a
      * @return a
-     * @throws cool.scx.ext.crud.exception.UnknownSortType a
+     * @throws UnknownSortTypeException a
      */
-    public static OrderByType checkSortType(String fieldName, String strSortType) throws UnknownSortType {
+    public static OrderByType checkSortType(String fieldName, String strSortType) throws UnknownSortTypeException {
         try {
             return OrderByType.of(strSortType);
         } catch (Exception ignored) {
-            throw new UnknownSortType(fieldName, strSortType);
+            throw new UnknownSortTypeException(fieldName, strSortType);
         }
     }
 
@@ -98,9 +78,9 @@ public final class CRUDListParam {
      * @param whereType w
      * @param value1    v
      * @param value2    v
-     * @throws cool.scx.ext.crud.exception.WhereBodyParametersSizeError v
+     * @throws WhereBodyParametersSizeErrorException v
      */
-    public static void checkWhereBodyParametersSize(String fieldName, WhereType whereType, Object value1, Object value2) throws WhereBodyParametersSizeError {
+    public static void checkWhereBodyParametersSize(String fieldName, WhereType whereType, Object value1, Object value2) throws WhereBodyParametersSizeErrorException {
         AtomicInteger paramSize = new AtomicInteger();
         if (value1 != null) {
             paramSize.set(paramSize.get() + 1);
@@ -110,7 +90,7 @@ public final class CRUDListParam {
         }
 
         if (whereType.paramSize() != paramSize.get()) {
-            throw new WhereBodyParametersSizeError(fieldName, whereType, paramSize.get());
+            throw new WhereBodyParametersSizeErrorException(fieldName, whereType, paramSize.get());
         }
     }
 
@@ -119,13 +99,13 @@ public final class CRUDListParam {
      *
      * @param filterMode f
      * @return a
-     * @throws UnknownWhereType a
+     * @throws UnknownWhereTypeException a
      */
-    public static AbstractFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereType {
+    public static AbstractFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereTypeException {
         try {
             return AbstractFilter.FilterMode.of(filterMode);
         } catch (Exception ignored) {
-            throw new UnknownFilterMode(filterMode);
+            throw new UnknownFilterModeException(filterMode);
         }
     }
 
@@ -145,10 +125,10 @@ public final class CRUDListParam {
                 } else if (currentPage >= 0) {
                     query.setPagination(currentPage, pageSize);
                 } else {
-                    throw new PaginationParametersError(currentPage, pageSize);
+                    throw new PaginationParametersErrorException(currentPage, pageSize);
                 }
             } else {
-                throw new PaginationParametersError(currentPage, pageSize);
+                throw new PaginationParametersErrorException(currentPage, pageSize);
             }
         }
     }
@@ -170,7 +150,7 @@ public final class CRUDListParam {
             for (var orderByBody : this.orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
                     //校验 fieldName 是否正确
-                    checkFieldName(modelClass, orderByBody.fieldName);
+                    CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
                     //检查 sortType 是否正确
                     var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
                     query.orderBy().add(orderByBody.fieldName, sortType);
@@ -181,7 +161,7 @@ public final class CRUDListParam {
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
                     //校验 fieldName 是否正确
-                    checkFieldName(modelClass, crudWhereBody.fieldName);
+                    CRUDHelper.checkFieldName(modelClass, crudWhereBody.fieldName);
                     //检查 whereType 是否正确
                     var whereType = checkWhereType(crudWhereBody.fieldName, crudWhereBody.whereType);
                     //检查参数数量是否正确
@@ -211,14 +191,14 @@ public final class CRUDListParam {
             return SelectFilter.ofExcluded();
         }
         var filterMode = checkFilterMode(selectFilterBody.filterMode);
-        var legalFieldName = selectFilterBody.fieldNames != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> checkFieldName(modelClass, fieldName)).toArray(String[]::new) : new String[0];
+        var legalFieldName = selectFilterBody.fieldNames != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new) : new String[0];
         var selectFilter = switch (filterMode) {
             case EXCLUDED -> SelectFilter.ofExcluded().addExcluded(legalFieldName);
             case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
         };
         //防止空列查询
         if (selectFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
-            throw new EmptySelectColumn(filterMode, selectFilterBody.fieldNames);
+            throw new EmptySelectColumnException(filterMode, selectFilterBody.fieldNames);
         }
         return selectFilter;
     }

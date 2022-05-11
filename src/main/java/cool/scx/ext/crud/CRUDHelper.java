@@ -2,10 +2,12 @@ package cool.scx.ext.crud;
 
 import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
+import cool.scx.annotation.NoColumn;
 import cool.scx.base.BaseModel;
 import cool.scx.base.BaseModelService;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 import cool.scx.ext.crud.exception.UnknownCRUDModelException;
+import cool.scx.ext.crud.exception.UnknownFieldNameException;
 import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.util.ObjectUtils;
@@ -75,14 +77,14 @@ public final class CRUDHelper {
     /**
      * 获取 baseModel
      *
-     * @param entityMap      a
+     * @param map            a
      * @param baseModelClass a
      * @param <B>            b
      * @return a
      */
-    public static <B extends BaseModel> B mapToBaseModel(Map<String, Object> entityMap, Class<B> baseModelClass) {
+    public static <B extends BaseModel> B mapToBaseModel(Map<String, Object> map, Class<B> baseModelClass) {
         try {
-            return ObjectUtils.convertValue(entityMap, baseModelClass);
+            return ObjectUtils.convertValue(map, baseModelClass);
         } catch (Exception e) {
             logger.error("将 Map 转换为 BaseModel 时发生异常 : ", e);
             //这里一般就是 参数转换错误
@@ -183,6 +185,25 @@ public final class CRUDHelper {
         }
 
         return tempMap;
+    }
+
+    /**
+     * 检查 fieldName 是否合法
+     *
+     * @param modelClass m
+     * @param fieldName  f
+     * @throws UnknownFieldNameException c
+     */
+    public static String checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldNameException {
+        try {
+            var field = modelClass.getField(fieldName);
+            if (field.isAnnotationPresent(NoColumn.class)) {
+                throw new UnknownFieldNameException(fieldName);
+            }
+        } catch (Exception e) {
+            throw new UnknownFieldNameException(fieldName);
+        }
+        return fieldName;
     }
 
 }

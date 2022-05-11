@@ -10,7 +10,7 @@ import cool.scx.vo.Json;
  * @author scx567888
  * @version 1.7.7
  */
-public final class WhereBodyParametersSizeError extends BadRequestException {
+public final class WhereBodyParametersSizeErrorException extends BadRequestException {
 
     /**
      * a
@@ -19,7 +19,7 @@ public final class WhereBodyParametersSizeError extends BadRequestException {
      * @param whereType         a
      * @param gotParametersSize a
      */
-    public WhereBodyParametersSizeError(String fieldName, WhereType whereType, int gotParametersSize) {
+    public WhereBodyParametersSizeErrorException(String fieldName, WhereType whereType, int gotParametersSize) {
         super(Json.fail("where-body-parameters-size-error")
                 .put("field-name", fieldName)
                 .put("where-type", whereType)

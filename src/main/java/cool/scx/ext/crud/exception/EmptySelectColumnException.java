@@ -7,7 +7,7 @@ import cool.scx.vo.Json;
 /**
  * a
  */
-public final class EmptySelectColumn extends BadRequestException {
+public final class EmptySelectColumnException extends BadRequestException {
 
     /**
      * a
@@ -15,7 +15,7 @@ public final class EmptySelectColumn extends BadRequestException {
      * @param filterMode a
      * @param fieldNames a
      */
-    public EmptySelectColumn(AbstractFilter.FilterMode filterMode, String[] fieldNames) {
+    public EmptySelectColumnException(AbstractFilter.FilterMode filterMode, String[] fieldNames) {
         super(Json.fail("empty-select-column").put("filter-mode", filterMode).put("field-names", fieldNames).toJson(""));
     }
 

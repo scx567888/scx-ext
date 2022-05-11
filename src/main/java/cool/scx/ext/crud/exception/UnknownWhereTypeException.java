@@ -9,7 +9,7 @@ import cool.scx.vo.Json;
  * @author scx567888
  * @version 1.7.7
  */
-public final class UnknownWhereType extends BadRequestException {
+public final class UnknownWhereTypeException extends BadRequestException {
 
     /**
      * a
@@ -17,7 +17,7 @@ public final class UnknownWhereType extends BadRequestException {
      * @param fieldName    a
      * @param strWhereType a
      */
-    public UnknownWhereType(String fieldName, String strWhereType) {
+    public UnknownWhereTypeException(String fieldName, String strWhereType) {
         super(Json.fail("unknown-where-type").put("field-name", fieldName).put("where-type", strWhereType).toJson(""));
     }
 
