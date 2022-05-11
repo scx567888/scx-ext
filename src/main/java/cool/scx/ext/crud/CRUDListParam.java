@@ -1,6 +1,5 @@
 package cool.scx.ext.crud;
 
-import cool.scx.annotation.NoColumn;
 import cool.scx.base.AbstractFilter;
 import cool.scx.base.BaseModel;
 import cool.scx.base.Query;
@@ -39,25 +38,6 @@ public final class CRUDListParam {
      * 查询列过滤参数
      */
     public CRUDSelectFilterBody selectFilterBody;
-
-    /**
-     * 检查 fieldName 是否合法
-     *
-     * @param modelClass m
-     * @param fieldName  f
-     * @throws cool.scx.ext.crud.exception.UnknownFieldName c
-     */
-    public static String checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldName {
-        try {
-            var field = modelClass.getField(fieldName);
-            if (field.isAnnotationPresent(NoColumn.class)) {
-                throw new UnknownFieldName(fieldName);
-            }
-        } catch (Exception e) {
-            throw new UnknownFieldName(fieldName);
-        }
-        return fieldName;
-    }
 
     /**
      * 检查 where 类型
@@ -170,7 +150,7 @@ public final class CRUDListParam {
             for (var orderByBody : this.orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
                     //校验 fieldName 是否正确
-                    checkFieldName(modelClass, orderByBody.fieldName);
+                    CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
                     //检查 sortType 是否正确
                     var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
                     query.orderBy().add(orderByBody.fieldName, sortType);
@@ -181,7 +161,7 @@ public final class CRUDListParam {
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
                     //校验 fieldName 是否正确
-                    checkFieldName(modelClass, crudWhereBody.fieldName);
+                    CRUDHelper.checkFieldName(modelClass, crudWhereBody.fieldName);
                     //检查 whereType 是否正确
                     var whereType = checkWhereType(crudWhereBody.fieldName, crudWhereBody.whereType);
                     //检查参数数量是否正确
@@ -211,7 +191,7 @@ public final class CRUDListParam {
             return SelectFilter.ofExcluded();
         }
         var filterMode = checkFilterMode(selectFilterBody.filterMode);
-        var legalFieldName = selectFilterBody.fieldNames != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> checkFieldName(modelClass, fieldName)).toArray(String[]::new) : new String[0];
+        var legalFieldName = selectFilterBody.fieldNames != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new) : new String[0];
         var selectFilter = switch (filterMode) {
             case EXCLUDED -> SelectFilter.ofExcluded().addExcluded(legalFieldName);
             case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
