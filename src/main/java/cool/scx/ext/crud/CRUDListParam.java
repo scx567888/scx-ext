@@ -11,6 +11,7 @@ import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.sql.where.WhereType;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -46,7 +47,7 @@ public final class CRUDListParam {
      * @param fieldName  f
      * @throws cool.scx.ext.crud.exception.UnknownFieldName c
      */
-    public static void checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldName {
+    public static String checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldName {
         try {
             var field = modelClass.getField(fieldName);
             if (field.isAnnotationPresent(NoColumn.class)) {
@@ -55,6 +56,7 @@ public final class CRUDListParam {
         } catch (Exception e) {
             throw new UnknownFieldName(fieldName);
         }
+        return fieldName;
     }
 
     /**
@@ -209,16 +211,11 @@ public final class CRUDListParam {
             return SelectFilter.ofExcluded();
         }
         var filterMode = checkFilterMode(selectFilterBody.filterMode);
+        var legalFieldName = selectFilterBody.fieldNames != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> checkFieldName(modelClass, fieldName)).toArray(String[]::new) : new String[0];
         var selectFilter = switch (filterMode) {
-            case EXCLUDED -> SelectFilter.ofExcluded();
-            case INCLUDED -> SelectFilter.ofIncluded();
+            case EXCLUDED -> SelectFilter.ofExcluded().addExcluded(legalFieldName);
+            case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
         };
-        if (selectFilterBody.fieldNames != null) {
-            for (var fieldName : selectFilterBody.fieldNames) {
-                checkFieldName(modelClass, fieldName);
-                selectFilter.add(fieldName);
-            }
-        }
         //防止空列查询
         if (selectFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
             throw new EmptySelectColumn(filterMode, selectFilterBody.fieldNames);
