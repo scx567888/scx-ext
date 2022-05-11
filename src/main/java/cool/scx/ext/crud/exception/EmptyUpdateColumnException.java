@@ -6,9 +6,9 @@ import cool.scx.vo.Json;
 /**
  * a
  */
-public final class EmptyUpdateColumn extends BadRequestException {
+public final class EmptyUpdateColumnException extends BadRequestException {
 
-    public EmptyUpdateColumn() {
+    public EmptyUpdateColumnException() {
         super(Json.fail("empty-update-column").toJson(""));
     }
 

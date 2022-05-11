@@ -45,13 +45,13 @@ public final class CRUDListParam {
      * @param fieldName    f
      * @param strWhereType s
      * @return s
-     * @throws cool.scx.ext.crud.exception.UnknownWhereType s
+     * @throws UnknownWhereTypeException s
      */
-    public static WhereType checkWhereType(String fieldName, String strWhereType) throws UnknownWhereType {
+    public static WhereType checkWhereType(String fieldName, String strWhereType) throws UnknownWhereTypeException {
         try {
             return WhereType.of(strWhereType);
         } catch (Exception ignored) {
-            throw new UnknownWhereType(fieldName, strWhereType);
+            throw new UnknownWhereTypeException(fieldName, strWhereType);
         }
     }
 
@@ -61,13 +61,13 @@ public final class CRUDListParam {
      * @param fieldName   a
      * @param strSortType a
      * @return a
-     * @throws cool.scx.ext.crud.exception.UnknownSortType a
+     * @throws UnknownSortTypeException a
      */
-    public static OrderByType checkSortType(String fieldName, String strSortType) throws UnknownSortType {
+    public static OrderByType checkSortType(String fieldName, String strSortType) throws UnknownSortTypeException {
         try {
             return OrderByType.of(strSortType);
         } catch (Exception ignored) {
-            throw new UnknownSortType(fieldName, strSortType);
+            throw new UnknownSortTypeException(fieldName, strSortType);
         }
     }
 
@@ -78,9 +78,9 @@ public final class CRUDListParam {
      * @param whereType w
      * @param value1    v
      * @param value2    v
-     * @throws cool.scx.ext.crud.exception.WhereBodyParametersSizeError v
+     * @throws WhereBodyParametersSizeErrorException v
      */
-    public static void checkWhereBodyParametersSize(String fieldName, WhereType whereType, Object value1, Object value2) throws WhereBodyParametersSizeError {
+    public static void checkWhereBodyParametersSize(String fieldName, WhereType whereType, Object value1, Object value2) throws WhereBodyParametersSizeErrorException {
         AtomicInteger paramSize = new AtomicInteger();
         if (value1 != null) {
             paramSize.set(paramSize.get() + 1);
@@ -90,7 +90,7 @@ public final class CRUDListParam {
         }
 
         if (whereType.paramSize() != paramSize.get()) {
-            throw new WhereBodyParametersSizeError(fieldName, whereType, paramSize.get());
+            throw new WhereBodyParametersSizeErrorException(fieldName, whereType, paramSize.get());
         }
     }
 
@@ -99,13 +99,13 @@ public final class CRUDListParam {
      *
      * @param filterMode f
      * @return a
-     * @throws UnknownWhereType a
+     * @throws UnknownWhereTypeException a
      */
-    public static AbstractFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereType {
+    public static AbstractFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereTypeException {
         try {
             return AbstractFilter.FilterMode.of(filterMode);
         } catch (Exception ignored) {
-            throw new UnknownFilterMode(filterMode);
+            throw new UnknownFilterModeException(filterMode);
         }
     }
 
@@ -125,10 +125,10 @@ public final class CRUDListParam {
                 } else if (currentPage >= 0) {
                     query.setPagination(currentPage, pageSize);
                 } else {
-                    throw new PaginationParametersError(currentPage, pageSize);
+                    throw new PaginationParametersErrorException(currentPage, pageSize);
                 }
             } else {
-                throw new PaginationParametersError(currentPage, pageSize);
+                throw new PaginationParametersErrorException(currentPage, pageSize);
             }
         }
     }
@@ -198,7 +198,7 @@ public final class CRUDListParam {
         };
         //防止空列查询
         if (selectFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
-            throw new EmptySelectColumn(filterMode, selectFilterBody.fieldNames);
+            throw new EmptySelectColumnException(filterMode, selectFilterBody.fieldNames);
         }
         return selectFilter;
     }

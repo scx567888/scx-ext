@@ -7,7 +7,7 @@ import cool.scx.base.BaseModel;
 import cool.scx.base.BaseModelService;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 import cool.scx.ext.crud.exception.UnknownCRUDModelException;
-import cool.scx.ext.crud.exception.UnknownFieldName;
+import cool.scx.ext.crud.exception.UnknownFieldNameException;
 import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.util.ObjectUtils;
@@ -192,16 +192,16 @@ public final class CRUDHelper {
      *
      * @param modelClass m
      * @param fieldName  f
-     * @throws cool.scx.ext.crud.exception.UnknownFieldName c
+     * @throws UnknownFieldNameException c
      */
-    public static String checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldName {
+    public static String checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldNameException {
         try {
             var field = modelClass.getField(fieldName);
             if (field.isAnnotationPresent(NoColumn.class)) {
-                throw new UnknownFieldName(fieldName);
+                throw new UnknownFieldNameException(fieldName);
             }
         } catch (Exception e) {
-            throw new UnknownFieldName(fieldName);
+            throw new UnknownFieldNameException(fieldName);
         }
         return fieldName;
     }

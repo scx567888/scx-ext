@@ -9,14 +9,14 @@ import cool.scx.vo.Json;
  * @author scx567888
  * @version 1.7.7
  */
-public final class UnknownFieldName extends BadRequestException {
+public final class UnknownFieldNameException extends BadRequestException {
 
     /**
      * a
      *
      * @param fieldName a
      */
-    public UnknownFieldName(String fieldName) {
+    public UnknownFieldNameException(String fieldName) {
         super(Json.fail("unknown-field-name").put("field-name", fieldName).toJson(""));
     }
 

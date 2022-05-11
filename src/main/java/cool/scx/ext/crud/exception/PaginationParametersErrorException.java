@@ -6,7 +6,7 @@ import cool.scx.vo.Json;
 /**
  * a
  */
-public final class PaginationParametersError extends BadRequestException {
+public final class PaginationParametersErrorException extends BadRequestException {
 
     /**
      * a
@@ -14,7 +14,7 @@ public final class PaginationParametersError extends BadRequestException {
      * @param currentPage a
      * @param pageSize    a
      */
-    public PaginationParametersError(Integer currentPage, Integer pageSize) {
+    public PaginationParametersErrorException(Integer currentPage, Integer pageSize) {
         super(Json.fail("pagination-parameters-error").put("info", "currentPage 和 pageSize 均不能小于 0").put("currentPage", currentPage).put("pageSize", pageSize).toJson(""));
     }
 

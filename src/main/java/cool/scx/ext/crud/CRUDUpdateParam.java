@@ -3,7 +3,7 @@ package cool.scx.ext.crud;
 import cool.scx.base.BaseModel;
 import cool.scx.base.UpdateFilter;
 import cool.scx.dao.ScxDaoTableInfo;
-import cool.scx.ext.crud.exception.EmptyUpdateColumn;
+import cool.scx.ext.crud.exception.EmptyUpdateColumnException;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -49,7 +49,7 @@ public final class CRUDUpdateParam {
         var updateFilter = UpdateFilter.ofIncluded(false).addIncluded(legalFieldName);
         //防止空列更新
         if (updateFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
-            throw new EmptyUpdateColumn();
+            throw new EmptyUpdateColumnException();
         }
         return updateFilter;
     }
