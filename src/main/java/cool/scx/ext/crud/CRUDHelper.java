@@ -77,7 +77,7 @@ public final class CRUDHelper {
     /**
      * 获取 baseModel
      *
-     * @param map      a
+     * @param map            a
      * @param baseModelClass a
      * @param <B>            b
      * @return a

@@ -25,8 +25,9 @@ public final class CRUDUpdateParam {
 
     /**
      * a
+     *
      * @param modelClass a
-     * @param <B> a
+     * @param <B>        a
      * @return a
      */
     public <B extends BaseModel> B getBaseModel(Class<B> modelClass) {
