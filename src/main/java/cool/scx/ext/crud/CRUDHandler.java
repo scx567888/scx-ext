@@ -82,7 +82,7 @@ public interface CRUDHandler {
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = crudUpdateParam.getBaseModel(baseModelClass);
         var updateFilter = crudUpdateParam.getUpdateFilter(baseModelClass, baseModelService._scxDaoTableInfo());
-        return baseModelService.update(realObject, updateFilter);
+        return baseModelService.updateAndGet(realObject, updateFilter);
     }
 
     /**
@@ -96,7 +96,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = CRUDHelper.mapToBaseModel(saveModel, baseModelClass);
-        return baseModelService.save(realObject);
+        return baseModelService.saveAndGet(realObject);
     }
 
     /**
