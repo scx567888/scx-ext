@@ -122,12 +122,12 @@ public class WebSiteController {
             var s1 = new Channel();
             s1.channelName = "早间新闻" + i;
             s1.channelPath = "news" + i;
-            Channel save1 = s.save(s1);
+            var save1 = s.save(s1);
             for (int j = 0; j < 10; j++) {
                 var c1 = new Content();
                 c1.content = "重大早间新闻的内容<span style='color:green'>绿色的文字</span>" + j;
                 c1.contentTitle = "重大早间新闻的标题👍" + j;
-                c1.channelID = save1.id;
+                c1.channelID = save1;
                 c.save(c1);
             }
         }
@@ -136,12 +136,12 @@ public class WebSiteController {
             var s1 = new Channel();
             s1.channelName = "晚间新闻" + i;
             s1.channelPath = "night-news" + i;
-            Channel save1 = s.save(s1);
+            var save1 = s.save(s1);
             for (int j = 0; j < 10; j++) {
                 var c1 = new Content();
                 c1.content = "重大晚间新闻的内容<span style='color:red'>红色的文字</span>" + j;
                 c1.contentTitle = "重大晚间新闻的标题👍" + j;
-                c1.channelID = save1.id;
+                c1.channelID = save1;
                 c.save(c1);
             }
         }

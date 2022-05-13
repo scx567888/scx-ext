@@ -26,7 +26,7 @@ public class CMSConfigService extends BaseModelService<CMSConfig> {
         }
         var c = new CMSConfig();
         c.configName = "defaultConfig";
-        return save(c);
+        return saveAndGet(c);
     }
 
 }
