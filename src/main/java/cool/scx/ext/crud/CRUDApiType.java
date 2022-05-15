@@ -7,5 +7,45 @@ package cool.scx.ext.crud;
  * @version 1.10.8
  */
 public enum CRUDApiType {
-    LIST, INFO, SAVE, UPDATE, DELETE, BATCH_DELETE, REVOKE_DELETE, CHECK_UNIQUE
+
+    /**
+     * a
+     */
+    LIST,
+
+    /**
+     * a
+     */
+    INFO,
+
+    /**
+     * a
+     */
+    SAVE,
+
+    /**
+     * a
+     */
+    UPDATE,
+
+    /**
+     * a
+     */
+    DELETE,
+
+    /**
+     * a
+     */
+    BATCH_DELETE,
+
+    /**
+     * a
+     */
+    REVOKE_DELETE,
+
+    /**
+     * a
+     */
+    CHECK_UNIQUE
+
 }
