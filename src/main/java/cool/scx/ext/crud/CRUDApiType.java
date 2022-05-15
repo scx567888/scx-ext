@@ -21,7 +21,7 @@ public enum CRUDApiType {
     /**
      * a
      */
-    SAVE,
+    ADD,
 
     /**
      * a
