@@ -3,6 +3,12 @@ package cool.scx.ext.crud;
 import cool.scx.base.BaseModel;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 
+/**
+ * <p>CRUDApiInfo class.</p>
+ *
+ * @author scx567888
+ * @version 1.10.8
+ */
 public final class CRUDApiInfo {
 
     /**
@@ -55,6 +61,12 @@ public final class CRUDApiInfo {
      */
     public boolean checkUnique;
 
+    /**
+     * <p>Constructor for CRUDApiInfo.</p>
+     *
+     * @param useCRUDApi     a {@link cool.scx.ext.crud.annotation.UseCRUDApi} object
+     * @param baseModelClass a {@link java.lang.Class} object
+     */
     public CRUDApiInfo(UseCRUDApi useCRUDApi, Class<BaseModel> baseModelClass) {
         this.baseModelClass = baseModelClass;
         this.baseModelName = baseModelClass.getSimpleName().toLowerCase();
@@ -68,6 +80,12 @@ public final class CRUDApiInfo {
         this.checkUnique = useCRUDApi.checkUnique();
     }
 
+    /**
+     * <p>hasThisApi.</p>
+     *
+     * @param crudApiType a {@link cool.scx.ext.crud.CRUDApiType} object
+     * @return a boolean
+     */
     public boolean hasThisApi(CRUDApiType crudApiType) {
         return switch (crudApiType) {
             case LIST -> list;

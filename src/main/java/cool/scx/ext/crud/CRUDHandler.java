@@ -96,7 +96,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = CRUDHelper.mapToBaseModel(saveModel, baseModelClass);
-        return baseModelService.saveAndGet(realObject);
+        return baseModelService.addAndGet(realObject);
     }
 
     /**

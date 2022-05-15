@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>scx-ext</name>
 
-    <version>1.10.7</version>
+    <version>1.10.8</version>
 
     <description>Extension modules for SCX</description>
     <url>https://github.com/scx567888/scx-ext</url>
@@ -102,7 +102,7 @@
 
     <properties>
         <scx.mainClass>cool.scx.ext.AllExtApp</scx.mainClass>
-        <scx.version>1.14.3</scx.version>
+        <scx.version>1.14.4</scx.version>
     </properties>
 
 </project>

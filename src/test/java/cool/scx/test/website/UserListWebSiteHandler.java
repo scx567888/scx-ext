@@ -52,14 +52,14 @@ public class UserListWebSiteHandler implements WebSiteHandler {
                 s.isAdmin = true;
                 s1.add(s);
             }
-            userService.save(s1);
+            userService.add(s1);
             for (int i = 0; i < 25; i++) {
                 var s = new User();
                 var uuid = RandomUtils.getUUID();
                 s.username = uuid;
                 s.nickname = uuid;
                 s.password = CryptoUtils.encryptPassword(uuid);
-                userService.save(s);
+                userService.add(s);
             }
         }
         var users = userService.list(new Query().setPagination(100));

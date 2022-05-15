@@ -6,6 +6,9 @@ import cool.scx.vo.Json;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.10.8
  */
 public final class EmptySelectColumnException extends BadRequestException {
 

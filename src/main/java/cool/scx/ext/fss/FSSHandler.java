@@ -65,7 +65,7 @@ public abstract class FSSHandler {
      * @param uploadConfigFile a {@link java.io.File} object.
      * @param chunkLength      a {@link java.lang.Integer} object.
      * @return a {@link java.lang.Integer} object.
-     * @throws IOException e
+     * @throws java.io.IOException e
      */
     public static Integer getLastUploadChunk(Path uploadConfigFile, Integer chunkLength) throws IOException {
         try {
@@ -84,7 +84,7 @@ public abstract class FSSHandler {
      * @param uploadConfigFile a {@link java.io.File} object.
      * @param nowChunkIndex    a {@link java.lang.Integer} object.
      * @param chunkLength      a {@link java.lang.Integer} object.
-     * @throws IOException e
+     * @throws java.io.IOException e
      */
     public static void updateLastUploadChunk(Path uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
         Files.createDirectories(uploadConfigFile.getParent());
@@ -98,9 +98,9 @@ public abstract class FSSHandler {
      * filePath (文件物理文件存储路径) : 年份(以上传时间为标准)/月份(以上传时间为标准)/天(以上传时间为标准)/文件MD5/文件真实名称
      * 其他字段和字面意义相同
      *
-     * @param fileName a {@link String} object.
-     * @param fileSize a {@link Long} object.
-     * @param fileMD5  a {@link String} object.
+     * @param fileName a {@link java.lang.String} object.
+     * @param fileSize a {@link java.lang.Long} object.
+     * @param fileMD5  a {@link java.lang.String} object.
      * @return a {@link cool.scx.ext.fss.FSSObject} object.
      */
     public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileMD5) {
@@ -272,7 +272,7 @@ public abstract class FSSHandler {
             //删除临时文件夹
             FileUtils.delete(uploadTempFile.getParent());
             //存储到数据库
-            var save = fssObjectService.save(newFSSObject);
+            var save = fssObjectService.addAndGet(newFSSObject);
             //像前台发送上传成功的消息
             return Json.ok().put("type", "upload-success").put("item", save);
         } else {
@@ -298,7 +298,7 @@ public abstract class FSSHandler {
      *
      * @param fssObjectID a
      * @return a
-     * @throws IOException a
+     * @throws java.io.IOException a
      */
     public Json delete(String fssObjectID) throws IOException {
         //先获取文件的基本信息
@@ -377,7 +377,7 @@ public abstract class FSSHandler {
             }
             //起码找到了一个 可以使用的文件
             if (canUseFssObject != null) {
-                var save = fssObjectService.save(copyFSSObject(fileName, canUseFssObject));
+                var save = fssObjectService.addAndGet(copyFSSObject(fileName, canUseFssObject));
                 //有可能有之前的残留临时文件 再此一并清除
                 ScxExceptionHelper.noException(() -> FileUtils.delete(getUploadTempPath(fileMD5)));
                 //通知前台秒传成功

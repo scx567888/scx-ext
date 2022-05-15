@@ -8,6 +8,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.10.8
  */
 public final class CRUDUpdateParamMethodParameterHandler implements ScxMappingMethodParameterHandler {
 
@@ -16,11 +19,17 @@ public final class CRUDUpdateParamMethodParameterHandler implements ScxMappingMe
      */
     public static final CRUDUpdateParamMethodParameterHandler DEFAULT_INSTANCE = new CRUDUpdateParamMethodParameterHandler();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canHandle(Parameter parameter) {
         return parameter.getParameterizedType() == CRUDUpdateParam.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object handle(Parameter parameter, ScxMappingRoutingContextInfo scxMappingRoutingContextInfo) throws Exception {
         var javaType = parameter.getParameterizedType();

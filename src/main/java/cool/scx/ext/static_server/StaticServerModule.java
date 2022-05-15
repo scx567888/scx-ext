@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.10.8
  */
 public class StaticServerModule implements ScxModule {
 
@@ -44,6 +47,9 @@ public class StaticServerModule implements ScxModule {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         var staticServers = getStaticServersByConfig();

@@ -14,6 +14,8 @@ import cool.scx.base.Query;
 public class ChannelService extends BaseModelService<Channel> {
 
     /**
+     * <p>getChannelByPath.</p>
+     *
      * @param path a
      * @return a
      */

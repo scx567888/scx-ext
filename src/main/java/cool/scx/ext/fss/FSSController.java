@@ -95,7 +95,7 @@ public class FSSController {
      *
      * @param fssObjectID a
      * @return a
-     * @throws IOException a
+     * @throws java.io.IOException a
      */
     @ScxMapping(value = "/delete", method = HttpMethod.DELETE)
     public Json delete(@FromBody String fssObjectID) throws IOException {

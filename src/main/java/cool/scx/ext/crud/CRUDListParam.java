@@ -16,6 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.10.8
  */
 public final class CRUDListParam {
 
@@ -45,7 +48,7 @@ public final class CRUDListParam {
      * @param fieldName    f
      * @param strWhereType s
      * @return s
-     * @throws UnknownWhereTypeException s
+     * @throws cool.scx.ext.crud.exception.UnknownWhereTypeException s
      */
     public static WhereType checkWhereType(String fieldName, String strWhereType) throws UnknownWhereTypeException {
         try {
@@ -61,7 +64,7 @@ public final class CRUDListParam {
      * @param fieldName   a
      * @param strSortType a
      * @return a
-     * @throws UnknownSortTypeException a
+     * @throws cool.scx.ext.crud.exception.UnknownSortTypeException a
      */
     public static OrderByType checkSortType(String fieldName, String strSortType) throws UnknownSortTypeException {
         try {
@@ -78,7 +81,7 @@ public final class CRUDListParam {
      * @param whereType w
      * @param value1    v
      * @param value2    v
-     * @throws WhereBodyParametersSizeErrorException v
+     * @throws cool.scx.ext.crud.exception.WhereBodyParametersSizeErrorException v
      */
     public static void checkWhereBodyParametersSize(String fieldName, WhereType whereType, Object value1, Object value2) throws WhereBodyParametersSizeErrorException {
         AtomicInteger paramSize = new AtomicInteger();
@@ -99,7 +102,7 @@ public final class CRUDListParam {
      *
      * @param filterMode f
      * @return a
-     * @throws UnknownWhereTypeException a
+     * @throws cool.scx.ext.crud.exception.UnknownWhereTypeException a
      */
     public static AbstractFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereTypeException {
         try {
