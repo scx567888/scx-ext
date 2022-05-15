@@ -272,7 +272,7 @@ public abstract class FSSHandler {
             //删除临时文件夹
             FileUtils.delete(uploadTempFile.getParent());
             //存储到数据库
-            var save = fssObjectService.save(newFSSObject);
+            var save = fssObjectService.addAndGet(newFSSObject);
             //像前台发送上传成功的消息
             return Json.ok().put("type", "upload-success").put("item", save);
         } else {
@@ -377,7 +377,7 @@ public abstract class FSSHandler {
             }
             //起码找到了一个 可以使用的文件
             if (canUseFssObject != null) {
-                var save = fssObjectService.save(copyFSSObject(fileName, canUseFssObject));
+                var save = fssObjectService.addAndGet(copyFSSObject(fileName, canUseFssObject));
                 //有可能有之前的残留临时文件 再此一并清除
                 ScxExceptionHelper.noException(() -> FileUtils.delete(getUploadTempPath(fileMD5)));
                 //通知前台秒传成功

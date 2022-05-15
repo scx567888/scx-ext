@@ -43,15 +43,15 @@ public class WebSiteController {
         var sb = new StringBuilder();
         UserService bean = ScxContext.getBean(UserService.class);
         try {
-            ScxContext.sqlRunner().autoTransaction((con) -> {
-                sb.append("事务开始前数据库中 数据条数 : ").append(bean.list(con).size()).append("</br>");
+            ScxContext.sqlRunner().autoTransaction(() -> {
+                sb.append("事务开始前数据库中 数据条数 : ").append(bean.list().size()).append("</br>");
                 sb.append("现在插入 1 数据条数").append("</br>");
                 var u = new User();
                 u.password = CryptoUtils.encryptPassword("123456");
                 u.username = "唯一name";
-                bean.save(con, u);
-                sb.append("现在数据库中数据条数 : ").append(bean.list(con).size()).append("</br>");
-                bean.save(con, u);
+                bean.add(u);
+                sb.append("现在数据库中数据条数 : ").append(bean.list().size()).append("</br>");
+                bean.add(u);
             });
         } catch (Exception e) {
             sb.append("出错了 后滚后数据库中数据条数 : ").append(bean.list().size());
@@ -122,13 +122,13 @@ public class WebSiteController {
             var s1 = new Channel();
             s1.channelName = "早间新闻" + i;
             s1.channelPath = "news" + i;
-            var save1 = s.save(s1);
+            var save1 = s.add(s1);
             for (int j = 0; j < 10; j++) {
                 var c1 = new Content();
                 c1.content = "重大早间新闻的内容<span style='color:green'>绿色的文字</span>" + j;
                 c1.contentTitle = "重大早间新闻的标题👍" + j;
                 c1.channelID = save1;
-                c.save(c1);
+                c.add(c1);
             }
         }
 
@@ -136,13 +136,13 @@ public class WebSiteController {
             var s1 = new Channel();
             s1.channelName = "晚间新闻" + i;
             s1.channelPath = "night-news" + i;
-            var save1 = s.save(s1);
+            var save1 = s.add(s1);
             for (int j = 0; j < 10; j++) {
                 var c1 = new Content();
                 c1.content = "重大晚间新闻的内容<span style='color:red'>红色的文字</span>" + j;
                 c1.contentTitle = "重大晚间新闻的标题👍" + j;
                 c1.channelID = save1;
-                c.save(c1);
+                c.add(c1);
             }
         }
 
