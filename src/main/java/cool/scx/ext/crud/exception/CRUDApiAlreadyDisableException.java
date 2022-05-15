@@ -6,6 +6,9 @@ import cool.scx.vo.Json;
 
 /**
  * a
+ *
+ * @author scx567888
+ * @version 1.10.8
  */
 public final class CRUDApiAlreadyDisableException extends NotFoundException {
 
@@ -23,6 +26,7 @@ public final class CRUDApiAlreadyDisableException extends NotFoundException {
      * a
      *
      * @param modelName a
+     * @param apiType   a {@link cool.scx.ext.crud.CRUDApiType} object
      */
     public CRUDApiAlreadyDisableException(String modelName, CRUDApiType apiType) {
         super(Json.fail("crud-api-already-disable").put("model-name", modelName).put("api-name", apiType.name()).toJson(""));

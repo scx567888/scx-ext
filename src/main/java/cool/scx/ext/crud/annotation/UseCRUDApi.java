@@ -19,41 +19,57 @@ public @interface UseCRUDApi {
 
     /**
      * list
+     *
+     * @return a boolean
      */
     boolean list() default true;
 
     /**
      * info
+     *
+     * @return a boolean
      */
     boolean info() default true;
 
     /**
      * save
+     *
+     * @return a boolean
      */
     boolean save() default true;
 
     /**
      * update
+     *
+     * @return a boolean
      */
     boolean update() default true;
 
     /**
      * delete
+     *
+     * @return a boolean
      */
     boolean delete() default true;
 
     /**
      * batchDelete
+     *
+     * @return a boolean
      */
     boolean batchDelete() default true;
 
     /**
      * revokeDelete
+     *
+     * @return a boolean
      */
     boolean revokeDelete() default true;
 
     /**
      * checkUnique
+     *
+     * @return a boolean
      */
     boolean checkUnique() default true;
 

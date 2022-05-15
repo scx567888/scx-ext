@@ -33,6 +33,12 @@ public class CRUDController {
         this.crudHandler = ScxContext.getBean(crudHandlerClass);
     }
 
+    /**
+     * <p>checkHasThisApi.</p>
+     *
+     * @param modelName a {@link java.lang.String} object
+     * @param apiType   a {@link cool.scx.ext.crud.CRUDApiType} object
+     */
     private static void checkHasThisApi(String modelName, CRUDApiType apiType) {
         var crudApiInfo = CRUDHelper.getCRUDApiInfo(modelName);
         var hasThisApi = crudApiInfo.hasThisApi(apiType);

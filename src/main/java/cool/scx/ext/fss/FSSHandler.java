@@ -65,7 +65,7 @@ public abstract class FSSHandler {
      * @param uploadConfigFile a {@link java.io.File} object.
      * @param chunkLength      a {@link java.lang.Integer} object.
      * @return a {@link java.lang.Integer} object.
-     * @throws IOException e
+     * @throws java.io.IOException e
      */
     public static Integer getLastUploadChunk(Path uploadConfigFile, Integer chunkLength) throws IOException {
         try {
@@ -84,7 +84,7 @@ public abstract class FSSHandler {
      * @param uploadConfigFile a {@link java.io.File} object.
      * @param nowChunkIndex    a {@link java.lang.Integer} object.
      * @param chunkLength      a {@link java.lang.Integer} object.
-     * @throws IOException e
+     * @throws java.io.IOException e
      */
     public static void updateLastUploadChunk(Path uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
         Files.createDirectories(uploadConfigFile.getParent());
@@ -98,9 +98,9 @@ public abstract class FSSHandler {
      * filePath (文件物理文件存储路径) : 年份(以上传时间为标准)/月份(以上传时间为标准)/天(以上传时间为标准)/文件MD5/文件真实名称
      * 其他字段和字面意义相同
      *
-     * @param fileName a {@link String} object.
-     * @param fileSize a {@link Long} object.
-     * @param fileMD5  a {@link String} object.
+     * @param fileName a {@link java.lang.String} object.
+     * @param fileSize a {@link java.lang.Long} object.
+     * @param fileMD5  a {@link java.lang.String} object.
      * @return a {@link cool.scx.ext.fss.FSSObject} object.
      */
     public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileMD5) {
@@ -298,7 +298,7 @@ public abstract class FSSHandler {
      *
      * @param fssObjectID a
      * @return a
-     * @throws IOException a
+     * @throws java.io.IOException a
      */
     public Json delete(String fssObjectID) throws IOException {
         //先获取文件的基本信息

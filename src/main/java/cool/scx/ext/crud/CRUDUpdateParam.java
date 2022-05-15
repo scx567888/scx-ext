@@ -10,6 +10,9 @@ import java.util.Map;
 
 /**
  * 更新实体类的封装
+ *
+ * @author scx567888
+ * @version 1.10.8
  */
 public final class CRUDUpdateParam {
 

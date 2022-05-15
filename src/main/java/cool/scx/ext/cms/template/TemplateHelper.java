@@ -138,7 +138,7 @@ public final class TemplateHelper {
      * @param filePath    a
      * @param fileContent a
      * @return a
-     * @throws IOException a
+     * @throws java.io.IOException a
      */
     public static Json setFileContent(String filePath, String fileContent) throws IOException {
         boolean b = checkPath(filePath);
@@ -173,7 +173,7 @@ public final class TemplateHelper {
      * @param file     a
      * @param filePath a
      * @return a
-     * @throws IOException a
+     * @throws java.io.IOException a
      */
     public static Json upload(@FromUpload UploadedEntity file, String filePath) throws IOException {
         if (checkPath(filePath)) {

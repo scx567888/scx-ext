@@ -95,9 +95,9 @@ public final class CRUDHelper {
     /**
      * <p>getClassByName.</p>
      *
-     * @param baseModelName a {@link String} object.
+     * @param baseModelName a {@link java.lang.String} object.
      * @return a {@link java.lang.Class} object.
-     * @throws NotFoundException if any.
+     * @throws cool.scx.http.exception.impl.NotFoundException if any.
      */
     public static CRUDApiInfo getCRUDApiInfo(String baseModelName) throws NotFoundException {
         if (StringUtils.isBlank(baseModelName)) {
@@ -192,7 +192,8 @@ public final class CRUDHelper {
      *
      * @param modelClass m
      * @param fieldName  f
-     * @throws UnknownFieldNameException c
+     * @return a {@link java.lang.String} object
+     * @throws cool.scx.ext.crud.exception.UnknownFieldNameException c
      */
     public static String checkFieldName(Class<?> modelClass, String fieldName) throws UnknownFieldNameException {
         try {
