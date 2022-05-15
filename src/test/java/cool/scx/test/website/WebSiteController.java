@@ -127,7 +127,7 @@ public class WebSiteController {
                 var c1 = new Content();
                 c1.content = "重大早间新闻的内容<span style='color:green'>绿色的文字</span>" + j;
                 c1.contentTitle = "重大早间新闻的标题👍" + j;
-                c1.channelID = save1;
+                c1.channelID = save1.id;
                 c.add(c1);
             }
         }
@@ -141,7 +141,7 @@ public class WebSiteController {
                 var c1 = new Content();
                 c1.content = "重大晚间新闻的内容<span style='color:red'>红色的文字</span>" + j;
                 c1.contentTitle = "重大晚间新闻的标题👍" + j;
-                c1.channelID = save1;
+                c1.channelID = save1.id;
                 c.add(c1);
             }
         }

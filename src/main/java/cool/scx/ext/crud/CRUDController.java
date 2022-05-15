@@ -83,9 +83,9 @@ public class CRUDController {
      * @return a {@link cool.scx.vo.Json} object.
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.POST)
-    public BaseVo save(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> saveModel) {
-        checkHasThisApi(modelName, SAVE);
-        var savedModel = crudHandler.save(modelName, saveModel);
+    public BaseVo add(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> saveModel) {
+        checkHasThisApi(modelName, ADD);
+        var savedModel = crudHandler.add(modelName, saveModel);
         return DataJson.ok().data(savedModel);
     }
 

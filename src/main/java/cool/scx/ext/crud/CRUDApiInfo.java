@@ -34,7 +34,7 @@ public final class CRUDApiInfo {
     /**
      * a
      */
-    public boolean save;
+    public boolean add;
 
     /**
      * a
@@ -72,7 +72,7 @@ public final class CRUDApiInfo {
         this.baseModelName = baseModelClass.getSimpleName().toLowerCase();
         this.list = useCRUDApi.list();
         this.info = useCRUDApi.info();
-        this.save = useCRUDApi.save();
+        this.add = useCRUDApi.add();
         this.update = useCRUDApi.update();
         this.delete = useCRUDApi.delete();
         this.batchDelete = useCRUDApi.batchDelete();
@@ -90,7 +90,7 @@ public final class CRUDApiInfo {
         return switch (crudApiType) {
             case LIST -> list;
             case INFO -> info;
-            case SAVE -> save;
+            case ADD -> add;
             case UPDATE -> update;
             case DELETE -> delete;
             case BATCH_DELETE -> batchDelete;

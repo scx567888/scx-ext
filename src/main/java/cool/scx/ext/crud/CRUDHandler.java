@@ -82,7 +82,7 @@ public interface CRUDHandler {
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = crudUpdateParam.getBaseModel(baseModelClass);
         var updateFilter = crudUpdateParam.getUpdateFilter(baseModelClass, baseModelService._scxDaoTableInfo());
-        return baseModelService.updateAndGet(realObject, updateFilter);
+        return baseModelService.update(realObject, updateFilter);
     }
 
     /**
@@ -92,11 +92,11 @@ public interface CRUDHandler {
      * @param saveModel 可以转换为 model类的 map
      * @return c
      */
-    default BaseModel save(String modelName, Map<String, Object> saveModel) {
+    default BaseModel add(String modelName, Map<String, Object> saveModel) {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = CRUDHelper.mapToBaseModel(saveModel, baseModelClass);
-        return baseModelService.addAndGet(realObject);
+        return baseModelService.add(realObject);
     }
 
     /**

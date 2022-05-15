@@ -36,7 +36,7 @@ public @interface UseCRUDApi {
      *
      * @return a boolean
      */
-    boolean save() default true;
+    boolean add() default true;
 
     /**
      * update
