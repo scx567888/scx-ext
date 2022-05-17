@@ -28,14 +28,16 @@
       "default": {
         "level": "DEBUG",
         "type": "CONSOLE",
-        "stored-directory": "AppRoot:logs"
+        "stored-directory": "AppRoot:logs",
+        "stack-trace": false
       },
       "loggers": [
         {
           "name": "cool.scx.sql.SQLRunner",
           "level": "DEBUG",
           "type": "CONSOLE",
-          "stored-directory": "AppRoot:sql-logs"
+          "stored-directory": "AppRoot:sql-logs",
+          "stack-trace": false
         }
       ]
     }
