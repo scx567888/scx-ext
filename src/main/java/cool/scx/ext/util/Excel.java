@@ -81,7 +81,7 @@ public final class Excel {
      */
     private static Map<Integer, Row> getRowMap(int size, Sheet sheet) {
         var rowMap = new HashMap<Integer, Row>(size);
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i = i + 1) {
             rowMap.put(i, sheet.createRow(i));
         }
         return rowMap;

@@ -69,8 +69,8 @@ public class WebSiteController {
     @ScxMapping(method = HttpMethod.GET)
     public BaseVo excel() {
         Excel excel = Excel.get07Excel("测试1", 1000);
-        for (int i = 0; i < 999; i++) {
-            for (int j = 0; j < 99; j++) {
+        for (int i = 0; i < 999; i = i + 1) {
+            for (int j = 0; j < 99; j = j + 1) {
                 excel.setCellValue(i, j, "测试数据" + i + "-" + j);
             }
         }
@@ -119,12 +119,12 @@ public class WebSiteController {
     public Object initCMS() {
         var s = ScxContext.getBean(ChannelService.class);
         var c = ScxContext.getBean(ContentService.class);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i = i + 1) {
             var s1 = new Channel();
             s1.channelName = "早间新闻" + i;
             s1.channelPath = "news" + i;
             var save1 = s.add(s1);
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 10; j = j + 1) {
                 var c1 = new Content();
                 c1.content = "重大早间新闻的内容<span style='color:green'>绿色的文字</span>" + j;
                 c1.contentTitle = "重大早间新闻的标题👍" + j;
@@ -133,12 +133,12 @@ public class WebSiteController {
             }
         }
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i = i + 1) {
             var s1 = new Channel();
             s1.channelName = "晚间新闻" + i;
             s1.channelPath = "night-news" + i;
             var save1 = s.add(s1);
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 10; j = j + 1) {
                 var c1 = new Content();
                 c1.content = "重大晚间新闻的内容<span style='color:red'>红色的文字</span>" + j;
                 c1.contentTitle = "重大晚间新闻的标题👍" + j;
