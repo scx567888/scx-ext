@@ -8,7 +8,6 @@ import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.type.UploadedEntity;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.digest.DigestUtils;
-import cool.scx.util.exception.ScxExceptionHelper;
 import cool.scx.util.file.FileUtils;
 import cool.scx.vo.*;
 
@@ -90,7 +89,8 @@ public abstract class FSSHandler {
      * @throws java.io.IOException e
      */
     public static void updateLastUploadChunk(Path uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
-        FileUtils.write(uploadConfigFile, (nowChunkIndex + "_" + chunkLength).getBytes(StandardCharsets.UTF_8), TRUNCATE_EXISTING, CREATE, SYNC, WRITE);
+        var str = nowChunkIndex + "_" + chunkLength;
+        FileUtils.write(uploadConfigFile, str.getBytes(StandardCharsets.UTF_8), TRUNCATE_EXISTING, CREATE, SYNC, WRITE);
     }
 
     /**
@@ -381,7 +381,7 @@ public abstract class FSSHandler {
             if (canUseFssObject != null) {
                 var save = fssObjectService.add(copyFSSObject(fileName, canUseFssObject));
                 //有可能有之前的残留临时文件 再此一并清除
-                ScxExceptionHelper.noException(() -> FileUtils.delete(getUploadTempPath(fileMD5)));
+                FileUtils.delete(getUploadTempPath(fileMD5));
                 //通知前台秒传成功
                 return Json.ok().put("type", "upload-by-md5-success").put("item", save);
             }
