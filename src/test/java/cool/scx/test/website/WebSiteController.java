@@ -16,6 +16,7 @@ import cool.scx.test.user.User;
 import cool.scx.test.user.UserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
+import cool.scx.util.StringUtils;
 import cool.scx.util.zip.VirtualDirectory;
 import cool.scx.util.zip.VirtualFile;
 import cool.scx.util.zip.ZipAction;
@@ -86,8 +87,8 @@ public class WebSiteController {
      * @return a {@link BaseVo} object
      */
     @ScxMapping(method = HttpMethod.GET)
-    public BaseVo qrcode(@FromQuery String value) {
-        if (value == null || "".equals(value)) {
+    public BaseVo qrcode(@FromQuery(required = false) String value) {
+        if (StringUtils.isBlank(value)) {
             value = RandomUtils.getUUID() + " : 前面的是UUID";
         }
         //这里返回的是一个 png 的 图片 byte 数组
