@@ -24,7 +24,7 @@ public class AllExtApp {
     public static void main(String[] args) {
         Scx.builder()
                 .setMainClass(AllExtApp.class)
-                .addModules(
+                .addModule(
                         new CMSModule(),
                         new CoreModule(),
                         new CRUDModule(),

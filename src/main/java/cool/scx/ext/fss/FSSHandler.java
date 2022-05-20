@@ -14,6 +14,7 @@ import cool.scx.vo.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -21,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static java.nio.file.StandardOpenOption.*;
 
 /**
  * <p>Abstract FSSHandler class.</p>
@@ -87,8 +90,7 @@ public abstract class FSSHandler {
      * @throws java.io.IOException e
      */
     public static void updateLastUploadChunk(Path uploadConfigFile, Integer nowChunkIndex, Integer chunkLength) throws IOException {
-        Files.createDirectories(uploadConfigFile.getParent());
-        Files.writeString(uploadConfigFile, nowChunkIndex + "_" + chunkLength);
+        FileUtils.write(uploadConfigFile, (nowChunkIndex + "_" + chunkLength).getBytes(StandardCharsets.UTF_8), TRUNCATE_EXISTING, CREATE, SYNC, WRITE);
     }
 
     /**
@@ -254,7 +256,7 @@ public abstract class FSSHandler {
         //判断是否上传的是最后一个分块 (因为 索引是以 0 开头的所以这里 -1)
         if (nowChunkIndex == chunkLength - 1) {
             //先将数据写入临时文件中
-            FileUtils.write(uploadTempFile, fileData.buffer().getBytes());
+            FileUtils.write(uploadTempFile, fileData.buffer().getBytes(), APPEND, CREATE, SYNC, WRITE);
             //获取文件描述信息创建 fssObject 对象
             var newFSSObject = createFSSObjectByFileInfo(fileName, fileSize, fileMD5);
             //获取文件真实的存储路径
@@ -282,7 +284,7 @@ public abstract class FSSHandler {
             var needUploadChunkIndex = lastUploadChunk + 1;
             //当前的区块索引和需要的区块索引相同 就保存文件内容
             if (nowChunkIndex.equals(needUploadChunkIndex)) {
-                FileUtils.write(uploadTempFile, fileData.buffer().getBytes());
+                FileUtils.write(uploadTempFile, fileData.buffer().getBytes(), APPEND, CREATE, SYNC, WRITE);
                 //将当前上传成功的区块索引和总区块长度保存到配置文件中
                 updateLastUploadChunk(uploadConfigFile, nowChunkIndex, chunkLength);
                 //像前台返回我们需要的下一个区块索引

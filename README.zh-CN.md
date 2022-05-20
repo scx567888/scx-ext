@@ -66,7 +66,7 @@ public class YourModule implements ScxModule {
         // 使用 Scx 构建器 ,构建并运行 项目
         Scx.builder()
                 .setMainClass(YourModule.class) // 1, Main 方法的 Class
-                .addModules(                    // 2, 引入拓展模块和您自己的模块
+                .addModule(                    // 2, 引入拓展模块和您自己的模块
                         new CRUDModule(),       //     CRUD 模块
                         new FSSModule(),        //     文件存储模块
                         new CMSModule(),        //     CMS 模块

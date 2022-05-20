@@ -66,7 +66,7 @@ public class YourModule implements ScxModule {
         // Use Scx Builder, build and run project
         Scx.builder()
                 .setMainClass(YourModule.class) // 1, The class of the Main method
-                .addModules(                    // 2, Extension modules and your own modules
+                .addModule(                    // 2, Extension modules and your own modules
                         new CRUDModule(),       //     CRUD module
                         new FSSModule(),        //     FFS  module
                         new CMSModule(),        //     CMS  module

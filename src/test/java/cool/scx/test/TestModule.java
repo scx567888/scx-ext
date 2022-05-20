@@ -43,7 +43,7 @@ public class TestModule implements ScxModule {
     public static void runModule() {
         Scx.builder()
                 .setMainClass(TestModule.class)
-                .addModules(
+                .addModule(
                         new TestModule(),
                         new CMSModule().setWebSiteHandler(UserListWebSiteHandler.class),
                         new CoreModule(),
