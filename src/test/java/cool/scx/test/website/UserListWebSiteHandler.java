@@ -42,7 +42,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
         long count = userService.count(new Query());
         if (count < 50) {
             var s1 = new ArrayList<User>();
-            for (int i = 0; i < 25; i++) {
+            for (int i = 0; i < 25; i = i + 1) {
                 var s = new User();
                 var uuid = RandomUtils.getUUID();
                 //测试表情符能否存储
@@ -53,7 +53,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
                 s1.add(s);
             }
             userService.add(s1);
-            for (int i = 0; i < 25; i++) {
+            for (int i = 0; i < 25; i = i + 1) {
                 var s = new User();
                 var uuid = RandomUtils.getUUID();
                 s.username = uuid;

@@ -170,7 +170,7 @@ public final class CRUDHelper {
             //有多个实现的话 打印一下 通知用户
             if (classes.size() > 1) {
                 var sb = new StringBuilder();
-                for (int i = 0; i < classes.size() - 1; i++) {
+                for (int i = 0; i < classes.size() - 1; i = i + 1) {
                     var name = classes.get(i).getName();
                     if (i == classes.size() - 2) {
                         sb.append("[").append(name).append("] ");
