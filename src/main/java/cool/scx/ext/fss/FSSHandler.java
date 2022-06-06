@@ -271,6 +271,8 @@ public abstract class FSSHandler {
             //移动成功 说明文件上传成功
             //将临时文件移动并重命名到 真实的存储路径
             FileUtils.move(uploadTempFile, fileStoragePath);
+            //尝试设置为只读
+            fileStoragePath.toFile().setReadOnly();
             //删除临时文件夹
             FileUtils.delete(uploadTempFile.getParent());
             //存储到数据库
