@@ -10,6 +10,7 @@ import io.vertx.core.http.impl.CookieImpl;
 import io.vertx.ext.web.RoutingContext;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,11 +75,11 @@ public final class TestAuth {
      */
     @SuppressWarnings("unchecked")
     public static void readSessionFromFile() {
-        var sessionCache = ScxContext.getFileByAppRoot(SCX_TEST_SESSION_PATH);
-        try (var f = new FileInputStream(sessionCache); var o = new ObjectInputStream(f)) {
+        var sessionCache = ScxContext.getPathByAppRoot(SCX_TEST_SESSION_PATH);
+        try (var f = Files.newInputStream(sessionCache); var o = new ObjectInputStream(f)) {
             var loginItems = (Map<? extends String, ? extends User>) o.readObject();
             ALREADY_LOGIN_CLIENTS.putAll(loginItems);
-            Ansi.out().brightGreen("成功从 " + sessionCache.getPath() + " 中恢复 " + loginItems.size() + " 条数据!!!").println();
+            Ansi.out().brightGreen("成功从 " + sessionCache + " 中恢复 " + loginItems.size() + " 条数据!!!").println();
         } catch (Exception ignored) {
 
         }
@@ -88,11 +89,11 @@ public final class TestAuth {
      * 写入 LoginItem 到文件中
      */
     public static void writeSessionToFile() {
-        var sessionCache = ScxContext.getFileByAppRoot(SCX_TEST_SESSION_PATH);
-        try (var f = new FileOutputStream(sessionCache); var o = new ObjectOutputStream(f)) {
+        var sessionCache = ScxContext.getPathByAppRoot(SCX_TEST_SESSION_PATH);
+        try (var f = Files.newOutputStream(sessionCache); var o = new ObjectOutputStream(f)) {
             // 执行模块的 stop 生命周期
             o.writeObject(ALREADY_LOGIN_CLIENTS);
-            Ansi.out().red("保存 Session 到 " + sessionCache.getPath() + " 中!!!").println();
+            Ansi.out().red("保存 Session 到 " + sessionCache + " 中!!!").println();
         } catch (IOException ignored) {
 
         }

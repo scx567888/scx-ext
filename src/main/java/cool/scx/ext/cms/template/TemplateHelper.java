@@ -94,7 +94,7 @@ public final class TemplateHelper {
      * @return 结构
      */
     private static boolean checkPath(String path) {
-        return path.startsWith(ScxContext.easyConfig().templateRoot().getPath());
+        return path.startsWith(ScxContext.easyConfig().templateRoot().toString());
     }
 
     /**
@@ -104,7 +104,7 @@ public final class TemplateHelper {
      * @throws java.io.IOException if any.
      */
     public static Json index() throws IOException {
-        var allTemplateList = getTemplateList(ScxContext.easyConfig().templateRoot().getPath());
+        var allTemplateList = getTemplateList(ScxContext.easyConfig().templateRoot().toString());
         // 让文件夹永远在前边
         var directoryList = allTemplateList.stream().filter(templateInfo -> "Directory".equals(templateInfo.type)).collect(Collectors.toList());
         var fileList = allTemplateList.stream().filter(templateInfo -> "File".equals(templateInfo.type)).toList();
