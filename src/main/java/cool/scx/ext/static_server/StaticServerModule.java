@@ -42,7 +42,7 @@ public class StaticServerModule implements ScxModule {
     private static void registerStaticServerHandler(Router vertxRouter, List<StaticServer> staticServers) {
         for (var staticServer : staticServers) {
             vertxRouter.route(staticServer.location())
-                    .handler(StaticHandler.create(FileSystemAccess.ROOT, staticServer.root().getPath())
+                    .handler(StaticHandler.create(FileSystemAccess.ROOT, staticServer.root().toString())
                             .setFilesReadOnly(false));
         }
     }

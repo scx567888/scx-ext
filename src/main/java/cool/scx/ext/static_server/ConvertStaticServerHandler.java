@@ -21,7 +21,7 @@ record ConvertStaticServerHandler(
         var tempList = new ArrayList<StaticServer>();
         for (var arg : arrayList) {
             try {
-                tempList.add(new StaticServer(arg.get("location"), scxEnvironment.getFileByAppRoot(arg.get("root"))));
+                tempList.add(new StaticServer(arg.get("location"), scxEnvironment.getPathByAppRoot(arg.get("root"))));
             } catch (Exception ignored) {
 
             }
