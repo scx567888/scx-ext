@@ -166,8 +166,8 @@ public final class ScxAuth {
     /**
      * 根据 token 获取用户
      *
-     * @param token a {@link String} object.
-     * @return a {@link User} object.
+     * @param token a {@link java.lang.String} object.
+     * @return a {@link cool.scx.ext.organization.user.User} object.
      */
     public static User getLoginUserByToken(String token) {
         var client = ALREADY_LOGIN_CLIENT_MAP.get(token);
@@ -185,6 +185,9 @@ public final class ScxAuth {
 
     /**
      * 根据 cookie 获取 token
+     *
+     * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
+     * @return a {@link java.lang.String} object
      */
     static String getTokenFromCookie(RoutingContext routingContext) {
         var cookie = routingContext.request().getCookie(SCX_AUTH_TOKEN_KEY);
@@ -193,6 +196,9 @@ public final class ScxAuth {
 
     /**
      * 根据 Header 获取 token
+     *
+     * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
+     * @return a {@link java.lang.String} object
      */
     static String getTokenFromHeader(RoutingContext routingContext) {
         return routingContext.request().getHeader(SCX_AUTH_TOKEN_KEY);
@@ -201,7 +207,7 @@ public final class ScxAuth {
     /**
      * 获取用户的设备
      *
-     * @param routingContext a {@link RoutingContext} object
+     * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
      * @return a
      */
     static DeviceType getDeviceTypeByHeader(RoutingContext routingContext) {
@@ -215,8 +221,8 @@ public final class ScxAuth {
     /**
      * 根据 设备类型自行判断 获取 token
      *
-     * @param ctx a {@link RoutingContext} object
-     * @return a {@link String} object
+     * @param ctx a {@link io.vertx.ext.web.RoutingContext} object
+     * @return a {@link java.lang.String} object
      */
     private static String getToken(RoutingContext ctx) {
         var device = getDeviceTypeByHeader(ctx);
@@ -232,7 +238,7 @@ public final class ScxAuth {
      * <p>
      * 使用默认的 路由上下文
      *
-     * @param ctx a {@link RoutingContext} object
+     * @param ctx a {@link io.vertx.ext.web.RoutingContext} object
      */
     static void removeAuthUser(RoutingContext ctx) {
         ALREADY_LOGIN_CLIENT_MAP.remove(getToken(ctx));
@@ -241,7 +247,7 @@ public final class ScxAuth {
     /**
      * 根据 token 绑定 websocket
      *
-     * @param wsParam a {@link Object} object
+     * @param wsParam a {@link java.lang.Object} object
      */
     private static void bindWebSocketByToken(WSParam wsParam) {
         var objectMap = ObjectUtils.convertValue(wsParam.data(), ObjectUtils.MAP_TYPE);
@@ -262,7 +268,7 @@ public final class ScxAuth {
     /**
      * <p>alreadyLoginClients.</p>
      *
-     * @return a {@link List} object
+     * @return a {@link java.util.List} object
      */
     public static List<AlreadyLoginClient> alreadyLoginClients() {
         return new ArrayList<>(ALREADY_LOGIN_CLIENT_MAP.values());
@@ -302,6 +308,11 @@ public final class ScxAuth {
 
     /**
      * 尝试获取一个可以作为认证的 Token 具体获取方式由设备类型决定
+     *
+     * @param ctx         a {@link io.vertx.ext.web.RoutingContext} object
+     * @param loginDevice a {@link cool.scx.ext.organization.auth.DeviceType} object
+     * @return a {@link java.lang.String} object
+     * @throws cool.scx.ext.organization.exception.AuthException if any.
      */
     private static String tryGetAuthToken(RoutingContext ctx, DeviceType loginDevice) throws AuthException {
         //查看登录的设备以判断如何获取 token

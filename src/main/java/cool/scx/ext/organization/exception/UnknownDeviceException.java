@@ -14,6 +14,9 @@ import cool.scx.vo.Json;
  */
 public final class UnknownDeviceException extends AuthException {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BaseVo toBaseVo() {
         return Json.fail("unknown-device");

@@ -23,7 +23,7 @@ public class RoleService extends BaseModelService<Role> {
     /**
      * <p>Constructor for CoreRoleService.</p>
      *
-     * @param userRoleService a {@link UserRoleService} object.
+     * @param userRoleService a {@link cool.scx.ext.organization.role.UserRoleService} object.
      */
     public RoleService(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
@@ -32,8 +32,8 @@ public class RoleService extends BaseModelService<Role> {
     /**
      * 根据 用户获取 角色
      *
-     * @param user a {@link User} object
-     * @return a {@link List} object
+     * @param user a {@link cool.scx.ext.organization.user.User} object
+     * @return a {@link java.util.List} object
      */
     public List<Role> getRoleListByUser(User user) {
         var roleIDs = userRoleService.list(new Query().equal("userID", user.id)).stream().map(userRole -> userRole.roleID).toList();
@@ -43,7 +43,8 @@ public class RoleService extends BaseModelService<Role> {
     /**
      * getUserRoleByUserIDs
      *
-     * @return a {@link List} object
+     * @param userIDs a {@link java.util.List} object
+     * @return a {@link java.util.List} object
      */
     public List<UserRole> getUserRoleByUserIDs(List<Long> userIDs) {
         if (userIDs.size() > 0) {
@@ -56,8 +57,8 @@ public class RoleService extends BaseModelService<Role> {
     /**
      * saveRoleListWithUserID
      *
-     * @param userID  a {@link Long} object
-     * @param roleIDs a {@link String} object
+     * @param userID  a {@link java.lang.Long} object
+     * @param roleIDs a {@link java.lang.String} object
      */
     public void saveRoleListWithUserID(Long userID, List<Long> roleIDs) {
         if (roleIDs != null) {
@@ -74,7 +75,7 @@ public class RoleService extends BaseModelService<Role> {
     /**
      * {@inheritDoc}
      *
-     * @param id a {@link Long} object
+     * @param id a {@link java.lang.Long} object
      */
     public void deleteByUserID(Long id) {
         userRoleService.delete(new Query().equal("userID", id));

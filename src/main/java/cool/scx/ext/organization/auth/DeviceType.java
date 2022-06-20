@@ -33,6 +33,12 @@ public enum DeviceType {
      */
     UNKNOWN;
 
+    /**
+     * <p>of.</p>
+     *
+     * @param name a {@link java.lang.String} object
+     * @return a {@link cool.scx.ext.organization.auth.DeviceType} object
+     */
     public static DeviceType of(String name) {
         var upperCaseName = name.trim().toUpperCase();
         return switch (upperCaseName) {

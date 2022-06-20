@@ -25,7 +25,7 @@ public class DeptService extends BaseModelService<Dept> {
     /**
      * <p>Constructor for CoreDeptService.</p>
      *
-     * @param userDeptService a {@link UserDeptService} object.
+     * @param userDeptService a {@link cool.scx.ext.organization.dept.UserDeptService} object.
      */
     public DeptService(UserDeptService userDeptService) {
         this.userDeptService = userDeptService;
@@ -34,8 +34,8 @@ public class DeptService extends BaseModelService<Dept> {
     /**
      * getDeptListByUser
      *
-     * @param user a {@link User} object
-     * @return a {@link List} object
+     * @param user a {@link cool.scx.ext.organization.user.User} object
+     * @return a {@link java.util.List} object
      */
     public List<Dept> getDeptListByUser(User user) {
         var deptIDs = userDeptService.list(new Query().equal("userID", user.id)).stream().map(userRole -> userRole.deptID).toList();
@@ -45,8 +45,8 @@ public class DeptService extends BaseModelService<Dept> {
     /**
      * saveDeptListWithUserID
      *
-     * @param userID  a {@link Long} object
-     * @param deptIDs a {@link String} object
+     * @param userID  a {@link java.lang.Long} object
+     * @param deptIDs a {@link java.lang.String} object
      */
     public void saveDeptListWithUserID(Long userID, List<Long> deptIDs) {
         if (deptIDs != null) {
@@ -63,7 +63,7 @@ public class DeptService extends BaseModelService<Dept> {
     /**
      * {@inheritDoc}
      *
-     * @param id a {@link Long} object
+     * @param id a {@link java.lang.Long} object
      */
     public void deleteByUserID(Long id) {
         userDeptService.delete(new Query().equal("userID", id));
@@ -72,8 +72,8 @@ public class DeptService extends BaseModelService<Dept> {
     /**
      * {@inheritDoc}
      *
-     * @param userID a {@link Long} object
-     * @return a {@link List} object
+     * @param userID a {@link java.lang.Long} object
+     * @return a {@link java.util.List} object
      */
     public List<UserDept> findDeptByUserID(Long userID) {
         if (userID != null) {
@@ -85,8 +85,8 @@ public class DeptService extends BaseModelService<Dept> {
     /**
      * <p>getUserDeptByUserIDs.</p>
      *
-     * @param userIDs a {@link List} object
-     * @return a {@link List} object
+     * @param userIDs a {@link java.util.List} object
+     * @return a {@link java.util.List} object
      */
     public List<UserDept> getUserDeptByUserIDs(List<Long> userIDs) {
         if (userIDs.size() > 0) {

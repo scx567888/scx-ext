@@ -25,10 +25,23 @@ public class ScxAuthController {
 
     private final UserService userService;
 
+    /**
+     * <p>Constructor for ScxAuthController.</p>
+     *
+     * @param userService a {@link cool.scx.ext.organization.user.UserService} object
+     */
     public ScxAuthController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * <p>login.</p>
+     *
+     * @param username a {@link java.lang.String} object
+     * @param password a {@link java.lang.String} object
+     * @param ctx      a {@link io.vertx.ext.web.RoutingContext} object
+     * @return a {@link cool.scx.vo.BaseVo} object
+     */
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo login(@FromBody String username, @FromBody String password, RoutingContext ctx) {
         try {
@@ -44,6 +57,15 @@ public class ScxAuthController {
         }
     }
 
+    /**
+     * <p>loginByThirdParty.</p>
+     *
+     * @param uniqueID    a {@link java.lang.String} object
+     * @param accessToken a {@link java.lang.String} object
+     * @param accountType a {@link java.lang.String} object
+     * @param ctx         a {@link io.vertx.ext.web.RoutingContext} object
+     * @return a {@link cool.scx.vo.BaseVo} object
+     */
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo loginByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType, RoutingContext ctx) {
         try {
@@ -59,24 +81,51 @@ public class ScxAuthController {
         }
     }
 
+    /**
+     * <p>signup.</p>
+     *
+     * @param user a {@link cool.scx.ext.organization.user.User} object
+     * @return a {@link cool.scx.vo.DataJson} object
+     */
     @ScxMapping(method = HttpMethod.POST)
     public DataJson signup(@FromBody(useAllBody = true) User user) {
         var newUser = userService.signup(user);
         return DataJson.ok().data(newUser);
     }
 
+    /**
+     * <p>signupByThirdParty.</p>
+     *
+     * @param uniqueID    a {@link java.lang.String} object
+     * @param accessToken a {@link java.lang.String} object
+     * @param accountType a {@link java.lang.String} object
+     * @return a {@link cool.scx.vo.DataJson} object
+     */
     @ScxMapping(method = HttpMethod.POST)
     public DataJson signupByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType) {
         var newUser = ScxAuth.signupByThirdParty(uniqueID, accessToken, accountType);
         return DataJson.ok().data(newUser);
     }
 
+    /**
+     * <p>logout.</p>
+     *
+     * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
+     * @return a {@link cool.scx.vo.Json} object
+     */
     @ScxMapping(method = HttpMethod.POST)
     public Json logout(RoutingContext routingContext) {
         ScxAuth.removeAuthUser(routingContext);
         return Json.ok();
     }
 
+    /**
+     * <p>info.</p>
+     *
+     * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
+     * @return a {@link cool.scx.vo.BaseVo} object
+     * @throws cool.scx.http.exception.impl.UnauthorizedException if any.
+     */
     @Perms(checkedPerms = false)
     @ScxMapping(method = HttpMethod.GET)
     public BaseVo info(RoutingContext routingContext) throws UnauthorizedException {
@@ -86,6 +135,13 @@ public class ScxAuthController {
 
     }
 
+    /**
+     * <p>changeUserAvatar.</p>
+     *
+     * @param newAvatar a {@link java.lang.String} object
+     * @return a {@link cool.scx.vo.DataJson} object
+     * @throws cool.scx.http.exception.impl.UnauthorizedException if any.
+     */
     @Perms(checkedPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public DataJson changeUserAvatar(@FromBody String newAvatar) throws UnauthorizedException {
@@ -96,6 +152,14 @@ public class ScxAuthController {
         return DataJson.ok().data(userService.update(l));
     }
 
+    /**
+     * <p>changeUserUsername.</p>
+     *
+     * @param newUsername a {@link java.lang.String} object
+     * @param password    a {@link java.lang.String} object
+     * @return a {@link cool.scx.vo.BaseVo} object
+     * @throws cool.scx.http.exception.impl.UnauthorizedException if any.
+     */
     @Perms(checkedPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo changeUserUsername(@FromBody String newUsername, @FromBody String password) throws UnauthorizedException {
@@ -106,6 +170,14 @@ public class ScxAuthController {
         }
     }
 
+    /**
+     * <p>changeUserPassword.</p>
+     *
+     * @param newPassword a {@link java.lang.String} object
+     * @param oldPassword a {@link java.lang.String} object
+     * @return a {@link cool.scx.vo.BaseVo} object
+     * @throws cool.scx.http.exception.impl.UnauthorizedException if any.
+     */
     @Perms(checkedPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo changeUserPassword(@FromBody String newPassword, @FromBody String oldPassword) throws UnauthorizedException {

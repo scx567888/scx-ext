@@ -7,6 +7,9 @@ import cool.scx.ext.organization.auth.UserInfoModel;
 
 /**
  * 账号表 处理登录信息用
+ *
+ * @author scx567888
+ * @version 1.11.8
  */
 @UseCRUDApi
 @ScxModel(tablePrefix = "organization")

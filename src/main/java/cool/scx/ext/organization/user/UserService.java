@@ -34,11 +34,20 @@ import java.util.List;
 @ScxService
 public class UserService extends BaseModelService<User> {
 
+    /**
+     * Constant <code>logger</code>
+     */
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final DeptService deptService;
     private final RoleService roleService;
 
+    /**
+     * <p>Constructor for UserService.</p>
+     *
+     * @param deptService a {@link cool.scx.ext.organization.dept.DeptService} object
+     * @param roleService a {@link cool.scx.ext.organization.role.RoleService} object
+     */
     public UserService(DeptService deptService, RoleService roleService) {
         this.deptService = deptService;
         this.roleService = roleService;
@@ -84,12 +93,16 @@ public class UserService extends BaseModelService<User> {
      * 检查系统中是否存在至少有一个管理员
      *
      * @param id id
+     * @return a boolean
      */
     public boolean checkThatThereIsAtLeastOneAdmin(Long id) {
         var count = count(new Query().equal("isAdmin", true).notEqual("id", id, WhereOption.SKIP_IF_NULL));
         return count != 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<User> list(Query query, SelectFilter selectFilter) {
         return fillDeptIDsAndRoleIDsField(super.list(query, selectFilter));
@@ -100,8 +113,8 @@ public class UserService extends BaseModelService<User> {
      * <p>
      * 重写方法
      *
-     * @param oldList a {@link Query} object
-     * @return a {@link List} object
+     * @param oldList a {@link cool.scx.base.Query} object
+     * @return a {@link java.util.List} object
      */
     public List<User> fillDeptIDsAndRoleIDsField(List<User> oldList) {
         var userIDs = oldList.stream().map(user -> user.id).toList();
@@ -283,7 +296,7 @@ public class UserService extends BaseModelService<User> {
      *
      * @param username 用户名
      * @param password 密码
-     * @return
+     * @return a {@link cool.scx.ext.organization.user.User} object
      */
     public User tryLogin(String username, String password) {
         var needLoginUser = get(new Query().equal("username", username));
@@ -295,14 +308,34 @@ public class UserService extends BaseModelService<User> {
         return needLoginUser;
     }
 
+    /**
+     * <p>tryLoginByEmailAddress.</p>
+     *
+     * @param emailAddress     a {@link java.lang.String} object
+     * @param verificationCode a {@link java.lang.String} object
+     * @return a {@link cool.scx.ext.organization.user.User} object
+     */
     public User tryLoginByEmailAddress(String emailAddress, String verificationCode) {
         throw new RuntimeException("暂未实现此种登录方式");
     }
 
+    /**
+     * <p>tryLoginByPhoneNumber.</p>
+     *
+     * @param phoneNumber      a {@link java.lang.String} object
+     * @param verificationCode a {@link java.lang.String} object
+     * @return a {@link cool.scx.ext.organization.user.User} object
+     */
     public User tryLoginByPhoneNumber(String phoneNumber, String verificationCode) {
         throw new RuntimeException("暂未实现此种登录方式");
     }
 
+    /**
+     * <p>encryptPassword.</p>
+     *
+     * @param plainPassword a {@link java.lang.String} object
+     * @return a {@link java.lang.String} object
+     */
     public String encryptPassword(String plainPassword) {
         if (StringUtils.isNotBlank(plainPassword)) {
             return CryptoUtils.encryptPassword(plainPassword.trim());

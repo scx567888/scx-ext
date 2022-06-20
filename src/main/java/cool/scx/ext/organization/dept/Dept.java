@@ -8,6 +8,9 @@ import cool.scx.ext.organization.auth.PermsModel;
 
 /**
  * 部门
+ *
+ * @author scx567888
+ * @version 1.11.8
  */
 @UseCRUDApi
 @ScxModel(tablePrefix = "organization")

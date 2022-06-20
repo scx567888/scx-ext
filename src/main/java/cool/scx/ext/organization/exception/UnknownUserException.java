@@ -11,6 +11,9 @@ import cool.scx.vo.Json;
  */
 public final class UnknownUserException extends AuthException {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BaseVo toBaseVo() {
         return Json.fail("user-not-found");

@@ -10,20 +10,29 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * <p>Abstract UserInfoModelService class.</p>
+ *
+ * @author scx567888
+ * @version 1.11.8
+ */
 public abstract class UserInfoModelService<M extends UserInfoModel> extends BaseModelService<M> {
 
     protected final UserService userService;
 
+    /**
+     * <p>Constructor for UserInfoModelService.</p>
+     *
+     * @param userService a {@link cool.scx.ext.organization.user.UserService} object
+     */
     protected UserInfoModelService(UserService userService) {
         this.userService = userService;
     }
 
     /**
+     * {@inheritDoc}
+     * <p>
      * 重写 list 方法以使用 userID 填充 user 对象
-     *
-     * @param query        query
-     * @param selectFilter selectFilter
-     * @return 填充后的list
      */
     @Override
     public List<M> list(Query query, SelectFilter selectFilter) {
@@ -43,6 +52,12 @@ public abstract class UserInfoModelService<M extends UserInfoModel> extends Base
         return null;
     }
 
+    /**
+     * <p>getByUserWithoutUserField.</p>
+     *
+     * @param user a {@link cool.scx.ext.organization.user.User} object
+     * @return a M object
+     */
     public final M getByUserWithoutUserField(User user) {
         if (user != null) {
             var list = super.list(new Query().equal("userID", user.id).setPagination(1), SelectFilter.ofExcluded());

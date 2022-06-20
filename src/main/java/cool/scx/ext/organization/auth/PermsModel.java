@@ -7,6 +7,9 @@ import java.util.List;
 /**
  * 若 model 需要存储权限可以继承此类 提供四个权限存储字段
  * 权限实体类
+ *
+ * @author scx567888
+ * @version 1.11.8
  */
 public abstract class PermsModel extends BaseModel {
 

@@ -3,6 +3,12 @@ package cool.scx.ext.organization.auth;
 import cool.scx.ScxContext;
 import cool.scx.ext.organization.user.User;
 
+/**
+ * <p>ScxUserInfo class.</p>
+ *
+ * @author scx567888
+ * @version 1.11.8
+ */
 public class ScxUserInfo {
     public final Long id;
     public final String username;
@@ -15,6 +21,12 @@ public class ScxUserInfo {
     public final String[] pageElementPerms;
     public final boolean tombstone;
 
+    /**
+     * <p>Constructor for ScxUserInfo.</p>
+     *
+     * @param user         a {@link cool.scx.ext.organization.user.User} object
+     * @param permsWrapper a {@link cool.scx.ext.organization.auth.PermsWrapper} object
+     */
     public ScxUserInfo(User user, PermsWrapper permsWrapper) {
         id = user.id;
         username = user.username;
