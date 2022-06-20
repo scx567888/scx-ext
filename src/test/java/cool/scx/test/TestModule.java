@@ -11,9 +11,8 @@ import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.ext.organization.OrganizationModule;
+import cool.scx.ext.organization.user.UserService;
 import cool.scx.ext.static_server.StaticServerModule;
-import cool.scx.test.auth.TestAuth;
-import cool.scx.test.user.UserService;
 import cool.scx.test.website.UserListWebSiteHandler;
 import cool.scx.test.website.WriteTimeHandler;
 import cool.scx.util.http.HttpClientHelper;
@@ -72,16 +71,6 @@ public class TestModule implements ScxModule {
     public void start() {
         ScxDaoHelper.fixTable();
         WriteTimeHandler.registerHandler();
-        TestAuth.initAuth();
-        TestAuth.readSessionFromFile();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void stop() {
-        TestAuth.writeSessionToFile();
     }
 
     /**

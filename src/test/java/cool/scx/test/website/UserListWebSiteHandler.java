@@ -3,9 +3,9 @@ package cool.scx.test.website;
 import cool.scx.annotation.ScxService;
 import cool.scx.base.Query;
 import cool.scx.ext.cms.web_site.WebSiteHandler;
-import cool.scx.test.auth.TestAuth;
-import cool.scx.test.user.User;
-import cool.scx.test.user.UserService;
+import cool.scx.ext.organization.auth.ScxAuth;
+import cool.scx.ext.organization.user.User;
+import cool.scx.ext.organization.user.UserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.vo.Html;
@@ -47,7 +47,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
                 var uuid = RandomUtils.getUUID();
                 //测试表情符能否存储
                 s.username = uuid + "👶";
-                s.nickname = uuid + "🥝";
+                s.phoneNumber = uuid + "🥝";
                 s.password = CryptoUtils.encryptPassword(uuid);
                 s.isAdmin = true;
                 s1.add(s);
@@ -57,7 +57,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
                 var s = new User();
                 var uuid = RandomUtils.getUUID();
                 s.username = uuid;
-                s.nickname = uuid;
+                s.phoneNumber = uuid;
                 s.password = CryptoUtils.encryptPassword(uuid);
                 userService.add(s);
             }
@@ -66,7 +66,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
         html.add("userList", users);
         html.add("name", "小明");
         html.add("age", 22);
-        html.add("loginUser", TestAuth.getLoginUser());
+        html.add("loginUser", ScxAuth.getLoginUser());
     }
 
     @Override

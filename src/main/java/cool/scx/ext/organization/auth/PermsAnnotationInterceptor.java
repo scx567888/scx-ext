@@ -1,7 +1,6 @@
 package cool.scx.ext.organization.auth;
 
 import cool.scx.ext.organization.annotation.Perms;
-import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.http.exception.impl.NoPermException;
 import cool.scx.http.exception.impl.UnauthorizedException;
 import cool.scx.mvc.ScxMappingHandler;
