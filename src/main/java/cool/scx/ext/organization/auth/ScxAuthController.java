@@ -1,6 +1,5 @@
 package cool.scx.ext.organization.auth;
 
-import cool.scx.ScxContext;
 import cool.scx.annotation.FromBody;
 import cool.scx.annotation.ScxMapping;
 import cool.scx.enumeration.HttpMethod;
@@ -82,20 +81,8 @@ public class ScxAuthController {
     @ScxMapping(method = HttpMethod.GET)
     public BaseVo info(RoutingContext routingContext) throws UnauthorizedException {
         var user = ScxAuth.getLoginUser(routingContext);
-        var permsWrapper = ScxAuth.getPerms(user);
         //返回登录用户的信息给前台 含用户基本信息还有的所有角色的权限
-        var id = user.id;
-        var username = user.username;
-        var isAdmin = user.isAdmin;
-        var avatar = user.avatar;
-        var phoneNumber = user.phoneNumber;
-        var emailAddress = user.emailAddress;
-        var perms = permsWrapper.perms().toArray(String[]::new);
-        var pagePerms = permsWrapper.pagePerms().toArray(String[]::new);
-        var pageElementPerms = permsWrapper.pageElementPerms().toArray(String[]::new);
-        var tombstone = ScxContext.easyConfig().tombstone();
-        var scxUserInfo = new ScxUserInfo(id, username, isAdmin, avatar, phoneNumber, emailAddress, perms, pagePerms, pageElementPerms, tombstone);
-        return DataJson.ok().data(scxUserInfo);
+        return DataJson.ok().data(new ScxUserInfo(user, ScxAuth.getPerms(user)));
 
     }
 
@@ -129,9 +116,5 @@ public class ScxAuthController {
         }
     }
 
-    private record ScxUserInfo(Long id, String username, Boolean isAdmin, String avatar, String phoneNumber,
-                               String emailAddress, String[] perms, String[] pagePerms, String[] pageElementPerms,
-                               boolean tombstone) {
-    }
 
 }
