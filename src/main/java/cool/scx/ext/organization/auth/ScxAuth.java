@@ -159,8 +159,12 @@ public final class ScxAuth {
      * @param loginDevice 登录设备
      */
     static void addLoginItem(String token, User authUser, DeviceType loginDevice) {
+        var client = new AlreadyLoginClient();
+        client.token = token;
+        client.userID = authUser.id;
+        client.loginDevice = loginDevice;
         //踢出新用户
-        ALREADY_LOGIN_CLIENT_MAP.put(token, new AlreadyLoginClient(token, authUser, loginDevice));
+        ALREADY_LOGIN_CLIENT_MAP.put(token, client);
     }
 
     /**
@@ -171,7 +175,7 @@ public final class ScxAuth {
      */
     public static User getLoginUserByToken(String token) {
         var client = ALREADY_LOGIN_CLIENT_MAP.get(token);
-        return client != null ? userService.get(client.user.id) : null;
+        return client != null ? userService.get(client.userID) : null;
     }
 
     /**
