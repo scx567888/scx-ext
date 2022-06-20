@@ -1,6 +1,5 @@
 package cool.scx.ext.static_server;
 
-import java.io.File;
 import java.nio.file.Path;
 
 /**

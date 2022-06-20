@@ -10,6 +10,7 @@ import cool.scx.ext.core.CoreModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
+import cool.scx.ext.organization.OrganizationModule;
 import cool.scx.ext.static_server.StaticServerModule;
 import cool.scx.test.auth.TestAuth;
 import cool.scx.test.user.UserService;
@@ -50,6 +51,7 @@ public class TestModule implements ScxModule {
                         new CRUDModule(),
                         new FixTableModule(),
                         new FSSModule(),
+                        new OrganizationModule(),
                         new StaticServerModule())
                 .configure(ScxFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
                 .run();
