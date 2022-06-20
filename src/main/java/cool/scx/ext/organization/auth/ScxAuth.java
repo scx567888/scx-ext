@@ -21,7 +21,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * 提供基本的认证逻辑
@@ -45,7 +48,7 @@ public final class ScxAuth {
     /**
      * 存储所有的登录的客户端
      */
-    private static final Map<String, AlreadyLoginClient> ALREADY_LOGIN_CLIENT_MAP = new HashMap<>();
+    private static final AlreadyLoginClientMap ALREADY_LOGIN_CLIENT_MAP = new AlreadyLoginClientMap();
 
     /**
      * SESSION_CACHE 存储路径 默认为 AppRoot 下的  scx-session.cache 文件
@@ -115,10 +118,10 @@ public final class ScxAuth {
      */
     public static void readSessionFromFile() {
         try (var f = Files.newInputStream(SCX_SESSION_CACHE_PATH)) {
-            Map<String, AlreadyLoginClient> map = ObjectUtils.jsonMapper().readValue(f, new TypeReference<>() {
+            AlreadyLoginClient[] clients = ObjectUtils.jsonMapper().readValue(f, new TypeReference<>() {
             });
-            ALREADY_LOGIN_CLIENT_MAP.putAll(map);
-            Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + map.values().size() + " 条数据!!!").println();
+            ALREADY_LOGIN_CLIENT_MAP.put(clients);
+            Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + clients.length + " 条数据!!!").println();
         } catch (Exception ignored) {
 
         }
@@ -130,7 +133,7 @@ public final class ScxAuth {
     public static void writeSessionToFile() {
         try (var f = Files.newOutputStream(SCX_SESSION_CACHE_PATH)) {
             // 执行模块的 stop 生命周期
-            f.write(ObjectUtils.toJson(ALREADY_LOGIN_CLIENT_MAP).getBytes(StandardCharsets.UTF_8));
+            f.write(ObjectUtils.toJson(ALREADY_LOGIN_CLIENT_MAP.getAllAlreadyLoginClients()).getBytes(StandardCharsets.UTF_8));
             Ansi.out().red("保存 Session 到 " + SCX_SESSION_CACHE_PATH + " 中!!!").println();
         } catch (IOException ignored) {
 
@@ -164,7 +167,7 @@ public final class ScxAuth {
         client.userID = authUser.id;
         client.loginDevice = loginDevice;
         //踢出新用户
-        ALREADY_LOGIN_CLIENT_MAP.put(token, client);
+        ALREADY_LOGIN_CLIENT_MAP.put(client);
     }
 
     /**
@@ -174,7 +177,7 @@ public final class ScxAuth {
      * @return a {@link cool.scx.ext.organization.user.User} object.
      */
     public static User getLoginUserByToken(String token) {
-        var client = ALREADY_LOGIN_CLIENT_MAP.get(token);
+        var client = ALREADY_LOGIN_CLIENT_MAP.getByToken(token);
         return client != null ? userService.get(client.userID) : null;
     }
 
@@ -184,7 +187,7 @@ public final class ScxAuth {
      * @return a
      */
     public static AlreadyLoginClient getAlreadyLoginClient() {
-        return ALREADY_LOGIN_CLIENT_MAP.get(getToken(ScxContext.routingContext()));
+        return ALREADY_LOGIN_CLIENT_MAP.getByToken(getToken(ScxContext.routingContext()));
     }
 
     /**
@@ -245,7 +248,7 @@ public final class ScxAuth {
      * @param ctx a {@link io.vertx.ext.web.RoutingContext} object
      */
     static void removeAuthUser(RoutingContext ctx) {
-        ALREADY_LOGIN_CLIENT_MAP.remove(getToken(ctx));
+        ALREADY_LOGIN_CLIENT_MAP.removeByToken(getToken(ctx));
     }
 
     /**
@@ -262,7 +265,7 @@ public final class ScxAuth {
         //判断 token 是否有效
         if (StringUtils.isNotBlank(token)) {
             //这条 websocket 连接所携带的 token 验证通过
-            var alreadyLoginClient = ALREADY_LOGIN_CLIENT_MAP.get(token);
+            var alreadyLoginClient = ALREADY_LOGIN_CLIENT_MAP.getByToken(token);
             if (alreadyLoginClient != null) {
                 alreadyLoginClient.webSocketBinaryHandlerID = binaryHandlerID;
             }
@@ -274,8 +277,8 @@ public final class ScxAuth {
      *
      * @return a {@link java.util.List} object
      */
-    public static List<AlreadyLoginClient> alreadyLoginClients() {
-        return new ArrayList<>(ALREADY_LOGIN_CLIENT_MAP.values());
+    public static AlreadyLoginClient[] allAlreadyLoginClients() {
+        return ALREADY_LOGIN_CLIENT_MAP.getAllAlreadyLoginClients();
     }
 
     /**
@@ -418,6 +421,10 @@ public final class ScxAuth {
      */
     public static void addThirdPartyLoginHandler(String type, ThirdPartyLoginHandler thirdPartyLoginHandler) {
         THIRD_PARTY_LOGIN_HANDLER_MAP.put(type, thirdPartyLoginHandler);
+    }
+
+    public static AlreadyLoginClientMap alreadyLoginClientMap() {
+        return ALREADY_LOGIN_CLIENT_MAP;
     }
 
 }
