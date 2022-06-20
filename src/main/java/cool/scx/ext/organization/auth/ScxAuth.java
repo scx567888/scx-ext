@@ -423,6 +423,11 @@ public final class ScxAuth {
         THIRD_PARTY_LOGIN_HANDLER_MAP.put(type, thirdPartyLoginHandler);
     }
 
+    /**
+     * <p>alreadyLoginClientMap.</p>
+     *
+     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClientMap} object
+     */
     public static AlreadyLoginClientMap alreadyLoginClientMap() {
         return ALREADY_LOGIN_CLIENT_MAP;
     }
