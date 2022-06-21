@@ -86,11 +86,11 @@ public class DeptService extends BaseModelService<Dept> {
     /**
      * <p>getUserDeptByUserIDs.</p>
      *
-     * @param id
+     * @param userIDs a
      * @return a {@link java.util.List} object
      */
-    public List<UserDept> getUserDeptByUserIDs(AbstractPlaceholderSQL<?> id) {
-        return userDeptService.list(new Query().in("userID", id));
+    public List<UserDept> getUserDeptByUserIDs(AbstractPlaceholderSQL<?> userIDs) {
+        return userDeptService.list(new Query().in("userID", userIDs));
     }
 
     /**

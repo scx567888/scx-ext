@@ -7,7 +7,6 @@ import cool.scx.base.SelectFilter;
 import cool.scx.ext.organization.user.User;
 import cool.scx.sql.AbstractPlaceholderSQL;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,17 +38,17 @@ public class RoleService extends BaseModelService<Role> {
      */
     public List<Role> getRoleListByUser(User user) {
         var roleIDs = userRoleService.buildListSQL(new Query().equal("userID", user.id), SelectFilter.ofIncluded("roleID"));
-        return list(new Query().in("id", roleIDs)) ;
+        return list(new Query().in("id", roleIDs));
     }
 
     /**
      * getUserRoleByUserIDs
      *
-     * @param id
+     * @param userIDs a
      * @return a {@link java.util.List} object
      */
-    public List<UserRole> getUserRoleByUserIDs(AbstractPlaceholderSQL<?> id) {
-        return userRoleService.list(new Query().in("userID", id));
+    public List<UserRole> getUserRoleByUserIDs(AbstractPlaceholderSQL<?> userIDs) {
+        return userRoleService.list(new Query().in("userID", userIDs));
     }
 
 

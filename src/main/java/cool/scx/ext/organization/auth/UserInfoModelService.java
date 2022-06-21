@@ -7,7 +7,6 @@ import cool.scx.ext.organization.user.User;
 import cool.scx.ext.organization.user.UserService;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -36,7 +35,7 @@ public abstract class UserInfoModelService<M extends UserInfoModel> extends Base
      */
     @Override
     public List<M> list(Query query, SelectFilter selectFilter) {
-        return fillUserField(super.list(query, selectFilter),query);
+        return fillUserField(super.list(query, selectFilter), query);
     }
 
     /**
@@ -85,13 +84,8 @@ public abstract class UserInfoModelService<M extends UserInfoModel> extends Base
      * @return 填充后的 list
      */
     public final List<M> fillUserField(List<M> oldList, Query query) {
-//        var userIDs = oldList.stream().map(userinfo -> userinfo.userID).filter(Objects::nonNull).toArray();
-//        if (userIDs.length != 0) {
-            var userIDUserMap = userService.list(new Query().in("id", buildListSQLWithAlias(query,SelectFilter.ofIncluded("userID")))).stream().collect(Collectors.toMap((u) -> u.id, (u) -> u));
-            return oldList.stream().peek(item -> item.user = userIDUserMap.get(item.userID)).collect(Collectors.toList());
-//        } else {
-//            return oldList;
-//        }
+        var userIDUserMap = userService.list(new Query().in("id", buildListSQLWithAlias(query, SelectFilter.ofIncluded("userID")))).stream().collect(Collectors.toMap(u -> u.id, u -> u));
+        return oldList.stream().peek(item -> item.user = userIDUserMap.get(item.userID)).collect(Collectors.toList());
     }
 
 }
