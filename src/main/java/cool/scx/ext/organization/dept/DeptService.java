@@ -5,6 +5,7 @@ import cool.scx.base.BaseModelService;
 import cool.scx.base.Query;
 import cool.scx.base.SelectFilter;
 import cool.scx.ext.organization.user.User;
+import cool.scx.sql.AbstractPlaceholderSQL;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,8 +39,8 @@ public class DeptService extends BaseModelService<Dept> {
      * @return a {@link java.util.List} object
      */
     public List<Dept> getDeptListByUser(User user) {
-        var deptIDs = userDeptService.list(new Query().equal("userID", user.id)).stream().map(userRole -> userRole.deptID).toList();
-        return deptIDs.size() > 0 ? list(new Query().in("id", deptIDs)) : new ArrayList<>();
+        var deptIDs = userDeptService.buildListSQL(new Query().equal("userID", user.id), SelectFilter.ofIncluded("deptID"));
+        return list(new Query().in("id", deptIDs));
     }
 
     /**
@@ -85,14 +86,11 @@ public class DeptService extends BaseModelService<Dept> {
     /**
      * <p>getUserDeptByUserIDs.</p>
      *
-     * @param userIDs a {@link java.util.List} object
+     * @param userIDs a
      * @return a {@link java.util.List} object
      */
-    public List<UserDept> getUserDeptByUserIDs(List<Long> userIDs) {
-        if (userIDs.size() > 0) {
-            return userDeptService.list(new Query().in("userID", userIDs));
-        }
-        return new ArrayList<>();
+    public List<UserDept> getUserDeptByUserIDs(AbstractPlaceholderSQL<?> userIDs) {
+        return userDeptService.list(new Query().in("userID", userIDs));
     }
 
     /**

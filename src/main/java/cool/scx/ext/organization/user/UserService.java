@@ -105,7 +105,7 @@ public class UserService extends BaseModelService<User> {
      */
     @Override
     public List<User> list(Query query, SelectFilter selectFilter) {
-        return fillDeptIDsAndRoleIDsField(super.list(query, selectFilter));
+        return fillDeptIDsAndRoleIDsField(super.list(query, selectFilter), query);
     }
 
     /**
@@ -113,11 +113,12 @@ public class UserService extends BaseModelService<User> {
      * <p>
      * 重写方法
      *
-     * @param oldList a {@link cool.scx.base.Query} object
+     * @param oldList a {@link Query} object
+     * @param query
      * @return a {@link java.util.List} object
      */
-    public List<User> fillDeptIDsAndRoleIDsField(List<User> oldList) {
-        var userIDs = oldList.stream().map(user -> user.id).toList();
+    public List<User> fillDeptIDsAndRoleIDsField(List<User> oldList, Query query) {
+        var userIDs = buildListSQLWithAlias(query, SelectFilter.ofIncluded("id"));
         var userDeptList = deptService.getUserDeptByUserIDs(userIDs);
         var userRoleList = roleService.getUserRoleByUserIDs(userIDs);
         ArrayListMultimap<Long, Long> userIDAndDeptIDMap = ArrayListMultimap.create();

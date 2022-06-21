@@ -3,9 +3,10 @@ package cool.scx.ext.organization.role;
 import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseModelService;
 import cool.scx.base.Query;
+import cool.scx.base.SelectFilter;
 import cool.scx.ext.organization.user.User;
+import cool.scx.sql.AbstractPlaceholderSQL;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,21 +37,18 @@ public class RoleService extends BaseModelService<Role> {
      * @return a {@link java.util.List} object
      */
     public List<Role> getRoleListByUser(User user) {
-        var roleIDs = userRoleService.list(new Query().equal("userID", user.id)).stream().map(userRole -> userRole.roleID).toList();
-        return roleIDs.size() > 0 ? list(new Query().in("id", roleIDs)) : new ArrayList<>();
+        var roleIDs = userRoleService.buildListSQL(new Query().equal("userID", user.id), SelectFilter.ofIncluded("roleID"));
+        return list(new Query().in("id", roleIDs));
     }
 
     /**
      * getUserRoleByUserIDs
      *
-     * @param userIDs a {@link java.util.List} object
+     * @param userIDs a
      * @return a {@link java.util.List} object
      */
-    public List<UserRole> getUserRoleByUserIDs(List<Long> userIDs) {
-        if (userIDs.size() > 0) {
-            return userRoleService.list(new Query().in("userID", userIDs));
-        }
-        return new ArrayList<>();
+    public List<UserRole> getUserRoleByUserIDs(AbstractPlaceholderSQL<?> userIDs) {
+        return userRoleService.list(new Query().in("userID", userIDs));
     }
 
 
