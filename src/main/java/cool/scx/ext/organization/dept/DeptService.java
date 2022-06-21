@@ -39,8 +39,8 @@ public class DeptService extends BaseModelService<Dept> {
      * @return a {@link java.util.List} object
      */
     public List<Dept> getDeptListByUser(User user) {
-        var deptIDs = userDeptService.list(new Query().equal("userID", user.id)).stream().map(userRole -> userRole.deptID).toList();
-        return deptIDs.size() > 0 ? list(new Query().in("id", deptIDs)) : new ArrayList<>();
+        var deptIDs = userDeptService.buildListSQL(new Query().equal("userID", user.id), SelectFilter.ofIncluded("deptID"));
+        return list(new Query().in("id", deptIDs));
     }
 
     /**
