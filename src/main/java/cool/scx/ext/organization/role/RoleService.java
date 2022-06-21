@@ -4,6 +4,7 @@ import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseModelService;
 import cool.scx.base.Query;
 import cool.scx.ext.organization.user.User;
+import cool.scx.sql.AbstractPlaceholderSQL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,14 +44,11 @@ public class RoleService extends BaseModelService<Role> {
     /**
      * getUserRoleByUserIDs
      *
-     * @param userIDs a {@link java.util.List} object
+     * @param id
      * @return a {@link java.util.List} object
      */
-    public List<UserRole> getUserRoleByUserIDs(List<Long> userIDs) {
-        if (userIDs.size() > 0) {
-            return userRoleService.list(new Query().in("userID", userIDs));
-        }
-        return new ArrayList<>();
+    public List<UserRole> getUserRoleByUserIDs(AbstractPlaceholderSQL<?> id) {
+        return userRoleService.list(new Query().in("userID", id));
     }
 
 
