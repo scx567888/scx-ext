@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
  */
 public abstract class UserInfoModelService<M extends UserInfoModel> extends BaseModelService<M> {
 
+    /**
+     * userService
+     */
     protected final UserService userService;
 
     /**
@@ -80,7 +83,7 @@ public abstract class UserInfoModelService<M extends UserInfoModel> extends Base
      * 填充 list 中的 user 字段
      *
      * @param oldList 旧 list
-     * @param query
+     * @param query   a
      * @return 填充后的 list
      */
     public final List<M> fillUserField(List<M> oldList, Query query) {
