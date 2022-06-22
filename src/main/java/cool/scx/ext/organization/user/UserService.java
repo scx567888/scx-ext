@@ -114,7 +114,7 @@ public class UserService extends BaseModelService<User> {
      * 重写方法
      *
      * @param oldList a {@link Query} object
-     * @param query
+     * @param query   q
      * @return a {@link java.util.List} object
      */
     public List<User> fillDeptIDsAndRoleIDsField(List<User> oldList, Query query) {

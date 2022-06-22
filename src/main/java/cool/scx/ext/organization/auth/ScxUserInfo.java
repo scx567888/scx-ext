@@ -10,15 +10,55 @@ import cool.scx.ext.organization.user.User;
  * @version 1.11.8
  */
 public class ScxUserInfo {
+
+    /**
+     * id
+     */
     public final Long id;
+
+    /**
+     * 用户名
+     */
     public final String username;
+
+    /**
+     * 是否为管理员
+     */
     public final Boolean isAdmin;
+
+    /**
+     * 头像
+     */
     public final String avatar;
+
+    /**
+     * 密码
+     */
     public final String phoneNumber;
+
+    /**
+     * 邮箱地址
+     */
     public final String emailAddress;
+
+    /**
+     * 通用权限
+     */
     public final String[] perms;
+
+    /**
+     * 页面权限
+     */
     public final String[] pagePerms;
+
+    /**
+     * 页面元素权限
+     */
     public final String[] pageElementPerms;
+
+    /**
+     * 当前是否启用墓碑
+     */
     public final boolean tombstone;
 
     /**
