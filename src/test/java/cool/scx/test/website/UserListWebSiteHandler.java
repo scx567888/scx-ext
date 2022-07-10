@@ -44,7 +44,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
             var s1 = new ArrayList<User>();
             for (int i = 0; i < 25; i = i + 1) {
                 var s = new User();
-                var uuid = RandomUtils.getUUID();
+                var uuid = RandomUtils.randomUUID();
                 //测试表情符能否存储
                 s.username = uuid + "👶";
                 s.phoneNumber = uuid + "🥝";
@@ -55,7 +55,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
             userService.add(s1);
             for (int i = 0; i < 25; i = i + 1) {
                 var s = new User();
-                var uuid = RandomUtils.getUUID();
+                var uuid = RandomUtils.randomUUID();
                 s.username = uuid;
                 s.phoneNumber = uuid;
                 s.password = CryptoUtils.encryptPassword(uuid);
