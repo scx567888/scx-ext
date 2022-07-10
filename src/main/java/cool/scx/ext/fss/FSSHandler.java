@@ -1,17 +1,15 @@
 package cool.scx.ext.fss;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import cool.scx.ScxContext;
 import cool.scx.http.exception.impl.InternalServerErrorException;
 import cool.scx.http.exception.impl.NotFoundException;
 import cool.scx.type.UploadedEntity;
+import cool.scx.util.Cache;
+import cool.scx.util.DigestUtils;
+import cool.scx.util.FileUtils;
 import cool.scx.util.RandomUtils;
-import cool.scx.util.digest.DigestUtils;
-import cool.scx.util.file.FileUtils;
 import cool.scx.vo.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -20,7 +18,6 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static java.nio.file.StandardOpenOption.*;
 
@@ -38,7 +35,7 @@ public abstract class FSSHandler {
      * 设置缓存在一天后没有读取则失效 .
      * 使用 cpu 核心数作为并发级别 .
      */
-    private static final Cache<String, Image> IMAGE_CACHE = CacheBuilder.newBuilder().maximumSize(10000).expireAfterAccess(1, TimeUnit.DAYS).concurrencyLevel(Runtime.getRuntime().availableProcessors()).build();
+    private static final Cache<String, Image> IMAGE_CACHE = new Cache<>(10000);
 
     /**
      * a
@@ -111,13 +108,13 @@ public abstract class FSSHandler {
         var monthStr = now.getMonthValue() + "";
         var dayStr = now.getDayOfMonth() + "";
         var fssObject = new FSSObject();
-        fssObject.fssObjectID = RandomUtils.getUUID();
+        fssObject.fssObjectID = RandomUtils.randomUUID();
         fssObject.fileName = fileName;
         fssObject.uploadTime = now;
         fssObject.fileSizeDisplay = FileUtils.longToDisplaySize(fileSize);
         fssObject.fileSize = fileSize;
         fssObject.fileMD5 = fileMD5;
-        fssObject.fileExtension = FileUtils.getExt(fssObject.fileName);
+        fssObject.fileExtension = FileUtils.getFileExtension(fssObject.fileName);
         fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileMD5, fileName};
         return fssObject;
     }
@@ -151,14 +148,14 @@ public abstract class FSSHandler {
      */
     public FSSObject copyFSSObject(String fileName, FSSObject oldFSSObject) {
         var fssObject = new FSSObject();
-        fssObject.fssObjectID = RandomUtils.getUUID();
+        fssObject.fssObjectID = RandomUtils.randomUUID();
         fssObject.fileName = fileName;
         fssObject.uploadTime = LocalDateTime.now();
         fssObject.filePath = oldFSSObject.filePath;
         fssObject.fileSizeDisplay = oldFSSObject.fileSizeDisplay;
         fssObject.fileSize = oldFSSObject.fileSize;
         fssObject.fileMD5 = oldFSSObject.fileMD5;
-        fssObject.fileExtension = FileUtils.getExt(fssObject.fileName);
+        fssObject.fileExtension = FileUtils.getFileExtension(fssObject.fileName);
         return fssObject;
     }
 
@@ -183,9 +180,9 @@ public abstract class FSSHandler {
      * @return a {@link java.io.File} object
      * @throws cool.scx.http.exception.impl.NotFoundException if any.
      */
-    public File checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
-        var physicalFile = getPhysicalFilePath(fssObject).toFile();
-        if (!physicalFile.exists()) {
+    public Path checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
+        var physicalFile = getPhysicalFilePath(fssObject);
+        if (Files.notExists(physicalFile)) {
             throw new NotFoundException();
         }
         return physicalFile;
@@ -200,7 +197,7 @@ public abstract class FSSHandler {
     public Download download(String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
-        return new Download(file, fssObject.fileName);
+        return Download.of(file, fssObject.fileName);
     }
 
     /**
@@ -215,14 +212,11 @@ public abstract class FSSHandler {
     public Image image(String fssObjectID, Integer width, Integer height, String type) {
         var cacheKey = fssObjectID + " " + width + " " + height + " " + type;
         //尝试通过缓存获取
-        var image = IMAGE_CACHE.getIfPresent(cacheKey);
-        if (image == null) {
+        return IMAGE_CACHE.computeIfAbsent(cacheKey, k -> {
             var fssObject = checkFSSObjectID(fssObjectID);
             var file = checkPhysicalFile(fssObject);
-            image = Image.of(file, width, height, type);
-            IMAGE_CACHE.put(cacheKey, image);
-        }
-        return image;
+            return Image.of(file.toFile(), width, height, type);
+        });
     }
 
     /**
@@ -234,7 +228,7 @@ public abstract class FSSHandler {
     public Raw raw(String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
-        return new Raw(file);
+        return Raw.of(file);
     }
 
     /**

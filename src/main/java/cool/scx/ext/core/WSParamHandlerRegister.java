@@ -1,9 +1,9 @@
 package cool.scx.ext.core;
 
-import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.ScxHandler;
 import cool.scx.ScxHandlerV;
+import cool.scx.util.MultiMap;
 import cool.scx.util.StringUtils;
 import io.vertx.core.http.ServerWebSocket;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public final class WSParamHandlerRegister {
     /**
      * 存储所有的 websocket 事件处理器 (方便前台调用) , key 为事件名 value 为事件
      */
-    private static final ArrayListMultimap<String, ScxHandler<WSParam>> NAME_WS_PARAM_HANDLER_MAPPING = ArrayListMultimap.create();
+    private static final MultiMap<String, ScxHandler<WSParam>> NAME_WS_PARAM_HANDLER_MAPPING = new MultiMap<>();
 
     /**
      * 查找并执行
@@ -35,7 +35,7 @@ public final class WSParamHandlerRegister {
      */
     static void findAndHandle(WSBody wsBody, ServerWebSocket webSocket) {
         //先获取名称
-        if (StringUtils.isNotBlank(wsBody.name())) {
+        if (StringUtils.notBlank(wsBody.name())) {
             var wsParam = new WSParam(wsBody.data(), webSocket);
             for (var wsParamHandler : NAME_WS_PARAM_HANDLER_MAPPING.get(wsBody.name())) {
                 ScxContext.scheduler().submit(new WSParamHandlerWrapper(wsParamHandler, wsParam));

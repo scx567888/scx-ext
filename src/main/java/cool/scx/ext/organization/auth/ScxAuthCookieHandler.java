@@ -26,7 +26,7 @@ final class ScxAuthCookieHandler implements Handler<RoutingContext> {
     @Override
     public void handle(RoutingContext ctx) {
         if (ctx.request().getCookie(SCX_AUTH_TOKEN_KEY) == null) {
-            ctx.request().response().addCookie(new CookieImpl(SCX_AUTH_TOKEN_KEY, RandomUtils.getUUID()).setMaxAge(COOKIE_MAX_AGE));
+            ctx.request().response().addCookie(new CookieImpl(SCX_AUTH_TOKEN_KEY, RandomUtils.randomUUID()).setMaxAge(COOKIE_MAX_AGE));
         }
         ctx.next();
     }

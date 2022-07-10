@@ -263,7 +263,7 @@ public final class ScxAuth {
         //获取 binaryHandlerID
         var binaryHandlerID = wsParam.webSocket().binaryHandlerID();
         //判断 token 是否有效
-        if (StringUtils.isNotBlank(token)) {
+        if (StringUtils.notBlank(token)) {
             //这条 websocket 连接所携带的 token 验证通过
             var alreadyLoginClient = ALREADY_LOGIN_CLIENT_MAP.getByToken(token);
             if (alreadyLoginClient != null) {
@@ -326,7 +326,7 @@ public final class ScxAuth {
         return switch (loginDevice) {
             case ADMIN, ANDROID, APPLE ->
                 //这些设备的 token 是保存在 header 中的 所以我们新生成一个 随机id 并将其返回到前台 , 并由前台通过 js 保存到浏览器中
-                    RandomUtils.getUUID();
+                    RandomUtils.randomUUID();
             case WEBSITE ->
                 //这里就是直接通过网页访问 这种情况是没法获取到自定义 header 的所以我们将 cookie 中随机颁发的 token 当作为唯一标识
                     ScxAuth.getTokenFromCookie(ctx);
@@ -394,7 +394,7 @@ public final class ScxAuth {
     public static User signupByThirdParty(String uniqueID, String accessToken, String accountType) {
         var defaultNewUser = new User();
         //默认用户名
-        defaultNewUser.username = "scx_" + RandomUtils.getRandomString(8, true);
+        defaultNewUser.username = "scx_" + RandomUtils.randomString(8, true);
         defaultNewUser.isAdmin = false;
         return findThirdPartyLoginHandler(accountType).signup(uniqueID, accessToken, defaultNewUser);
     }

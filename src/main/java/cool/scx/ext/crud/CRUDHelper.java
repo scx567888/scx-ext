@@ -1,6 +1,5 @@
 package cool.scx.ext.crud;
 
-import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.annotation.NoColumn;
 import cool.scx.base.BaseModel;
@@ -10,6 +9,7 @@ import cool.scx.ext.crud.exception.UnknownCRUDModelException;
 import cool.scx.ext.crud.exception.UnknownFieldNameException;
 import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.http.exception.impl.NotFoundException;
+import cool.scx.util.MultiMap;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
 import cool.scx.util.ansi.Ansi;
@@ -144,7 +144,7 @@ public final class CRUDHelper {
     @SuppressWarnings("unchecked")
     private static Map<Class<BaseModel>, Class<BaseModelService<BaseModel>>> initBaseModelClassBaseModelServiceClassMapping() {
         // 因为一个 BaseModel 可能由多个 BaseModelService 的实现 这里使用 HashSetValuedHashMap 存储
-        ArrayListMultimap<Class<BaseModel>, Class<BaseModelService<BaseModel>>> classClassHashSetValuedHashMap = ArrayListMultimap.create();
+        MultiMap<Class<BaseModel>, Class<BaseModelService<BaseModel>>> classClassHashSetValuedHashMap = new MultiMap<>();
         // baseModelClassList
         var baseModelClassList = CRUDHelper.BASE_MODEL_NAME_CRUD_API_INFO_MAPPING.values().stream().map(c -> c.baseModelClass).toList();
         //循环读取

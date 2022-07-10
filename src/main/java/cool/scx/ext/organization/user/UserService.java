@@ -1,6 +1,5 @@
 package cool.scx.ext.organization.user;
 
-import com.google.common.collect.ArrayListMultimap;
 import cool.scx.ScxContext;
 import cool.scx.annotation.ScxService;
 import cool.scx.base.BaseModelService;
@@ -16,6 +15,7 @@ import cool.scx.http.exception.impl.NoPermException;
 import cool.scx.http.exception.impl.UnauthorizedException;
 import cool.scx.sql.where.WhereOption;
 import cool.scx.util.CryptoUtils;
+import cool.scx.util.MultiMap;
 import cool.scx.util.NetUtils;
 import cool.scx.util.StringUtils;
 import org.slf4j.Logger;
@@ -121,8 +121,8 @@ public class UserService extends BaseModelService<User> {
         var userIDs = buildListSQLWithAlias(query, SelectFilter.ofIncluded("id"));
         var userDeptList = deptService.getUserDeptByUserIDs(userIDs);
         var userRoleList = roleService.getUserRoleByUserIDs(userIDs);
-        ArrayListMultimap<Long, Long> userIDAndDeptIDMap = ArrayListMultimap.create();
-        ArrayListMultimap<Long, Long> userIDAndRoleIDMap = ArrayListMultimap.create();
+        MultiMap<Long, Long> userIDAndDeptIDMap = new MultiMap<>();
+        MultiMap<Long, Long> userIDAndRoleIDMap = new MultiMap<>();
         for (var userDept : userDeptList) {
             userIDAndDeptIDMap.put(userDept.userID, userDept.deptID);
         }
@@ -338,7 +338,7 @@ public class UserService extends BaseModelService<User> {
      * @return a {@link java.lang.String} object
      */
     public String encryptPassword(String plainPassword) {
-        if (StringUtils.isNotBlank(plainPassword)) {
+        if (StringUtils.notBlank(plainPassword)) {
             return CryptoUtils.encryptPassword(plainPassword.trim());
         } else {
             return null;

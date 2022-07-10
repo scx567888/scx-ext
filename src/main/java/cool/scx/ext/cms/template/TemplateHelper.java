@@ -3,7 +3,7 @@ package cool.scx.ext.cms.template;
 import cool.scx.ScxContext;
 import cool.scx.annotation.FromUpload;
 import cool.scx.type.UploadedEntity;
-import cool.scx.util.file.FileUtils;
+import cool.scx.util.FileUtils;
 import cool.scx.vo.Json;
 
 import java.io.File;
