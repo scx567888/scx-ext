@@ -19,7 +19,6 @@ import cool.scx.util.RandomUtils;
 import cool.scx.util.StringUtils;
 import cool.scx.util.zip.VirtualDirectory;
 import cool.scx.util.zip.VirtualFile;
-import cool.scx.util.zip.ZipAction;
 import cool.scx.vo.BaseVo;
 import cool.scx.vo.Download;
 import cool.scx.vo.Html;
@@ -77,7 +76,7 @@ public class WebSiteController {
         excel.mergedRegion(2, 2, 1, 10);
         excel.setCellValue(2, 2, "这是合并的单元格");
 
-        return new Download(excel.toBytes(), "测试 Excel 😎👀😃✨😜.xlsx");
+        return Download.of(excel.toBytes(), "测试 Excel 😎👀😃✨😜.xlsx");
     }
 
     /**
@@ -89,12 +88,12 @@ public class WebSiteController {
     @ScxMapping(method = HttpMethod.GET)
     public BaseVo qrcode(@FromQuery(required = false) String value) {
         if (StringUtils.isBlank(value)) {
-            value = RandomUtils.getUUID() + " : 前面的是UUID";
+            value = RandomUtils.randomUUID() + " : 前面的是UUID";
         }
         //这里返回的是一个 png 的 图片 byte 数组
         byte[] qrCode = QRCodeUtils.getQRCode(value, 300);
 
-        return new Raw(qrCode, RawType.PNG);
+        return Raw.of(qrCode, RawType.PNG);
     }
 
     /**
@@ -111,8 +110,8 @@ public class WebSiteController {
         if (orCreate instanceof VirtualDirectory a) {
             a.put(VirtualFile.of("一个二维码图片.png", QRCodeUtils.getQRCode("一个二维码图片", 300)));
         }
-        byte[] bytes = ZipAction.toZipFileByteArray(virtualDirectory);
-        return new Download(bytes, "测试压缩包.zip");
+        byte[] bytes = virtualDirectory.toZipBytes();
+        return Download.of(bytes, "测试压缩包.zip");
     }
 
     @ScxMapping(method = HttpMethod.GET)
