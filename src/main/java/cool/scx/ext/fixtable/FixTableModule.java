@@ -1,8 +1,8 @@
 package cool.scx.ext.fixtable;
 
-import cool.scx.ScxContext;
-import cool.scx.ScxModule;
-import cool.scx.dao.ScxDaoHelper;
+import cool.scx.core.ScxContext;
+import cool.scx.core.ScxModule;
+import cool.scx.core.dao.ScxDaoHelper;
 import cool.scx.util.ConsoleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

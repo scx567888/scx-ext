@@ -1,7 +1,7 @@
 package cool.scx.ext.organization.role;
 
-import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseModelService;
+import cool.scx.core.annotation.ScxService;
+import cool.scx.core.base.BaseModelService;
 
 /**
  * 用户 角色 关联表 service 一般不单独使用

@@ -1,8 +1,8 @@
 package cool.scx.ext.organization.dept;
 
-import cool.scx.annotation.Column;
-import cool.scx.annotation.ScxModel;
-import cool.scx.base.BaseModel;
+import cool.scx.core.annotation.Column;
+import cool.scx.core.annotation.ScxModel;
+import cool.scx.core.base.BaseModel;
 
 /**
  * 用户部门关联表

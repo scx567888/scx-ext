@@ -1,7 +1,7 @@
 package cool.scx.ext.crud;
 
-import cool.scx.ScxContext;
-import cool.scx.ScxModule;
+import cool.scx.core.ScxContext;
+import cool.scx.core.ScxModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,7 @@
 package cool.scx.ext.organization.exception;
 
-import cool.scx.vo.BaseVo;
-import cool.scx.vo.Json;
+import cool.scx.core.vo.BaseVo;
+import cool.scx.core.vo.Json;
 
 /**
  * 未知 登录 Handler

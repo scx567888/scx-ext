@@ -1,9 +1,9 @@
 package cool.scx.ext.organization.role;
 
-import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseModelService;
-import cool.scx.base.Query;
-import cool.scx.base.SelectFilter;
+import cool.scx.core.annotation.ScxService;
+import cool.scx.core.base.BaseModelService;
+import cool.scx.core.base.Query;
+import cool.scx.core.base.SelectFilter;
 import cool.scx.ext.organization.user.User;
 import cool.scx.sql.AbstractPlaceholderSQL;
 

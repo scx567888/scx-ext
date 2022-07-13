@@ -1,6 +1,6 @@
 package cool.scx.ext;
 
-import cool.scx.Scx;
+import cool.scx.core.Scx;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.core.CoreModule;
 import cool.scx.ext.crud.CRUDModule;

@@ -1,10 +1,10 @@
 package cool.scx.ext.cms.template;
 
-import cool.scx.ScxContext;
-import cool.scx.annotation.FromUpload;
-import cool.scx.type.UploadedEntity;
+import cool.scx.core.ScxContext;
+import cool.scx.core.annotation.FromUpload;
+import cool.scx.core.type.UploadedEntity;
+import cool.scx.core.vo.Json;
 import cool.scx.util.FileUtils;
-import cool.scx.vo.Json;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,17 +94,17 @@ public final class TemplateHelper {
      * @return 结构
      */
     private static boolean checkPath(String path) {
-        return path.startsWith(ScxContext.easyConfig().templateRoot().toString());
+        return path.startsWith(ScxContext.coreConfig().templateRoot().toString());
     }
 
     /**
      * <p>Index.</p>
      *
-     * @return a {@link cool.scx.vo.Json} object.
+     * @return a {@link cool.scx.core.vo.Json} object.
      * @throws java.io.IOException if any.
      */
     public static Json index() throws IOException {
-        var allTemplateList = getTemplateList(ScxContext.easyConfig().templateRoot().toString());
+        var allTemplateList = getTemplateList(ScxContext.coreConfig().templateRoot().toString());
         // 让文件夹永远在前边
         var directoryList = allTemplateList.stream().filter(templateInfo -> "Directory".equals(templateInfo.type)).collect(Collectors.toList());
         var fileList = allTemplateList.stream().filter(templateInfo -> "File".equals(templateInfo.type)).toList();
@@ -116,7 +116,7 @@ public final class TemplateHelper {
      * 获取文件内容
      *
      * @param filePath 文件路径
-     * @return a {@link cool.scx.vo.Json} object.
+     * @return a {@link cool.scx.core.vo.Json} object.
      */
     public static Json getFileContent(String filePath) {
         try {
@@ -154,7 +154,7 @@ public final class TemplateHelper {
      * <p>delete.</p>
      *
      * @param filePath a {@link java.util.Map} object.
-     * @return a {@link cool.scx.vo.Json} object.
+     * @return a {@link cool.scx.core.vo.Json} object.
      * @throws java.io.IOException if any.
      */
     public static Json delete(String filePath) throws IOException {
@@ -189,7 +189,7 @@ public final class TemplateHelper {
      *
      * @param newFilePath 原文件路径
      * @param oldFilePath 新文件路径
-     * @return a {@link cool.scx.vo.Json} object.
+     * @return a {@link cool.scx.core.vo.Json} object.
      */
     public static Json rename(String newFilePath, String oldFilePath) {
         var b = checkPath(newFilePath);

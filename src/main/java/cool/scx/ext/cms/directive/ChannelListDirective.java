@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.directive;
 
-import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseTemplateDirective;
+import cool.scx.core.annotation.ScxService;
+import cool.scx.core.base.BaseTemplateDirective;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.util.ObjectUtils;
 

@@ -1,8 +1,8 @@
 package cool.scx.ext.cms;
 
-import cool.scx.ScxContext;
-import cool.scx.ScxModule;
-import cool.scx.base.BaseTemplateDirective;
+import cool.scx.core.ScxContext;
+import cool.scx.core.ScxModule;
+import cool.scx.core.base.BaseTemplateDirective;
 import cool.scx.ext.cms.directive.ChannelListDirective;
 import cool.scx.ext.cms.directive.ContentListDirective;
 import cool.scx.ext.cms.web_site.WebSiteHandler;

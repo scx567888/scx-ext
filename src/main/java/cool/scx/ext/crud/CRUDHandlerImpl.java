@@ -1,6 +1,6 @@
 package cool.scx.ext.crud;
 
-import cool.scx.annotation.ScxService;
+import cool.scx.core.annotation.ScxService;
 
 /**
  * a

@@ -1,12 +1,12 @@
 package cool.scx.ext.crud;
 
-import cool.scx.base.AbstractFilter;
-import cool.scx.base.BaseModel;
-import cool.scx.base.Query;
-import cool.scx.base.SelectFilter;
-import cool.scx.dao.ScxDaoTableInfo;
+import cool.scx.core.base.AbstractFilter;
+import cool.scx.core.base.BaseModel;
+import cool.scx.core.base.Query;
+import cool.scx.core.base.SelectFilter;
+import cool.scx.core.dao.ScxDaoTableInfo;
+import cool.scx.core.http.exception.impl.BadRequestException;
 import cool.scx.ext.crud.exception.*;
-import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.sql.where.WhereType;
 

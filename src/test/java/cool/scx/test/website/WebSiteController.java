@@ -1,11 +1,15 @@
 package cool.scx.test.website;
 
-import cool.scx.ScxConstant;
-import cool.scx.ScxContext;
-import cool.scx.annotation.FromQuery;
-import cool.scx.annotation.ScxMapping;
-import cool.scx.enumeration.HttpMethod;
-import cool.scx.enumeration.RawType;
+import cool.scx.core.ScxConstant;
+import cool.scx.core.ScxContext;
+import cool.scx.core.annotation.FromQuery;
+import cool.scx.core.annotation.ScxMapping;
+import cool.scx.core.enumeration.HttpMethod;
+import cool.scx.core.enumeration.RawType;
+import cool.scx.core.vo.BaseVo;
+import cool.scx.core.vo.Download;
+import cool.scx.core.vo.Html;
+import cool.scx.core.vo.Raw;
 import cool.scx.ext.cms.channel.Channel;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.content.Content;
@@ -19,10 +23,6 @@ import cool.scx.util.RandomUtils;
 import cool.scx.util.StringUtils;
 import cool.scx.util.zip.VirtualDirectory;
 import cool.scx.util.zip.VirtualFile;
-import cool.scx.vo.BaseVo;
-import cool.scx.vo.Download;
-import cool.scx.vo.Html;
-import cool.scx.vo.Raw;
 import io.vertx.ext.web.RoutingContext;
 
 import java.nio.charset.StandardCharsets;

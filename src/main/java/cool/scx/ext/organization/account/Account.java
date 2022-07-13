@@ -1,7 +1,7 @@
 package cool.scx.ext.organization.account;
 
-import cool.scx.annotation.Column;
-import cool.scx.annotation.ScxModel;
+import cool.scx.core.annotation.Column;
+import cool.scx.core.annotation.ScxModel;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 import cool.scx.ext.organization.auth.UserInfoModel;
 

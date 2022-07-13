@@ -1,6 +1,6 @@
 package cool.scx.ext.fss;
 
-import cool.scx.annotation.ScxService;
+import cool.scx.core.annotation.ScxService;
 
 /**
  * <p>DefaultFSSHandler class.</p>

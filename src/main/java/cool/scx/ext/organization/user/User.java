@@ -1,10 +1,10 @@
 package cool.scx.ext.organization.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import cool.scx.annotation.Column;
-import cool.scx.annotation.NoColumn;
-import cool.scx.annotation.ScxModel;
-import cool.scx.base.BaseModel;
+import cool.scx.core.annotation.Column;
+import cool.scx.core.annotation.NoColumn;
+import cool.scx.core.annotation.ScxModel;
+import cool.scx.core.base.BaseModel;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 import java.time.LocalDateTime;

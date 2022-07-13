@@ -1,7 +1,7 @@
 package cool.scx.ext.organization.dept;
 
-import cool.scx.annotation.ScxService;
-import cool.scx.base.BaseModelService;
+import cool.scx.core.annotation.ScxService;
+import cool.scx.core.base.BaseModelService;
 
 /**
  * UserDeptService

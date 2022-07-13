@@ -1,14 +1,14 @@
 package cool.scx.test.website;
 
-import cool.scx.annotation.ScxService;
-import cool.scx.base.Query;
+import cool.scx.core.annotation.ScxService;
+import cool.scx.core.base.Query;
+import cool.scx.core.vo.Html;
 import cool.scx.ext.cms.web_site.WebSiteHandler;
 import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.user.User;
 import cool.scx.ext.organization.user.UserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
-import cool.scx.vo.Html;
 
 import java.util.ArrayList;
 

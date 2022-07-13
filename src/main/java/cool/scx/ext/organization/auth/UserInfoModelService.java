@@ -1,8 +1,8 @@
 package cool.scx.ext.organization.auth;
 
-import cool.scx.base.BaseModelService;
-import cool.scx.base.Query;
-import cool.scx.base.SelectFilter;
+import cool.scx.core.base.BaseModelService;
+import cool.scx.core.base.Query;
+import cool.scx.core.base.SelectFilter;
 import cool.scx.ext.organization.user.User;
 import cool.scx.ext.organization.user.UserService;
 

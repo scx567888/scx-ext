@@ -1,10 +1,10 @@
 package cool.scx.ext.fss;
 
-import cool.scx.ScxContext;
-import cool.scx.annotation.*;
-import cool.scx.enumeration.HttpMethod;
-import cool.scx.type.UploadedEntity;
-import cool.scx.vo.*;
+import cool.scx.core.ScxContext;
+import cool.scx.core.annotation.*;
+import cool.scx.core.enumeration.HttpMethod;
+import cool.scx.core.type.UploadedEntity;
+import cool.scx.core.vo.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +33,7 @@ public class FSSController {
      * todo 优化性能
      *
      * @param fssObjectID a {@link java.lang.String} object.
-     * @return a {@link cool.scx.vo.Download} object.
+     * @return a {@link cool.scx.core.vo.Download} object.
      */
     @ScxMapping(value = "/download/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Download download(@FromPath String fssObjectID) {
@@ -47,7 +47,7 @@ public class FSSController {
      * @param width       a {@link java.lang.Integer} object.
      * @param height      a {@link java.lang.Integer} object.
      * @param type        a {@link java.lang.String} object
-     * @return a {@link cool.scx.vo.Raw} object.
+     * @return a {@link cool.scx.core.vo.Raw} object.
      */
     @ScxMapping(value = "/image/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Image image(@FromPath String fssObjectID,
@@ -61,7 +61,7 @@ public class FSSController {
      * 展示文件
      *
      * @param fssObjectID id
-     * @return a {@link cool.scx.vo.Raw} object.
+     * @return a {@link cool.scx.core.vo.Raw} object.
      */
     @ScxMapping(value = "/raw/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Raw raw(@FromPath String fssObjectID) {
@@ -122,7 +122,7 @@ public class FSSController {
      * <p>listFile.</p>
      *
      * @param fssObjectID a {@link java.util.Map} object.
-     * @return a {@link cool.scx.vo.Json} object.
+     * @return a {@link cool.scx.core.vo.Json} object.
      */
     @ScxMapping(value = "/info", method = HttpMethod.POST)
     public BaseVo info(@FromBody String fssObjectID) {
