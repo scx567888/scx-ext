@@ -113,7 +113,7 @@ public class UserService extends BaseModelService<User> {
      * <p>
      * 重写方法
      *
-     * @param oldList a {@link cool.scx.base.Query} object
+     * @param oldList a {@link cool.scx.core.base.Query} object
      * @param query   q
      * @return a {@link java.util.List} object
      */
