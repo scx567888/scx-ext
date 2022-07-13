@@ -1,6 +1,6 @@
 package cool.scx.ext.cms.web_site;
 
-import cool.scx.vo.Html;
+import cool.scx.core.vo.Html;
 
 /**
  * <p>WebSiteHandler interface.</p>
@@ -13,7 +13,7 @@ public interface WebSiteHandler {
     /**
      * cms 访问 index 会执行此方法
      *
-     * @param indexTemplate a {@link cool.scx.vo.Html} object
+     * @param indexTemplate a {@link cool.scx.core.vo.Html} object
      * @throws java.lang.Exception s
      */
     default void indexHandler(Html indexTemplate) throws Exception {
@@ -23,7 +23,7 @@ public interface WebSiteHandler {
     /**
      * cms 访问 栏目是会执行此方法
      *
-     * @param channelTemplate a {@link cool.scx.vo.Html} object
+     * @param channelTemplate a {@link cool.scx.core.vo.Html} object
      * @param channelPath     a {@link java.lang.String} object
      * @throws java.lang.Exception s
      */

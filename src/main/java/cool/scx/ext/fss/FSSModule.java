@@ -1,6 +1,6 @@
 package cool.scx.ext.fss;
 
-import cool.scx.ScxModule;
+import cool.scx.core.ScxModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

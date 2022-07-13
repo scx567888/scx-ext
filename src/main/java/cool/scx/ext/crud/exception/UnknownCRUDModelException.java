@@ -1,7 +1,7 @@
 package cool.scx.ext.crud.exception;
 
-import cool.scx.http.exception.impl.NotFoundException;
-import cool.scx.vo.Json;
+import cool.scx.core.http.exception.impl.NotFoundException;
+import cool.scx.core.vo.Json;
 
 /**
  * a

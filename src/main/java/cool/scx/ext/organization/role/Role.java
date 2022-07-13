@@ -1,6 +1,6 @@
 package cool.scx.ext.organization.role;
 
-import cool.scx.annotation.ScxModel;
+import cool.scx.core.annotation.ScxModel;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 import cool.scx.ext.organization.auth.PermsModel;
 

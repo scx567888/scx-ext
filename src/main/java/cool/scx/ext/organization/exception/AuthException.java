@@ -1,7 +1,7 @@
 package cool.scx.ext.organization.exception;
 
-import cool.scx.http.exception.impl.BadRequestException;
-import cool.scx.vo.BaseVo;
+import cool.scx.core.http.exception.impl.BadRequestException;
+import cool.scx.core.vo.BaseVo;
 
 /**
  * 认证异常父类

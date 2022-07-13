@@ -1,7 +1,7 @@
 package cool.scx.ext.static_server;
 
-import cool.scx.ScxContext;
-import cool.scx.ScxModule;
+import cool.scx.core.ScxContext;
+import cool.scx.core.ScxModule;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.FileSystemAccess;
 import io.vertx.ext.web.handler.StaticHandler;

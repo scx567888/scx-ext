@@ -1,6 +1,6 @@
 package cool.scx.ext.organization.auth;
 
-import cool.scx.ScxContext;
+import cool.scx.core.ScxContext;
 import cool.scx.ext.organization.user.User;
 
 /**
@@ -77,7 +77,7 @@ public class ScxUserInfo {
         perms = permsWrapper.perms().toArray(String[]::new);
         pagePerms = permsWrapper.pagePerms().toArray(String[]::new);
         pageElementPerms = permsWrapper.pageElementPerms().toArray(String[]::new);
-        tombstone = ScxContext.easyConfig().tombstone();
+        tombstone = ScxContext.coreConfig().tombstone();
     }
 
 }

@@ -1,12 +1,12 @@
 package cool.scx.ext.crud;
 
-import cool.scx.base.AbstractFilter;
-import cool.scx.base.BaseModel;
-import cool.scx.base.Query;
-import cool.scx.base.SelectFilter;
-import cool.scx.dao.ScxDaoTableInfo;
+import cool.scx.core.base.AbstractFilter;
+import cool.scx.core.base.BaseModel;
+import cool.scx.core.base.Query;
+import cool.scx.core.base.SelectFilter;
+import cool.scx.core.dao.ScxDaoTableInfo;
+import cool.scx.core.http.exception.impl.BadRequestException;
 import cool.scx.ext.crud.exception.*;
-import cool.scx.http.exception.impl.BadRequestException;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.sql.where.WhereType;
 
@@ -141,7 +141,7 @@ public final class CRUDListParam {
      *
      * @param modelClass a
      * @return a
-     * @throws cool.scx.http.exception.impl.BadRequestException a
+     * @throws cool.scx.core.http.exception.impl.BadRequestException if any.
      */
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var query = new Query();

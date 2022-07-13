@@ -1,6 +1,6 @@
 package cool.scx.ext.core;
 
-import cool.scx.vo.BaseVo;
+import cool.scx.core.vo.BaseVo;
 
 /**
  * 前台和后台发送 websocket 消息的 封装体

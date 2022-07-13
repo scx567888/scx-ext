@@ -1,10 +1,10 @@
 package cool.scx.test;
 
-import cool.scx.Scx;
-import cool.scx.ScxContext;
-import cool.scx.ScxModule;
-import cool.scx.dao.ScxDaoHelper;
-import cool.scx.enumeration.ScxFeature;
+import cool.scx.core.Scx;
+import cool.scx.core.ScxContext;
+import cool.scx.core.ScxModule;
+import cool.scx.core.dao.ScxDaoHelper;
+import cool.scx.core.enumeration.ScxCoreFeature;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.core.CoreModule;
 import cool.scx.ext.crud.CRUDModule;
@@ -52,7 +52,7 @@ public class TestModule implements ScxModule {
                         new FSSModule(),
                         new OrganizationModule(),
                         new StaticServerModule())
-                .configure(ScxFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
+                .configure(ScxCoreFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
                 .run();
     }
 

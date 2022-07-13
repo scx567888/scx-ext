@@ -1,6 +1,6 @@
 package cool.scx.ext.core;
 
-import cool.scx.ScxModule;
+import cool.scx.core.ScxModule;
 
 /**
  * 核心模块

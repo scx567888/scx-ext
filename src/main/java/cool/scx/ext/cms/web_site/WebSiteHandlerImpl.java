@@ -1,6 +1,6 @@
 package cool.scx.ext.cms.web_site;
 
-import cool.scx.annotation.ScxService;
+import cool.scx.core.annotation.ScxService;
 
 /**
  * a

@@ -1,8 +1,8 @@
 package cool.scx.ext.crud;
 
-import cool.scx.base.BaseModel;
-import cool.scx.base.UpdateFilter;
-import cool.scx.dao.ScxDaoTableInfo;
+import cool.scx.core.base.BaseModel;
+import cool.scx.core.base.UpdateFilter;
+import cool.scx.core.dao.ScxDaoTableInfo;
 import cool.scx.ext.crud.exception.EmptyUpdateColumnException;
 
 import java.util.Arrays;

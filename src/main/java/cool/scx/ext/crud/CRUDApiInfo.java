@@ -1,6 +1,6 @@
 package cool.scx.ext.crud;
 
-import cool.scx.base.BaseModel;
+import cool.scx.core.base.BaseModel;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 /**

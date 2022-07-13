@@ -1,14 +1,14 @@
 package cool.scx.ext.fss;
 
-import cool.scx.ScxContext;
-import cool.scx.http.exception.impl.InternalServerErrorException;
-import cool.scx.http.exception.impl.NotFoundException;
-import cool.scx.type.UploadedEntity;
+import cool.scx.core.ScxContext;
+import cool.scx.core.http.exception.impl.InternalServerErrorException;
+import cool.scx.core.http.exception.impl.NotFoundException;
+import cool.scx.core.type.UploadedEntity;
+import cool.scx.core.vo.*;
 import cool.scx.util.Cache;
 import cool.scx.util.DigestUtils;
 import cool.scx.util.FileUtils;
 import cool.scx.util.RandomUtils;
-import cool.scx.vo.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -178,7 +178,7 @@ public abstract class FSSHandler {
      *
      * @param fssObject a {@link cool.scx.ext.fss.FSSObject} object
      * @return a {@link java.io.File} object
-     * @throws cool.scx.http.exception.impl.NotFoundException if any.
+     * @throws cool.scx.core.http.exception.impl.NotFoundException if any.
      */
     public Path checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
         var physicalFile = getPhysicalFilePath(fssObject);
@@ -192,7 +192,7 @@ public abstract class FSSHandler {
      * <p>download.</p>
      *
      * @param fssObjectID a {@link java.lang.String} object
-     * @return a {@link cool.scx.vo.Download} object
+     * @return a {@link cool.scx.core.vo.Download} object
      */
     public Download download(String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
@@ -207,7 +207,7 @@ public abstract class FSSHandler {
      * @param width       a {@link java.lang.Integer} object
      * @param height      a {@link java.lang.Integer} object
      * @param type        a {@link java.lang.String} object
-     * @return a {@link cool.scx.vo.Image} object
+     * @return a {@link cool.scx.core.vo.Image} object
      */
     public Image image(String fssObjectID, Integer width, Integer height, String type) {
         var cacheKey = fssObjectID + " " + width + " " + height + " " + type;
@@ -223,7 +223,7 @@ public abstract class FSSHandler {
      * <p>raw.</p>
      *
      * @param fssObjectID a {@link java.lang.String} object
-     * @return a {@link cool.scx.vo.Raw} object
+     * @return a {@link cool.scx.core.vo.Raw} object
      */
     public Raw raw(String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
@@ -239,8 +239,8 @@ public abstract class FSSHandler {
      * @param fileMD5       a {@link java.lang.String} object
      * @param chunkLength   a {@link java.lang.Integer} object
      * @param nowChunkIndex a {@link java.lang.Integer} object
-     * @param fileData      a {@link cool.scx.type.UploadedEntity} object
-     * @return a {@link cool.scx.vo.Json} object
+     * @param fileData      a {@link cool.scx.core.type.UploadedEntity} object
+     * @return a {@link cool.scx.core.vo.Json} object
      * @throws java.io.IOException a
      */
     public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws IOException {
@@ -323,7 +323,7 @@ public abstract class FSSHandler {
      * <p>list.</p>
      *
      * @param fssObjectIDs a {@link java.util.List} object
-     * @return a {@link cool.scx.vo.Json} object
+     * @return a {@link cool.scx.core.vo.Json} object
      */
     public BaseVo listInfo(List<String> fssObjectIDs) {
         if (fssObjectIDs != null && fssObjectIDs.size() > 0) {

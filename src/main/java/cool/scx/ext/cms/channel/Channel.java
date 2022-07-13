@@ -1,8 +1,8 @@
 package cool.scx.ext.cms.channel;
 
-import cool.scx.annotation.Column;
-import cool.scx.annotation.ScxModel;
-import cool.scx.base.BaseModel;
+import cool.scx.core.annotation.Column;
+import cool.scx.core.annotation.ScxModel;
+import cool.scx.core.base.BaseModel;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 import java.util.List;

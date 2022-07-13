@@ -1,6 +1,6 @@
 package cool.scx.ext.organization;
 
-import cool.scx.ScxModule;
+import cool.scx.core.ScxModule;
 import cool.scx.ext.organization.auth.ScxAuth;
 
 /**

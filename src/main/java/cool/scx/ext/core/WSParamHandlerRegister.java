@@ -1,8 +1,8 @@
 package cool.scx.ext.core;
 
-import cool.scx.ScxContext;
-import cool.scx.ScxHandler;
-import cool.scx.ScxHandlerV;
+import cool.scx.core.ScxContext;
+import cool.scx.functional.ScxHandler;
+import cool.scx.functional.ScxHandlerA;
 import cool.scx.util.MultiMap;
 import cool.scx.util.StringUtils;
 import io.vertx.core.http.ServerWebSocket;
@@ -25,7 +25,7 @@ public final class WSParamHandlerRegister {
     /**
      * 存储所有的 websocket 事件处理器 (方便前台调用) , key 为事件名 value 为事件
      */
-    private static final MultiMap<String, ScxHandler<WSParam>> NAME_WS_PARAM_HANDLER_MAPPING = new MultiMap<>();
+    private static final MultiMap<String, ScxHandlerA<WSParam>> NAME_WS_PARAM_HANDLER_MAPPING = new MultiMap<>();
 
     /**
      * 查找并执行
@@ -49,7 +49,7 @@ public final class WSParamHandlerRegister {
      * @param name       名称
      * @param scxHandler handler (用于处理前台传过来的 websocket 连接)
      */
-    public static void addHandler(String name, ScxHandler<WSParam> scxHandler) {
+    public static void addHandler(String name, ScxHandlerA<WSParam> scxHandler) {
         NAME_WS_PARAM_HANDLER_MAPPING.put(name, scxHandler);
     }
 
@@ -68,11 +68,11 @@ public final class WSParamHandlerRegister {
      * @param name       名称
      * @param scxHandler handler
      */
-    public static void removeHandler(String name, ScxHandler<WSParam> scxHandler) {
+    public static void removeHandler(String name, ScxHandlerA<WSParam> scxHandler) {
         NAME_WS_PARAM_HANDLER_MAPPING.remove(name, scxHandler);
     }
 
-    record WSParamHandlerWrapper(ScxHandler<WSParam> wsParamHandler, WSParam wsParam) implements ScxHandlerV {
+    record WSParamHandlerWrapper(ScxHandlerA<WSParam> wsParamHandler, WSParam wsParam) implements ScxHandler {
 
         @Override
         public void handle() {

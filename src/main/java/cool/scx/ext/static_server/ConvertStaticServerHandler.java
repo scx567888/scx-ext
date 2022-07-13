@@ -1,9 +1,8 @@
 package cool.scx.ext.static_server;
 
-import cool.scx.ScxEnvironment;
-import cool.scx.ScxHandlerR;
-import cool.scx.config.handler.DefaultValueHandler;
-import cool.scx.util.tuple.KeyValue;
+import cool.scx.config.ScxConfigValueHandler;
+import cool.scx.config.ScxEnvironment;
+import cool.scx.config.handler_impl.DefaultValueHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +12,11 @@ import java.util.Map;
  * a
  */
 record ConvertStaticServerHandler(
-        ScxEnvironment scxEnvironment) implements ScxHandlerR<KeyValue<String, Object>, List<StaticServer>> {
+        ScxEnvironment scxEnvironment) implements ScxConfigValueHandler<List<StaticServer>> {
 
     @Override
-    public List<StaticServer> handle(KeyValue<String, Object> o) {
-        var arrayList = new DefaultValueHandler<>(new ArrayList<Map<String, String>>()).handle(o);
+    public List<StaticServer> handle(String keyPath, Object rawValue) {
+        var arrayList = DefaultValueHandler.of(new ArrayList<Map<String, String>>()).handle(keyPath, rawValue);
         var tempList = new ArrayList<StaticServer>();
         for (var arg : arrayList) {
             try {
@@ -28,5 +27,4 @@ record ConvertStaticServerHandler(
         }
         return tempList;
     }
-
 }

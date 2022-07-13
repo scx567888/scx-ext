@@ -1,8 +1,8 @@
 package cool.scx.ext.core;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cool.scx.annotation.ScxWebSocketMapping;
-import cool.scx.base.BaseWebSocketHandler;
+import cool.scx.core.annotation.ScxWebSocketMapping;
+import cool.scx.core.base.BaseWebSocketHandler;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.ansi.Ansi;
 import io.vertx.core.buffer.Buffer;

@@ -1,7 +1,7 @@
 package cool.scx.ext.crud;
 
-import cool.scx.base.BaseModel;
-import cool.scx.base.Query;
+import cool.scx.core.base.BaseModel;
+import cool.scx.core.base.Query;
 import cool.scx.sql.where.WhereOption;
 
 import java.util.Map;

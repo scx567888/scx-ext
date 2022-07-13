@@ -1,8 +1,8 @@
 package cool.scx.ext.crud;
 
-import cool.scx.mvc.parameter_handler.ScxMappingMethodParameterHandler;
-import cool.scx.mvc.parameter_handler.ScxMappingRoutingContextInfo;
-import cool.scx.mvc.parameter_handler.impl.FromBodyMethodParameterHandler;
+import cool.scx.core.mvc.parameter_handler.ScxMappingMethodParameterHandler;
+import cool.scx.core.mvc.parameter_handler.ScxMappingRoutingContextInfo;
+import cool.scx.core.mvc.parameter_handler.impl.FromBodyMethodParameterHandler;
 
 import java.lang.reflect.Parameter;
 

@@ -1,7 +1,7 @@
 package cool.scx.ext.organization.auth;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import cool.scx.ScxContext;
+import cool.scx.core.ScxContext;
 import cool.scx.ext.core.WSParam;
 import cool.scx.ext.core.WSParamHandlerRegister;
 import cool.scx.ext.organization.dept.DeptService;

@@ -1,6 +1,6 @@
 package cool.scx.ext.organization.auth;
 
-import cool.scx.base.BaseModel;
+import cool.scx.core.base.BaseModel;
 
 import java.util.List;
 

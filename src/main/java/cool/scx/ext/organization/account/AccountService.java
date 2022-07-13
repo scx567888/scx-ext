@@ -1,6 +1,6 @@
 package cool.scx.ext.organization.account;
 
-import cool.scx.annotation.ScxService;
+import cool.scx.core.annotation.ScxService;
 import cool.scx.ext.organization.auth.UserInfoModelService;
 import cool.scx.ext.organization.user.UserService;
 

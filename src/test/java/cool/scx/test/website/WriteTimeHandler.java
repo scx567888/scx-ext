@@ -1,7 +1,7 @@
 package cool.scx.test.website;
 
-import cool.scx.ScxConstant;
-import cool.scx.ScxContext;
+import cool.scx.core.ScxConstant;
+import cool.scx.core.ScxContext;
 import cool.scx.ext.core.CoreWebSocketHandler;
 import cool.scx.ext.core.WSBody;
 import cool.scx.ext.core.WSParamHandlerRegister;
