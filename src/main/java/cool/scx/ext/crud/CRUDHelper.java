@@ -97,7 +97,7 @@ public final class CRUDHelper {
      *
      * @param baseModelName a {@link java.lang.String} object.
      * @return a {@link java.lang.Class} object.
-     * @throws cool.scx.http.exception.impl.NotFoundException if any.
+     * @throws cool.scx.core.http.exception.impl.NotFoundException if any.
      */
     public static CRUDApiInfo getCRUDApiInfo(String baseModelName) throws NotFoundException {
         if (StringUtils.isBlank(baseModelName)) {

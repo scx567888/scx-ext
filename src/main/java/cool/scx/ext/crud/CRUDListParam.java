@@ -141,7 +141,7 @@ public final class CRUDListParam {
      *
      * @param modelClass a
      * @return a
-     * @throws cool.scx.http.exception.impl.BadRequestException a
+     * @throws cool.scx.core.http.exception.impl.BadRequestException if any.
      */
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var query = new Query();

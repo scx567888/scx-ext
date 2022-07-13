@@ -124,7 +124,7 @@ public class ScxAuthController {
      *
      * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
      * @return a {@link cool.scx.core.vo.BaseVo} object
-     * @throws cool.scx.http.exception.impl.UnauthorizedException if any.
+     * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
     @Perms(checkedPerms = false)
     @ScxMapping(method = HttpMethod.GET)
@@ -140,7 +140,7 @@ public class ScxAuthController {
      *
      * @param newAvatar a {@link java.lang.String} object
      * @return a {@link cool.scx.core.vo.DataJson} object
-     * @throws cool.scx.http.exception.impl.UnauthorizedException if any.
+     * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
     @Perms(checkedPerms = false)
     @ScxMapping(method = HttpMethod.POST)
@@ -158,7 +158,7 @@ public class ScxAuthController {
      * @param newUsername a {@link java.lang.String} object
      * @param password    a {@link java.lang.String} object
      * @return a {@link cool.scx.core.vo.BaseVo} object
-     * @throws cool.scx.http.exception.impl.UnauthorizedException if any.
+     * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
     @Perms(checkedPerms = false)
     @ScxMapping(method = HttpMethod.POST)
@@ -176,7 +176,7 @@ public class ScxAuthController {
      * @param newPassword a {@link java.lang.String} object
      * @param oldPassword a {@link java.lang.String} object
      * @return a {@link cool.scx.core.vo.BaseVo} object
-     * @throws cool.scx.http.exception.impl.UnauthorizedException if any.
+     * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
     @Perms(checkedPerms = false)
     @ScxMapping(method = HttpMethod.POST)

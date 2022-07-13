@@ -178,7 +178,7 @@ public abstract class FSSHandler {
      *
      * @param fssObject a {@link cool.scx.ext.fss.FSSObject} object
      * @return a {@link java.io.File} object
-     * @throws cool.scx.http.exception.impl.NotFoundException if any.
+     * @throws cool.scx.core.http.exception.impl.NotFoundException if any.
      */
     public Path checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
         var physicalFile = getPhysicalFilePath(fssObject);
@@ -239,7 +239,7 @@ public abstract class FSSHandler {
      * @param fileMD5       a {@link java.lang.String} object
      * @param chunkLength   a {@link java.lang.Integer} object
      * @param nowChunkIndex a {@link java.lang.Integer} object
-     * @param fileData      a {@link cool.scx.type.UploadedEntity} object
+     * @param fileData      a {@link cool.scx.core.type.UploadedEntity} object
      * @return a {@link cool.scx.core.vo.Json} object
      * @throws java.io.IOException a
      */
