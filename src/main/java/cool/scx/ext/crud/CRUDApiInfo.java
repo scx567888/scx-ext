@@ -24,42 +24,42 @@ public final class CRUDApiInfo {
     /**
      * a
      */
-    public boolean list;
+    public final boolean list;
 
     /**
      * a
      */
-    public boolean info;
+    public final boolean info;
 
     /**
      * a
      */
-    public boolean add;
+    public final boolean add;
 
     /**
      * a
      */
-    public boolean update;
+    public final boolean update;
 
     /**
      * a
      */
-    public boolean delete;
+    public final boolean delete;
 
     /**
      * a
      */
-    public boolean batchDelete;
+    public final boolean batchDelete;
 
     /**
      * a
      */
-    public boolean revokeDelete;
+    public final boolean revokeDelete;
 
     /**
      * a
      */
-    public boolean checkUnique;
+    public final boolean checkUnique;
 
     /**
      * <p>Constructor for CRUDApiInfo.</p>
