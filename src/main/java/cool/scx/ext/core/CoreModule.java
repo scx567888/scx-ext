@@ -8,14 +8,14 @@ import cool.scx.core.ScxModule;
  * @author scx567888
  * @version 1.3.0
  */
-public class CoreModule implements ScxModule {
+public class CoreModule extends ScxModule {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String name() {
-        return "SCX_EXT-" + ScxModule.super.name();
+        return "SCX_EXT-" + super.name();
     }
 
 }
