@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @author scx567888
  * @version 1.10.8
  */
-public class StaticServerModule implements ScxModule {
+public class StaticServerModule extends ScxModule {
 
     /**
      * Constant <code>logger</code>
@@ -55,6 +55,14 @@ public class StaticServerModule implements ScxModule {
         var staticServers = getStaticServersByConfig();
         logger.info("静态资源服务器 -->  {}", staticServers.stream().map(StaticServer::location).collect(Collectors.joining(", ", "[", "]")));
         registerStaticServerHandler(ScxContext.router().vertxRouter(), staticServers);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String name() {
+        return "SCX_EXT-" + super.name();
     }
 
 }

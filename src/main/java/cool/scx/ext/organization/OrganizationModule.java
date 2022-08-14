@@ -9,7 +9,7 @@ import cool.scx.ext.organization.auth.ScxAuth;
  * @author scx567888
  * @version 1.11.8
  */
-public class OrganizationModule implements ScxModule {
+public class OrganizationModule extends ScxModule {
 
     /**
      * {@inheritDoc}
@@ -26,6 +26,14 @@ public class OrganizationModule implements ScxModule {
     @Override
     public void stop() {
         ScxAuth.writeSessionToFile();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String name() {
+        return "SCX_EXT-" + super.name();
     }
 
 }

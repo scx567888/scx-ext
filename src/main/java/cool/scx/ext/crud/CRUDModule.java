@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * @author scx567888
  * @version 1.3.0
  */
-public class CRUDModule implements ScxModule {
+public class CRUDModule extends ScxModule {
 
     /**
      * Constant <code>logger</code>
@@ -66,7 +66,7 @@ public class CRUDModule implements ScxModule {
      */
     @Override
     public String name() {
-        return "SCX_EXT-" + ScxModule.super.name();
+        return "SCX_EXT-" + super.name();
     }
 
 }

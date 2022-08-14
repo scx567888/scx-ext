@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author scx567888
  * @version 1.0.10
  */
-public class FSSModule implements ScxModule {
+public class FSSModule extends ScxModule {
 
     /**
      * Constant <code>logger</code>
@@ -63,7 +63,7 @@ public class FSSModule implements ScxModule {
      */
     @Override
     public String name() {
-        return "SCX_EXT-" + ScxModule.super.name();
+        return "SCX_EXT-" + super.name();
     }
 
 }

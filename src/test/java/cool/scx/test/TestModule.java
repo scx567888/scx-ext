@@ -28,7 +28,7 @@ import java.io.IOException;
  * @version 1.3.14
  * @since 1.3.14
  */
-public class TestModule implements ScxModule {
+public class TestModule extends ScxModule {
 
     /**
      * <p>main.</p>
@@ -78,7 +78,7 @@ public class TestModule implements ScxModule {
      */
     @Override
     public String name() {
-        return "SCX_EXT-" + ScxModule.super.name();
+        return "SCX_EXT-" + super.name();
     }
 
 }

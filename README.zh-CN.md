@@ -59,7 +59,7 @@ import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fss.FSSModule;
 
 // 注意 : 自定义的模块需要继承 ScxModule
-public class YourModule implements ScxModule {
+public class YourModule extends ScxModule {
 
     // 使用提供的拓展模块
     public static void main(String[] args) {

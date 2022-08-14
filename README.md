@@ -58,8 +58,8 @@ import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fss.FSSModule;
 
-// Note : Custom modules need implements ScxModule
-public class YourModule implements ScxModule {
+// Note : Custom modules need extends ScxModule
+public class YourModule extends ScxModule {
 
     // Use the provided extension modules 
     public static void main(String[] args) {

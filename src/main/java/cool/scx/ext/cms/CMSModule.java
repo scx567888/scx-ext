@@ -17,7 +17,7 @@ import java.util.List;
  * @author scx567888
  * @version 1.1.11
  */
-public class CMSModule implements ScxModule {
+public class CMSModule extends ScxModule {
 
     /**
      * 指令
@@ -48,7 +48,7 @@ public class CMSModule implements ScxModule {
      */
     @Override
     public String name() {
-        return "SCX_EXT-" + ScxModule.super.name();
+        return "SCX_EXT-" + super.name();
     }
 
     /**

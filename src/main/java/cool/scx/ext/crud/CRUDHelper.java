@@ -119,7 +119,7 @@ public final class CRUDHelper {
     @SuppressWarnings("unchecked")
     private static HashMap<String, CRUDApiInfo> initBaseModelNameCRUDApiInfoMapping() {
         var tempMap = new HashMap<String, CRUDApiInfo>();
-        for (var m : ScxContext.scxModuleMetadataList()) {
+        for (var m : ScxContext.scxModules()) {
             for (var c : m.scxBaseModelClassList()) {
                 var useCRUDApiAnnotation = c.getAnnotation(UseCRUDApi.class);
                 if (useCRUDApiAnnotation != null) {
@@ -148,7 +148,7 @@ public final class CRUDHelper {
         // baseModelClassList
         var baseModelClassList = CRUDHelper.BASE_MODEL_NAME_CRUD_API_INFO_MAPPING.values().stream().map(c -> c.baseModelClass).toList();
         //循环读取
-        for (var m : ScxContext.scxModuleMetadataList()) {
+        for (var m : ScxContext.scxModules()) {
             for (var c : m.scxBaseModelServiceClassList()) {
                 //这里获取 泛型
                 var typeArguments = ((ParameterizedType) c.getGenericSuperclass()).getActualTypeArguments();
