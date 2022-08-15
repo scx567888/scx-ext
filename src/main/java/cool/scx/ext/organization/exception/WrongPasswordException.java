@@ -1,8 +1,5 @@
 package cool.scx.ext.organization.exception;
 
-import cool.scx.core.vo.BaseVo;
-import cool.scx.core.vo.Json;
-
 /**
  * 密码错误异常
  *
@@ -10,13 +7,5 @@ import cool.scx.core.vo.Json;
  * @version 0.3.6
  */
 public final class WrongPasswordException extends AuthException {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BaseVo toBaseVo() {
-        return Json.fail("password-error");
-    }
 
 }
