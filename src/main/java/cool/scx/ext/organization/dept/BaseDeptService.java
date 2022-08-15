@@ -24,7 +24,7 @@ public abstract class BaseDeptService<T extends BaseDept> extends BaseModelServi
     /**
      * <p>Constructor for CoreDeptService.</p>
      *
-     * @param userDeptService a {@link cool.scx.ext.organization.dept.UserDeptService} object.
+     * @param userDeptService a {@link UserDeptService} object.
      */
     public BaseDeptService(UserDeptService userDeptService) {
         this.userDeptService = userDeptService;

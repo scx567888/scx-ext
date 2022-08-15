@@ -10,7 +10,7 @@ import cool.scx.core.http.exception.impl.UnauthorizedException;
 import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.dept.BaseDeptService;
 import cool.scx.ext.organization.exception.UnknownUserException;
-import cool.scx.ext.organization.exception.UsernameAlreadyExists;
+import cool.scx.ext.organization.exception.UsernameAlreadyExistsException;
 import cool.scx.ext.organization.exception.WrongPasswordException;
 import cool.scx.ext.organization.role.BaseRoleService;
 import cool.scx.sql.where.WhereOption;
@@ -216,7 +216,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
         //判断数据库中是否已有重名用户
         var count = count(new Query().equal("username", username).notEqual("id", id));
         if (count != 0) {
-            throw new UsernameAlreadyExists();
+            throw new UsernameAlreadyExistsException();
         }
         return username;
     }
@@ -235,7 +235,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
         //判断数据库中是否已有重名用户
         var count = count(new Query().equal("username", username));
         if (count != 0) {
-            throw new UsernameAlreadyExists();
+            throw new UsernameAlreadyExistsException();
         }
         return username;
     }

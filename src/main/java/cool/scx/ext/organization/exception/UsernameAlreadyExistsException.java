@@ -9,7 +9,7 @@ import cool.scx.core.vo.Json;
  * @author scx567888
  * @version 1.11.8
  */
-public class UsernameAlreadyExists extends AuthException {
+public class UsernameAlreadyExistsException extends AuthException {
 
     /**
      * {@inheritDoc}

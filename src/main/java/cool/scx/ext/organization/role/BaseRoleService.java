@@ -22,7 +22,7 @@ public abstract class BaseRoleService<T extends BaseRole> extends BaseModelServi
     /**
      * <p>Constructor for CoreRoleService.</p>
      *
-     * @param userRoleService a {@link cool.scx.ext.organization.role.UserRoleService} object.
+     * @param userRoleService a {@link UserRoleService} object.
      */
     public BaseRoleService(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
