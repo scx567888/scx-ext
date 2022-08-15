@@ -1,9 +1,8 @@
-package cool.scx.ext.organization.role;
+package cool.scx.ext.organization.base;
 
 import cool.scx.core.base.BaseModelService;
 import cool.scx.core.base.Query;
 import cool.scx.core.base.SelectFilter;
-import cool.scx.ext.organization.user.BaseUser;
 import cool.scx.sql.AbstractPlaceholderSQL;
 
 import java.util.List;

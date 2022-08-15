@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.dept;
+package cool.scx.ext.organization.base;
 
 import cool.scx.core.annotation.Column;
 import cool.scx.core.annotation.ScxModel;

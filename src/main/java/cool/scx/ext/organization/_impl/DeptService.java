@@ -1,8 +1,8 @@
-package cool.scx.ext.organization._impl.dept;
+package cool.scx.ext.organization._impl;
 
 import cool.scx.core.annotation.ScxService;
-import cool.scx.ext.organization.dept.BaseDeptService;
-import cool.scx.ext.organization.dept.UserDeptService;
+import cool.scx.ext.organization.base.BaseDeptService;
+import cool.scx.ext.organization.base.UserDeptService;
 
 @ScxService
 public class DeptService extends BaseDeptService<Dept> {

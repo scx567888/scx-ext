@@ -1,9 +1,7 @@
-package cool.scx.ext.organization._impl.user;
+package cool.scx.ext.organization._impl;
 
 import cool.scx.core.annotation.ScxService;
-import cool.scx.ext.organization._impl.dept.DeptService;
-import cool.scx.ext.organization._impl.role.RoleService;
-import cool.scx.ext.organization.user.BaseUserService;
+import cool.scx.ext.organization.base.BaseUserService;
 
 @ScxService
 public class UserService extends BaseUserService<User> {

@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.user;
+package cool.scx.ext.organization.base;
 
 import cool.scx.core.ScxContext;
 import cool.scx.core.base.BaseModelService;
@@ -8,11 +8,9 @@ import cool.scx.core.base.UpdateFilter;
 import cool.scx.core.http.exception.impl.NoPermException;
 import cool.scx.core.http.exception.impl.UnauthorizedException;
 import cool.scx.ext.organization.auth.ScxAuth;
-import cool.scx.ext.organization.dept.BaseDeptService;
 import cool.scx.ext.organization.exception.UnknownUserException;
 import cool.scx.ext.organization.exception.UsernameAlreadyExistsException;
 import cool.scx.ext.organization.exception.WrongPasswordException;
-import cool.scx.ext.organization.role.BaseRoleService;
 import cool.scx.sql.where.WhereOption;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.MultiMap;
