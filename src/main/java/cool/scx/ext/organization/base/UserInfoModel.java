@@ -23,6 +23,6 @@ public abstract class UserInfoModel<T extends BaseUser> extends BaseModel {
      * 根据用户 ID 查询的用户 为了方便使用
      */
     @NoColumn
-    public T user;
+    public BaseUser user;
 
 }

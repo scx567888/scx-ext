@@ -14,19 +14,19 @@ import java.util.stream.Collectors;
  * @version 1.11.8
  * todo 这里的泛型设计有问题
  */
-public abstract class UserInfoModelService<M extends UserInfoModel<T>, T extends BaseUser> extends BaseModelService<M> {
+public abstract class UserInfoModelService<M extends UserInfoModel<?>> extends BaseModelService<M> {
 
     /**
      * userService
      */
-    protected final BaseUserService<T> userService;
+    protected final BaseUserService<?> userService;
 
     /**
      * <p>Constructor for UserInfoModelService.</p>
      *
      * @param userService a {@link cool.scx.ext.organization.base.BaseUserService} object
      */
-    protected UserInfoModelService(BaseUserService<T> userService) {
+    protected UserInfoModelService(BaseUserService<?> userService) {
         this.userService = userService;
     }
 
