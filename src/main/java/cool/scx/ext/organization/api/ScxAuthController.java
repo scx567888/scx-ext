@@ -10,9 +10,9 @@ import cool.scx.core.vo.Json;
 import cool.scx.ext.organization._impl.User;
 import cool.scx.ext.organization._impl.UserService;
 import cool.scx.ext.organization.annotation.Perms;
+import cool.scx.ext.organization.auth.DeviceType;
 import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.exception.AuthException;
-import cool.scx.ext.organization.auth.DeviceType;
 import io.vertx.ext.web.RoutingContext;
 
 /**

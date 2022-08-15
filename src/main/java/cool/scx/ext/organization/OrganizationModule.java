@@ -1,10 +1,10 @@
 package cool.scx.ext.organization;
 
 import cool.scx.core.ScxModule;
-import cool.scx.ext.organization.api.ScxAuthController;
 import cool.scx.ext.organization._impl.DeptService;
 import cool.scx.ext.organization._impl.RoleService;
 import cool.scx.ext.organization._impl.UserService;
+import cool.scx.ext.organization.api.ScxAuthController;
 import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.base.BaseDeptService;
 import cool.scx.ext.organization.base.BaseRoleService;
