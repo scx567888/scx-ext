@@ -1,10 +1,8 @@
-package cool.scx.ext.organization.auth;
+package cool.scx.ext.organization.base;
 
 import cool.scx.core.base.BaseModelService;
 import cool.scx.core.base.Query;
 import cool.scx.core.base.SelectFilter;
-import cool.scx.ext.organization.user.User;
-import cool.scx.ext.organization.user.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,19 +13,19 @@ import java.util.stream.Collectors;
  * @author scx567888
  * @version 1.11.8
  */
-public abstract class UserInfoModelService<M extends UserInfoModel> extends BaseModelService<M> {
+public abstract class UserInfoModelService<T extends BaseUser, M extends UserInfoModel<T>> extends BaseModelService<M> {
 
     /**
      * userService
      */
-    protected final UserService userService;
+    protected final BaseUserService<T> userService;
 
     /**
      * <p>Constructor for UserInfoModelService.</p>
      *
-     * @param userService a {@link cool.scx.ext.organization.user.UserService} object
+     * @param userService a {@link BaseUserService} object
      */
-    protected UserInfoModelService(UserService userService) {
+    protected UserInfoModelService(BaseUserService<T> userService) {
         this.userService = userService;
     }
 
@@ -47,7 +45,7 @@ public abstract class UserInfoModelService<M extends UserInfoModel> extends Base
      * @param user user
      * @return list
      */
-    public final M getByUser(User user) {
+    public final M getByUser(BaseUser user) {
         if (user != null) {
             return get(new Query().equal("userID", user.id));
         }
@@ -57,10 +55,10 @@ public abstract class UserInfoModelService<M extends UserInfoModel> extends Base
     /**
      * <p>getByUserWithoutUserField.</p>
      *
-     * @param user a {@link cool.scx.ext.organization.user.User} object
+     * @param user a {@link BaseUser} object
      * @return a M object
      */
-    public final M getByUserWithoutUserField(User user) {
+    public final M getByUserWithoutUserField(BaseUser user) {
         if (user != null) {
             var list = super.list(new Query().equal("userID", user.id).setPagination(1), SelectFilter.ofExcluded());
             return list.size() > 0 ? list.get(0) : null;
@@ -74,7 +72,7 @@ public abstract class UserInfoModelService<M extends UserInfoModel> extends Base
      * @param userList userList
      * @return list
      */
-    public final List<M> listByUser(List<User> userList) {
+    public final List<M> listByUser(List<BaseUser> userList) {
         var userIDs = userList.stream().map(user -> user.id).toArray();
         return list(new Query().in("userID", userIDs));
     }
