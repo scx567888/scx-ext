@@ -254,9 +254,10 @@ public class OrganizationModule extends ScxModule {
         if (!enableDefaultUser()) {
             boolean remove = list.remove(User.class);
             boolean remove1 = list.remove(UserService.class);
+            boolean remove2 = list.remove(UserController.class);
             //因为 Account 依赖于默认的 User 所以我们在这里排除
-            boolean remove2 = list.remove(Account.class);
-            boolean remove3 = list.remove(AccountService.class);
+            boolean remove3 = list.remove(Account.class);
+            boolean remove4 = list.remove(AccountService.class);
             if (remove) {
                 logger.info("已从 {} 中移除 {}", name, User.class);
             }
@@ -264,9 +265,12 @@ public class OrganizationModule extends ScxModule {
                 logger.info("已从 {} 中移除 {}", name, UserService.class);
             }
             if (remove2) {
-                logger.info("已从 {} 中移除 {}", name, Account.class);
+                logger.info("已从 {} 中移除 {}", name, UserController.class);
             }
             if (remove3) {
+                logger.info("已从 {} 中移除 {}", name, Account.class);
+            }
+            if (remove4) {
                 logger.info("已从 {} 中移除 {}", name, AccountService.class);
             }
 
@@ -274,11 +278,15 @@ public class OrganizationModule extends ScxModule {
         if (!enableDefaultDept()) {
             boolean remove = list.remove(Dept.class);
             boolean remove1 = list.remove(DeptService.class);
+            boolean remove2 = list.remove(DeptController.class);
             if (remove) {
                 logger.info("已从 {} 中移除 {}", name, Dept.class);
             }
             if (remove1) {
                 logger.info("已从 {} 中移除 {}", name, DeptService.class);
+            }
+            if (remove2) {
+                logger.info("已从 {} 中移除 {}", name, DeptController.class);
             }
         }
         if (!enableDefaultRole()) {

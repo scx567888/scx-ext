@@ -20,16 +20,20 @@ import java.lang.reflect.Type;
  */
 public abstract class BaseUserController<T extends BaseUser> {
 
+    /**
+     * a
+     */
     protected final Class<T> entityClass;
 
     private final BaseUserService<T> userService;
 
-    @SuppressWarnings("unchecked")
+
     /**
      * <p>Constructor for BaseUserController.</p>
      *
      * @param userService a {@link cool.scx.ext.organization.base.BaseUserService} object
      */
+    @SuppressWarnings("unchecked")
     public BaseUserController(BaseUserService<T> userService) {
         this.userService = userService;
         Type genericSuperclass = this.getClass().getGenericSuperclass();
@@ -41,14 +45,14 @@ public abstract class BaseUserController<T extends BaseUser> {
         }
     }
 
-    //设置空路由有以下两种方法
-    // useNameAsUrl = false ,或 value = "/"
 
     /**
      * <p>save.</p>
      *
      * @param user a T object
      * @return a {@link cool.scx.core.vo.BaseVo} object
+     * 设置空路由有以下两种方法
+     * useNameAsUrl = false ,或 value = "/"
      */
     @ScxMapping(useNameAsUrl = false, method = {HttpMethod.POST})
     public BaseVo save(@FromBody(useAllBody = true) T user) {

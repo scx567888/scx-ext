@@ -18,7 +18,7 @@ public abstract class BaseDeptController<T extends BaseDept> {
     /**
      * <p>Constructor for DeptController.</p>
      *
-     * @param deptService a {@link cool.scx.example.dept.DeptService} object
+     * @param deptService a
      */
     public BaseDeptController(BaseDeptService<T> deptService) {
         this.deptService = deptService;

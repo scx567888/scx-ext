@@ -12,10 +12,11 @@ import cool.scx.ext.organization.base.BaseDeptService;
  */
 @ScxMapping("/api/dept")
 public class DeptController extends BaseDeptController<Dept> {
+
     /**
      * <p>Constructor for DeptController.</p>
      *
-     * @param deptService a {@link cool.scx.example.dept.DeptService} object
+     * @param deptService a
      */
     public DeptController(BaseDeptService<Dept> deptService) {
         super(deptService);
