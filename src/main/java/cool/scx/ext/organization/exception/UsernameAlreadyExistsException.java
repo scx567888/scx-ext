@@ -6,6 +6,6 @@ package cool.scx.ext.organization.exception;
  * @author scx567888
  * @version 1.11.8
  */
-public class UsernameAlreadyExistsException extends AuthException {
+public final class UsernameAlreadyExistsException extends AuthException {
 
 }
