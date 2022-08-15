@@ -1,6 +1,5 @@
 package cool.scx.test.website;
 
-import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.Query;
 import cool.scx.core.vo.Html;

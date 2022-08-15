@@ -8,6 +8,8 @@ import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.base.BaseDeptService;
 import cool.scx.ext.organization.base.BaseRoleService;
 import cool.scx.ext.organization.base.BaseUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.List;
  * @version 1.11.8
  */
 public class OrganizationModule extends ScxModule {
+
+    private final Logger logger = LoggerFactory.getLogger(OrganizationModule.class);
 
     /**
      * 指定使用的 userService 类
@@ -130,46 +134,78 @@ public class OrganizationModule extends ScxModule {
     @Override
     public List<Class<?>> scxMappingClassList() {
         var list = new ArrayList<>(super.scxMappingClassList());
-        removeClass(list);
+        removeClass(list, "ScxMappingClassList");
         return list;
     }
 
     @Override
     public List<Class<? extends BaseModel>> scxBaseModelClassList() {
         var list = new ArrayList<>(super.scxBaseModelClassList());
-        removeClass(list);
+        removeClass(list, "ScxBaseModelClassList");
         return list;
     }
 
     @Override
     public List<Class<? extends BaseModelService<?>>> scxBaseModelServiceClassList() {
         var list = new ArrayList<>(super.scxBaseModelServiceClassList());
-        removeClass(list);
+        removeClass(list, "ScxBaseModelServiceClassList");
         return list;
     }
 
-    private void removeClass(List<?> list) {
+    private void removeClass(List<?> list, String name) {
         if (!enableDefaultAuthApi()) {
-            list.remove(AuthController.class);
+            boolean remove = list.remove(AuthController.class);
+            if (remove) {
+                logger.info("已从 {} 中移除 {}", name, AuthController.class);
+            }
         }
         if (!enableDefaultUser()) {
-            list.remove(User.class);
-            list.remove(UserService.class);
+            boolean remove = list.remove(User.class);
+            boolean remove1 = list.remove(UserService.class);
+            //因为 Account 依赖于默认的 User 所以我们在这里排除
+            boolean remove2 = list.remove(Account.class);
+            boolean remove3 = list.remove(AccountService.class);
+            if (remove) {
+                logger.info("已从 {} 中移除 {}", name, User.class);
+            }
+            if (remove1) {
+                logger.info("已从 {} 中移除 {}", name, UserService.class);
+            }
+            if (remove2) {
+                logger.info("已从 {} 中移除 {}", name, Account.class);
+            }
+            if (remove3) {
+                logger.info("已从 {} 中移除 {}", name, AccountService.class);
+            }
+
         }
         if (!enableDefaultDept()) {
-            list.remove(Dept.class);
-            list.remove(DeptService.class);
+            boolean remove = list.remove(Dept.class);
+            boolean remove1 = list.remove(DeptService.class);
+            if (remove) {
+                logger.info("已从 {} 中移除 {}", name, Dept.class);
+            }
+            if (remove1) {
+                logger.info("已从 {} 中移除 {}", name, DeptService.class);
+            }
         }
         if (!enableDefaultRole()) {
-            list.remove(Role.class);
-            list.remove(RoleService.class);
+            boolean remove = list.remove(Role.class);
+            boolean remove1 = list.remove(RoleService.class);
+
+            if (remove) {
+                logger.info("已从 {} 中移除 {}", name, Role.class);
+            }
+            if (remove1) {
+                logger.info("已从 {} 中移除 {}", name, RoleService.class);
+            }
         }
     }
 
     @Override
     public List<Class<?>> scxBeanClassList() {
         var list = new ArrayList<>(super.scxBeanClassList());
-        removeClass(list);
+        removeClass(list, "ScxBeanClassList");
         return list;
     }
 
