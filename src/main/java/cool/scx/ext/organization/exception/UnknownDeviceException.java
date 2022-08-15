@@ -1,8 +1,5 @@
 package cool.scx.ext.organization.exception;
 
-import cool.scx.core.vo.BaseVo;
-import cool.scx.core.vo.Json;
-
 /**
  * 未知设备异常
  * <p>
@@ -13,13 +10,5 @@ import cool.scx.core.vo.Json;
  * @version 1.1.5
  */
 public final class UnknownDeviceException extends AuthException {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BaseVo toBaseVo() {
-        return Json.fail("unknown-device");
-    }
 
 }

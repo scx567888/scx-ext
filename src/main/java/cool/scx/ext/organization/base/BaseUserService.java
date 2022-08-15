@@ -1,18 +1,16 @@
-package cool.scx.ext.organization.user;
+package cool.scx.ext.organization.base;
 
 import cool.scx.core.ScxContext;
-import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.core.base.Query;
 import cool.scx.core.base.SelectFilter;
+import cool.scx.core.base.UpdateFilter;
 import cool.scx.core.http.exception.impl.NoPermException;
 import cool.scx.core.http.exception.impl.UnauthorizedException;
 import cool.scx.ext.organization.auth.ScxAuth;
-import cool.scx.ext.organization.dept.DeptService;
 import cool.scx.ext.organization.exception.UnknownUserException;
-import cool.scx.ext.organization.exception.UsernameAlreadyExists;
+import cool.scx.ext.organization.exception.UsernameAlreadyExistsException;
 import cool.scx.ext.organization.exception.WrongPasswordException;
-import cool.scx.ext.organization.role.RoleService;
 import cool.scx.sql.where.WhereOption;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.MultiMap;
@@ -31,24 +29,30 @@ import java.util.List;
  * @author scx567888
  * @version 1.1.2
  */
-@ScxService
-public class UserService extends BaseModelService<User> {
+public abstract class BaseUserService<T extends BaseUser> extends BaseModelService<T> {
 
     /**
      * Constant <code>logger</code>
      */
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(BaseUserService.class);
 
-    private final DeptService deptService;
-    private final RoleService roleService;
+    /**
+     * a
+     */
+    private final BaseDeptService<?> deptService;
+
+    /**
+     * a
+     */
+    private final BaseRoleService<?> roleService;
 
     /**
      * <p>Constructor for UserService.</p>
      *
-     * @param deptService a {@link cool.scx.ext.organization.dept.DeptService} object
-     * @param roleService a {@link cool.scx.ext.organization.role.RoleService} object
+     * @param deptService a {@link cool.scx.ext.organization.base.BaseDeptService} object
+     * @param roleService a {@link cool.scx.ext.organization.base.BaseRoleService} object
      */
-    public UserService(DeptService deptService, RoleService roleService) {
+    public BaseUserService(BaseDeptService<?> deptService, BaseRoleService<?> roleService) {
         this.deptService = deptService;
         this.roleService = roleService;
     }
@@ -59,7 +63,7 @@ public class UserService extends BaseModelService<User> {
      * @param user 用户
      * @return a
      */
-    public User saveWithDeptAndRole(User user) {
+    public T saveWithDeptAndRole(T user) {
         user.password = encryptPassword(user.password);
         //这里需要保证事务
         return autoTransaction(() -> {
@@ -76,7 +80,7 @@ public class UserService extends BaseModelService<User> {
      * @param user 用户
      * @return a
      */
-    public User updateWithDeptAndRole(User user) {
+    public T updateWithDeptAndRole(T user) {
         user.password = encryptPassword(user.password);
         //这里需要保证事务
         return autoTransaction(() -> {
@@ -104,7 +108,7 @@ public class UserService extends BaseModelService<User> {
      * {@inheritDoc}
      */
     @Override
-    public List<User> list(Query query, SelectFilter selectFilter) {
+    public List<T> list(Query query, SelectFilter selectFilter) {
         return fillDeptIDsAndRoleIDsField(super.list(query, selectFilter), query);
     }
 
@@ -117,7 +121,7 @@ public class UserService extends BaseModelService<User> {
      * @param query   q
      * @return a {@link java.util.List} object
      */
-    public List<User> fillDeptIDsAndRoleIDsField(List<User> oldList, Query query) {
+    public List<T> fillDeptIDsAndRoleIDsField(List<T> oldList, Query query) {
         var userIDs = buildListSQLWithAlias(query, SelectFilter.ofIncluded("id"));
         var userDeptList = deptService.getUserDeptByUserIDs(userIDs);
         var userRoleList = roleService.getUserRoleByUserIDs(userIDs);
@@ -142,7 +146,7 @@ public class UserService extends BaseModelService<User> {
      * @param id          id
      * @return r
      */
-    public final User changePasswordByAdminUser(String newPassword, Long id) {
+    public final T changePasswordByAdminUser(String newPassword, Long id) {
         checkNowLoginUserIsAdmin();
         var needChangeUser = checkNeedChangeUserByID(id);
         needChangeUser.password = CryptoUtils.encryptPassword(checkNewPasswordStr(newPassword));
@@ -156,7 +160,7 @@ public class UserService extends BaseModelService<User> {
      * @param password    用来校验的密码
      * @return a
      */
-    public final User changePasswordBySelf(String newPassword, String password) {
+    public final BaseUser changePasswordBySelf(String newPassword, String password) {
         var loginUser = checkNowLoginUser();
         checkPassword(loginUser, password);
         var needChangeUser = checkNeedChangeUserByID(loginUser.id);
@@ -171,7 +175,7 @@ public class UserService extends BaseModelService<User> {
      * @param password    用来校验的密码
      * @return a
      */
-    public final User changeUsernameBySelf(String newUsername, String password) {
+    public final BaseUser changeUsernameBySelf(String newUsername, String password) {
         var loginUser = checkNowLoginUser();
         checkPassword(loginUser, password);
         var needChangeUser = checkNeedChangeUserByID(loginUser.id);
@@ -186,7 +190,7 @@ public class UserService extends BaseModelService<User> {
      * @param id id
      * @return r
      */
-    public final User checkNeedChangeUserByID(Long id) {
+    public final T checkNeedChangeUserByID(Long id) {
         var needChangeUser = get(id, SelectFilter.ofIncluded().addIncluded("id", "password", "username"));
         //不存在账号报错
         if (needChangeUser == null) {
@@ -210,7 +214,7 @@ public class UserService extends BaseModelService<User> {
         //判断数据库中是否已有重名用户
         var count = count(new Query().equal("username", username).notEqual("id", id));
         if (count != 0) {
-            throw new UsernameAlreadyExists();
+            throw new UsernameAlreadyExistsException();
         }
         return username;
     }
@@ -229,7 +233,7 @@ public class UserService extends BaseModelService<User> {
         //判断数据库中是否已有重名用户
         var count = count(new Query().equal("username", username));
         if (count != 0) {
-            throw new UsernameAlreadyExists();
+            throw new UsernameAlreadyExistsException();
         }
         return username;
     }
@@ -252,7 +256,7 @@ public class UserService extends BaseModelService<User> {
      *
      * @return 登录的用户
      */
-    public final User checkNowLoginUserIsAdmin() {
+    public final BaseUser checkNowLoginUserIsAdmin() {
         var loginUser = checkNowLoginUser();
         if (!loginUser.isAdmin) {
             throw new NoPermException("非管理员无权限修改用户的用户名 !!!");
@@ -265,7 +269,7 @@ public class UserService extends BaseModelService<User> {
      *
      * @return user
      */
-    public final User checkNowLoginUser() {
+    public final BaseUser checkNowLoginUser() {
         var loginUser = ScxAuth.getLoginUser();
         if (loginUser == null) {
             throw new UnauthorizedException("请登录 !!!");
@@ -279,7 +283,7 @@ public class UserService extends BaseModelService<User> {
      * @param user     用户(需要保护密码字段)
      * @param password 前台发过来的密码
      */
-    public final void checkPassword(User user, String password) {
+    public final void checkPassword(BaseUser user, String password) {
         boolean b;
         try {
             b = CryptoUtils.checkPassword(password, user.password);
@@ -297,9 +301,9 @@ public class UserService extends BaseModelService<User> {
      *
      * @param username 用户名
      * @param password 密码
-     * @return a {@link cool.scx.ext.organization.user.User} object
+     * @return a {@link cool.scx.ext.organization.base.BaseUser} object
      */
-    public User tryLogin(String username, String password) {
+    public BaseUser tryLogin(String username, String password) {
         var needLoginUser = get(new Query().equal("username", username));
         //这里标识账号认证成功
         if (needLoginUser == null) {
@@ -314,9 +318,9 @@ public class UserService extends BaseModelService<User> {
      *
      * @param emailAddress     a {@link java.lang.String} object
      * @param verificationCode a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.user.User} object
+     * @return a {@link cool.scx.ext.organization.base.BaseUser} object
      */
-    public User tryLoginByEmailAddress(String emailAddress, String verificationCode) {
+    public BaseUser tryLoginByEmailAddress(String emailAddress, String verificationCode) {
         throw new RuntimeException("暂未实现此种登录方式");
     }
 
@@ -325,9 +329,9 @@ public class UserService extends BaseModelService<User> {
      *
      * @param phoneNumber      a {@link java.lang.String} object
      * @param verificationCode a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.user.User} object
+     * @return a {@link cool.scx.ext.organization.base.BaseUser} object
      */
-    public User tryLoginByPhoneNumber(String phoneNumber, String verificationCode) {
+    public BaseUser tryLoginByPhoneNumber(String phoneNumber, String verificationCode) {
         throw new RuntimeException("暂未实现此种登录方式");
     }
 
@@ -351,18 +355,18 @@ public class UserService extends BaseModelService<User> {
      * @param user        用户
      * @param accountType 类型
      */
-    public void updateLastLoginDateAndIP(User user, String accountType) {
+    public void updateLastLoginDateAndIP(BaseUser user, String accountType) {
         var oldUser = get(user.id);
-        if (oldUser.loginInfoHistory == null) {
-            oldUser.loginInfoHistory = new ArrayList<>();
+        var history = oldUser.loginInfoHistory;
+        if (history == null) {
+            history = new ArrayList<>();
         }
         var ip = NetUtils.getClientIPAddress(ScxContext.routingContext().request());
         var date = LocalDateTime.now();
-        oldUser.loginInfoHistory.add(new User.LoginInfo(ip, date, accountType));
-        var tempUser = new User();
+        history.add(new BaseUser.LoginInfo(ip, date, accountType));
         //只取最后 10 次
-        tempUser.loginInfoHistory = oldUser.loginInfoHistory.subList(Math.max(oldUser.loginInfoHistory.size() - 10, 0), oldUser.loginInfoHistory.size());
-        update(tempUser, new Query().equal("id", oldUser.id));
+        oldUser.loginInfoHistory = history.subList(Math.max(history.size() - 10, 0), history.size());
+        update(oldUser, new Query().equal("id", oldUser.id), UpdateFilter.ofIncluded("loginInfoHistory"));
     }
 
     /**
@@ -371,7 +375,7 @@ public class UserService extends BaseModelService<User> {
      * @param user 用户信息 需要包含 用户名和密码(明文类型)
      * @return user
      */
-    public User signup(User user) {
+    public T signup(T user) {
         user.username = checkNewUsernameStr(user.username);
         user.password = CryptoUtils.encryptPassword(checkNewPasswordStr(user.password));
         user.isAdmin = false;

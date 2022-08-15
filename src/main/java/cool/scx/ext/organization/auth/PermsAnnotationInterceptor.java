@@ -30,13 +30,13 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
     @Override
     public void preHandle(RoutingContext context, ScxMappingHandler scxMappingHandler) {
         var p = getScxAuthPerms(scxMappingHandler);
-        if (p.checkedLogin) {
+        if (p.checkLogin) {
             //先获取登录的用户
             var currentUser = ScxAuth.getLoginUser(context);
             //如果用户为空 则执行未登录处理器
             if (currentUser == null) {
                 throw new UnauthorizedException();
-            } else if (p.checkedPerms &&
+            } else if (p.checkPerms &&
                     !currentUser.isAdmin &&
                     !ScxAuth.getPerms(currentUser).perms().contains(p.permStr)
             ) {
@@ -74,12 +74,12 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
         /**
          * 是否检查登录
          */
-        public final boolean checkedLogin;
+        public final boolean checkLogin;
 
         /**
          * 是否检查权限
          */
-        public final boolean checkedPerms;
+        public final boolean checkPerms;
 
         /**
          * <p>Constructor for ScxAuthPerms.</p>
@@ -91,11 +91,11 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
             this.permStr = clazz.getSimpleName() + ":" + method.getName();
             var scxPerms = method.getAnnotation(Perms.class);
             if (scxPerms != null) {
-                this.checkedPerms = scxPerms.checkedPerms();
-                this.checkedLogin = scxPerms.checkedLogin();
+                this.checkPerms = scxPerms.checkPerms();
+                this.checkLogin = scxPerms.checkLogin();
             } else {
-                this.checkedPerms = false;
-                this.checkedLogin = false;
+                this.checkPerms = false;
+                this.checkLogin = false;
             }
         }
 

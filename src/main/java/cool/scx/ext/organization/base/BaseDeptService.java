@@ -1,10 +1,8 @@
-package cool.scx.ext.organization.dept;
+package cool.scx.ext.organization.base;
 
-import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.core.base.Query;
 import cool.scx.core.base.SelectFilter;
-import cool.scx.ext.organization.user.User;
 import cool.scx.sql.AbstractPlaceholderSQL;
 
 import java.util.ArrayList;
@@ -18,27 +16,26 @@ import java.util.Objects;
  * @author scx567888
  * @version 1.1.2
  */
-@ScxService
-public class DeptService extends BaseModelService<Dept> {
+public abstract class BaseDeptService<T extends BaseDept> extends BaseModelService<T> {
 
     private final UserDeptService userDeptService;
 
     /**
      * <p>Constructor for CoreDeptService.</p>
      *
-     * @param userDeptService a {@link cool.scx.ext.organization.dept.UserDeptService} object.
+     * @param userDeptService a {@link cool.scx.ext.organization.base.UserDeptService} object.
      */
-    public DeptService(UserDeptService userDeptService) {
+    public BaseDeptService(UserDeptService userDeptService) {
         this.userDeptService = userDeptService;
     }
 
     /**
      * getDeptListByUser
      *
-     * @param user a {@link cool.scx.ext.organization.user.User} object
+     * @param user a {@link cool.scx.ext.organization.base.BaseUser} object
      * @return a {@link java.util.List} object
      */
-    public List<Dept> getDeptListByUser(User user) {
+    public List<T> getDeptListByUser(BaseUser user) {
         var deptIDs = userDeptService.buildListSQL(new Query().equal("userID", user.id), SelectFilter.ofIncluded("deptID"));
         return list(new Query().in("id", deptIDs));
     }
@@ -109,9 +106,9 @@ public class DeptService extends BaseModelService<Dept> {
      * @param id id
      * @return r
      */
-    public List<Dept> getDeptWithChildren(Long id) {
+    public List<BaseDept> getDeptWithChildren(Long id) {
         //获取此部门下所有的子集部门的 id
-        var deptWithChildren = new ArrayList<Dept>();
+        var deptWithChildren = new ArrayList<BaseDept>();
         _fillDeptWithChildren(deptWithChildren, get(id));
         return deptWithChildren;
     }
@@ -122,7 +119,7 @@ public class DeptService extends BaseModelService<Dept> {
      * @param deptWithChildren d
      * @param parentDept       d
      */
-    private void _fillDeptWithChildren(Collection<Dept> deptWithChildren, Dept parentDept) {
+    private void _fillDeptWithChildren(Collection<BaseDept> deptWithChildren, BaseDept parentDept) {
         if (parentDept != null) {
             //先将父 id 放入集合中
             deptWithChildren.add(parentDept);

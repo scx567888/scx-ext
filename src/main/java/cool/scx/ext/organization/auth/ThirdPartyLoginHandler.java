@@ -1,7 +1,7 @@
 package cool.scx.ext.organization.auth;
 
-import cool.scx.ext.organization.account.Account;
-import cool.scx.ext.organization.user.User;
+import cool.scx.ext.organization.base.BaseAccount;
+import cool.scx.ext.organization.base.BaseUser;
 
 /**
  * <p>ThirdPartyLoginHandler interface.</p>
@@ -9,16 +9,16 @@ import cool.scx.ext.organization.user.User;
  * @author scx567888
  * @version 1.11.8
  */
-public interface ThirdPartyLoginHandler {
+public interface ThirdPartyLoginHandler<T extends BaseUser> {
 
     /**
      * <p>tryLogin.</p>
      *
      * @param uniqueID    a {@link java.lang.String} object
      * @param accessToken a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.user.User} object
+     * @return a {@link cool.scx.ext.organization.base.BaseUser} object
      */
-    User tryLogin(String uniqueID, String accessToken);
+    T tryLogin(String uniqueID, String accessToken);
 
     /**
      * 以密码举例 这就是修改密码
@@ -28,7 +28,7 @@ public interface ThirdPartyLoginHandler {
      * @param oldAccessToken 旧密码
      * @return 更新后的账号
      */
-    Account changeAccessToken(String uniqueID, String newAccessToken, String oldAccessToken);
+    BaseAccount<T> changeAccessToken(String uniqueID, String newAccessToken, String oldAccessToken);
 
     /**
      * 以密码距离 这就是修改用户名
@@ -38,7 +38,7 @@ public interface ThirdPartyLoginHandler {
      * @param oldUniqueID 旧用户名
      * @return 更新后的账号
      */
-    Account changeUniqueID(String accessToken, String newUniqueID, String oldUniqueID);
+    BaseAccount<T> changeUniqueID(String accessToken, String newUniqueID, String oldUniqueID);
 
     /**
      * 根据用户 ID 获取账号
@@ -46,16 +46,16 @@ public interface ThirdPartyLoginHandler {
      * @param userID userID
      * @return r
      */
-    Account getByUserID(Long userID);
+    BaseAccount<T> getByUserID(Long userID);
 
 
     /**
      * <p>getByUniqueID.</p>
      *
      * @param uniqueID a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.account.Account} object
+     * @return a
      */
-    Account getByUniqueID(String uniqueID);
+    BaseAccount<T> getByUniqueID(String uniqueID);
 
 
     /**
@@ -63,9 +63,9 @@ public interface ThirdPartyLoginHandler {
      *
      * @param uniqueID    a {@link java.lang.String} object
      * @param accessToken a {@link java.lang.String} object
-     * @param defaultUser a {@link cool.scx.ext.organization.user.User} object
-     * @return a {@link cool.scx.ext.organization.user.User} object
+     * @param defaultUser a {@link cool.scx.ext.organization.base.BaseUser} object
+     * @return a {@link cool.scx.ext.organization.base.BaseUser} object
      */
-    User signup(String uniqueID, String accessToken, User defaultUser);
+    T signup(String uniqueID, String accessToken, T defaultUser);
 
 }

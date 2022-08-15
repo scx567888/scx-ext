@@ -1,11 +1,9 @@
-package cool.scx.ext.organization.user;
+package cool.scx.ext.organization.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.core.annotation.Column;
 import cool.scx.core.annotation.NoColumn;
-import cool.scx.core.annotation.ScxModel;
 import cool.scx.core.base.BaseModel;
-import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,9 +14,7 @@ import java.util.List;
  * @author scx567888
  * @version 1.1.2
  */
-@UseCRUDApi(add = false, update = false)
-@ScxModel(tablePrefix = "organization")
-public class User extends BaseModel {
+public class BaseUser extends BaseModel {
 
     /**
      * 用户名 (注意 !!! ,用户名在业务上是可以被修改的 所以切记不要将用户名作为任何业务的关联字段)

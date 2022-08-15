@@ -1,16 +1,19 @@
-package cool.scx.ext.organization.auth;
+package cool.scx.ext.organization.base;
 
+import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.FromBody;
 import cool.scx.core.annotation.ScxMapping;
+import cool.scx.core.base.UpdateFilter;
 import cool.scx.core.enumeration.HttpMethod;
 import cool.scx.core.http.exception.impl.UnauthorizedException;
 import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;
 import cool.scx.core.vo.Json;
 import cool.scx.ext.organization.annotation.Perms;
+import cool.scx.ext.organization.auth.DeviceType;
+import cool.scx.ext.organization.auth.PermsWrapper;
+import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.exception.AuthException;
-import cool.scx.ext.organization.user.User;
-import cool.scx.ext.organization.user.UserService;
 import io.vertx.ext.web.RoutingContext;
 
 /**
@@ -20,17 +23,16 @@ import io.vertx.ext.web.RoutingContext;
  * @author scx567888
  * @version 0.3.6
  */
-@ScxMapping("/api/auth")
-public class ScxAuthController {
+public abstract class BaseAuthController<T extends BaseUser> {
 
-    private final UserService userService;
+    private final BaseUserService<T> userService;
 
     /**
      * <p>Constructor for ScxAuthController.</p>
      *
-     * @param userService a {@link cool.scx.ext.organization.user.UserService} object
+     * @param userService a
      */
-    public ScxAuthController(UserService userService) {
+    public BaseAuthController(BaseUserService<T> userService) {
         this.userService = userService;
     }
 
@@ -84,11 +86,11 @@ public class ScxAuthController {
     /**
      * <p>signup.</p>
      *
-     * @param user a {@link cool.scx.ext.organization.user.User} object
+     * @param user a
      * @return a {@link cool.scx.core.vo.DataJson} object
      */
     @ScxMapping(method = HttpMethod.POST)
-    public DataJson signup(@FromBody(useAllBody = true) User user) {
+    public DataJson signup(@FromBody(useAllBody = true) T user) {
         var newUser = userService.signup(user);
         return DataJson.ok().data(newUser);
     }
@@ -126,13 +128,12 @@ public class ScxAuthController {
      * @return a {@link cool.scx.core.vo.BaseVo} object
      * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
-    @Perms(checkedPerms = false)
+    @Perms(checkPerms = false)
     @ScxMapping(method = HttpMethod.GET)
     public BaseVo info(RoutingContext routingContext) throws UnauthorizedException {
         var user = ScxAuth.getLoginUser(routingContext);
         //返回登录用户的信息给前台 含用户基本信息还有的所有角色的权限
-        return DataJson.ok().data(new ScxUserInfo(user, ScxAuth.getPerms(user)));
-
+        return DataJson.ok().data(new UserInfo(user, ScxAuth.getPerms(user)));
     }
 
     /**
@@ -142,14 +143,13 @@ public class ScxAuthController {
      * @return a {@link cool.scx.core.vo.DataJson} object
      * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
-    @Perms(checkedPerms = false)
+    @SuppressWarnings("unchecked")
+    @Perms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public DataJson changeUserAvatar(@FromBody String newAvatar) throws UnauthorizedException {
-        var loginUser = ScxAuth.getLoginUser();
-        var l = new User();
-        l.avatar = newAvatar;
-        l.id = loginUser.id;
-        return DataJson.ok().data(userService.update(l));
+        var loginUser = (T) ScxAuth.getLoginUser();
+        loginUser.avatar = newAvatar;
+        return DataJson.ok().data(userService.update(loginUser, UpdateFilter.ofIncluded("avatar")));
     }
 
     /**
@@ -160,7 +160,7 @@ public class ScxAuthController {
      * @return a {@link cool.scx.core.vo.BaseVo} object
      * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
-    @Perms(checkedPerms = false)
+    @Perms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo changeUserUsername(@FromBody String newUsername, @FromBody String password) throws UnauthorizedException {
         try {
@@ -178,7 +178,7 @@ public class ScxAuthController {
      * @return a {@link cool.scx.core.vo.BaseVo} object
      * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
-    @Perms(checkedPerms = false)
+    @Perms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo changeUserPassword(@FromBody String newPassword, @FromBody String oldPassword) throws UnauthorizedException {
         try {
@@ -188,5 +188,83 @@ public class ScxAuthController {
         }
     }
 
+    /**
+     * <p>ScxUserInfo class.</p>
+     *
+     * @author scx567888
+     * @version 1.11.8
+     */
+    public static class UserInfo {
+
+        /**
+         * id
+         */
+        public final Long id;
+
+        /**
+         * 用户名
+         */
+        public final String username;
+
+        /**
+         * 是否为管理员
+         */
+        public final Boolean isAdmin;
+
+        /**
+         * 头像
+         */
+        public final String avatar;
+
+        /**
+         * 密码
+         */
+        public final String phoneNumber;
+
+        /**
+         * 邮箱地址
+         */
+        public final String emailAddress;
+
+        /**
+         * 通用权限
+         */
+        public final String[] perms;
+
+        /**
+         * 页面权限
+         */
+        public final String[] pagePerms;
+
+        /**
+         * 页面元素权限
+         */
+        public final String[] pageElementPerms;
+
+        /**
+         * 当前是否启用墓碑
+         */
+        public final boolean tombstone;
+
+        /**
+         * <p>Constructor for ScxUserInfo.</p>
+         *
+         * @param user         a {@link BaseUser} object
+         * @param permsWrapper a {@link PermsWrapper} object
+         */
+        public UserInfo(BaseUser user, PermsWrapper permsWrapper) {
+            id = user.id;
+            username = user.username;
+            isAdmin = user.isAdmin;
+            avatar = user.avatar;
+            phoneNumber = user.phoneNumber;
+            emailAddress = user.emailAddress;
+            perms = permsWrapper.perms().toArray(String[]::new);
+            pagePerms = permsWrapper.pagePerms().toArray(String[]::new);
+            pageElementPerms = permsWrapper.pageElementPerms().toArray(String[]::new);
+            tombstone = ScxContext.coreConfig().tombstone();
+        }
+
+    }
 
 }

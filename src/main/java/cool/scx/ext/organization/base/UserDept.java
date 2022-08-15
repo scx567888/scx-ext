@@ -1,17 +1,17 @@
-package cool.scx.ext.organization.role;
+package cool.scx.ext.organization.base;
 
 import cool.scx.core.annotation.Column;
 import cool.scx.core.annotation.ScxModel;
 import cool.scx.core.base.BaseModel;
 
 /**
- * 用户角色关联表
+ * 用户部门关联表
  *
  * @author scx567888
  * @version 0.3.6
  */
 @ScxModel(tablePrefix = "organization")
-public class UserRole extends BaseModel {
+public final class UserDept extends BaseModel {
 
     /**
      * 用户 ID
@@ -20,9 +20,9 @@ public class UserRole extends BaseModel {
     public Long userID;
 
     /**
-     * 角色的 id
+     * 部门的 id
      */
     @Column(notNull = true)
-    public Long roleID;
+    public Long deptID;
 
 }

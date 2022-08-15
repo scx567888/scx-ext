@@ -1,9 +1,6 @@
-package cool.scx.ext.organization.account;
+package cool.scx.ext.organization.base;
 
 import cool.scx.core.annotation.Column;
-import cool.scx.core.annotation.ScxModel;
-import cool.scx.ext.crud.annotation.UseCRUDApi;
-import cool.scx.ext.organization.auth.UserInfoModel;
 
 /**
  * 账号表 处理登录信息用
@@ -11,9 +8,7 @@ import cool.scx.ext.organization.auth.UserInfoModel;
  * @author scx567888
  * @version 1.11.8
  */
-@UseCRUDApi
-@ScxModel(tablePrefix = "organization")
-public class Account extends UserInfoModel {
+public abstract class BaseAccount<T extends BaseUser> extends UserInfoModel<T> {
 
     /**
      * 唯一ID

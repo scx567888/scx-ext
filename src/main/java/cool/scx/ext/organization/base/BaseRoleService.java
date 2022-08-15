@@ -1,10 +1,8 @@
-package cool.scx.ext.organization.role;
+package cool.scx.ext.organization.base;
 
-import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.core.base.Query;
 import cool.scx.core.base.SelectFilter;
-import cool.scx.ext.organization.user.User;
 import cool.scx.sql.AbstractPlaceholderSQL;
 
 import java.util.List;
@@ -16,27 +14,26 @@ import java.util.Objects;
  * @author scx567888
  * @version 1.1.2
  */
-@ScxService
-public class RoleService extends BaseModelService<Role> {
+public abstract class BaseRoleService<T extends BaseRole> extends BaseModelService<T> {
 
     private final UserRoleService userRoleService;
 
     /**
      * <p>Constructor for CoreRoleService.</p>
      *
-     * @param userRoleService a {@link cool.scx.ext.organization.role.UserRoleService} object.
+     * @param userRoleService a {@link cool.scx.ext.organization.base.UserRoleService} object.
      */
-    public RoleService(UserRoleService userRoleService) {
+    public BaseRoleService(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
     }
 
     /**
      * 根据 用户获取 角色
      *
-     * @param user a {@link cool.scx.ext.organization.user.User} object
+     * @param user a {@link cool.scx.ext.organization.base.BaseUser} object
      * @return a {@link java.util.List} object
      */
-    public List<Role> getRoleListByUser(User user) {
+    public List<T> getRoleListByUser(BaseUser user) {
         var roleIDs = userRoleService.buildListSQL(new Query().equal("userID", user.id), SelectFilter.ofIncluded("roleID"));
         return list(new Query().in("id", roleIDs));
     }
