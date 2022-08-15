@@ -8,7 +8,7 @@ import cool.scx.core.annotation.Column;
  * @author scx567888
  * @version 1.11.8
  */
-public abstract class BaseAccount<T extends BaseUser> extends UserInfoModel<T> {
+public abstract class BaseAccount extends UserInfoModel {
 
     /**
      * 唯一ID
