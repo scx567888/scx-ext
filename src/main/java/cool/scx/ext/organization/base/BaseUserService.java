@@ -49,8 +49,8 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
     /**
      * <p>Constructor for UserService.</p>
      *
-     * @param deptService a {@link BaseDeptService} object
-     * @param roleService a {@link BaseRoleService} object
+     * @param deptService a {@link cool.scx.ext.organization.base.BaseDeptService} object
+     * @param roleService a {@link cool.scx.ext.organization.base.BaseRoleService} object
      */
     public BaseUserService(BaseDeptService<?> deptService, BaseRoleService<?> roleService) {
         this.deptService = deptService;
@@ -301,7 +301,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
      *
      * @param username 用户名
      * @param password 密码
-     * @return a {@link BaseUser} object
+     * @return a {@link cool.scx.ext.organization.base.BaseUser} object
      */
     public BaseUser tryLogin(String username, String password) {
         var needLoginUser = get(new Query().equal("username", username));
@@ -318,7 +318,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
      *
      * @param emailAddress     a {@link java.lang.String} object
      * @param verificationCode a {@link java.lang.String} object
-     * @return a {@link BaseUser} object
+     * @return a {@link cool.scx.ext.organization.base.BaseUser} object
      */
     public BaseUser tryLoginByEmailAddress(String emailAddress, String verificationCode) {
         throw new RuntimeException("暂未实现此种登录方式");
@@ -329,7 +329,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
      *
      * @param phoneNumber      a {@link java.lang.String} object
      * @param verificationCode a {@link java.lang.String} object
-     * @return a {@link BaseUser} object
+     * @return a {@link cool.scx.ext.organization.base.BaseUser} object
      */
     public BaseUser tryLoginByPhoneNumber(String phoneNumber, String verificationCode) {
         throw new RuntimeException("暂未实现此种登录方式");

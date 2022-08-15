@@ -74,6 +74,10 @@ public final class ScxAuth {
 
     /**
      * 初始化 auth 模块
+     *
+     * @param userServiceClass a {@link java.lang.Class} object
+     * @param deptServiceClass a {@link java.lang.Class} object
+     * @param roleServiceClass a {@link java.lang.Class} object
      */
     public static void initAuth(Class<? extends BaseUserService<?>> userServiceClass, Class<? extends BaseDeptService<?>> deptServiceClass, Class<? extends BaseRoleService<?>> roleServiceClass) {
         //绑定事件
@@ -169,7 +173,7 @@ public final class ScxAuth {
      * 根据 token 获取用户
      *
      * @param token a {@link java.lang.String} object.
-     * @return a {@link BaseUser} object.
+     * @return a {@link cool.scx.ext.organization.base.BaseUser} object.
      */
     public static BaseUser getLoginUserByToken(String token) {
         var client = ALREADY_LOGIN_CLIENT_MAP.getByToken(token);

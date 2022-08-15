@@ -23,7 +23,7 @@ public abstract class BaseDeptService<T extends BaseDept> extends BaseModelServi
     /**
      * <p>Constructor for CoreDeptService.</p>
      *
-     * @param userDeptService a {@link UserDeptService} object.
+     * @param userDeptService a {@link cool.scx.ext.organization.base.UserDeptService} object.
      */
     public BaseDeptService(UserDeptService userDeptService) {
         this.userDeptService = userDeptService;
@@ -32,7 +32,7 @@ public abstract class BaseDeptService<T extends BaseDept> extends BaseModelServi
     /**
      * getDeptListByUser
      *
-     * @param user a {@link BaseUser} object
+     * @param user a {@link cool.scx.ext.organization.base.BaseUser} object
      * @return a {@link java.util.List} object
      */
     public List<T> getDeptListByUser(BaseUser user) {

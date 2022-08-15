@@ -17,7 +17,7 @@ public final class AlreadyLoginClientMap {
     /**
      * <p>put.</p>
      *
-     * @param alreadyLoginClient a {@link AlreadyLoginClient} object
+     * @param alreadyLoginClient a {@link cool.scx.ext.organization.auth.AlreadyLoginClient} object
      */
     public void put(AlreadyLoginClient... alreadyLoginClient) {
         Collections.addAll(list, alreadyLoginClient);
@@ -27,7 +27,7 @@ public final class AlreadyLoginClientMap {
      * <p>getByUserID.</p>
      *
      * @param userID a {@link java.lang.Long} object
-     * @return an array of {@link AlreadyLoginClient} objects
+     * @return an array of {@link cool.scx.ext.organization.auth.AlreadyLoginClient} objects
      */
     public AlreadyLoginClient[] getByUserID(Long userID) {
         return list.stream().filter(c -> c.userID.equals(userID)).toArray(AlreadyLoginClient[]::new);
@@ -36,8 +36,8 @@ public final class AlreadyLoginClientMap {
     /**
      * <p>getByLoginDevice.</p>
      *
-     * @param deviceType a {@link DeviceType} object
-     * @return an array of {@link AlreadyLoginClient} objects
+     * @param deviceType a {@link cool.scx.ext.organization.auth.DeviceType} object
+     * @return an array of {@link cool.scx.ext.organization.auth.AlreadyLoginClient} objects
      */
     public AlreadyLoginClient[] getByLoginDevice(DeviceType deviceType) {
         return list.stream().filter(c -> c.loginDevice == deviceType).toArray(AlreadyLoginClient[]::new);
@@ -47,7 +47,7 @@ public final class AlreadyLoginClientMap {
      * <p>getByToken.</p>
      *
      * @param token a {@link java.lang.String} object
-     * @return a {@link AlreadyLoginClient} object
+     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClient} object
      */
     public AlreadyLoginClient getByToken(String token) {
         return list.stream().filter(c -> c.token.equals(token)).findAny().orElse(null);
@@ -57,7 +57,7 @@ public final class AlreadyLoginClientMap {
      * <p>getByWebSocketBinaryHandlerID.</p>
      *
      * @param webSocketBinaryHandlerID a {@link java.lang.String} object
-     * @return a {@link AlreadyLoginClient} object
+     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClient} object
      */
     public AlreadyLoginClient getByWebSocketBinaryHandlerID(String webSocketBinaryHandlerID) {
         return list.stream().filter(c -> c.webSocketBinaryHandlerID.equals(webSocketBinaryHandlerID)).findAny().orElse(null);
@@ -76,7 +76,7 @@ public final class AlreadyLoginClientMap {
     /**
      * <p>removeByLoginDevice.</p>
      *
-     * @param deviceType a {@link DeviceType} object
+     * @param deviceType a {@link cool.scx.ext.organization.auth.DeviceType} object
      * @return a boolean
      */
     public boolean removeByLoginDevice(DeviceType deviceType) {
@@ -106,7 +106,7 @@ public final class AlreadyLoginClientMap {
     /**
      * <p>getAllAlreadyLoginClients.</p>
      *
-     * @return an array of {@link AlreadyLoginClient} objects
+     * @return an array of {@link cool.scx.ext.organization.auth.AlreadyLoginClient} objects
      */
     public AlreadyLoginClient[] getAllAlreadyLoginClients() {
         return list.toArray(AlreadyLoginClient[]::new);

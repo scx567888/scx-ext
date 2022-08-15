@@ -21,7 +21,7 @@ public abstract class BaseRoleService<T extends BaseRole> extends BaseModelServi
     /**
      * <p>Constructor for CoreRoleService.</p>
      *
-     * @param userRoleService a {@link UserRoleService} object.
+     * @param userRoleService a {@link cool.scx.ext.organization.base.UserRoleService} object.
      */
     public BaseRoleService(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
@@ -30,7 +30,7 @@ public abstract class BaseRoleService<T extends BaseRole> extends BaseModelServi
     /**
      * 根据 用户获取 角色
      *
-     * @param user a {@link BaseUser} object
+     * @param user a {@link cool.scx.ext.organization.base.BaseUser} object
      * @return a {@link java.util.List} object
      */
     public List<T> getRoleListByUser(BaseUser user) {

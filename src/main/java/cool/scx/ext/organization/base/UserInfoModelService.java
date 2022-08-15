@@ -23,7 +23,7 @@ public abstract class UserInfoModelService<T extends BaseUser, M extends UserInf
     /**
      * <p>Constructor for UserInfoModelService.</p>
      *
-     * @param userService a {@link BaseUserService} object
+     * @param userService a {@link cool.scx.ext.organization.base.BaseUserService} object
      */
     protected UserInfoModelService(BaseUserService<T> userService) {
         this.userService = userService;
@@ -55,7 +55,7 @@ public abstract class UserInfoModelService<T extends BaseUser, M extends UserInf
     /**
      * <p>getByUserWithoutUserField.</p>
      *
-     * @param user a {@link BaseUser} object
+     * @param user a {@link cool.scx.ext.organization.base.BaseUser} object
      * @return a M object
      */
     public final M getByUserWithoutUserField(BaseUser user) {

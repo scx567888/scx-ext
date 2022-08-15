@@ -59,64 +59,141 @@ public class OrganizationModule extends ScxModule {
      */
     private boolean enableDefaultAuthApi = true;
 
+    /**
+     * <p>Getter for the field <code>userServiceClass</code>.</p>
+     *
+     * @return a {@link java.lang.Class} object
+     */
     public Class<? extends BaseUserService<?>> getUserServiceClass() {
         return userServiceClass;
     }
 
+    /**
+     * <p>Setter for the field <code>userServiceClass</code>.</p>
+     *
+     * @param userServiceClass a {@link java.lang.Class} object
+     * @return a {@link cool.scx.ext.organization.OrganizationModule} object
+     */
     public OrganizationModule setUserServiceClass(Class<? extends BaseUserService<?>> userServiceClass) {
         this.userServiceClass = userServiceClass;
         return this;
     }
 
+    /**
+     * <p>Getter for the field <code>deptServiceClass</code>.</p>
+     *
+     * @return a {@link java.lang.Class} object
+     */
     public Class<? extends BaseDeptService<?>> getDeptServiceClass() {
         return deptServiceClass;
     }
 
+    /**
+     * <p>Setter for the field <code>deptServiceClass</code>.</p>
+     *
+     * @param deptServiceClass a {@link java.lang.Class} object
+     * @return a {@link cool.scx.ext.organization.OrganizationModule} object
+     */
     public OrganizationModule setDeptServiceClass(Class<? extends BaseDeptService<?>> deptServiceClass) {
         this.deptServiceClass = deptServiceClass;
         return this;
     }
 
+    /**
+     * <p>Getter for the field <code>roleServiceClass</code>.</p>
+     *
+     * @return a {@link java.lang.Class} object
+     */
     public Class<? extends BaseRoleService<?>> getRoleServiceClass() {
         return roleServiceClass;
     }
 
+    /**
+     * <p>Setter for the field <code>roleServiceClass</code>.</p>
+     *
+     * @param roleServiceClass a {@link java.lang.Class} object
+     * @return a {@link cool.scx.ext.organization.OrganizationModule} object
+     */
     public OrganizationModule setRoleServiceClass(Class<? extends BaseRoleService<?>> roleServiceClass) {
         this.roleServiceClass = roleServiceClass;
         return this;
     }
 
+    /**
+     * <p>enableDefaultUser.</p>
+     *
+     * @return a boolean
+     */
     public boolean enableDefaultUser() {
         return enableDefaultUser && userServiceClass == UserService.class;
     }
 
+    /**
+     * <p>Setter for the field <code>enableDefaultUser</code>.</p>
+     *
+     * @param enableDefaultUser a boolean
+     * @return a {@link cool.scx.ext.organization.OrganizationModule} object
+     */
     public OrganizationModule setEnableDefaultUser(boolean enableDefaultUser) {
         this.enableDefaultUser = enableDefaultUser;
         return this;
     }
 
+    /**
+     * <p>enableDefaultDept.</p>
+     *
+     * @return a boolean
+     */
     public boolean enableDefaultDept() {
         return enableDefaultDept && deptServiceClass == DeptService.class;
     }
 
+    /**
+     * <p>Setter for the field <code>enableDefaultDept</code>.</p>
+     *
+     * @param enableDefaultDept a boolean
+     * @return a {@link cool.scx.ext.organization.OrganizationModule} object
+     */
     public OrganizationModule setEnableDefaultDept(boolean enableDefaultDept) {
         this.enableDefaultDept = enableDefaultDept;
         return this;
     }
 
+    /**
+     * <p>enableDefaultRole.</p>
+     *
+     * @return a boolean
+     */
     public boolean enableDefaultRole() {
         return enableDefaultRole && roleServiceClass == RoleService.class;
     }
 
+    /**
+     * <p>Setter for the field <code>enableDefaultRole</code>.</p>
+     *
+     * @param enableDefaultRole a boolean
+     * @return a {@link cool.scx.ext.organization.OrganizationModule} object
+     */
     public OrganizationModule setEnableDefaultRole(boolean enableDefaultRole) {
         this.enableDefaultRole = enableDefaultRole;
         return this;
     }
 
+    /**
+     * <p>enableDefaultAuthApi.</p>
+     *
+     * @return a boolean
+     */
     public boolean enableDefaultAuthApi() {
         return enableDefaultAuthApi && enableDefaultUser();
     }
 
+    /**
+     * <p>Setter for the field <code>enableDefaultAuthApi</code>.</p>
+     *
+     * @param enableDefaultAuthApi a boolean
+     * @return a {@link cool.scx.ext.organization.OrganizationModule} object
+     */
     public OrganizationModule setEnableDefaultAuthApi(boolean enableDefaultAuthApi) {
         this.enableDefaultAuthApi = enableDefaultAuthApi;
         return this;
@@ -131,6 +208,9 @@ public class OrganizationModule extends ScxModule {
         ScxAuth.readSessionFromFile();//从文件中读取 session
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Class<?>> scxMappingClassList() {
         var list = new ArrayList<>(super.scxMappingClassList());
@@ -138,6 +218,9 @@ public class OrganizationModule extends ScxModule {
         return list;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Class<? extends BaseModel>> scxBaseModelClassList() {
         var list = new ArrayList<>(super.scxBaseModelClassList());
@@ -145,6 +228,9 @@ public class OrganizationModule extends ScxModule {
         return list;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Class<? extends BaseModelService<?>>> scxBaseModelServiceClassList() {
         var list = new ArrayList<>(super.scxBaseModelServiceClassList());
@@ -152,6 +238,12 @@ public class OrganizationModule extends ScxModule {
         return list;
     }
 
+    /**
+     * <p>removeClass.</p>
+     *
+     * @param list a {@link java.util.List} object
+     * @param name a {@link java.lang.String} object
+     */
     private void removeClass(List<?> list, String name) {
         if (!enableDefaultAuthApi()) {
             boolean remove = list.remove(AuthController.class);
@@ -202,6 +294,9 @@ public class OrganizationModule extends ScxModule {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Class<?>> scxBeanClassList() {
         var list = new ArrayList<>(super.scxBeanClassList());

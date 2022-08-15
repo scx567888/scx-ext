@@ -11,7 +11,7 @@ public abstract class BaseAccountService<T extends BaseUser> extends UserInfoMod
     /**
      * <p>Constructor for AccountService.</p>
      *
-     * @param userService a {@link BaseUserService} object
+     * @param userService a {@link cool.scx.ext.organization.base.BaseUserService} object
      */
     protected BaseAccountService(BaseUserService<T> userService) {
         super(userService);
