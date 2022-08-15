@@ -1,7 +1,7 @@
 package cool.scx.ext.organization.auth;
 
-import cool.scx.ext.organization.account.Account;
-import cool.scx.ext.organization.user.User;
+import cool.scx.ext.organization._impl.Account;
+import cool.scx.ext.organization.base.BaseUser;
 
 /**
  * <p>ThirdPartyLoginHandler interface.</p>
@@ -9,16 +9,16 @@ import cool.scx.ext.organization.user.User;
  * @author scx567888
  * @version 1.11.8
  */
-public interface ThirdPartyLoginHandler {
+public interface ThirdPartyLoginHandler<T extends BaseUser> {
 
     /**
      * <p>tryLogin.</p>
      *
      * @param uniqueID    a {@link java.lang.String} object
      * @param accessToken a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.user.User} object
+     * @return a {@link BaseUser} object
      */
-    User tryLogin(String uniqueID, String accessToken);
+    T tryLogin(String uniqueID, String accessToken);
 
     /**
      * 以密码举例 这就是修改密码
@@ -53,7 +53,7 @@ public interface ThirdPartyLoginHandler {
      * <p>getByUniqueID.</p>
      *
      * @param uniqueID a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.account.Account} object
+     * @return a {@link Account} object
      */
     Account getByUniqueID(String uniqueID);
 
@@ -63,9 +63,9 @@ public interface ThirdPartyLoginHandler {
      *
      * @param uniqueID    a {@link java.lang.String} object
      * @param accessToken a {@link java.lang.String} object
-     * @param defaultUser a {@link cool.scx.ext.organization.user.User} object
-     * @return a {@link cool.scx.ext.organization.user.User} object
+     * @param defaultUser a {@link BaseUser} object
+     * @return a {@link BaseUser} object
      */
-    User signup(String uniqueID, String accessToken, User defaultUser);
+    T signup(String uniqueID, String accessToken, BaseUser defaultUser);
 
 }
