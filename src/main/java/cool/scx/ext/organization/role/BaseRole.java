@@ -8,7 +8,7 @@ import cool.scx.ext.organization.type.PermsModel;
  * @author scx567888
  * @version 0.3.6
  */
-public abstract class Role extends PermsModel {
+public class BaseRole extends PermsModel {
 
     /**
      * 角色名称

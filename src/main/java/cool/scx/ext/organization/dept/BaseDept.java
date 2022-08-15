@@ -10,7 +10,7 @@ import cool.scx.ext.organization.type.PermsModel;
  * @author scx567888
  * @version 1.11.8
  */
-public abstract class Dept extends PermsModel {
+public class BaseDept extends PermsModel {
 
     /**
      * 部门名称
