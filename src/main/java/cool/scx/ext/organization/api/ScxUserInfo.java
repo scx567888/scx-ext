@@ -1,7 +1,8 @@
-package cool.scx.ext.organization.auth;
+package cool.scx.ext.organization.api;
 
 import cool.scx.core.ScxContext;
-import cool.scx.ext.organization.user.User;
+import cool.scx.ext.organization.auth.PermsWrapper;
+import cool.scx.ext.organization.base.BaseUser;
 
 /**
  * <p>ScxUserInfo class.</p>
@@ -64,10 +65,10 @@ public class ScxUserInfo {
     /**
      * <p>Constructor for ScxUserInfo.</p>
      *
-     * @param user         a {@link cool.scx.ext.organization.user.User} object
+     * @param user         a {@link BaseUser} object
      * @param permsWrapper a {@link cool.scx.ext.organization.auth.PermsWrapper} object
      */
-    public ScxUserInfo(User user, PermsWrapper permsWrapper) {
+    public ScxUserInfo(BaseUser user, PermsWrapper permsWrapper) {
         id = user.id;
         username = user.username;
         isAdmin = user.isAdmin;

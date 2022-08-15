@@ -4,13 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import cool.scx.core.ScxContext;
 import cool.scx.ext.core.WSParam;
 import cool.scx.ext.core.WSParamHandlerRegister;
-import cool.scx.ext.organization.dept.DeptService;
+import cool.scx.ext.organization.base.*;
 import cool.scx.ext.organization.exception.AuthException;
 import cool.scx.ext.organization.exception.UnknownDeviceException;
 import cool.scx.ext.organization.exception.UnknownLoginHandlerException;
-import cool.scx.ext.organization.role.RoleService;
-import cool.scx.ext.organization.user.User;
-import cool.scx.ext.organization.user.UserService;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.StringUtils;
@@ -58,41 +55,39 @@ public final class ScxAuth {
     /**
      * 第三方登录 login handler 映射
      */
-    private static final Map<String, ThirdPartyLoginHandler> THIRD_PARTY_LOGIN_HANDLER_MAP = new HashMap<>();
+    private static final Map<String, ThirdPartyLoginHandler<?>> THIRD_PARTY_LOGIN_HANDLER_MAP = new HashMap<>();
 
     /**
      * 用户
      */
-    private static UserService userService;
+    private static BaseUserService<?> userService;
 
     /**
      * 角色
      */
-    private static RoleService roleService;
+    private static BaseRoleService<?> roleService;
 
     /**
      * 部门
      */
-    private static DeptService deptService;
+    private static BaseDeptService<?> deptService;
 
     /**
      * 初始化 auth 模块
      */
-    public static void initAuth() {
+    public static void initAuth(Class<? extends BaseUserService<?>> userServiceClass, Class<? extends BaseDeptService<?>> deptServiceClass, Class<? extends BaseRoleService<?>> roleServiceClass) {
         //绑定事件
         WSParamHandlerRegister.addHandler("bind-websocket-by-token", ScxAuth::bindWebSocketByToken);
         //设置处理器 ScxMapping 前置处理器
         ScxContext.scxMappingConfiguration().setScxMappingInterceptor(new PermsAnnotationInterceptor());
         //设置请求头
-        ScxContext.router().corsHandler()
-                .allowedHeader(SCX_AUTH_TOKEN_KEY)
-                .allowedHeader(SCX_AUTH_DEVICE_KEY);
+        ScxContext.router().corsHandler().allowedHeader(SCX_AUTH_TOKEN_KEY).allowedHeader(SCX_AUTH_DEVICE_KEY);
         //设置 cookie handler
         ScxContext.router().vertxRouter().route().order(1).handler(new ScxAuthCookieHandler());
         // 初始化 service
-        userService = ScxContext.getBean(UserService.class);
-        roleService = ScxContext.getBean(RoleService.class);
-        deptService = ScxContext.getBean(DeptService.class);
+        userService = ScxContext.getBean(userServiceClass);
+        roleService = ScxContext.getBean(roleServiceClass);
+        deptService = ScxContext.getBean(deptServiceClass);
     }
 
     /**
@@ -100,7 +95,7 @@ public final class ScxAuth {
      *
      * @return r
      */
-    public static User getLoginUser() {
+    public static BaseUser getLoginUser() {
         return getLoginUser(ScxContext.routingContext());
     }
 
@@ -150,7 +145,7 @@ public final class ScxAuth {
      * @param ctx c
      * @return 用户
      */
-    public static User getLoginUser(RoutingContext ctx) {
+    public static BaseUser getLoginUser(RoutingContext ctx) {
         return getLoginUserByToken(getToken(ctx));
     }
 
@@ -161,7 +156,7 @@ public final class ScxAuth {
      * @param authUser    认证成功的用户
      * @param loginDevice 登录设备
      */
-    static void addLoginItem(String token, User authUser, DeviceType loginDevice) {
+    static void addLoginItem(String token, BaseUser authUser, DeviceType loginDevice) {
         var client = new AlreadyLoginClient();
         client.token = token;
         client.userID = authUser.id;
@@ -174,9 +169,9 @@ public final class ScxAuth {
      * 根据 token 获取用户
      *
      * @param token a {@link java.lang.String} object.
-     * @return a {@link cool.scx.ext.organization.user.User} object.
+     * @return a {@link BaseUser} object.
      */
-    public static User getLoginUserByToken(String token) {
+    public static BaseUser getLoginUserByToken(String token) {
         var client = ALREADY_LOGIN_CLIENT_MAP.getByToken(token);
         return client != null ? userService.get(client.userID) : null;
     }
@@ -217,7 +212,7 @@ public final class ScxAuth {
      * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
      * @return a
      */
-    static DeviceType getDeviceTypeByHeader(RoutingContext routingContext) {
+    public static DeviceType getDeviceTypeByHeader(RoutingContext routingContext) {
         String device = routingContext.request().getHeader(SCX_AUTH_DEVICE_KEY);
         if (device == null) {
             return DeviceType.WEBSITE;
@@ -247,7 +242,7 @@ public final class ScxAuth {
      *
      * @param ctx a {@link io.vertx.ext.web.RoutingContext} object
      */
-    static void removeAuthUser(RoutingContext ctx) {
+    public static void removeAuthUser(RoutingContext ctx) {
         ALREADY_LOGIN_CLIENT_MAP.removeByToken(getToken(ctx));
     }
 
@@ -287,7 +282,7 @@ public final class ScxAuth {
      * @param user 用户 (这里只会使用用户的唯一标识 所以其他的字段可以为空)
      * @return 权限字符串集合
      */
-    public static PermsWrapper getPerms(User user) {
+    public static PermsWrapper getPerms(BaseUser user) {
         var permissionModelList = new ArrayList<PermsModel>();
         permissionModelList.addAll(deptService.getDeptListByUser(user));
         permissionModelList.addAll(roleService.getRoleListByUser(user));
@@ -391,12 +386,14 @@ public final class ScxAuth {
      * @param accountType a
      * @return a
      */
-    public static User signupByThirdParty(String uniqueID, String accessToken, String accountType) {
-        var defaultNewUser = new User();
+    @SuppressWarnings("unchecked")
+    public static BaseUser signupByThirdParty(String uniqueID, String accessToken, String accountType) {
+        var defaultNewUser = new BaseUser();
         //默认用户名
         defaultNewUser.username = "scx_" + RandomUtils.randomString(8, true);
         defaultNewUser.isAdmin = false;
-        return findThirdPartyLoginHandler(accountType).signup(uniqueID, accessToken, defaultNewUser);
+        var handler = (ThirdPartyLoginHandler<BaseUser>) findThirdPartyLoginHandler(accountType);
+        return handler.signup(uniqueID, accessToken, defaultNewUser);
     }
 
     /**
@@ -405,7 +402,7 @@ public final class ScxAuth {
      * @param type 类型
      * @return handler
      */
-    public static ThirdPartyLoginHandler findThirdPartyLoginHandler(String type) {
+    public static ThirdPartyLoginHandler<?> findThirdPartyLoginHandler(String type) {
         var thirdPartyLoginHandler = THIRD_PARTY_LOGIN_HANDLER_MAP.get(type);
         if (thirdPartyLoginHandler == null) {
             throw new UnknownLoginHandlerException();
@@ -419,7 +416,7 @@ public final class ScxAuth {
      * @param type                   名称
      * @param thirdPartyLoginHandler handler
      */
-    public static void addThirdPartyLoginHandler(String type, ThirdPartyLoginHandler thirdPartyLoginHandler) {
+    public static void addThirdPartyLoginHandler(String type, ThirdPartyLoginHandler<?> thirdPartyLoginHandler) {
         THIRD_PARTY_LOGIN_HANDLER_MAP.put(type, thirdPartyLoginHandler);
     }
 

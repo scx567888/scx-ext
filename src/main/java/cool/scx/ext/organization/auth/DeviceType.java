@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.type;
+package cool.scx.ext.organization.auth;
 
 /**
  * 登录设备类型
