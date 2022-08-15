@@ -10,7 +10,7 @@ import cool.scx.ext.organization.base.BaseAccountService;
  * @version 1.11.8
  */
 @ScxService
-public final class AccountService extends BaseAccountService<User> {
+public final class AccountService extends BaseAccountService<Account> {
 
     /**
      * <p>Constructor for AccountService.</p>
