@@ -2,7 +2,6 @@ package cool.scx.ext.organization.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.core.annotation.Column;
-import cool.scx.ext.organization.type.PermsModel;
 
 /**
  * 部门
