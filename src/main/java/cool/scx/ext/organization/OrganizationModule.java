@@ -3,11 +3,11 @@ package cool.scx.ext.organization;
 import cool.scx.core.ScxModule;
 import cool.scx.core.base.BaseModel;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.ext.organization._impl.*;
 import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.base.BaseDeptService;
 import cool.scx.ext.organization.base.BaseRoleService;
 import cool.scx.ext.organization.base.BaseUserService;
+import cool.scx.ext.organization.base.impl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

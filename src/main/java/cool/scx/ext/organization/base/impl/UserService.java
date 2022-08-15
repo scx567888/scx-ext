@@ -1,4 +1,4 @@
-package cool.scx.ext.organization._impl;
+package cool.scx.ext.organization.base.impl;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.ext.organization.base.BaseUserService;
@@ -15,8 +15,8 @@ public final class UserService extends BaseUserService<User> {
     /**
      * <p>Constructor for UserService.</p>
      *
-     * @param deptService a {@link cool.scx.ext.organization._impl.DeptService} object
-     * @param roleService a {@link cool.scx.ext.organization._impl.RoleService} object
+     * @param deptService a {@link DeptService} object
+     * @param roleService a {@link RoleService} object
      */
     public UserService(DeptService deptService, RoleService roleService) {
         super(deptService, roleService);

@@ -1,11 +1,11 @@
 package cool.scx.test.auth;
 
 import cool.scx.core.annotation.ScxService;
-import cool.scx.ext.organization._impl.DeptService;
-import cool.scx.ext.organization._impl.RoleService;
 import cool.scx.ext.organization.base.BaseDeptService;
 import cool.scx.ext.organization.base.BaseRoleService;
 import cool.scx.ext.organization.base.BaseUserService;
+import cool.scx.ext.organization.base.impl.DeptService;
+import cool.scx.ext.organization.base.impl.RoleService;
 
 @ScxService
 public class TestUserService extends BaseUserService<TestUser> {

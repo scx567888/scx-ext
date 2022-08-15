@@ -99,7 +99,7 @@ public final class ScxAuth {
      *
      * @return r
      */
-    public static BaseUser getLoginUser() {
+    public static <T extends BaseUser> T getLoginUser() {
         return getLoginUser(ScxContext.routingContext());
     }
 
@@ -149,7 +149,7 @@ public final class ScxAuth {
      * @param ctx c
      * @return 用户
      */
-    public static BaseUser getLoginUser(RoutingContext ctx) {
+    public static <T extends BaseUser> T getLoginUser(RoutingContext ctx) {
         return getLoginUserByToken(getToken(ctx));
     }
 
@@ -175,9 +175,10 @@ public final class ScxAuth {
      * @param token a {@link java.lang.String} object.
      * @return a {@link cool.scx.ext.organization.base.BaseUser} object.
      */
-    public static BaseUser getLoginUserByToken(String token) {
+    @SuppressWarnings("unchecked")
+    public static <T extends BaseUser> T getLoginUserByToken(String token) {
         var client = ALREADY_LOGIN_CLIENT_MAP.getByToken(token);
-        return client != null ? userService.get(client.userID) : null;
+        return client != null ? (T) userService.get(client.userID) : null;
     }
 
     /**
