@@ -2,9 +2,7 @@ package cool.scx.ext.organization.dept;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.core.annotation.Column;
-import cool.scx.core.annotation.ScxModel;
-import cool.scx.ext.crud.annotation.UseCRUDApi;
-import cool.scx.ext.organization.auth.PermsModel;
+import cool.scx.ext.organization.type.PermsModel;
 
 /**
  * 部门
@@ -12,9 +10,7 @@ import cool.scx.ext.organization.auth.PermsModel;
  * @author scx567888
  * @version 1.11.8
  */
-@UseCRUDApi
-@ScxModel(tablePrefix = "organization")
-public class Dept extends PermsModel {
+public abstract class Dept extends PermsModel {
 
     /**
      * 部门名称

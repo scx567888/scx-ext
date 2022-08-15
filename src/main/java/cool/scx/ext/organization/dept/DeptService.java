@@ -18,8 +18,7 @@ import java.util.Objects;
  * @author scx567888
  * @version 1.1.2
  */
-@ScxService
-public class DeptService extends BaseModelService<Dept> {
+public abstract class DeptService<T extends Dept> extends BaseModelService<T> {
 
     private final UserDeptService userDeptService;
 
@@ -38,7 +37,7 @@ public class DeptService extends BaseModelService<Dept> {
      * @param user a {@link cool.scx.ext.organization.user.User} object
      * @return a {@link java.util.List} object
      */
-    public List<Dept> getDeptListByUser(User user) {
+    public List<T> getDeptListByUser(User user) {
         var deptIDs = userDeptService.buildListSQL(new Query().equal("userID", user.id), SelectFilter.ofIncluded("deptID"));
         return list(new Query().in("id", deptIDs));
     }

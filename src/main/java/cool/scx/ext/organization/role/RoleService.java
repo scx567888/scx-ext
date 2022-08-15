@@ -16,8 +16,7 @@ import java.util.Objects;
  * @author scx567888
  * @version 1.1.2
  */
-@ScxService
-public class RoleService extends BaseModelService<Role> {
+public abstract class RoleService<T extends Role> extends BaseModelService<T> {
 
     private final UserRoleService userRoleService;
 
@@ -36,7 +35,7 @@ public class RoleService extends BaseModelService<Role> {
      * @param user a {@link cool.scx.ext.organization.user.User} object
      * @return a {@link java.util.List} object
      */
-    public List<Role> getRoleListByUser(User user) {
+    public List<T> getRoleListByUser(User user) {
         var roleIDs = userRoleService.buildListSQL(new Query().equal("userID", user.id), SelectFilter.ofIncluded("roleID"));
         return list(new Query().in("id", roleIDs));
     }

@@ -1,8 +1,6 @@
 package cool.scx.ext.organization.role;
 
-import cool.scx.core.annotation.ScxModel;
-import cool.scx.ext.crud.annotation.UseCRUDApi;
-import cool.scx.ext.organization.auth.PermsModel;
+import cool.scx.ext.organization.type.PermsModel;
 
 /**
  * 角色
@@ -10,9 +8,7 @@ import cool.scx.ext.organization.auth.PermsModel;
  * @author scx567888
  * @version 0.3.6
  */
-@UseCRUDApi
-@ScxModel(tablePrefix = "organization")
-public class Role extends PermsModel {
+public abstract class Role extends PermsModel {
 
     /**
      * 角色名称
