@@ -5,7 +5,7 @@ import cool.scx.ext.organization.base.BaseRoleService;
 import cool.scx.ext.organization.base.UserRoleService;
 
 @ScxService
-public class RoleService extends BaseRoleService<Role> {
+public final class RoleService extends BaseRoleService<Role> {
 
     public RoleService(UserRoleService userRoleService) {
         super(userRoleService);

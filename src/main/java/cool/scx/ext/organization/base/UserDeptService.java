@@ -10,6 +10,6 @@ import cool.scx.core.base.BaseModelService;
  * @version 0.3.6
  */
 @ScxService
-public class UserDeptService extends BaseModelService<UserDept> {
+public final class UserDeptService extends BaseModelService<UserDept> {
 
 }

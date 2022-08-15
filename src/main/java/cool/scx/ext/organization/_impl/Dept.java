@@ -6,6 +6,6 @@ import cool.scx.ext.organization.base.BaseDept;
 
 @UseCRUDApi
 @ScxModel(tablePrefix = "organization")
-public class Dept extends BaseDept {
+public final class Dept extends BaseDept {
 
 }

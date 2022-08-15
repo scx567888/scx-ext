@@ -11,7 +11,7 @@ import cool.scx.core.base.BaseModel;
  * @version 0.3.6
  */
 @ScxModel(tablePrefix = "organization")
-public class UserDept extends BaseModel {
+public final class UserDept extends BaseModel {
 
     /**
      * 用户 ID
