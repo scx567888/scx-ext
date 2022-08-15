@@ -12,8 +12,9 @@ import java.util.stream.Collectors;
  *
  * @author scx567888
  * @version 1.11.8
+ * todo 这里的泛型设计有问题
  */
-public abstract class UserInfoModelService<T extends BaseUser, M extends UserInfoModel<T>> extends BaseModelService<M> {
+public abstract class UserInfoModelService<M extends UserInfoModel<T>, T extends BaseUser> extends BaseModelService<M> {
 
     /**
      * userService
