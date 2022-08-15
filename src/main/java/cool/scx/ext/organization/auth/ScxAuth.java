@@ -97,6 +97,7 @@ public final class ScxAuth {
     /**
      * 获取登录用户
      *
+     * @param <T> a T class
      * @return r
      */
     public static <T extends BaseUser> T getLoginUser() {
@@ -147,6 +148,7 @@ public final class ScxAuth {
      * 而是通过此接口进行查找是为了保证用户信息修改后回显的及时性
      *
      * @param ctx c
+     * @param <T> a T class
      * @return 用户
      */
     public static <T extends BaseUser> T getLoginUser(RoutingContext ctx) {
@@ -173,6 +175,7 @@ public final class ScxAuth {
      * 根据 token 获取用户
      *
      * @param token a {@link java.lang.String} object.
+     * @param <T>   a T class
      * @return a {@link cool.scx.ext.organization.base.BaseUser} object.
      */
     @SuppressWarnings("unchecked")

@@ -15,8 +15,8 @@ public final class UserService extends BaseUserService<User> {
     /**
      * <p>Constructor for UserService.</p>
      *
-     * @param deptService a {@link DeptService} object
-     * @param roleService a {@link RoleService} object
+     * @param deptService a {@link cool.scx.ext.organization.base.impl.DeptService} object
+     * @param roleService a {@link cool.scx.ext.organization.base.impl.RoleService} object
      */
     public UserService(DeptService deptService, RoleService roleService) {
         super(deptService, roleService);
