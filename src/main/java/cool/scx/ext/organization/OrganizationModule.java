@@ -1,15 +1,15 @@
 package cool.scx.ext.organization;
 
 import cool.scx.core.ScxModule;
-import cool.scx.ext.organization._impl.DeptService;
-import cool.scx.ext.organization._impl.RoleService;
-import cool.scx.ext.organization._impl.UserService;
-import cool.scx.ext.organization.api.ScxAuthController;
+import cool.scx.core.base.BaseModel;
+import cool.scx.core.base.BaseModelService;
+import cool.scx.ext.organization._impl.*;
 import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.base.BaseDeptService;
 import cool.scx.ext.organization.base.BaseRoleService;
 import cool.scx.ext.organization.base.BaseUserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,25 +21,39 @@ import java.util.List;
 public class OrganizationModule extends ScxModule {
 
     /**
-     * 有时候我们需要拓展内部的 UserService
+     * 指定使用的 userService 类
      */
     private Class<? extends BaseUserService<?>> userServiceClass = UserService.class;
+
+    /**
+     * 指定使用的 deptService 类
+     */
     private Class<? extends BaseDeptService<?>> deptServiceClass = DeptService.class;
+
+    /**
+     * 指定使用的 roleService 类
+     */
     private Class<? extends BaseRoleService<?>> roleServiceClass = RoleService.class;
 
-    private boolean useDefaultAuthApi = true;
+    /**
+     * 指定是否启动默认的 User (如果设置为 false,并且未指定具体的 userServiceClass 时则会报错)
+     */
+    private boolean enableDefaultUser = true;
 
-    public OrganizationModule() {
+    /**
+     * 指定是否启动默认的 Dept (如果设置为 false, 并且未指定具体的 deptServiceClass 时则会报错)
+     */
+    private boolean enableDefaultDept = true;
 
-    }
+    /**
+     * 指定是否启动默认的 Role (如果设置为 false, 并且未指定具体的 roleServiceClass 时则会报错)
+     */
+    private boolean enableDefaultRole = true;
 
-    public boolean getUseDefaultAuthApi() {
-        return useDefaultAuthApi;
-    }
-
-    public void setUseDefaultAuthApi(boolean useDefaultAuthApi) {
-        this.useDefaultAuthApi = useDefaultAuthApi;
-    }
+    /**
+     * 指定是否启动默认的 AuthApi (如果设置为 false, 或者关闭任意一个默认实现时则不启用)
+     */
+    private boolean enableDefaultAuthApi = true;
 
     public Class<? extends BaseUserService<?>> getUserServiceClass() {
         return userServiceClass;
@@ -68,6 +82,42 @@ public class OrganizationModule extends ScxModule {
         return this;
     }
 
+    public boolean enableDefaultUser() {
+        return enableDefaultUser && userServiceClass == UserService.class;
+    }
+
+    public OrganizationModule setEnableDefaultUser(boolean enableDefaultUser) {
+        this.enableDefaultUser = enableDefaultUser;
+        return this;
+    }
+
+    public boolean enableDefaultDept() {
+        return enableDefaultDept && deptServiceClass == DeptService.class;
+    }
+
+    public OrganizationModule setEnableDefaultDept(boolean enableDefaultDept) {
+        this.enableDefaultDept = enableDefaultDept;
+        return this;
+    }
+
+    public boolean enableDefaultRole() {
+        return enableDefaultRole && roleServiceClass == RoleService.class;
+    }
+
+    public OrganizationModule setEnableDefaultRole(boolean enableDefaultRole) {
+        this.enableDefaultRole = enableDefaultRole;
+        return this;
+    }
+
+    public boolean enableDefaultAuthApi() {
+        return enableDefaultAuthApi && enableDefaultUser();
+    }
+
+    public OrganizationModule setEnableDefaultAuthApi(boolean enableDefaultAuthApi) {
+        this.enableDefaultAuthApi = enableDefaultAuthApi;
+        return this;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -79,10 +129,47 @@ public class OrganizationModule extends ScxModule {
 
     @Override
     public List<Class<?>> scxMappingClassList() {
-        var list = super.scxMappingClassList();
-        if (!useDefaultAuthApi) {
-            list.remove(ScxAuthController.class);
+        var list = new ArrayList<>(super.scxMappingClassList());
+        removeClass(list);
+        return list;
+    }
+
+    @Override
+    public List<Class<? extends BaseModel>> scxBaseModelClassList() {
+        var list = new ArrayList<>(super.scxBaseModelClassList());
+        removeClass(list);
+        return list;
+    }
+
+    @Override
+    public List<Class<? extends BaseModelService<?>>> scxBaseModelServiceClassList() {
+        var list = new ArrayList<>(super.scxBaseModelServiceClassList());
+        removeClass(list);
+        return list;
+    }
+
+    private void removeClass(List<?> list) {
+        if (!enableDefaultAuthApi()) {
+            list.remove(AuthController.class);
         }
+        if (!enableDefaultUser()) {
+            list.remove(User.class);
+            list.remove(UserService.class);
+        }
+        if (!enableDefaultDept()) {
+            list.remove(Dept.class);
+            list.remove(DeptService.class);
+        }
+        if (!enableDefaultRole()) {
+            list.remove(Role.class);
+            list.remove(RoleService.class);
+        }
+    }
+
+    @Override
+    public List<Class<?>> scxBeanClassList() {
+        var list = new ArrayList<>(super.scxBeanClassList());
+        removeClass(list);
         return list;
     }
 

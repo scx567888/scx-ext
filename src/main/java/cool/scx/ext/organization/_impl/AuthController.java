@@ -1,5 +1,6 @@
-package cool.scx.ext.organization.api;
+package cool.scx.ext.organization._impl;
 
+import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.FromBody;
 import cool.scx.core.annotation.ScxMapping;
 import cool.scx.core.enumeration.HttpMethod;
@@ -7,11 +8,11 @@ import cool.scx.core.http.exception.impl.UnauthorizedException;
 import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;
 import cool.scx.core.vo.Json;
-import cool.scx.ext.organization._impl.User;
-import cool.scx.ext.organization._impl.UserService;
 import cool.scx.ext.organization.annotation.Perms;
 import cool.scx.ext.organization.auth.DeviceType;
+import cool.scx.ext.organization.auth.PermsWrapper;
 import cool.scx.ext.organization.auth.ScxAuth;
+import cool.scx.ext.organization.base.BaseUser;
 import cool.scx.ext.organization.exception.AuthException;
 import io.vertx.ext.web.RoutingContext;
 
@@ -23,7 +24,7 @@ import io.vertx.ext.web.RoutingContext;
  * @version 0.3.6
  */
 @ScxMapping("/api/auth")
-public class ScxAuthController {
+public class AuthController {
 
     private final UserService userService;
 
@@ -32,7 +33,7 @@ public class ScxAuthController {
      *
      * @param userService a
      */
-    public ScxAuthController(UserService userService) {
+    public AuthController(UserService userService) {
         this.userService = userService;
     }
 
@@ -133,8 +134,7 @@ public class ScxAuthController {
     public BaseVo info(RoutingContext routingContext) throws UnauthorizedException {
         var user = ScxAuth.getLoginUser(routingContext);
         //返回登录用户的信息给前台 含用户基本信息还有的所有角色的权限
-        return DataJson.ok().data(new ScxUserInfo(user, ScxAuth.getPerms(user)));
-
+        return DataJson.ok().data(new UserInfo(user, ScxAuth.getPerms(user)));
     }
 
     /**
@@ -188,6 +188,85 @@ public class ScxAuthController {
         } catch (AuthException e) {
             return e.toBaseVo();
         }
+    }
+
+    /**
+     * <p>ScxUserInfo class.</p>
+     *
+     * @author scx567888
+     * @version 1.11.8
+     */
+    public static class UserInfo {
+
+        /**
+         * id
+         */
+        public final Long id;
+
+        /**
+         * 用户名
+         */
+        public final String username;
+
+        /**
+         * 是否为管理员
+         */
+        public final Boolean isAdmin;
+
+        /**
+         * 头像
+         */
+        public final String avatar;
+
+        /**
+         * 密码
+         */
+        public final String phoneNumber;
+
+        /**
+         * 邮箱地址
+         */
+        public final String emailAddress;
+
+        /**
+         * 通用权限
+         */
+        public final String[] perms;
+
+        /**
+         * 页面权限
+         */
+        public final String[] pagePerms;
+
+        /**
+         * 页面元素权限
+         */
+        public final String[] pageElementPerms;
+
+        /**
+         * 当前是否启用墓碑
+         */
+        public final boolean tombstone;
+
+        /**
+         * <p>Constructor for ScxUserInfo.</p>
+         *
+         * @param user         a {@link BaseUser} object
+         * @param permsWrapper a {@link cool.scx.ext.organization.auth.PermsWrapper} object
+         */
+        public UserInfo(BaseUser user, PermsWrapper permsWrapper) {
+            id = user.id;
+            username = user.username;
+            isAdmin = user.isAdmin;
+            avatar = user.avatar;
+            phoneNumber = user.phoneNumber;
+            emailAddress = user.emailAddress;
+            perms = permsWrapper.perms().toArray(String[]::new);
+            pagePerms = permsWrapper.pagePerms().toArray(String[]::new);
+            pageElementPerms = permsWrapper.pageElementPerms().toArray(String[]::new);
+            tombstone = ScxContext.coreConfig().tombstone();
+        }
+
     }
 
 }
