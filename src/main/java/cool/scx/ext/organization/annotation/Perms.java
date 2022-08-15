@@ -20,13 +20,13 @@ public @interface Perms {
      *
      * @return 是否
      */
-    boolean checkedPerms() default true;
+    boolean checkPerms() default true;
 
     /**
      * 是否检查登录
      *
      * @return 是否
      */
-    boolean checkedLogin() default true;
+    boolean checkLogin() default true;
 
 }
