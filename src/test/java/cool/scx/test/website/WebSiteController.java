@@ -14,10 +14,10 @@ import cool.scx.ext.cms.channel.Channel;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.content.Content;
 import cool.scx.ext.cms.content.ContentService;
-import cool.scx.ext.organization.user.User;
-import cool.scx.ext.organization.user.UserService;
 import cool.scx.ext.util.Excel;
 import cool.scx.ext.util.QRCodeUtils;
+import cool.scx.test.auth.TestUser;
+import cool.scx.test.auth.TestUserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.StringUtils;
@@ -41,12 +41,12 @@ public class WebSiteController {
     @ScxMapping(method = HttpMethod.GET)
     public static void TestTransaction(RoutingContext ctx) throws Exception {
         var sb = new StringBuilder();
-        UserService bean = ScxContext.getBean(UserService.class);
+        var bean = ScxContext.getBean(TestUserService.class);
         try {
             ScxContext.sqlRunner().autoTransaction(() -> {
                 sb.append("事务开始前数据库中 数据条数 : ").append(bean.list().size()).append("</br>");
                 sb.append("现在插入 1 数据条数").append("</br>");
-                var u = new User();
+                var u = new TestUser();
                 u.password = CryptoUtils.encryptPassword("123456");
                 u.username = "唯一name";
                 bean.add(u);

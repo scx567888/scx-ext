@@ -11,8 +11,9 @@ import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.ext.organization.OrganizationModule;
-import cool.scx.ext.organization.user.UserService;
+import cool.scx.ext.organization.base.BaseUserService;
 import cool.scx.ext.static_server.StaticServerModule;
+import cool.scx.test.auth.TestUserService;
 import cool.scx.test.website.UserListWebSiteHandler;
 import cool.scx.test.website.WriteTimeHandler;
 import cool.scx.util.http.HttpClientHelper;
@@ -35,8 +36,9 @@ public class TestModule extends ScxModule {
      *
      * @param args an array of {@link java.lang.String} objects
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
         runModule();
+        test0();
     }
 
     @BeforeTest
@@ -50,7 +52,8 @@ public class TestModule extends ScxModule {
                         new CRUDModule(),
                         new FixTableModule(),
                         new FSSModule(),
-                        new OrganizationModule(),
+                        new OrganizationModule()
+                                .setUserServiceClass(TestUserService.class),
                         new StaticServerModule())
                 .configure(ScxCoreFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
                 .run();
@@ -58,7 +61,7 @@ public class TestModule extends ScxModule {
 
     @Test
     public static void test0() throws IOException, InterruptedException {
-        var userService = ScxContext.getBean(UserService.class);
+        var userService = ScxContext.getBean(BaseUserService.class);
         System.err.println("访问页面前数据条数 : " + userService.list().size());
         HttpClientHelper.get("http://localhost:8080/");
         System.err.println("访问页面后数据条数 : " + userService.list().size());

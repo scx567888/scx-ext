@@ -1,12 +1,14 @@
 package cool.scx.test.website;
 
+import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.Query;
 import cool.scx.core.vo.Html;
 import cool.scx.ext.cms.web_site.WebSiteHandler;
 import cool.scx.ext.organization.auth.ScxAuth;
-import cool.scx.ext.organization.user.User;
-import cool.scx.ext.organization.user.UserService;
+import cool.scx.ext.organization.base.BaseUserService;
+import cool.scx.test.auth.TestUser;
+import cool.scx.test.auth.TestUserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 
@@ -23,14 +25,14 @@ import java.util.ArrayList;
 @ScxService
 public class UserListWebSiteHandler implements WebSiteHandler {
 
-    private final UserService userService;
+    private final TestUserService userService;
 
     /**
      * <p>Constructor for TestUserListWebSiteHandler.</p>
      *
-     * @param userService a {@link UserService} object
+     * @param userService a {@link BaseUserService} object
      */
-    public UserListWebSiteHandler(UserService userService) {
+    public UserListWebSiteHandler(TestUserService userService) {
         this.userService = userService;
     }
 
@@ -41,9 +43,9 @@ public class UserListWebSiteHandler implements WebSiteHandler {
     public void indexHandler(Html html) {
         long count = userService.count(new Query());
         if (count < 50) {
-            var s1 = new ArrayList<User>();
+            var s1 = new ArrayList<TestUser>();
             for (int i = 0; i < 25; i = i + 1) {
-                var s = new User();
+                var s = new TestUser();
                 var uuid = RandomUtils.randomUUID();
                 //测试表情符能否存储
                 s.username = uuid + "👶";
@@ -54,7 +56,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
             }
             userService.add(s1);
             for (int i = 0; i < 25; i = i + 1) {
-                var s = new User();
+                var s = new TestUser();
                 var uuid = RandomUtils.randomUUID();
                 s.username = uuid;
                 s.phoneNumber = uuid;
