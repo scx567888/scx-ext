@@ -11,7 +11,7 @@ import cool.scx.core.base.BaseModel;
  * @author scx567888
  * @version 1.11.8
  */
-public abstract class UserInfoModel<T extends BaseUser> extends BaseModel {
+public abstract class UserInfoModel extends BaseModel {
 
     /**
      * 用户 ID

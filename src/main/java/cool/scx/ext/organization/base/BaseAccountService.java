@@ -6,7 +6,7 @@ package cool.scx.ext.organization.base;
  * @author scx567888
  * @version 1.11.8
  */
-public abstract class BaseAccountService<T extends BaseAccount<?>> extends UserInfoModelService<T> {
+public abstract class BaseAccountService<T extends BaseAccount> extends UserInfoModelService<T> {
 
     /**
      * <p>Constructor for AccountService.</p>

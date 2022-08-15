@@ -12,6 +12,6 @@ import cool.scx.ext.organization.base.BaseAccount;
  */
 @UseCRUDApi
 @ScxModel(tablePrefix = "organization")
-public final class Account extends BaseAccount<User> {
+public final class Account extends BaseAccount {
 
 }
