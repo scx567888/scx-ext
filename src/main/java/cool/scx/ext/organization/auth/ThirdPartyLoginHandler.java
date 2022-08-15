@@ -1,6 +1,6 @@
 package cool.scx.ext.organization.auth;
 
-import cool.scx.ext.organization._impl.Account;
+import cool.scx.ext.organization.base.BaseAccount;
 import cool.scx.ext.organization.base.BaseUser;
 
 /**
@@ -28,7 +28,7 @@ public interface ThirdPartyLoginHandler<T extends BaseUser> {
      * @param oldAccessToken 旧密码
      * @return 更新后的账号
      */
-    Account changeAccessToken(String uniqueID, String newAccessToken, String oldAccessToken);
+    BaseAccount<T> changeAccessToken(String uniqueID, String newAccessToken, String oldAccessToken);
 
     /**
      * 以密码距离 这就是修改用户名
@@ -38,7 +38,7 @@ public interface ThirdPartyLoginHandler<T extends BaseUser> {
      * @param oldUniqueID 旧用户名
      * @return 更新后的账号
      */
-    Account changeUniqueID(String accessToken, String newUniqueID, String oldUniqueID);
+    BaseAccount<T> changeUniqueID(String accessToken, String newUniqueID, String oldUniqueID);
 
     /**
      * 根据用户 ID 获取账号
@@ -46,16 +46,16 @@ public interface ThirdPartyLoginHandler<T extends BaseUser> {
      * @param userID userID
      * @return r
      */
-    Account getByUserID(Long userID);
+    BaseAccount<T> getByUserID(Long userID);
 
 
     /**
      * <p>getByUniqueID.</p>
      *
      * @param uniqueID a {@link java.lang.String} object
-     * @return a {@link Account} object
+     * @return a
      */
-    Account getByUniqueID(String uniqueID);
+    BaseAccount<T> getByUniqueID(String uniqueID);
 
 
     /**
@@ -66,6 +66,6 @@ public interface ThirdPartyLoginHandler<T extends BaseUser> {
      * @param defaultUser a {@link BaseUser} object
      * @return a {@link BaseUser} object
      */
-    T signup(String uniqueID, String accessToken, BaseUser defaultUser);
+    T signup(String uniqueID, String accessToken, T defaultUser);
 
 }
