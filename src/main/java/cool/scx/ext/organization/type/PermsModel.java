@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.auth;
+package cool.scx.ext.organization.type;
 
 import cool.scx.core.base.BaseModel;
 
