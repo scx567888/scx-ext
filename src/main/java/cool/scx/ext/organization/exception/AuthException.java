@@ -13,19 +13,6 @@ import cool.scx.util.CaseUtils;
  */
 public abstract class AuthException extends BadRequestException {
 
-    private final String defaultExceptionName = initDefaultExceptionName();
-
-    /**
-     * <p>initDefaultExceptionName.</p>
-     *
-     * @return a {@link java.lang.String} object
-     */
-    private String initDefaultExceptionName() {
-        var simpleName = this.getClass().getSimpleName();
-        var name = simpleName.replaceAll("Exception", "");
-        return CaseUtils.toKebab(name);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -40,7 +27,9 @@ public abstract class AuthException extends BadRequestException {
      * @return baseVo
      */
     public BaseVo toBaseVo() {
-        return Json.fail(this.defaultExceptionName);
+        var simpleName = this.getClass().getSimpleName();
+        var message = simpleName.replaceAll("Exception", "");
+        return Json.fail(CaseUtils.toKebab(message));
     }
 
 }
