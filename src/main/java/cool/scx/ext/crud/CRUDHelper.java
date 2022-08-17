@@ -103,7 +103,7 @@ public final class CRUDHelper {
         if (StringUtils.isBlank(baseModelName)) {
             throw new UnknownCRUDModelException(baseModelName);
         }
-        var finalBaseModelName = IgnoredSeparatorRegex.matcher(baseModelName).replaceAll("").toLowerCase();
+        var finalBaseModelName = normalizeModelName(baseModelName);
         var baseModelClass = BASE_MODEL_NAME_CRUD_API_INFO_MAPPING.get(finalBaseModelName);
         if (baseModelClass == null) {
             throw new UnknownCRUDModelException(baseModelName);
@@ -205,6 +205,16 @@ public final class CRUDHelper {
             throw new UnknownFieldNameException(fieldName);
         }
         return fieldName;
+    }
+
+    /**
+     * 标准化 modelName
+     *
+     * @param baseModelName a
+     * @return a
+     */
+    public static String normalizeModelName(String baseModelName) {
+        return IgnoredSeparatorRegex.matcher(baseModelName).replaceAll("").toLowerCase();
     }
 
 }
