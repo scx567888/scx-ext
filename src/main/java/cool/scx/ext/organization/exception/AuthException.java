@@ -3,6 +3,7 @@ package cool.scx.ext.organization.exception;
 import cool.scx.core.http.exception.impl.BadRequestException;
 import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.Json;
+import cool.scx.util.CaseUtils;
 
 /**
  * 认证异常父类
@@ -11,6 +12,14 @@ import cool.scx.core.vo.Json;
  * @version 0.3.6
  */
 public abstract class AuthException extends BadRequestException {
+
+    private final String defaultExceptionName = initDefaultExceptionName();
+
+    private String initDefaultExceptionName() {
+        var simpleName = this.getClass().getSimpleName();
+        var name = simpleName.replaceAll("Exception", "");
+        return CaseUtils.toKebab(name);
+    }
 
     /**
      * {@inheritDoc}
@@ -26,9 +35,7 @@ public abstract class AuthException extends BadRequestException {
      * @return baseVo
      */
     public BaseVo toBaseVo() {
-        var simpleName = this.getClass().getSimpleName();
-        var message = simpleName.replaceAll("Exception", "");
-        return Json.fail(message);
+        return Json.fail(this.defaultExceptionName);
     }
 
 }
