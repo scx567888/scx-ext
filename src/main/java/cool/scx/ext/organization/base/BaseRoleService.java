@@ -3,7 +3,7 @@ package cool.scx.ext.organization.base;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.core.base.Query;
 import cool.scx.core.base.SelectFilter;
-import cool.scx.sql.AbstractPlaceholderSQL;
+import cool.scx.sql.SQL;
 
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +44,7 @@ public abstract class BaseRoleService<T extends BaseRole> extends BaseModelServi
      * @param userIDs a
      * @return a {@link java.util.List} object
      */
-    public List<UserRole> getUserRoleByUserIDs(AbstractPlaceholderSQL<?> userIDs) {
+    public List<UserRole> getUserRoleByUserIDs(SQL userIDs) {
         return userRoleService.list(new Query().in("userID", userIDs));
     }
 
