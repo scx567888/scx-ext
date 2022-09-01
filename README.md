@@ -52,8 +52,8 @@ English | [简体中文](./README.zh-CN.md)
 #### 1. Write your own module and run the main method .
 
 ``` java
-import cool.scx.Scx;
-import cool.scx.ScxModule;
+import cool.scx.core.Scx;
+import cool.scx.core.ScxModule;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fss.FSSModule;

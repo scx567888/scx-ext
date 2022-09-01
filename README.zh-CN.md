@@ -52,8 +52,8 @@
 #### 1. 编写您自己的模块并运行 main 方法 。
 
 ``` java
-import cool.scx.Scx;
-import cool.scx.ScxModule;
+import cool.scx.core.Scx;
+import cool.scx.core.ScxModule;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fss.FSSModule;
