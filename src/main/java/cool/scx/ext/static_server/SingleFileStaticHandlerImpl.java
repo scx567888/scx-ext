@@ -28,9 +28,22 @@ import java.util.regex.Pattern;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 
 
+/**
+ * <p>SingleFileStaticHandlerImpl class.</p>
+ *
+ * @author scx567888
+ * @version 1.14.2
+ */
 class SingleFileStaticHandlerImpl implements Handler<RoutingContext> {
 
+    /**
+     * Constant <code>LOG</code>
+     */
     private static final Logger LOG = LoggerFactory.getLogger(SingleFileStaticHandlerImpl.class);
+
+    /**
+     * Constant <code>RANGE</code>
+     */
     private static final Pattern RANGE = Pattern.compile("^bytes=(\\d+)-(\\d*)$");
     private final String singleFile;
     private final String defaultContentEncoding = StandardCharsets.UTF_8.name();
@@ -41,6 +54,8 @@ class SingleFileStaticHandlerImpl implements Handler<RoutingContext> {
     /**
      * Default constructor with DEFAULT_WEB_ROOT and
      * relative file access only
+     *
+     * @param root a {@link java.nio.file.Path} object
      */
     public SingleFileStaticHandlerImpl(Path root) {
         this.singleFile = root.toString();
@@ -73,6 +88,9 @@ class SingleFileStaticHandlerImpl implements Handler<RoutingContext> {
         headers.set("date", Utils.formatRFC1123DateTime(System.currentTimeMillis()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handle(RoutingContext context) {
         HttpServerRequest request = context.request();
@@ -103,6 +121,9 @@ class SingleFileStaticHandlerImpl implements Handler<RoutingContext> {
 
     /**
      * Can be called recursive for index pages
+     *
+     * @param context    a {@link io.vertx.ext.web.RoutingContext} object
+     * @param fileSystem a {@link io.vertx.core.file.FileSystem} object
      */
     private void sendStatic(RoutingContext context, FileSystem fileSystem) {
         var path = "single-file";
@@ -192,6 +213,13 @@ class SingleFileStaticHandlerImpl implements Handler<RoutingContext> {
         });
     }
 
+    /**
+     * <p>getFileProps.</p>
+     *
+     * @param fileSystem    a {@link io.vertx.core.file.FileSystem} object
+     * @param file          a {@link java.lang.String} object
+     * @param resultHandler a {@link io.vertx.core.Handler} object
+     */
     private void getFileProps(FileSystem fileSystem, String file, Handler<AsyncResult<FileProps>> resultHandler) {
         if (tune.useAsyncFS()) {
             fileSystem.props(file, resultHandler);
@@ -211,6 +239,13 @@ class SingleFileStaticHandlerImpl implements Handler<RoutingContext> {
         }
     }
 
+    /**
+     * <p>sendFile.</p>
+     *
+     * @param context   a {@link io.vertx.ext.web.RoutingContext} object
+     * @param file      a {@link java.lang.String} object
+     * @param fileProps a {@link io.vertx.core.file.FileProps} object
+     */
     private void sendFile(RoutingContext context, String file, FileProps fileProps) {
         final HttpServerRequest request = context.request();
         final HttpServerResponse response = context.response();
@@ -321,6 +356,12 @@ class SingleFileStaticHandlerImpl implements Handler<RoutingContext> {
     }
 
 
+    /**
+     * <p>getFileExtension.</p>
+     *
+     * @param file a {@link java.lang.String} object
+     * @return a {@link java.lang.String} object
+     */
     private String getFileExtension(String file) {
         int li = file.lastIndexOf(46);
         if (li != -1 && li != file.length() - 1) {
