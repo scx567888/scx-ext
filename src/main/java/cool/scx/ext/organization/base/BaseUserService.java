@@ -104,11 +104,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
         return count != 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<T> list(Query query, SelectFilter selectFilter) {
+    public List<T> listWithDeptIDsAndRoleIDs(Query query, SelectFilter selectFilter) {
         return fillDeptIDsAndRoleIDsField(super.list(query, selectFilter), query);
     }
 

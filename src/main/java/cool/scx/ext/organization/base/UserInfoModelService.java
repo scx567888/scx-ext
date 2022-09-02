@@ -33,10 +33,9 @@ public abstract class UserInfoModelService<M extends UserInfoModel> extends Base
     /**
      * {@inheritDoc}
      * <p>
-     * 重写 list 方法以使用 userID 填充 user 对象
+     * list 方法以使用 userID 填充 user 对象
      */
-    @Override
-    public List<M> list(Query query, SelectFilter selectFilter) {
+    public List<M> listWithUser(Query query, SelectFilter selectFilter) {
         return fillUserField(super.list(query, selectFilter), query);
     }
 
