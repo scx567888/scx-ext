@@ -46,7 +46,7 @@ public abstract class BaseDeptService<T extends BaseDept> extends BaseModelServi
      * @param userID  a {@link java.lang.Long} object
      * @param deptIDs a {@link java.lang.String} object
      */
-    public void saveDeptListWithUserID(Long userID, List<Long> deptIDs) {
+    public void addDeptListWithUserID(Long userID, List<Long> deptIDs) {
         if (deptIDs != null) {
             var idArr = deptIDs.stream().filter(Objects::nonNull).map(id -> {
                 var userDept = new UserDept();

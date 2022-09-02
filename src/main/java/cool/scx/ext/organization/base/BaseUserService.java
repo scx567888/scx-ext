@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 核心用户 service
@@ -63,14 +64,14 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
      * @param user 用户
      * @return a
      */
-    public T saveWithDeptAndRole(T user) {
+    public T addWithDeptAndRole(T user) {
         user.password = encryptPassword(user.password);
         //这里需要保证事务
         return autoTransaction(() -> {
             var newUser = super.add(user);
-            deptService.saveDeptListWithUserID(newUser.id, user.deptIDs);
-            roleService.saveRoleListWithUserID(newUser.id, user.roleIDs);
-            return get(newUser.id);
+            deptService.addDeptListWithUserID(newUser.id, user.deptIDs);
+            roleService.addRoleListWithUserID(newUser.id, user.roleIDs);
+            return fillDeptIDsAndRoleIDsField(get(newUser.id));
         });
     }
 
@@ -86,10 +87,10 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
         return autoTransaction(() -> {
             //更新就是先删除再保存
             deptService.deleteByUserID(user.id);
-            deptService.saveDeptListWithUserID(user.id, user.deptIDs);
+            deptService.addDeptListWithUserID(user.id, user.deptIDs);
             roleService.deleteByUserID(user.id);
-            roleService.saveRoleListWithUserID(user.id, user.roleIDs);
-            return super.update(user);
+            roleService.addRoleListWithUserID(user.id, user.roleIDs);
+            return fillDeptIDsAndRoleIDsField(super.update(user));
         });
     }
 
@@ -133,6 +134,16 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
             item.deptIDs = userIDAndDeptIDMap.get(item.id);
             item.roleIDs = userIDAndRoleIDMap.get(item.id);
         }).toList();
+    }
+
+    public T fillDeptIDsAndRoleIDsField(T old) {
+        if (old != null) {
+            var userDeptList = deptService.findDeptByUserID(old.id);
+            var userRoleList = roleService.findDeptByUserID(old.id);
+            old.deptIDs = userDeptList.stream().map(c -> c.deptID).collect(Collectors.toList());
+            old.roleIDs = userRoleList.stream().map(c -> c.roleID).collect(Collectors.toList());
+        }
+        return old;
     }
 
     /**

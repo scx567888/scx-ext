@@ -1,11 +1,13 @@
 package cool.scx.ext.organization.base;
 
 import cool.scx.core.annotation.FromBody;
+import cool.scx.core.annotation.FromPath;
 import cool.scx.core.annotation.ScxMapping;
 import cool.scx.core.enumeration.HttpMethod;
 import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;
 import cool.scx.core.vo.Json;
+import cool.scx.ext.crud.CRUDListParam;
 import cool.scx.ext.crud.CRUDUpdateParam;
 import cool.scx.ext.organization.annotation.Perms;
 
@@ -45,6 +47,30 @@ public abstract class BaseUserController<T extends BaseUser> {
         }
     }
 
+    @ScxMapping(method = HttpMethod.POST)
+    public Json list(CRUDListParam crudListParam) {
+        //只有超级管理员才可以修改用户的基本信息
+        userService.checkNowLoginUserIsAdmin();
+        var query = crudListParam.getQuery(entityClass);
+        var selectFilter = crudListParam.getSelectFilter(entityClass, userService._scxDaoTableInfo());
+        var list = userService.listWithDeptIDsAndRoleIDs(query, selectFilter);
+        var total = userService.count(query);
+        return Json.ok().put("items", list).put("total", total);
+    }
+
+    /**
+     * 获取详细信息
+     *
+     * @param id a {@link java.lang.Long} object.
+     * @return a {@link cool.scx.core.vo.Json} object.
+     */
+    @ScxMapping(value = ":id", method = HttpMethod.GET)
+    public BaseVo info(@FromPath Long id) {
+        //只有超级管理员才可以修改用户的基本信息
+        userService.checkNowLoginUserIsAdmin();
+        var info = userService.fillDeptIDsAndRoleIDsField(userService.get(id));
+        return DataJson.ok().data(info);
+    }
 
     /**
      * <p>save.</p>
@@ -55,10 +81,10 @@ public abstract class BaseUserController<T extends BaseUser> {
      * useNameAsUrl = false ,或 value = "/"
      */
     @ScxMapping(useNameAsUrl = false, method = {HttpMethod.POST})
-    public BaseVo save(@FromBody(useAllBody = true) T user) {
+    public BaseVo add(@FromBody(useAllBody = true) T user) {
         //只有超级管理员才可以修改用户的基本信息
         userService.checkNowLoginUserIsAdmin();
-        return DataJson.ok().data(this.userService.saveWithDeptAndRole(user));
+        return DataJson.ok().data(this.userService.addWithDeptAndRole(user));
     }
 
     /**

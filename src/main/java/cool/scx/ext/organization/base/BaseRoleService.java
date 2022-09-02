@@ -5,6 +5,7 @@ import cool.scx.core.base.Query;
 import cool.scx.core.base.SelectFilter;
 import cool.scx.sql.SQL;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,6 +49,12 @@ public abstract class BaseRoleService<T extends BaseRole> extends BaseModelServi
         return userRoleService.list(new Query().in("userID", userIDs));
     }
 
+    public List<UserRole> findDeptByUserID(Long userID) {
+        if (userID != null) {
+            return userRoleService.list(new Query().equal("userID", userID));
+        }
+        return new ArrayList<>();
+    }
 
     /**
      * saveRoleListWithUserID
@@ -55,7 +62,7 @@ public abstract class BaseRoleService<T extends BaseRole> extends BaseModelServi
      * @param userID  a {@link java.lang.Long} object
      * @param roleIDs a {@link java.lang.String} object
      */
-    public void saveRoleListWithUserID(Long userID, List<Long> roleIDs) {
+    public void addRoleListWithUserID(Long userID, List<Long> roleIDs) {
         if (roleIDs != null) {
             var idArr = roleIDs.stream().filter(Objects::nonNull).map(id -> {
                 var userRole = new UserRole();
