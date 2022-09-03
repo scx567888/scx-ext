@@ -55,10 +55,10 @@ public abstract class BaseUserController<T extends BaseUser> {
      * useNameAsUrl = false ,或 value = "/"
      */
     @ScxMapping(useNameAsUrl = false, method = {HttpMethod.POST})
-    public BaseVo save(@FromBody(useAllBody = true) T user) {
+    public BaseVo add(@FromBody(useAllBody = true) T user) {
         //只有超级管理员才可以修改用户的基本信息
         userService.checkNowLoginUserIsAdmin();
-        return DataJson.ok().data(this.userService.saveWithDeptAndRole(user));
+        return DataJson.ok().data(this.userService.addWithDeptAndRole(user));
     }
 
     /**

@@ -63,13 +63,13 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
      * @param user 用户
      * @return a
      */
-    public T saveWithDeptAndRole(T user) {
+    public T addWithDeptAndRole(T user) {
         user.password = encryptPassword(user.password);
         //这里需要保证事务
         return autoTransaction(() -> {
             var newUser = super.add(user);
-            deptService.saveDeptListWithUserID(newUser.id, user.deptIDs);
-            roleService.saveRoleListWithUserID(newUser.id, user.roleIDs);
+            deptService.addDeptListWithUserID(newUser.id, user.deptIDs);
+            roleService.addRoleListWithUserID(newUser.id, user.roleIDs);
             return get(newUser.id);
         });
     }
@@ -86,9 +86,9 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
         return autoTransaction(() -> {
             //更新就是先删除再保存
             deptService.deleteByUserID(user.id);
-            deptService.saveDeptListWithUserID(user.id, user.deptIDs);
+            deptService.addDeptListWithUserID(user.id, user.deptIDs);
             roleService.deleteByUserID(user.id);
-            roleService.saveRoleListWithUserID(user.id, user.roleIDs);
+            roleService.addRoleListWithUserID(user.id, user.roleIDs);
             return super.update(user);
         });
     }
