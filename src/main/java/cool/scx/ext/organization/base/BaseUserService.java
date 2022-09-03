@@ -70,6 +70,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
             var newUser = this.add(user);
             deptService.addDeptListWithUserID(newUser.id, user.deptIDs);
             roleService.addRoleListWithUserID(newUser.id, user.roleIDs);
+            //并不直接返回 newUser 而是重新 get 获取是为了填充 deptIDs 和 roleIDs 字段
             return get(newUser.id);
         });
     }
