@@ -67,7 +67,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
         user.password = encryptPassword(user.password);
         //这里需要保证事务
         return autoTransaction(() -> {
-            var newUser = super.add(user);
+            var newUser = this.add(user);
             deptService.addDeptListWithUserID(newUser.id, user.deptIDs);
             roleService.addRoleListWithUserID(newUser.id, user.roleIDs);
             return get(newUser.id);
@@ -89,7 +89,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
             deptService.addDeptListWithUserID(user.id, user.deptIDs);
             roleService.deleteByUserID(user.id);
             roleService.addRoleListWithUserID(user.id, user.roleIDs);
-            return super.update(user);
+            return this.update(user);
         });
     }
 
