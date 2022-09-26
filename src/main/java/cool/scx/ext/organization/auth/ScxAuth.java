@@ -315,6 +315,31 @@ public final class ScxAuth {
         return new PermsWrapper(perms, pagePerms, pageElementPerms, apiPerms);
     }
 
+    /**
+     * 查看当前登录用户是否有对应的权限
+     *
+     * @param permString 权限串
+     * @return 是否拥有这个权限
+     */
+    public static boolean hasPerm(String permString) {
+        var loginUser = getLoginUser();
+        if (loginUser == null) {//没登陆就啥权限也没有
+            return false;
+        }
+        var deptHasPerm = deptService.hasPerm(loginUser, permString);
+        var roleHasPerm = roleService.hasPerm(loginUser, permString);
+        return deptHasPerm || roleHasPerm;
+    }
+
+    /**
+     * 查看当前登录用户是否有对应的权限
+     *
+     * @param permFlag 权限串
+     * @return 是否拥有这个权限
+     */
+    public static boolean hasPerm(PermFlag permFlag) {
+        return hasPerm(permFlag.permString());
+    }
 
     /**
      * 尝试获取一个可以作为认证的 Token 具体获取方式由设备类型决定

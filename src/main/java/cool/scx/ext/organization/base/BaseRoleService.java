@@ -89,4 +89,20 @@ public abstract class BaseRoleService<T extends BaseRole> extends BaseModelServi
         userRoleService.delete(new Query().equal("userID", id));
     }
 
+    /**
+     * 根据用户查询是否有对应的权限 一般不直接调用 请使用 {@link cool.scx.ext.organization.auth.ScxAuth#hasPerm(String)}
+     *
+     * @param loginUser  用户
+     * @param permString 权限串
+     * @return 是否拥有这个权限
+     */
+    public boolean hasPerm(BaseUser loginUser, String permString) {
+        if (loginUser.isAdmin) {//管理员拥有全部权限
+            return true;
+        }
+        var roleIDs = userRoleService.buildListSQL(new Query().equal("userID", loginUser.id), SelectFilter.ofIncluded("roleID"));
+        var c = count(new Query().in("id", roleIDs).jsonContains("perms", permString));
+        return c > 0;
+    }
+
 }
