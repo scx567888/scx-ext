@@ -2,6 +2,7 @@ package cool.scx.ext.organization.auth;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import cool.scx.core.ScxContext;
+import cool.scx.core.base.Query;
 import cool.scx.ext.core.WSParam;
 import cool.scx.ext.core.WSParamHandlerRegister;
 import cool.scx.ext.organization.base.*;
@@ -315,6 +316,33 @@ public final class ScxAuth {
         return new PermsWrapper(perms, pagePerms, pageElementPerms, apiPerms);
     }
 
+    /**
+     * 查看当前登录用户是否有对应的权限
+     *
+     * @param permString 权限串
+     * @return 是否拥有这个权限
+     */
+    public static boolean hasPerm(String permString) {
+        var loginUser = getLoginUser();
+        if (loginUser == null) {//没登陆就啥权限也没有
+            return false;
+        } else if (loginUser.isAdmin) {
+            return true;
+        }
+        var deptHasPerm = deptService.count(new Query().in("id", loginUser.deptIDs).jsonContains("perms", permString)) > 0;
+        var roleHasPerm = roleService.count(new Query().in("id", loginUser.roleIDs).jsonContains("perms", permString)) > 0;
+        return deptHasPerm || roleHasPerm;
+    }
+
+    /**
+     * 查看当前登录用户是否有对应的权限
+     *
+     * @param permFlag 权限串
+     * @return 是否拥有这个权限
+     */
+    public static boolean hasPerm(PermFlag permFlag) {
+        return hasPerm(permFlag.permString());
+    }
 
     /**
      * 尝试获取一个可以作为认证的 Token 具体获取方式由设备类型决定

@@ -16,6 +16,13 @@ import java.lang.annotation.Target;
 public @interface Perms {
 
     /**
+     * 权限字符串值 当为空(默认)时会以 类名称 + ":" 方法名 为值
+     *
+     * @return 权限字符串值
+     */
+    String value() default "";
+
+    /**
      * 是否校验权限
      *
      * @return 是否
