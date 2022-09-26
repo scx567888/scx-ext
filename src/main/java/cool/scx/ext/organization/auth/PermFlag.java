@@ -2,6 +2,9 @@ package cool.scx.ext.organization.auth;
 
 /**
  * 权限标识
+ *
+ * @author scx567888
+ * @version 1.14.5
  */
 public interface PermFlag {
 
