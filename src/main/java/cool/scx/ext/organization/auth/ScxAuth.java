@@ -329,8 +329,14 @@ public final class ScxAuth {
         } else if (loginUser.isAdmin) {
             return true;
         }
-        var deptHasPerm = deptService.count(new Query().in("id", loginUser.deptIDs).jsonContains("perms", permString)) > 0;
-        var roleHasPerm = roleService.count(new Query().in("id", loginUser.roleIDs).jsonContains("perms", permString)) > 0;
+        var deptHasPerm = false;
+        var roleHasPerm = false;
+        if (loginUser.deptIDs != null && loginUser.deptIDs.size() > 0) {
+            deptHasPerm = deptService.count(new Query().in("id", loginUser.deptIDs).jsonContains("perms", permString)) > 0;
+        }
+        if (loginUser.roleIDs != null && loginUser.roleIDs.size() > 0) {
+            roleHasPerm = roleService.count(new Query().in("id", loginUser.roleIDs).jsonContains("perms", permString)) > 0;
+        }
         return deptHasPerm || roleHasPerm;
     }
 
