@@ -11,6 +11,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import static cool.scx.util.StringUtils.notBlank;
+
 /**
  * 拦截器 用于校验权限
  *
@@ -88,12 +90,14 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
          * @param method m
          */
         public AuthPerms(Class<?> clazz, Method method) {
-            this.permStr = clazz.getSimpleName() + ":" + method.getName();
+            var defaultPermStr = clazz.getSimpleName() + ":" + method.getName();
             var scxPerms = method.getAnnotation(Perms.class);
             if (scxPerms != null) {
+                this.permStr = notBlank(scxPerms.value()) ? scxPerms.value() : defaultPermStr;
                 this.checkPerms = scxPerms.checkPerms();
                 this.checkLogin = scxPerms.checkLogin();
             } else {
+                this.permStr = defaultPermStr;
                 this.checkPerms = false;
                 this.checkLogin = false;
             }
