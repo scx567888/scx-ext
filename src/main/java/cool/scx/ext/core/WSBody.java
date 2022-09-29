@@ -1,6 +1,6 @@
 package cool.scx.ext.core;
 
-import cool.scx.core.vo.BaseVo;
+import cool.scx.util.ObjectUtils;
 
 /**
  * 前台和后台发送 websocket 消息的 封装体
@@ -16,7 +16,7 @@ public record WSBody(String name, Object data) {
      * @return a
      */
     public String toJson() {
-        return BaseVo.toJson(this, "");
+        return ObjectUtils.toJson(this, "");
     }
 
 }

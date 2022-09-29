@@ -14,6 +14,7 @@ import cool.scx.ext.organization.OrganizationModule;
 import cool.scx.ext.organization.base.BaseUserService;
 import cool.scx.ext.static_server.StaticServerModule;
 import cool.scx.test.auth.TestUserService;
+import cool.scx.test.bb.BBService;
 import cool.scx.test.website.UserListWebSiteHandler;
 import cool.scx.test.website.WriteTimeHandler;
 import cool.scx.util.http.HttpClientHelper;
@@ -39,6 +40,7 @@ public class TestModule extends ScxModule {
     public static void main(String[] args) throws IOException, InterruptedException {
         runModule();
         test0();
+        test1();
     }
 
     @BeforeTest
@@ -65,6 +67,12 @@ public class TestModule extends ScxModule {
         System.err.println("访问页面前数据条数 : " + userService.list().size());
         HttpClientHelper.get("http://localhost:8080/");
         System.err.println("访问页面后数据条数 : " + userService.list().size());
+    }
+
+    @Test
+    public static void test1() throws IOException, InterruptedException {
+        var bbService = ScxContext.getBean(BBService.class);
+        bbService.test();
     }
 
     /**
