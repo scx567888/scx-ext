@@ -84,7 +84,7 @@ public final class CRUDHelper {
      */
     public static <B extends BaseModel> B mapToBaseModel(Map<String, Object> map, Class<B> baseModelClass) {
         try {
-            return ObjectUtils.convertValue(map, baseModelClass);
+            return ObjectUtils.convertValue(map, baseModelClass, ObjectUtils.Option.IGNORE_JSON_IGNORE);
         } catch (Exception e) {
             logger.error("将 Map 转换为 BaseModel 时发生异常 : ", e);
             //这里一般就是 参数转换错误
