@@ -4,7 +4,7 @@ import cool.scx.core.http.exception.impl.NoPermException;
 import cool.scx.core.http.exception.impl.UnauthorizedException;
 import cool.scx.core.mvc.ScxMappingHandler;
 import cool.scx.core.mvc.interceptor.ScxMappingInterceptor;
-import cool.scx.ext.organization.annotation.Perms;
+import cool.scx.ext.organization.annotation.ApiPerms;
 import io.vertx.ext.web.RoutingContext;
 
 import java.lang.reflect.Method;
@@ -32,7 +32,7 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
     @Override
     public void preHandle(RoutingContext context, ScxMappingHandler scxMappingHandler) {
         var p = getScxAuthPerms(scxMappingHandler);
-        if (p.checkLogin) {
+        if (p.needCheckPerms) {
             //先获取登录的用户
             var currentUser = ScxAuth.getLoginUser(context);
             //如果用户为空 则执行未登录处理器
@@ -74,9 +74,9 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
         public final String permStr;
 
         /**
-         * 是否检查登录
+         * 是否启用检查 (这里只针对标记注解的 api 进行检查)
          */
-        public final boolean checkLogin;
+        public final boolean needCheckPerms;
 
         /**
          * 是否检查权限
@@ -91,15 +91,15 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
          */
         public AuthPerms(Class<?> clazz, Method method) {
             var defaultPermStr = clazz.getSimpleName() + ":" + method.getName();
-            var scxPerms = method.getAnnotation(Perms.class);
+            var scxPerms = method.getAnnotation(ApiPerms.class);
             if (scxPerms != null) {
                 this.permStr = notBlank(scxPerms.value()) ? scxPerms.value() : defaultPermStr;
                 this.checkPerms = scxPerms.checkPerms();
-                this.checkLogin = scxPerms.checkLogin();
+                this.needCheckPerms = true;
             } else {
                 this.permStr = defaultPermStr;
                 this.checkPerms = false;
-                this.checkLogin = false;
+                this.needCheckPerms = false;
             }
         }
 

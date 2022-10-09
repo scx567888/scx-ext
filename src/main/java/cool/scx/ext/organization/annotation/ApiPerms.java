@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Perms {
+public @interface ApiPerms {
 
     /**
      * 权限字符串值 当为空(默认)时会以 类名称 + ":" 方法名 为值
@@ -28,12 +28,5 @@ public @interface Perms {
      * @return 是否
      */
     boolean checkPerms() default true;
-
-    /**
-     * 是否检查登录
-     *
-     * @return 是否
-     */
-    boolean checkLogin() default true;
 
 }

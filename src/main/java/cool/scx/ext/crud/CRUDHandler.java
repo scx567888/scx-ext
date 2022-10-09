@@ -1,7 +1,7 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.core.base.Query;
+import cool.scx.sql.base.Query;
 import cool.scx.sql.where.WhereOption;
 
 import java.util.Map;
@@ -81,7 +81,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = crudUpdateParam.getBaseModel(baseModelClass);
-        var updateFilter = crudUpdateParam.getUpdateFilter(baseModelClass, baseModelService._scxDaoTableInfo());
+        var updateFilter = crudUpdateParam.getUpdateFilter(baseModelClass, baseModelService._baseDao()._tableInfo());
         return baseModelService.update(realObject, updateFilter);
     }
 
@@ -123,7 +123,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var query = crudListParam.getQuery(baseModelClass);
-        var selectFilter = crudListParam.getSelectFilter(baseModelClass, baseModelService._scxDaoTableInfo());
+        var selectFilter = crudListParam.getSelectFilter(baseModelClass, baseModelService._baseDao()._tableInfo());
         var list = baseModelService.list(query, selectFilter);
         var total = baseModelService.count(query);
         return new CRUDListResult(list, total);

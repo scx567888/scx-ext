@@ -2,15 +2,15 @@ package cool.scx.ext.organization.base;
 
 import cool.scx.core.ScxContext;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.core.base.Query;
-import cool.scx.core.base.SelectFilter;
-import cool.scx.core.base.UpdateFilter;
 import cool.scx.core.http.exception.impl.NoPermException;
 import cool.scx.core.http.exception.impl.UnauthorizedException;
 import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.exception.UnknownUserException;
 import cool.scx.ext.organization.exception.UsernameAlreadyExistsException;
 import cool.scx.ext.organization.exception.WrongPasswordException;
+import cool.scx.sql.base.Query;
+import cool.scx.sql.base.SelectFilter;
+import cool.scx.sql.base.UpdateFilter;
 import cool.scx.sql.where.WhereOption;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.MultiMap;
@@ -66,7 +66,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
     public T addWithDeptAndRole(T user) {
         user.password = encryptPassword(user.password);
         //这里需要保证事务
-        return autoTransaction(() -> {
+        return ScxContext.autoTransaction(() -> {
             var newUser = this.add(user);
             deptService.addDeptListWithUserID(newUser.id, user.deptIDs);
             roleService.addRoleListWithUserID(newUser.id, user.roleIDs);
@@ -84,7 +84,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
     public T updateWithDeptAndRole(T user) {
         user.password = encryptPassword(user.password);
         //这里需要保证事务
-        return autoTransaction(() -> {
+        return ScxContext.autoTransaction(() -> {
             //更新就是先删除再保存
             deptService.deleteByUserID(user.id);
             deptService.addDeptListWithUserID(user.id, user.deptIDs);
@@ -118,7 +118,7 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
      * <p>
      * 重写方法
      *
-     * @param oldList a {@link cool.scx.core.base.Query} object
+     * @param oldList a {@link cool.scx.sql.base.Query} object
      * @param query   q
      * @return a {@link java.util.List} object
      */

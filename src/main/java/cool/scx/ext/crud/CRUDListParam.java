@@ -1,12 +1,12 @@
 package cool.scx.ext.crud;
 
-import cool.scx.core.base.AbstractFilter;
 import cool.scx.core.base.BaseModel;
-import cool.scx.core.base.Query;
-import cool.scx.core.base.SelectFilter;
-import cool.scx.core.dao.ScxDaoTableInfo;
 import cool.scx.core.http.exception.impl.BadRequestException;
 import cool.scx.ext.crud.exception.*;
+import cool.scx.sql.TableInfo;
+import cool.scx.sql.base.ColumnInfoFilter;
+import cool.scx.sql.base.Query;
+import cool.scx.sql.base.SelectFilter;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.sql.where.WhereType;
 
@@ -104,9 +104,9 @@ public final class CRUDListParam {
      * @return a
      * @throws cool.scx.ext.crud.exception.UnknownWhereTypeException a
      */
-    public static AbstractFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereTypeException {
+    public static ColumnInfoFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereTypeException {
         try {
-            return AbstractFilter.FilterMode.of(filterMode);
+            return ColumnInfoFilter.FilterMode.of(filterMode);
         } catch (Exception ignored) {
             throw new UnknownFilterModeException(filterMode);
         }
@@ -189,7 +189,7 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, ScxDaoTableInfo scxDaoTableInfo) {
+    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
