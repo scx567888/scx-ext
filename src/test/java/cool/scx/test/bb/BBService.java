@@ -2,7 +2,7 @@ package cool.scx.test.bb;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.core.base.Query;
+import cool.scx.sql.base.Query;
 import cool.scx.sql.where.WhereOption;
 
 import java.util.List;

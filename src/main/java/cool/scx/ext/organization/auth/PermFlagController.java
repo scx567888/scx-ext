@@ -48,6 +48,7 @@ public class PermFlagController {
      *
      * @return a {@link java.util.List} object
      */
+    @SuppressWarnings("unchecked")
     private List<PermFlag> initPermFlags() {
         var permClassList = Arrays.stream(ScxContext.scxModules())
                 .flatMap(c -> c.allClassList().stream()

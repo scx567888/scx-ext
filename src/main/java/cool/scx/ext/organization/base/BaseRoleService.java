@@ -1,9 +1,9 @@
 package cool.scx.ext.organization.base;
 
 import cool.scx.core.base.BaseModelService;
-import cool.scx.core.base.Query;
-import cool.scx.core.base.SelectFilter;
 import cool.scx.sql.SQL;
+import cool.scx.sql.base.Query;
+import cool.scx.sql.base.SelectFilter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,7 +7,7 @@ import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;
 import cool.scx.core.vo.Json;
 import cool.scx.ext.crud.CRUDUpdateParam;
-import cool.scx.ext.organization.annotation.Perms;
+import cool.scx.ext.organization.annotation.ApiPerms;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -93,7 +93,7 @@ public abstract class BaseUserController<T extends BaseUser> {
      * @param userID      a {@link java.lang.Long} object
      * @return a {@link cool.scx.core.vo.BaseVo} object
      */
-    @Perms
+    @ApiPerms
     @ScxMapping(method = {HttpMethod.PUT})
     public BaseVo changePasswordByAdminUser(@FromBody String newPassword, @FromBody Long userID) {
         return DataJson.ok().data(this.userService.changePasswordByAdminUser(newPassword, userID));
@@ -106,7 +106,7 @@ public abstract class BaseUserController<T extends BaseUser> {
      * @param password    a {@link java.lang.String} object
      * @return a {@link cool.scx.core.vo.BaseVo} object
      */
-    @Perms
+    @ApiPerms
     @ScxMapping(method = {HttpMethod.PUT})
     public BaseVo changeUsernameBySelf(@FromBody String newUsername, @FromBody String password) {
         return DataJson.ok().data(this.userService.changeUsernameBySelf(newUsername, password));
@@ -119,7 +119,7 @@ public abstract class BaseUserController<T extends BaseUser> {
      * @param password    a {@link java.lang.String} object
      * @return a {@link cool.scx.core.vo.BaseVo} object
      */
-    @Perms
+    @ApiPerms
     @ScxMapping(method = {HttpMethod.PUT})
     public BaseVo changePasswordBySelf(@FromBody String newPassword, @FromBody String password) {
         return DataJson.ok().data(this.userService.changePasswordBySelf(newPassword, password));

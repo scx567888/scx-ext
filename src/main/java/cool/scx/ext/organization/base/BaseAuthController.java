@@ -3,17 +3,17 @@ package cool.scx.ext.organization.base;
 import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.FromBody;
 import cool.scx.core.annotation.ScxMapping;
-import cool.scx.core.base.UpdateFilter;
 import cool.scx.core.enumeration.HttpMethod;
 import cool.scx.core.http.exception.impl.UnauthorizedException;
 import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;
 import cool.scx.core.vo.Json;
-import cool.scx.ext.organization.annotation.Perms;
+import cool.scx.ext.organization.annotation.ApiPerms;
 import cool.scx.ext.organization.auth.DeviceType;
 import cool.scx.ext.organization.auth.PermsWrapper;
 import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.exception.AuthException;
+import cool.scx.sql.base.UpdateFilter;
 import io.vertx.ext.web.RoutingContext;
 
 /**
@@ -128,7 +128,7 @@ public abstract class BaseAuthController<T extends BaseUser> {
      * @return a {@link cool.scx.core.vo.BaseVo} object
      * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
-    @Perms(checkPerms = false)
+    @ApiPerms(checkPerms = false)
     @ScxMapping(method = HttpMethod.GET)
     public BaseVo info(RoutingContext routingContext) throws UnauthorizedException {
         var user = ScxAuth.getLoginUser(routingContext);
@@ -144,7 +144,7 @@ public abstract class BaseAuthController<T extends BaseUser> {
      * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
     @SuppressWarnings("unchecked")
-    @Perms(checkPerms = false)
+    @ApiPerms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public DataJson changeUserAvatar(@FromBody String newAvatar) throws UnauthorizedException {
         var loginUser = (T) ScxAuth.getLoginUser();
@@ -160,7 +160,7 @@ public abstract class BaseAuthController<T extends BaseUser> {
      * @return a {@link cool.scx.core.vo.BaseVo} object
      * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
-    @Perms(checkPerms = false)
+    @ApiPerms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo changeUserUsername(@FromBody String newUsername, @FromBody String password) throws UnauthorizedException {
         try {
@@ -178,7 +178,7 @@ public abstract class BaseAuthController<T extends BaseUser> {
      * @return a {@link cool.scx.core.vo.BaseVo} object
      * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
      */
-    @Perms(checkPerms = false)
+    @ApiPerms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo changeUserPassword(@FromBody String newPassword, @FromBody String oldPassword) throws UnauthorizedException {
         try {
