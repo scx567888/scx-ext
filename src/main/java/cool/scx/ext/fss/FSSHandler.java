@@ -1,8 +1,8 @@
 package cool.scx.ext.fss;
 
 import cool.scx.core.ScxContext;
-import cool.scx.core.http.exception.impl.InternalServerErrorException;
-import cool.scx.core.http.exception.impl.NotFoundException;
+import cool.scx.core.http.exception.InternalServerErrorException;
+import cool.scx.core.http.exception.NotFoundException;
 import cool.scx.core.type.UploadedEntity;
 import cool.scx.core.vo.*;
 import cool.scx.util.Cache;
@@ -178,7 +178,7 @@ public abstract class FSSHandler {
      *
      * @param fssObject a {@link cool.scx.ext.fss.FSSObject} object
      * @return a {@link java.io.File} object
-     * @throws cool.scx.core.http.exception.impl.NotFoundException if any.
+     * @throws cool.scx.core.http.exception.NotFoundException if any.
      */
     public Path checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
         var physicalFile = getPhysicalFilePath(fssObject);

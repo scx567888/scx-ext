@@ -2,8 +2,8 @@ package cool.scx.ext.organization.base;
 
 import cool.scx.core.ScxContext;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.core.http.exception.impl.NoPermException;
-import cool.scx.core.http.exception.impl.UnauthorizedException;
+import cool.scx.core.http.exception.NoPermException;
+import cool.scx.core.http.exception.UnauthorizedException;
 import cool.scx.ext.organization.auth.ScxAuth;
 import cool.scx.ext.organization.exception.UnknownUserException;
 import cool.scx.ext.organization.exception.UsernameAlreadyExistsException;

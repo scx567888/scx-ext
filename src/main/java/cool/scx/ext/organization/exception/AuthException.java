@@ -1,6 +1,6 @@
 package cool.scx.ext.organization.exception;
 
-import cool.scx.core.http.exception.impl.BadRequestException;
+import cool.scx.core.http.exception.BadRequestException;
 import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.Json;
 import cool.scx.util.CaseUtils;
