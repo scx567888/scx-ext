@@ -1,9 +1,9 @@
 package cool.scx.ext.organization.auth;
 
-import cool.scx.core.http.exception.impl.NoPermException;
-import cool.scx.core.http.exception.impl.UnauthorizedException;
+import cool.scx.core.http.exception.NoPermException;
+import cool.scx.core.http.exception.UnauthorizedException;
 import cool.scx.core.mvc.ScxMappingHandler;
-import cool.scx.core.mvc.interceptor.ScxMappingInterceptor;
+import cool.scx.core.mvc.ScxMappingInterceptor;
 import cool.scx.ext.organization.annotation.ApiPerms;
 import io.vertx.ext.web.RoutingContext;
 

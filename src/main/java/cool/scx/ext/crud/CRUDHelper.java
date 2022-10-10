@@ -4,8 +4,8 @@ import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.NoColumn;
 import cool.scx.core.base.BaseModel;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.core.http.exception.impl.BadRequestException;
-import cool.scx.core.http.exception.impl.NotFoundException;
+import cool.scx.core.http.exception.BadRequestException;
+import cool.scx.core.http.exception.NotFoundException;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 import cool.scx.ext.crud.exception.UnknownCRUDModelException;
 import cool.scx.ext.crud.exception.UnknownFieldNameException;
@@ -97,7 +97,7 @@ public final class CRUDHelper {
      *
      * @param baseModelName a {@link java.lang.String} object.
      * @return a {@link java.lang.Class} object.
-     * @throws cool.scx.core.http.exception.impl.NotFoundException if any.
+     * @throws cool.scx.core.http.exception.NotFoundException if any.
      */
     public static CRUDApiInfo getCRUDApiInfo(String baseModelName) throws NotFoundException {
         if (StringUtils.isBlank(baseModelName)) {

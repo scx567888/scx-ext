@@ -1,7 +1,7 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.core.http.exception.impl.BadRequestException;
+import cool.scx.core.http.exception.BadRequestException;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.sql.TableInfo;
 import cool.scx.sql.base.ColumnInfoFilter;
@@ -141,7 +141,7 @@ public final class CRUDListParam {
      *
      * @param modelClass a
      * @return a
-     * @throws cool.scx.core.http.exception.impl.BadRequestException if any.
+     * @throws cool.scx.core.http.exception.BadRequestException if any.
      */
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var query = new Query();

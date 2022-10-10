@@ -4,7 +4,7 @@ import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.FromBody;
 import cool.scx.core.annotation.ScxMapping;
 import cool.scx.core.enumeration.HttpMethod;
-import cool.scx.core.http.exception.impl.UnauthorizedException;
+import cool.scx.core.http.exception.UnauthorizedException;
 import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;
 import cool.scx.core.vo.Json;
@@ -126,7 +126,7 @@ public abstract class BaseAuthController<T extends BaseUser> {
      *
      * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
      * @return a {@link cool.scx.core.vo.BaseVo} object
-     * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
+     * @throws cool.scx.core.http.exception.UnauthorizedException if any.
      */
     @ApiPerms(checkPerms = false)
     @ScxMapping(method = HttpMethod.GET)
@@ -141,7 +141,7 @@ public abstract class BaseAuthController<T extends BaseUser> {
      *
      * @param newAvatar a {@link java.lang.String} object
      * @return a {@link cool.scx.core.vo.DataJson} object
-     * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
+     * @throws cool.scx.core.http.exception.UnauthorizedException if any.
      */
     @SuppressWarnings("unchecked")
     @ApiPerms(checkPerms = false)
@@ -158,7 +158,7 @@ public abstract class BaseAuthController<T extends BaseUser> {
      * @param newUsername a {@link java.lang.String} object
      * @param password    a {@link java.lang.String} object
      * @return a {@link cool.scx.core.vo.BaseVo} object
-     * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
+     * @throws cool.scx.core.http.exception.UnauthorizedException if any.
      */
     @ApiPerms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)
@@ -176,7 +176,7 @@ public abstract class BaseAuthController<T extends BaseUser> {
      * @param newPassword a {@link java.lang.String} object
      * @param oldPassword a {@link java.lang.String} object
      * @return a {@link cool.scx.core.vo.BaseVo} object
-     * @throws cool.scx.core.http.exception.impl.UnauthorizedException if any.
+     * @throws cool.scx.core.http.exception.UnauthorizedException if any.
      */
     @ApiPerms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)

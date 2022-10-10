@@ -1,6 +1,6 @@
 package cool.scx.ext.crud.exception;
 
-import cool.scx.core.http.exception.impl.BadRequestException;
+import cool.scx.core.http.exception.BadRequestException;
 import cool.scx.core.vo.Json;
 import cool.scx.sql.where.WhereType;
 
