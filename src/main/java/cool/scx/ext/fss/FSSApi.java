@@ -46,6 +46,8 @@ public class FSSApi {
 
     /**
      * 构造函数
+     *
+     * @param fssObjectService a {@link cool.scx.ext.fss.FSSObjectService} object
      */
     public FSSApi(FSSObjectService fssObjectService) {
         this.fssObjectService = fssObjectService;

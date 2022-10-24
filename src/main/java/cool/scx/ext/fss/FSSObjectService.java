@@ -19,6 +19,12 @@ import java.util.List;
 @ScxService
 public class FSSObjectService extends BaseModelService<FSSObject> {
 
+    /**
+     * 获取物理文件路径
+     *
+     * @param fssObject a {@link cool.scx.ext.fss.FSSObject} object
+     * @return a {@link java.nio.file.Path} object
+     */
     public static Path getPhysicalFilePath(FSSObject fssObject) {
         return Path.of(FSSConfig.uploadFilePath().toString(), fssObject.filePath);
     }
@@ -67,7 +73,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * 根据 fssObjectID 进行删除 (同时还会删除物理文件, 如果引用为 0 的话)
      *
      * @param fssObjectID f
-     * @throws IOException f
+     * @throws java.io.IOException f
      */
     public void delete(String fssObjectID) throws IOException {
         //先获取文件的基本信息
