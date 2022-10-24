@@ -6,7 +6,6 @@ import cool.scx.core.annotation.ScxModel;
 import cool.scx.core.base.BaseModel;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 /**
@@ -63,9 +62,5 @@ public class FSSObject extends BaseModel {
      */
     @Column(type = "TEXT")
     public String fileExtension;
-
-    public final Path getPhysicalFilePath() {
-        return Path.of(FSSConfig.uploadFilePath().toString(), this.filePath);
-    }
 
 }

@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cool.scx.ext.fss.FSSObjectService.getPhysicalFilePath;
 import static java.nio.file.StandardOpenOption.*;
 
 /**
@@ -58,7 +59,7 @@ public class FSSApi {
      * @throws cool.scx.core.http.exception.NotFoundException if any.
      */
     private static Path checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
-        var physicalFile = fssObject.getPhysicalFilePath();
+        var physicalFile = getPhysicalFilePath(fssObject);
         if (Files.notExists(physicalFile)) {
             throw new NotFoundException();
         }
@@ -306,7 +307,7 @@ public class FSSApi {
             //循环处理
             for (var fssObject : fssObjectListByMd5) {
                 //获取物理文件
-                var physicalFile = fssObject.getPhysicalFilePath().toFile();
+                var physicalFile = getPhysicalFilePath(fssObject).toFile();
                 //这里多校验一些内容避免出先差错
                 //第一 文件必须存在 第二 文件大小必须和前台获得的文件大小相同 第三 文件的 md5 校验结果也必须和前台发送过来的 md5 相同
                 if (physicalFile.exists() && physicalFile.length() == fileSize && fileMD5.equalsIgnoreCase(DigestUtils.md5(physicalFile))) {

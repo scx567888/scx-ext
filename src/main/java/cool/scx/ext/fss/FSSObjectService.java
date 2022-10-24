@@ -7,6 +7,7 @@ import cool.scx.util.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -17,6 +18,10 @@ import java.util.List;
  */
 @ScxService
 public class FSSObjectService extends BaseModelService<FSSObject> {
+
+    public static Path getPhysicalFilePath(FSSObject fssObject) {
+        return Path.of(FSSConfig.uploadFilePath().toString(), fssObject.filePath);
+    }
 
     /**
      * 根据 md5 查找文件
@@ -72,7 +77,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
             long count = this.countByMD5(needDeleteFile.fileMD5);
             //没有被其他人引用过 可以删除物理文件
             if (count <= 1) {
-                var filePath = needDeleteFile.getPhysicalFilePath();
+                var filePath = getPhysicalFilePath(needDeleteFile);
                 try {
                     FileUtils.delete(filePath.getParent());
                 } catch (NoSuchFileException ignore) {
