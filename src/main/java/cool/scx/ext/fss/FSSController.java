@@ -29,7 +29,7 @@ import static java.nio.file.StandardOpenOption.*;
  * @version 0.3.6
  */
 @ScxMapping("/api/fss")
-public class FSSApi {
+public class FSSController {
 
     /**
      * 图片缓存 此处做一些初始设置
@@ -49,7 +49,7 @@ public class FSSApi {
      *
      * @param fssObjectService a {@link cool.scx.ext.fss.FSSObjectService} object
      */
-    public FSSApi(FSSObjectService fssObjectService) {
+    public FSSController(FSSObjectService fssObjectService) {
         this.fssObjectService = fssObjectService;
     }
 
