@@ -34,8 +34,6 @@ public class FSSController {
     /**
      * 图片缓存 此处做一些初始设置
      * 设置缓存的最大容量 为 10000 .
-     * 设置缓存在一天后没有读取则失效 .
-     * 使用 cpu 核心数作为并发级别 .
      */
     private static final Cache<String, Image> IMAGE_CACHE = new Cache<>(10000);
 
