@@ -1,6 +1,7 @@
 package cool.scx.ext.fss;
 
-import cool.scx.core.ScxContext;
+import cool.scx.core.annotation.*;
+import cool.scx.core.enumeration.HttpMethod;
 import cool.scx.core.http.exception.InternalServerErrorException;
 import cool.scx.core.http.exception.NotFoundException;
 import cool.scx.core.type.UploadedEntity;
@@ -13,7 +14,6 @@ import cool.scx.util.RandomUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,12 +22,13 @@ import java.util.List;
 import static java.nio.file.StandardOpenOption.*;
 
 /**
- * <p>Abstract FSSHandler class.</p>
+ * <p>FSSController class.</p>
  *
  * @author scx567888
- * @version 1.3.7
+ * @version 0.3.6
  */
-public abstract class FSSHandler {
+@ScxMapping("/api/fss")
+public class FSSApi {
 
     /**
      * 图片缓存 此处做一些初始设置
@@ -43,19 +44,84 @@ public abstract class FSSHandler {
     private final FSSObjectService fssObjectService;
 
     /**
-     * <p>Constructor for FSSHandler.</p>
-     *
-     * @param fssObjectService a {@link cool.scx.ext.fss.FSSObjectService} object
+     * 构造函数
      */
-    public FSSHandler(FSSObjectService fssObjectService) {
+    public FSSApi(FSSObjectService fssObjectService) {
         this.fssObjectService = fssObjectService;
     }
 
     /**
-     * <p>Constructor for FSSHandler.</p>
+     * 检查物理文件是否存在 存在则返回物理文件 不存在则抛出异常
+     *
+     * @param fssObject a {@link cool.scx.ext.fss.FSSObject} object
+     * @return a {@link java.io.File} object
+     * @throws cool.scx.core.http.exception.NotFoundException if any.
      */
-    public FSSHandler() {
-        this.fssObjectService = ScxContext.getBean(FSSObjectService.class);
+    private static Path checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
+        var physicalFile = fssObject.getPhysicalFilePath();
+        if (Files.notExists(physicalFile)) {
+            throw new NotFoundException();
+        }
+        return physicalFile;
+    }
+
+    /**
+     * a
+     *
+     * @param fileMD5 a
+     * @return a
+     */
+    private static Path getUploadTempPath(String fileMD5) {
+        return FSSConfig.uploadFilePath().resolve("TEMP").resolve(fileMD5);
+    }
+
+    /**
+     * <p>copyUploadFile.</p>
+     *
+     * @param fileName     a {@link java.lang.String} object.
+     * @param oldFSSObject a {@link cool.scx.ext.fss.FSSObject} object.
+     * @return a {@link cool.scx.ext.fss.FSSObject} object.
+     */
+    public static FSSObject copyFSSObject(String fileName, FSSObject oldFSSObject) {
+        var fssObject = new FSSObject();
+        fssObject.fssObjectID = RandomUtils.randomUUID();
+        fssObject.fileName = fileName;
+        fssObject.uploadTime = LocalDateTime.now();
+        fssObject.filePath = oldFSSObject.filePath;
+        fssObject.fileSizeDisplay = oldFSSObject.fileSizeDisplay;
+        fssObject.fileSize = oldFSSObject.fileSize;
+        fssObject.fileMD5 = oldFSSObject.fileMD5;
+        fssObject.fileExtension = FileUtils.getFileExtension(fssObject.fileName);
+        return fssObject;
+    }
+
+    /**
+     * 根据文件信息 创建 FSSObject 实例
+     * 规则如下
+     * fssObjectID (文件 id)        : 随机字符串
+     * filePath (文件物理文件存储路径) : 年份(以上传时间为标准)/月份(以上传时间为标准)/天(以上传时间为标准)/文件MD5/文件真实名称
+     * 其他字段和字面意义相同
+     *
+     * @param fileName a {@link java.lang.String} object.
+     * @param fileSize a {@link java.lang.Long} object.
+     * @param fileMD5  a {@link java.lang.String} object.
+     * @return a {@link cool.scx.ext.fss.FSSObject} object.
+     */
+    public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileMD5) {
+        var now = LocalDateTime.now();
+        var yearStr = now.getYear() + "";
+        var monthStr = now.getMonthValue() + "";
+        var dayStr = now.getDayOfMonth() + "";
+        var fssObject = new FSSObject();
+        fssObject.fssObjectID = RandomUtils.randomUUID();
+        fssObject.fileName = fileName;
+        fssObject.uploadTime = now;
+        fssObject.fileSizeDisplay = FileUtils.longToDisplaySize(fileSize);
+        fssObject.fileSize = fileSize;
+        fssObject.fileMD5 = fileMD5;
+        fssObject.fileExtension = FileUtils.getFileExtension(fssObject.fileName);
+        fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileMD5, fileName};
+        return fssObject;
     }
 
     /**
@@ -91,125 +157,33 @@ public abstract class FSSHandler {
     }
 
     /**
-     * 根据文件信息 创建 FSSObject 实例
-     * 规则如下
-     * fssObjectID (文件 id)        : 随机字符串
-     * filePath (文件物理文件存储路径) : 年份(以上传时间为标准)/月份(以上传时间为标准)/天(以上传时间为标准)/文件MD5/文件真实名称
-     * 其他字段和字面意义相同
+     * 通用下载资源方法
+     * todo 优化性能
      *
-     * @param fileName a {@link java.lang.String} object.
-     * @param fileSize a {@link java.lang.Long} object.
-     * @param fileMD5  a {@link java.lang.String} object.
-     * @return a {@link cool.scx.ext.fss.FSSObject} object.
+     * @param fssObjectID a {@link java.lang.String} object.
+     * @return a {@link cool.scx.core.vo.Download} object.
      */
-    public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileMD5) {
-        var now = LocalDateTime.now();
-        var yearStr = now.getYear() + "";
-        var monthStr = now.getMonthValue() + "";
-        var dayStr = now.getDayOfMonth() + "";
-        var fssObject = new FSSObject();
-        fssObject.fssObjectID = RandomUtils.randomUUID();
-        fssObject.fileName = fileName;
-        fssObject.uploadTime = now;
-        fssObject.fileSizeDisplay = FileUtils.longToDisplaySize(fileSize);
-        fssObject.fileSize = fileSize;
-        fssObject.fileMD5 = fileMD5;
-        fssObject.fileExtension = FileUtils.getFileExtension(fssObject.fileName);
-        fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileMD5, fileName};
-        return fssObject;
-    }
-
-    /**
-     * a
-     *
-     * @param fileMD5 a
-     * @return a
-     */
-    public static Path getUploadTempPath(String fileMD5) {
-        return FSSConfig.uploadFilePath().resolve("TEMP").resolve(fileMD5);
-    }
-
-    /**
-     * a
-     *
-     * @param fssObject a
-     * @return a
-     */
-    public static Path getPhysicalFilePath(FSSObject fssObject) {
-        return Path.of(FSSConfig.uploadFilePath().toString(), fssObject.filePath);
-    }
-
-    /**
-     * <p>copyUploadFile.</p>
-     *
-     * @param fileName     a {@link java.lang.String} object.
-     * @param oldFSSObject a {@link cool.scx.ext.fss.FSSObject} object.
-     * @return a {@link cool.scx.ext.fss.FSSObject} object.
-     */
-    public FSSObject copyFSSObject(String fileName, FSSObject oldFSSObject) {
-        var fssObject = new FSSObject();
-        fssObject.fssObjectID = RandomUtils.randomUUID();
-        fssObject.fileName = fileName;
-        fssObject.uploadTime = LocalDateTime.now();
-        fssObject.filePath = oldFSSObject.filePath;
-        fssObject.fileSizeDisplay = oldFSSObject.fileSizeDisplay;
-        fssObject.fileSize = oldFSSObject.fileSize;
-        fssObject.fileMD5 = oldFSSObject.fileMD5;
-        fssObject.fileExtension = FileUtils.getFileExtension(fssObject.fileName);
-        return fssObject;
-    }
-
-    /**
-     * <p>checkFileID.</p>
-     *
-     * @param fssObjectID a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.fss.FSSObject} object
-     */
-    public FSSObject checkFSSObjectID(String fssObjectID) {
-        var fssObject = fssObjectService.findByFSSObjectID(fssObjectID);
-        if (fssObject == null) {
-            throw new NotFoundException();
-        }
-        return fssObject;
-    }
-
-    /**
-     * 检查物理文件是否存在 存在则返回物理文件 不存在则抛出异常
-     *
-     * @param fssObject a {@link cool.scx.ext.fss.FSSObject} object
-     * @return a {@link java.io.File} object
-     * @throws cool.scx.core.http.exception.NotFoundException if any.
-     */
-    public Path checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
-        var physicalFile = getPhysicalFilePath(fssObject);
-        if (Files.notExists(physicalFile)) {
-            throw new NotFoundException();
-        }
-        return physicalFile;
-    }
-
-    /**
-     * <p>download.</p>
-     *
-     * @param fssObjectID a {@link java.lang.String} object
-     * @return a {@link cool.scx.core.vo.Download} object
-     */
-    public Download download(String fssObjectID) {
+    @ScxMapping(value = "/download/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
+    public Download download(@FromPath String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
         return Download.of(file, fssObject.fileName);
     }
 
     /**
-     * <p>image.</p>
+     * 展示图片
      *
-     * @param fssObjectID a {@link java.lang.String} object
-     * @param width       a {@link java.lang.Integer} object
-     * @param height      a {@link java.lang.Integer} object
+     * @param fssObjectID id
+     * @param width       a {@link java.lang.Integer} object.
+     * @param height      a {@link java.lang.Integer} object.
      * @param type        a {@link java.lang.String} object
-     * @return a {@link cool.scx.core.vo.Image} object
+     * @return a {@link cool.scx.core.vo.Raw} object.
      */
-    public Image image(String fssObjectID, Integer width, Integer height, String type) {
+    @ScxMapping(value = "/image/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
+    public Image image(@FromPath String fssObjectID,
+                       @FromQuery(value = "w", required = false) Integer width,
+                       @FromQuery(value = "h", required = false) Integer height,
+                       @FromQuery(value = "t", required = false) String type) {
         var cacheKey = fssObjectID + " " + width + " " + height + " " + type;
         //尝试通过缓存获取
         return IMAGE_CACHE.computeIfAbsent(cacheKey, k -> {
@@ -220,30 +194,37 @@ public abstract class FSSHandler {
     }
 
     /**
-     * <p>raw.</p>
+     * 展示文件
      *
-     * @param fssObjectID a {@link java.lang.String} object
-     * @return a {@link cool.scx.core.vo.Raw} object
+     * @param fssObjectID id
+     * @return a {@link cool.scx.core.vo.Raw} object.
      */
-    public Raw raw(String fssObjectID) {
+    @ScxMapping(value = "/raw/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
+    public Raw raw(@FromPath String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
         return Raw.of(file);
     }
 
     /**
-     * <p>upload.</p>
+     * 单个文件上传 和 分片文件上传
      *
-     * @param fileName      a {@link java.lang.String} object
-     * @param fileSize      a {@link java.lang.Long} object
-     * @param fileMD5       a {@link java.lang.String} object
-     * @param chunkLength   a {@link java.lang.Integer} object
-     * @param nowChunkIndex a {@link java.lang.Integer} object
-     * @param fileData      a {@link cool.scx.core.type.UploadedEntity} object
-     * @return a {@link cool.scx.core.vo.Json} object
-     * @throws java.io.IOException a
+     * @param fileName      文件名
+     * @param fileSize      文件大小
+     * @param fileMD5       文件md5
+     * @param chunkLength   分片总长度
+     * @param nowChunkIndex 当前分片
+     * @param fileData      文件内容
+     * @return r
+     * @throws java.lang.Exception s
      */
-    public Json upload(String fileName, Long fileSize, String fileMD5, Integer chunkLength, Integer nowChunkIndex, UploadedEntity fileData) throws IOException {
+    @ScxMapping(value = "/upload", method = HttpMethod.POST)
+    public Json upload(@FromBody String fileName,
+                       @FromBody Long fileSize,
+                       @FromBody String fileMD5,
+                       @FromBody Integer chunkLength,
+                       @FromBody Integer nowChunkIndex,
+                       @FromUpload UploadedEntity fileData) throws Exception {
         var uploadTempFile = getUploadTempPath(fileMD5).resolve("scx_fss.temp");
         var uploadConfigFile = uploadTempFile.resolveSibling("scx_fss.upload_state");
 
@@ -298,65 +279,26 @@ public abstract class FSSHandler {
      * @return a
      * @throws java.io.IOException a
      */
-    public Json delete(String fssObjectID) throws IOException {
+    @ScxMapping(value = "/delete", method = HttpMethod.DELETE)
+    public Json delete(@FromBody String fssObjectID) throws IOException {
         //先获取文件的基本信息
-        var needDeleteFile = fssObjectService.findByFSSObjectID(fssObjectID);
-        if (needDeleteFile != null) {
-            //判断文件是否被其他人引用过
-            long count = fssObjectService.countByMD5(needDeleteFile.fileMD5);
-            //没有被其他人引用过 可以删除物理文件
-            if (count <= 1) {
-                var filePath = getPhysicalFilePath(needDeleteFile);
-                try {
-                    FileUtils.delete(filePath.getParent());
-                } catch (NoSuchFileException ignore) {
-                    //文件不存在时忽略错误
-                }
-            }
-            //删除数据库中的文件数据
-            fssObjectService.delete(needDeleteFile.id);
-        }
+        fssObjectService.delete(fssObjectID);
         return Json.ok();
     }
 
     /**
-     * <p>list.</p>
-     *
-     * @param fssObjectIDs a {@link java.util.List} object
-     * @return a {@link cool.scx.core.vo.Json} object
-     */
-    public BaseVo listInfo(List<String> fssObjectIDs) {
-        if (fssObjectIDs != null && fssObjectIDs.size() > 0) {
-            return DataJson.ok().data(fssObjectService.findByFSSObjectIDs(fssObjectIDs));
-        } else {
-            return DataJson.ok().data(new ArrayList<>());
-        }
-    }
-
-    /**
-     * a
-     *
-     * @param fssObjectID a
-     * @return a
-     */
-    public BaseVo info(String fssObjectID) {
-        if (fssObjectID != null) {
-            return DataJson.ok().data(fssObjectService.findByFSSObjectID(fssObjectID));
-        } else {
-            return DataJson.ok().data(null);
-        }
-    }
-
-    /**
-     * 检查 md5 是否可用 (用于秒传)
+     * 检查一下这个 服务器里有没有和这个 可以直接使用 此 md5 的文件
      *
      * @param fileName f
      * @param fileSize f
      * @param fileMD5  f
      * @return f
-     * @throws java.io.IOException e
+     * @throws java.io.IOException f
      */
-    public Json checkAnyFileExistsByThisMD5(String fileName, Long fileSize, String fileMD5) throws IOException {
+    @ScxMapping(value = "check-any-file-exists-by-this-md5", method = HttpMethod.POST)
+    public Json checkAnyFileExistsByThisMD5(@FromBody String fileName,
+                                            @FromBody Long fileSize,
+                                            @FromBody String fileMD5) throws IOException {
         //先判断 文件是否已经上传过 并且文件可用
         var fssObjectListByMd5 = fssObjectService.findFSSObjectListByMD5(fileMD5);
         if (fssObjectListByMd5.size() > 0) {
@@ -364,7 +306,7 @@ public abstract class FSSHandler {
             //循环处理
             for (var fssObject : fssObjectListByMd5) {
                 //获取物理文件
-                var physicalFile = getPhysicalFilePath(fssObject).toFile();
+                var physicalFile = fssObject.getPhysicalFilePath().toFile();
                 //这里多校验一些内容避免出先差错
                 //第一 文件必须存在 第二 文件大小必须和前台获得的文件大小相同 第三 文件的 md5 校验结果也必须和前台发送过来的 md5 相同
                 if (physicalFile.exists() && physicalFile.length() == fileSize && fileMD5.equalsIgnoreCase(DigestUtils.md5(physicalFile))) {
@@ -384,6 +326,50 @@ public abstract class FSSHandler {
         }
         //通知前台 没找到任何 和此 MD5 相同并且文件内容未损害的 文件
         return Json.fail("no-any-file-exists-for-this-md5");
+    }
+
+    /**
+     * <p>listFile.</p>
+     *
+     * @param fssObjectID a {@link java.util.Map} object.
+     * @return a {@link cool.scx.core.vo.Json} object.
+     */
+    @ScxMapping(value = "/info", method = HttpMethod.POST)
+    public BaseVo info(@FromBody String fssObjectID) {
+        if (fssObjectID != null) {
+            return DataJson.ok().data(fssObjectService.findByFSSObjectID(fssObjectID));
+        } else {
+            return DataJson.ok().data(null);
+        }
+    }
+
+    /**
+     * s
+     *
+     * @param fssObjectIDs a
+     * @return a
+     */
+    @ScxMapping(value = "/list-info", method = HttpMethod.POST)
+    public BaseVo listInfo(@FromBody List<String> fssObjectIDs) {
+        if (fssObjectIDs != null && fssObjectIDs.size() > 0) {
+            return DataJson.ok().data(fssObjectService.findByFSSObjectIDs(fssObjectIDs));
+        } else {
+            return DataJson.ok().data(new ArrayList<>());
+        }
+    }
+
+    /**
+     * <p>checkFileID.</p>
+     *
+     * @param fssObjectID a {@link java.lang.String} object
+     * @return a {@link cool.scx.ext.fss.FSSObject} object
+     */
+    private FSSObject checkFSSObjectID(String fssObjectID) {
+        var fssObject = fssObjectService.findByFSSObjectID(fssObjectID);
+        if (fssObject == null) {
+            throw new NotFoundException();
+        }
+        return fssObject;
     }
 
 }

@@ -3,7 +3,10 @@ package cool.scx.ext.fss;
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.sql.base.Query;
+import cool.scx.util.FileUtils;
 
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 /**
@@ -53,6 +56,32 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      */
     public List<FSSObject> findByFSSObjectIDs(List<String> fssObjectIDs) {
         return list(new Query().in("fssObjectID", fssObjectIDs));
+    }
+
+    /**
+     * 根据 fssObjectID 进行删除 (同时还会删除物理文件, 如果引用为 0 的话)
+     *
+     * @param fssObjectID f
+     * @throws IOException f
+     */
+    public void delete(String fssObjectID) throws IOException {
+        //先获取文件的基本信息
+        var needDeleteFile = this.findByFSSObjectID(fssObjectID);
+        if (needDeleteFile != null) {
+            //判断文件是否被其他人引用过
+            long count = this.countByMD5(needDeleteFile.fileMD5);
+            //没有被其他人引用过 可以删除物理文件
+            if (count <= 1) {
+                var filePath = needDeleteFile.getPhysicalFilePath();
+                try {
+                    FileUtils.delete(filePath.getParent());
+                } catch (NoSuchFileException ignore) {
+                    //文件不存在时忽略错误
+                }
+            }
+            //删除数据库中的文件数据
+            this.delete(needDeleteFile.id);
+        }
     }
 
 }
