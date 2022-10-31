@@ -28,17 +28,17 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
     /**
      * Constant <code>logger</code>
      */
-    private static final Logger logger = LoggerFactory.getLogger(CoreWebSocketHandler.class);
+    protected static final Logger logger = LoggerFactory.getLogger(CoreWebSocketHandler.class);
 
     /**
      * 心跳检测字符
      */
-    private static final String LOVE = "❤";
+    public static final String LOVE = "❤";
 
     /**
      * 存储所有在线的 连接
      */
-    private static final List<ServerWebSocket> SERVER_WEB_SOCKETS = new ArrayList<>();
+    protected static final List<ServerWebSocket> SERVER_WEB_SOCKETS = new ArrayList<>();
 
     /**
      * 根据 binaryHandlerID 获取 ServerWebSocket
