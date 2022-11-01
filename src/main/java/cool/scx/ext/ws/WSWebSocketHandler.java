@@ -24,14 +24,14 @@ import static cool.scx.ext.ws.WSContext.*;
 public class WSWebSocketHandler implements BaseWebSocketHandler {
 
     /**
-     * Constant <code>logger</code>
-     */
-    private static final Logger logger = LoggerFactory.getLogger(WSWebSocketHandler.class);
-
-    /**
      * 心跳检测字符
      */
     public static final String LOVE = "❤";
+
+    /**
+     * Constant <code>logger</code>
+     */
+    private static final Logger logger = LoggerFactory.getLogger(WSWebSocketHandler.class);
 
     /**
      * {@inheritDoc}

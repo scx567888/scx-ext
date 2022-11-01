@@ -2,12 +2,12 @@ package cool.scx.ext.organization.auth;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import cool.scx.core.ScxContext;
-import cool.scx.ext.ws.WSContext;
-import cool.scx.ext.ws.WSMessage;
 import cool.scx.ext.organization.base.*;
 import cool.scx.ext.organization.exception.AuthException;
 import cool.scx.ext.organization.exception.UnknownDeviceException;
 import cool.scx.ext.organization.exception.UnknownLoginHandlerException;
+import cool.scx.ext.ws.WSContext;
+import cool.scx.ext.ws.WSMessage;
 import cool.scx.sql.base.Query;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.RandomUtils;
