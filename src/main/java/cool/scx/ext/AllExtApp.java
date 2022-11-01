@@ -2,7 +2,7 @@ package cool.scx.ext;
 
 import cool.scx.core.Scx;
 import cool.scx.ext.cms.CMSModule;
-import cool.scx.ext.core.CoreModule;
+import cool.scx.ext.ws.WSModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
@@ -27,7 +27,7 @@ public class AllExtApp {
                 .setMainClass(AllExtApp.class)
                 .addModule(
                         new CMSModule(),
-                        new CoreModule(),
+                        new WSModule(),
                         new CRUDModule(),
                         new FixTableModule(),
                         new FSSModule(),
