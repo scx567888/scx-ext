@@ -116,10 +116,10 @@ public final class ScxAuth {
      */
     public static void readSessionFromFile() {
         try (var f = Files.newInputStream(SCX_SESSION_CACHE_PATH)) {
-            List<All> clients = ObjectUtils.jsonMapper().readValue(f, new TypeReference<>() {
+            List<LoggedInClient> clients = ObjectUtils.jsonMapper().readValue(f, new TypeReference<>() {
             });
-            LOGGED_IN_CLIENT_TABLE.add(clients);
-            Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + clients.length + " 条数据!!!").println();
+            LOGGED_IN_CLIENT_TABLE.addAll(clients);
+            Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + clients.size() + " 条数据!!!").println();
         } catch (Exception ignored) {
 
         }

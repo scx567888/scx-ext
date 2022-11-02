@@ -2,10 +2,7 @@ package cool.scx.ext.organization.auth;
 
 import io.vertx.core.http.ServerWebSocket;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * <p>AlreadyLoginClientMap class.</p>
@@ -24,6 +21,15 @@ public final class LoggedInClientTable {
      */
     public void add(LoggedInClient... loggedInClients) {
         Collections.addAll(list, loggedInClients);
+    }
+
+    /**
+     * a
+     *
+     * @param loggedInClients a
+     */
+    public void addAll(Collection<LoggedInClient> loggedInClients) {
+        list.addAll(loggedInClients);
     }
 
     /**
