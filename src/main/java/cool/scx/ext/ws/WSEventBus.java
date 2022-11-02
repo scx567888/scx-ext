@@ -52,8 +52,39 @@ public class WSEventBus {
      */
     public WSEventBus wsPublish(WSMessage<?> wsMessage, Collection<ServerWebSocket> sockets) {
         var json = wsMessage.toJson();
-        for (var allWebSocket : sockets) {
-            allWebSocket.writeTextMessage(json);
+        for (var socket : sockets) {
+            if (socket != null && !socket.isClosed()) {
+                socket.writeTextMessage(json);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * <p>wsPublish.</p>
+     *
+     * @param address a {@link java.lang.String} object
+     * @param body    a {@link java.lang.Object} object
+     * @param sockets a {@link java.util.Collection} object
+     * @return a {@link cool.scx.ext.ws.WSEventBus} object
+     */
+    public WSEventBus wsPublish(String address, Object body, ServerWebSocket... sockets) {
+        return wsPublish(new WSMessage<>(address, body), sockets);
+    }
+
+    /**
+     * <p>wsPublish.</p>
+     *
+     * @param wsMessage a {@link cool.scx.ext.ws.WSMessage} object
+     * @param sockets   a {@link java.util.Collection} object
+     * @return a {@link cool.scx.ext.ws.WSEventBus} object
+     */
+    public WSEventBus wsPublish(WSMessage<?> wsMessage, ServerWebSocket... sockets) {
+        var json = wsMessage.toJson();
+        for (var socket : sockets) {
+            if (socket != null && !socket.isClosed()) {
+                socket.writeTextMessage(json);
+            }
         }
         return this;
     }
