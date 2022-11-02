@@ -64,29 +64,6 @@ public class WSContext {
      * <p>wsPublish.</p>
      *
      * @param wsMessage a {@link cool.scx.ext.ws.WSMessage} object
-     * @param sockets   a {@link io.vertx.core.http.ServerWebSocket} object
-     * @return a {@link cool.scx.ext.ws.WSEventBus} object
-     */
-    public static WSEventBus wsPublish(WSMessage<?> wsMessage, ServerWebSocket... sockets) {
-        return wsEventBus.wsPublish(wsMessage, sockets);
-    }
-
-    /**
-     * <p>wsPublish.</p>
-     *
-     * @param address a {@link java.lang.String} object
-     * @param body    a {@link java.lang.Object} object
-     * @param sockets a {@link java.util.Collection} object
-     * @return a {@link cool.scx.ext.ws.WSEventBus} object
-     */
-    public static WSEventBus wsPublish(String address, Object body, ServerWebSocket... sockets) {
-        return wsEventBus.wsPublish(address, body, sockets);
-    }
-
-    /**
-     * <p>wsPublish.</p>
-     *
-     * @param wsMessage a {@link cool.scx.ext.ws.WSMessage} object
      * @param sockets   a {@link java.util.Collection} object
      * @return a {@link cool.scx.ext.ws.WSEventBus} object
      */
