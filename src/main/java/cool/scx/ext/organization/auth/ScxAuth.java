@@ -175,7 +175,7 @@ public final class ScxAuth {
      * @return a T object
      */
     @SuppressWarnings("unchecked")
-    public static <T extends BaseUser> T getLoginUserByWebSocketID(ServerWebSocket socket) {
+    public static <T extends BaseUser> T getLoginUserByWebSocket(ServerWebSocket socket) {
         var client = ALREADY_LOGIN_CLIENT_TABLE.getByWebSocket(socket);
         return client != null ? (T) userService.get(client.userID) : null;
     }
