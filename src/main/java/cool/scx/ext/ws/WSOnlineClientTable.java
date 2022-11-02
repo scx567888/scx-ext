@@ -10,7 +10,7 @@ import java.util.Map;
  * <p>WSOnlineClientTable class.</p>
  *
  * @author scx567888
- * @version 1.15.1
+ * @version 1.15.0
  */
 public class WSOnlineClientTable {
 
