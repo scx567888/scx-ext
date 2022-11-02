@@ -1,9 +1,8 @@
-package cool.scx.ext.core;
+package cool.scx.ext.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import cool.scx.core.annotation.ScxWebSocketMapping;
 import cool.scx.core.base.BaseWebSocketHandler;
-import cool.scx.util.ObjectUtils;
 import cool.scx.util.ansi.Ansi;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
@@ -11,11 +10,10 @@ import io.vertx.core.http.WebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import static cool.scx.ext.ws.WSContext.*;
 
 /**
- * 时间总线 websocket 连接处理类
+ * 事件总线 websocket 连接处理类
  * <p>
  * 负责维护前台和后台的事件总线通讯
  *
@@ -23,41 +21,17 @@ import java.util.List;
  * @version 1.0.16
  */
 @ScxWebSocketMapping("/scx")
-public class CoreWebSocketHandler implements BaseWebSocketHandler {
-
-    /**
-     * Constant <code>logger</code>
-     */
-    private static final Logger logger = LoggerFactory.getLogger(CoreWebSocketHandler.class);
+public class WSWebSocketHandler implements BaseWebSocketHandler {
 
     /**
      * 心跳检测字符
      */
-    private static final String LOVE = "❤";
+    public static final String LOVE = "❤";
 
     /**
-     * 存储所有在线的 连接
+     * Constant <code>logger</code>
      */
-    private static final List<ServerWebSocket> SERVER_WEB_SOCKETS = new ArrayList<>();
-
-    /**
-     * 根据 binaryHandlerID 获取 ServerWebSocket
-     *
-     * @param binaryHandlerID a
-     * @return a
-     */
-    public static ServerWebSocket getWebSocket(String binaryHandlerID) {
-        return SERVER_WEB_SOCKETS.stream().filter(f -> f.binaryHandlerID().equals(binaryHandlerID)).findAny().orElse(null);
-    }
-
-    /**
-     * 获取当前所有在线的连接对象
-     *
-     * @return 当前所有在线的连接对象
-     */
-    public static List<ServerWebSocket> getAllWebSockets() {
-        return SERVER_WEB_SOCKETS;
-    }
+    private static final Logger logger = LoggerFactory.getLogger(WSWebSocketHandler.class);
 
     /**
      * {@inheritDoc}
@@ -66,7 +40,7 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
      */
     @Override
     public void onOpen(ServerWebSocket webSocket) {
-        SERVER_WEB_SOCKETS.add(webSocket);
+        addServerWebSocket(webSocket);
         logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), getAllWebSockets().size());
     }
 
@@ -78,7 +52,7 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
     @Override
     public void onClose(ServerWebSocket webSocket) {
         //如果客户端终止连接 将此条连接作废
-        SERVER_WEB_SOCKETS.removeIf(f -> f.binaryHandlerID().equals(webSocket.binaryHandlerID()));
+        removeServerWebSocket(webSocket);
         logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), getAllWebSockets().size());
     }
 
@@ -90,8 +64,7 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
         if (LOVE.equals(textData)) { //这里是心跳检测
             webSocket.writeTextMessage(LOVE);
         } else { //这里是事件
-            var wsBody = ObjectUtils.jsonMapper().readValue(textData, WSBody.class);
-            WSParamHandlerRegister.findAndHandle(wsBody, webSocket);
+            WSContext.wsEventBus().publishByWSMessage(WSMessage.fromJson(textData).setWebSocket(webSocket));
         }
     }
 
@@ -109,7 +82,7 @@ public class CoreWebSocketHandler implements BaseWebSocketHandler {
      */
     @Override
     public void onError(Throwable event, ServerWebSocket webSocket) {
-        SERVER_WEB_SOCKETS.removeIf(f -> f.binaryHandlerID().equals(webSocket.binaryHandlerID()));
+        removeServerWebSocket(webSocket);
         event.printStackTrace();
     }
 

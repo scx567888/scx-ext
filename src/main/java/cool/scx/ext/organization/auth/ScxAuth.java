@@ -2,12 +2,12 @@ package cool.scx.ext.organization.auth;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import cool.scx.core.ScxContext;
-import cool.scx.ext.core.WSParam;
-import cool.scx.ext.core.WSParamHandlerRegister;
 import cool.scx.ext.organization.base.*;
 import cool.scx.ext.organization.exception.AuthException;
 import cool.scx.ext.organization.exception.UnknownDeviceException;
 import cool.scx.ext.organization.exception.UnknownLoginHandlerException;
+import cool.scx.ext.ws.WSContext;
+import cool.scx.ext.ws.WSMessage;
 import cool.scx.sql.base.Query;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.RandomUtils;
@@ -82,7 +82,7 @@ public final class ScxAuth {
      */
     public static void initAuth(Class<? extends BaseUserService<?>> userServiceClass, Class<? extends BaseDeptService<?>> deptServiceClass, Class<? extends BaseRoleService<?>> roleServiceClass) {
         //绑定事件
-        WSParamHandlerRegister.addHandler("bind-websocket-by-token", ScxAuth::bindWebSocketByToken);
+        WSContext.wsConsumer("bind-websocket-by-token", ScxAuth::bindWebSocketByToken);
         //设置处理器 ScxMapping 前置处理器
         ScxContext.scxMappingConfiguration().setScxMappingInterceptor(new PermsAnnotationInterceptor());
         //设置请求头
@@ -260,8 +260,8 @@ public final class ScxAuth {
      *
      * @param wsParam a {@link java.lang.Object} object
      */
-    private static void bindWebSocketByToken(WSParam wsParam) {
-        var objectMap = ObjectUtils.convertValue(wsParam.data(), ObjectUtils.MAP_TYPE);
+    private static void bindWebSocketByToken(WSMessage<?> wsParam) {
+        var objectMap = ObjectUtils.convertValue(wsParam.body(), ObjectUtils.MAP_TYPE);
         //获取 token
         var token = ObjectUtils.convertValue(objectMap.get("token"), String.class);
         //获取 binaryHandlerID

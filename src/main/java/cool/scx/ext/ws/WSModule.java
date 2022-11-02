@@ -1,4 +1,4 @@
-package cool.scx.ext.core;
+package cool.scx.ext.ws;
 
 import cool.scx.core.ScxModule;
 
@@ -8,7 +8,7 @@ import cool.scx.core.ScxModule;
  * @author scx567888
  * @version 1.3.0
  */
-public class CoreModule extends ScxModule {
+public class WSModule extends ScxModule {
 
     /**
      * {@inheritDoc}
