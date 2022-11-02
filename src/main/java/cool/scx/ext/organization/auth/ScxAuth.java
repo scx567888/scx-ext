@@ -489,7 +489,7 @@ public final class ScxAuth {
      *
      * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClientTable} object
      */
-    public static AlreadyLoginClientTable alreadyLoginClientMap() {
+    public static AlreadyLoginClientTable alreadyLoginClientTable() {
         return ALREADY_LOGIN_CLIENT_TABLE;
     }
 
