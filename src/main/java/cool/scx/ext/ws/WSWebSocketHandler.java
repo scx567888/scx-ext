@@ -3,14 +3,16 @@ package cool.scx.ext.ws;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import cool.scx.core.annotation.ScxWebSocketMapping;
 import cool.scx.core.base.BaseWebSocketHandler;
-import cool.scx.util.ansi.Ansi;
-import io.vertx.core.buffer.Buffer;
+import cool.scx.core.websocket.OnCloseRoutingContext;
+import cool.scx.core.websocket.OnExceptionRoutingContext;
+import cool.scx.core.websocket.OnFrameRoutingContext;
+import cool.scx.core.websocket.OnOpenRoutingContext;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.http.WebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static cool.scx.ext.ws.WSContext.*;
+import static cool.scx.ext.ws.WSContext.wsOnlineClientTable;
 
 /**
  * 事件总线 websocket 连接处理类
@@ -39,9 +41,10 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      * onOpen
      */
     @Override
-    public void onOpen(ServerWebSocket webSocket) {
-        addServerWebSocket(webSocket);
-        logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), getAllWebSockets().size());
+    public void onOpen(ServerWebSocket webSocket, OnOpenRoutingContext ctx) {
+        wsOnlineClientTable().add(webSocket);
+        logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), wsOnlineClientTable().size());
+        ctx.next();
     }
 
     /**
@@ -50,30 +53,24 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      * onClose
      */
     @Override
-    public void onClose(ServerWebSocket webSocket) {
+    public void onClose(ServerWebSocket webSocket, OnCloseRoutingContext ctx) {
         //如果客户端终止连接 将此条连接作废
-        removeServerWebSocket(webSocket);
-        logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), getAllWebSockets().size());
+        wsOnlineClientTable().remove(webSocket);
+        logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), wsOnlineClientTable().size());
+        ctx.next();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void onTextMessage(String textData, WebSocketFrame h, ServerWebSocket webSocket) throws JsonProcessingException {
+    public void onTextMessage(String textData, WebSocketFrame h, ServerWebSocket webSocket, OnFrameRoutingContext ctx) throws JsonProcessingException {
         if (LOVE.equals(textData)) { //这里是心跳检测
             webSocket.writeTextMessage(LOVE);
         } else { //这里是事件
             WSContext.wsEventBus().publishByWSMessage(WSMessage.fromJson(textData).setWebSocket(webSocket));
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onBinaryMessage(Buffer binaryData, WebSocketFrame h, ServerWebSocket webSocket) {
-        Ansi.out().color("onBinaryMessage").println();
+        ctx.next();
     }
 
     /**
@@ -81,9 +78,10 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      * {@inheritDoc}
      */
     @Override
-    public void onError(Throwable event, ServerWebSocket webSocket) {
-        removeServerWebSocket(webSocket);
+    public void onError(Throwable event, ServerWebSocket webSocket, OnExceptionRoutingContext ctx) {
+        wsOnlineClientTable().remove(webSocket);
         event.printStackTrace();
+        ctx.next();
     }
 
 }

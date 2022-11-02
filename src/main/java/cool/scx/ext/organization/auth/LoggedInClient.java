@@ -6,7 +6,7 @@ package cool.scx.ext.organization.auth;
  * @author scx567888
  * @version 1.11.7
  */
-public final class AlreadyLoginClient {
+public final class LoggedInClient {
 
     /**
      * 唯一 ID 用于标识用户
@@ -28,8 +28,8 @@ public final class AlreadyLoginClient {
     public String token;
 
     /**
-     * 对应的 webSocketBinaryHandlerID
+     * 对应的 webSocket 的 ID 我们统一使用 binaryHandlerID
      */
-    public String webSocketBinaryHandlerID;
+    public String webSocketID;
 
 }

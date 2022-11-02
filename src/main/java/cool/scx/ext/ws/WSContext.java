@@ -4,8 +4,6 @@ import cool.scx.functional.ScxHandlerA;
 import io.vertx.core.http.ServerWebSocket;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <p>WSContext class.</p>
@@ -16,9 +14,9 @@ import java.util.Map;
 public class WSContext {
 
     /**
-     * 存储所有在线的 连接
+     * Constant <code>wsOnlineClientTable</code>
      */
-    private static final Map<String, ServerWebSocket> SERVER_WEB_SOCKETS = new HashMap<>();
+    private static final WSOnlineClientTable wsOnlineClientTable = new WSOnlineClientTable();
 
     /**
      * Constant <code>wsEventBus</code>
@@ -92,7 +90,7 @@ public class WSContext {
      * @return a {@link cool.scx.ext.ws.WSEventBus} object
      */
     public static WSEventBus wsPublishAll(WSMessage<?> wsMessage) {
-        return wsEventBus.wsPublish(wsMessage, WSContext.getAllWebSockets());
+        return wsEventBus.wsPublish(wsMessage, onlineClients());
     }
 
     /**
@@ -103,17 +101,17 @@ public class WSContext {
      * @return a {@link cool.scx.ext.ws.WSEventBus} object
      */
     public static WSEventBus wsPublishAll(String address, Object body) {
-        return wsEventBus.wsPublish(address, body, WSContext.getAllWebSockets());
+        return wsEventBus.wsPublish(address, body, onlineClients());
     }
 
     /**
      * 根据 binaryHandlerID 获取 ServerWebSocket
      *
-     * @param binaryHandlerID a
+     * @param webSocketsID a
      * @return a
      */
-    public static ServerWebSocket getWebSocket(String binaryHandlerID) {
-        return SERVER_WEB_SOCKETS.get(binaryHandlerID);
+    public static ServerWebSocket getOnlineClient(String webSocketsID) {
+        return wsOnlineClientTable.get(webSocketsID);
     }
 
     /**
@@ -121,26 +119,17 @@ public class WSContext {
      *
      * @return 当前所有在线的连接对象
      */
-    public static Collection<ServerWebSocket> getAllWebSockets() {
-        return SERVER_WEB_SOCKETS.values();
+    public static Collection<ServerWebSocket> onlineClients() {
+        return wsOnlineClientTable.onlineClients();
     }
 
     /**
-     * <p>addServerWebSocket.</p>
+     * <p>wsOnlineClientTable.</p>
      *
-     * @param webSocket a {@link io.vertx.core.http.ServerWebSocket} object
+     * @return a {@link cool.scx.ext.ws.WSOnlineClientTable} object
      */
-    static void addServerWebSocket(ServerWebSocket webSocket) {
-        SERVER_WEB_SOCKETS.put(webSocket.binaryHandlerID(), webSocket);
-    }
-
-    /**
-     * <p>removeServerWebSocket.</p>
-     *
-     * @param webSocket a {@link io.vertx.core.http.ServerWebSocket} object
-     */
-    static void removeServerWebSocket(ServerWebSocket webSocket) {
-        SERVER_WEB_SOCKETS.remove(webSocket.binaryHandlerID());
+    static WSOnlineClientTable wsOnlineClientTable() {
+        return wsOnlineClientTable;
     }
 
 }
