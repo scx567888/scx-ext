@@ -46,6 +46,13 @@ public class WSContext {
         return wsEventBus.wsConsumer(address, handler);
     }
 
+    /**
+     * <p>wsPublish.</p>
+     *
+     * @param wsMessage a {@link cool.scx.ext.ws.WSMessage} object
+     * @param sockets   a {@link io.vertx.core.http.ServerWebSocket} object
+     * @return a {@link cool.scx.ext.ws.WSEventBus} object
+     */
     public static WSEventBus wsPublish(WSMessage<?> wsMessage, ServerWebSocket... sockets) {
         return wsEventBus.wsPublish(wsMessage, sockets);
     }
