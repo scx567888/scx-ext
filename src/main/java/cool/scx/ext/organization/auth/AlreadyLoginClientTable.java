@@ -55,6 +55,12 @@ public final class AlreadyLoginClientTable {
         return list.stream().filter(c -> c.token.equals(token)).findAny().orElse(null);
     }
 
+    /**
+     * <p>getByWebSocketID.</p>
+     *
+     * @param webSocketID a {@link java.lang.String} object
+     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClient} object
+     */
     public AlreadyLoginClient getByWebSocketID(String webSocketID) {
         return list.stream().filter(c -> c.webSocketID.equals(webSocketID)).findAny().orElse(null);
     }
@@ -102,7 +108,7 @@ public final class AlreadyLoginClientTable {
     /**
      * <p>removeByWebSocketBinaryHandlerID.</p>
      *
-     * @param webSocketBinaryHandlerID a {@link java.lang.String} object
+     * @param webSocketID a {@link java.lang.String} object
      * @return a boolean
      */
     public boolean removeByWebSocketID(String webSocketID) {

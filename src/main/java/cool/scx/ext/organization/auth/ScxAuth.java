@@ -154,12 +154,26 @@ public final class ScxAuth {
         return getLoginUserByToken(getToken(ctx));
     }
 
+    /**
+     * <p>getLoginUserByWebSocketID.</p>
+     *
+     * @param webSocketID a {@link java.lang.String} object
+     * @param <T>         a T class
+     * @return a T object
+     */
     @SuppressWarnings("unchecked")
     public static <T extends BaseUser> T getLoginUserByWebSocketID(String webSocketID) {
         var client = ALREADY_LOGIN_CLIENT_TABLE.getByWebSocketID(webSocketID);
         return client != null ? (T) userService.get(client.userID) : null;
     }
 
+    /**
+     * <p>getLoginUserByWebSocketID.</p>
+     *
+     * @param socket a {@link io.vertx.core.http.ServerWebSocket} object
+     * @param <T>    a T class
+     * @return a T object
+     */
     @SuppressWarnings("unchecked")
     public static <T extends BaseUser> T getLoginUserByWebSocketID(ServerWebSocket socket) {
         var client = ALREADY_LOGIN_CLIENT_TABLE.getByWebSocket(socket);
@@ -473,7 +487,7 @@ public final class ScxAuth {
     /**
      * <p>alreadyLoginClientMap.</p>
      *
-     * @return a {@link AlreadyLoginClientTable} object
+     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClientTable} object
      */
     public static AlreadyLoginClientTable alreadyLoginClientMap() {
         return ALREADY_LOGIN_CLIENT_TABLE;
