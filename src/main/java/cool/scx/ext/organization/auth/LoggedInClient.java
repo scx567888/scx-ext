@@ -6,7 +6,7 @@ package cool.scx.ext.organization.auth;
  * @author scx567888
  * @version 1.11.7
  */
-public final class AlreadyLoginClient {
+public final class LoggedInClient {
 
     /**
      * 唯一 ID 用于标识用户

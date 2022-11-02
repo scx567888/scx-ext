@@ -11,7 +11,6 @@ import cool.scx.ext.ws.WSMessage;
 import cool.scx.sql.base.Query;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.RandomUtils;
-import cool.scx.util.StringUtils;
 import cool.scx.util.ansi.Ansi;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.ext.web.RoutingContext;
@@ -44,7 +43,7 @@ public final class ScxAuth {
     /**
      * 存储所有的登录的客户端
      */
-    private static final AlreadyLoginClientTable ALREADY_LOGIN_CLIENT_TABLE = new AlreadyLoginClientTable();
+    private static final LoggedInClientTable LOGGED_IN_CLIENT_TABLE = new LoggedInClientTable();
 
     /**
      * SESSION_CACHE 存储路径 默认为 AppRoot 下的  scx-session.cache 文件
@@ -117,9 +116,9 @@ public final class ScxAuth {
      */
     public static void readSessionFromFile() {
         try (var f = Files.newInputStream(SCX_SESSION_CACHE_PATH)) {
-            AlreadyLoginClient[] clients = ObjectUtils.jsonMapper().readValue(f, new TypeReference<>() {
+            List<All> clients = ObjectUtils.jsonMapper().readValue(f, new TypeReference<>() {
             });
-            ALREADY_LOGIN_CLIENT_TABLE.add(clients);
+            LOGGED_IN_CLIENT_TABLE.add(clients);
             Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + clients.length + " 条数据!!!").println();
         } catch (Exception ignored) {
 
@@ -132,7 +131,7 @@ public final class ScxAuth {
     public static void writeSessionToFile() {
         try (var f = Files.newOutputStream(SCX_SESSION_CACHE_PATH)) {
             // 执行模块的 stop 生命周期
-            f.write(ObjectUtils.toJson(ALREADY_LOGIN_CLIENT_TABLE.alreadyLoginClients()).getBytes(StandardCharsets.UTF_8));
+            f.write(ObjectUtils.toJson(LOGGED_IN_CLIENT_TABLE.loggedInClients()).getBytes(StandardCharsets.UTF_8));
             Ansi.out().red("保存 Session 到 " + SCX_SESSION_CACHE_PATH + " 中!!!").println();
         } catch (IOException ignored) {
 
@@ -163,7 +162,7 @@ public final class ScxAuth {
      */
     @SuppressWarnings("unchecked")
     public static <T extends BaseUser> T getLoginUserByWebSocketID(String webSocketID) {
-        var client = ALREADY_LOGIN_CLIENT_TABLE.getByWebSocketID(webSocketID);
+        var client = LOGGED_IN_CLIENT_TABLE.getByWebSocketID(webSocketID);
         return client != null ? (T) userService.get(client.userID) : null;
     }
 
@@ -176,7 +175,7 @@ public final class ScxAuth {
      */
     @SuppressWarnings("unchecked")
     public static <T extends BaseUser> T getLoginUserByWebSocket(ServerWebSocket socket) {
-        var client = ALREADY_LOGIN_CLIENT_TABLE.getByWebSocket(socket);
+        var client = LOGGED_IN_CLIENT_TABLE.getByWebSocket(socket);
         return client != null ? (T) userService.get(client.userID) : null;
     }
 
@@ -188,12 +187,12 @@ public final class ScxAuth {
      * @param loginDevice 登录设备
      */
     static void addLoginItem(String token, BaseUser authUser, DeviceType loginDevice) {
-        var client = new AlreadyLoginClient();
+        var client = new LoggedInClient();
         client.token = token;
         client.userID = authUser.id;
         client.loginDevice = loginDevice;
         //踢出新用户
-        ALREADY_LOGIN_CLIENT_TABLE.add(client);
+        LOGGED_IN_CLIENT_TABLE.add(client);
     }
 
     /**
@@ -205,7 +204,7 @@ public final class ScxAuth {
      */
     @SuppressWarnings("unchecked")
     public static <T extends BaseUser> T getLoginUserByToken(String token) {
-        var client = ALREADY_LOGIN_CLIENT_TABLE.getByToken(token);
+        var client = LOGGED_IN_CLIENT_TABLE.getByToken(token);
         return client != null ? (T) userService.get(client.userID) : null;
     }
 
@@ -214,8 +213,8 @@ public final class ScxAuth {
      *
      * @return a
      */
-    public static AlreadyLoginClient getAlreadyLoginClient() {
-        return ALREADY_LOGIN_CLIENT_TABLE.getByToken(getToken(ScxContext.routingContext()));
+    public static LoggedInClient getAlreadyLoginClient() {
+        return LOGGED_IN_CLIENT_TABLE.getByToken(getToken(ScxContext.routingContext()));
     }
 
     /**
@@ -276,7 +275,7 @@ public final class ScxAuth {
      * @param ctx a {@link io.vertx.ext.web.RoutingContext} object
      */
     public static void removeAuthUser(RoutingContext ctx) {
-        ALREADY_LOGIN_CLIENT_TABLE.removeByToken(getToken(ctx));
+        LOGGED_IN_CLIENT_TABLE.removeByToken(getToken(ctx));
     }
 
     /**
@@ -289,12 +288,10 @@ public final class ScxAuth {
         //获取 token
         var token = ObjectUtils.convertValue(objectMap.get("token"), String.class);
         //判断 token 是否有效
-        if (StringUtils.notBlank(token)) {
+        var client = LOGGED_IN_CLIENT_TABLE.getByToken(token);
+        if (client != null) {
             //这条 websocket 连接所携带的 token 验证通过
-            var alreadyLoginClient = ALREADY_LOGIN_CLIENT_TABLE.getByToken(token);
-            if (alreadyLoginClient != null) {
-                alreadyLoginClient.webSocketID = wsParam.webSocket().binaryHandlerID();
-            }
+            client.webSocketID = wsParam.webSocket().binaryHandlerID();
         }
     }
 
@@ -303,8 +300,8 @@ public final class ScxAuth {
      *
      * @return a {@link java.util.List} object
      */
-    public static List<AlreadyLoginClient> allAlreadyLoginClients() {
-        return ALREADY_LOGIN_CLIENT_TABLE.alreadyLoginClients();
+    public static List<LoggedInClient> loggedInClients() {
+        return LOGGED_IN_CLIENT_TABLE.loggedInClients();
     }
 
     /**
@@ -487,10 +484,10 @@ public final class ScxAuth {
     /**
      * <p>alreadyLoginClientMap.</p>
      *
-     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClientTable} object
+     * @return a {@link LoggedInClientTable} object
      */
-    public static AlreadyLoginClientTable alreadyLoginClientTable() {
-        return ALREADY_LOGIN_CLIENT_TABLE;
+    public static LoggedInClientTable loggedInClientTable() {
+        return LOGGED_IN_CLIENT_TABLE;
     }
 
 }

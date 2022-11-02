@@ -13,26 +13,26 @@ import java.util.Objects;
  * @author scx567888
  * @version 1.11.8
  */
-public final class AlreadyLoginClientTable {
+public final class LoggedInClientTable {
 
-    private final List<AlreadyLoginClient> list = new ArrayList<>();
+    private final List<LoggedInClient> list = new ArrayList<>();
 
     /**
      * <p>put.</p>
      *
-     * @param alreadyLoginClient a {@link cool.scx.ext.organization.auth.AlreadyLoginClient} object
+     * @param loggedInClients a {@link LoggedInClient} object
      */
-    public void add(AlreadyLoginClient... alreadyLoginClient) {
-        Collections.addAll(list, alreadyLoginClient);
+    public void add(LoggedInClient... loggedInClients) {
+        Collections.addAll(list, loggedInClients);
     }
 
     /**
      * <p>getByUserID.</p>
      *
      * @param userID a {@link java.lang.Long} object
-     * @return an array of {@link cool.scx.ext.organization.auth.AlreadyLoginClient} objects
+     * @return an array of {@link LoggedInClient} objects
      */
-    public List<AlreadyLoginClient> getByUserID(Long userID) {
+    public List<LoggedInClient> getByUserID(Long userID) {
         return list.stream().filter(c -> Objects.equals(c.userID, userID)).toList();
     }
 
@@ -40,9 +40,9 @@ public final class AlreadyLoginClientTable {
      * <p>getByLoginDevice.</p>
      *
      * @param deviceType a {@link cool.scx.ext.organization.auth.DeviceType} object
-     * @return an array of {@link cool.scx.ext.organization.auth.AlreadyLoginClient} objects
+     * @return an array of {@link LoggedInClient} objects
      */
-    public List<AlreadyLoginClient> getByLoginDevice(DeviceType deviceType) {
+    public List<LoggedInClient> getByLoginDevice(DeviceType deviceType) {
         return list.stream().filter(c -> Objects.equals(c.loginDevice, deviceType)).toList();
     }
 
@@ -50,9 +50,9 @@ public final class AlreadyLoginClientTable {
      * <p>getByToken.</p>
      *
      * @param token a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClient} object
+     * @return a {@link LoggedInClient} object
      */
-    public AlreadyLoginClient getByToken(String token) {
+    public LoggedInClient getByToken(String token) {
         return list.stream().filter(c -> Objects.equals(c.token, token)).findAny().orElse(null);
     }
 
@@ -60,9 +60,9 @@ public final class AlreadyLoginClientTable {
      * <p>getByWebSocketID.</p>
      *
      * @param webSocketID a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClient} object
+     * @return a {@link LoggedInClient} object
      */
-    public AlreadyLoginClient getByWebSocketID(String webSocketID) {
+    public LoggedInClient getByWebSocketID(String webSocketID) {
         return list.stream().filter(c -> Objects.equals(c.webSocketID, webSocketID)).findAny().orElse(null);
     }
 
@@ -111,9 +111,9 @@ public final class AlreadyLoginClientTable {
      * <p>getByWebSocketBinaryHandlerID.</p>
      *
      * @param socket a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClient} object
+     * @return a {@link LoggedInClient} object
      */
-    public AlreadyLoginClient getByWebSocket(ServerWebSocket socket) {
+    public LoggedInClient getByWebSocket(ServerWebSocket socket) {
         return getByWebSocketID(socket.binaryHandlerID());
     }
 
@@ -121,7 +121,7 @@ public final class AlreadyLoginClientTable {
      * <p>getByWebSocketBinaryHandlerID.</p>
      *
      * @param socket a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.auth.AlreadyLoginClient} object
+     * @return a {@link LoggedInClient} object
      */
     public boolean removeByWebSocket(ServerWebSocket socket) {
         return removeByWebSocketID(socket.binaryHandlerID());
@@ -130,9 +130,9 @@ public final class AlreadyLoginClientTable {
     /**
      * <p>getAllAlreadyLoginClients.</p>
      *
-     * @return an array of {@link cool.scx.ext.organization.auth.AlreadyLoginClient} objects
+     * @return an array of {@link LoggedInClient} objects
      */
-    public List<AlreadyLoginClient> alreadyLoginClients() {
+    public List<LoggedInClient> loggedInClients() {
         return new ArrayList<>(list);
     }
 
