@@ -213,7 +213,7 @@ public final class ScxAuth {
      *
      * @return a
      */
-    public static LoggedInClient getAlreadyLoginClient() {
+    public static LoggedInClient getLoggedInClient() {
         return LOGGED_IN_CLIENT_TABLE.getByToken(getToken(ScxContext.routingContext()));
     }
 
@@ -231,8 +231,8 @@ public final class ScxAuth {
     /**
      * 根据 Header 获取 token
      *
-     * @param routingContext a {@link io.vertx.ext.web.RoutingContext} object
-     * @return a {@link java.lang.String} object
+     * @param routingContext a
+     * @return a a
      */
     static String getTokenFromHeader(RoutingContext routingContext) {
         return routingContext.request().getHeader(SCX_AUTH_TOKEN_KEY);
