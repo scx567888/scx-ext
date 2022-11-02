@@ -13,6 +13,9 @@ import java.util.Collection;
  */
 public class WSContext {
 
+    /**
+     * Constant <code>wsOnlineClientTable</code>
+     */
     private static final WSOnlineClientTable wsOnlineClientTable = new WSOnlineClientTable();
 
     /**
@@ -127,6 +130,11 @@ public class WSContext {
         return wsOnlineClientTable.onlineClients();
     }
 
+    /**
+     * <p>wsOnlineClientTable.</p>
+     *
+     * @return a {@link cool.scx.ext.ws.WSOnlineClientTable} object
+     */
     static WSOnlineClientTable wsOnlineClientTable() {
         return wsOnlineClientTable;
     }

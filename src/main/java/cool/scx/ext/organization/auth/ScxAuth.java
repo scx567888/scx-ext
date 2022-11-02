@@ -484,7 +484,7 @@ public final class ScxAuth {
     /**
      * <p>alreadyLoginClientMap.</p>
      *
-     * @return a {@link LoggedInClientTable} object
+     * @return a {@link cool.scx.ext.organization.auth.LoggedInClientTable} object
      */
     public static LoggedInClientTable loggedInClientTable() {
         return LOGGED_IN_CLIENT_TABLE;
