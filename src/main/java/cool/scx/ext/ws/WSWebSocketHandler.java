@@ -12,7 +12,7 @@ import io.vertx.core.http.WebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static cool.scx.ext.ws.WSContext.*;
+import static cool.scx.ext.ws.WSContext.wsOnlineClientTable;
 
 /**
  * 事件总线 websocket 连接处理类
@@ -42,8 +42,8 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      */
     @Override
     public void onOpen(ServerWebSocket webSocket, OnOpenRoutingContext ctx) {
-        addServerWebSocket(webSocket);
-        logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), getAllWebSockets().size());
+        wsOnlineClientTable().add(webSocket);
+        logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), wsOnlineClientTable().size());
         ctx.next();
     }
 
@@ -55,8 +55,8 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
     @Override
     public void onClose(ServerWebSocket webSocket, OnCloseRoutingContext ctx) {
         //如果客户端终止连接 将此条连接作废
-        removeServerWebSocket(webSocket);
-        logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), getAllWebSockets().size());
+        wsOnlineClientTable().remove(webSocket);
+        logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), wsOnlineClientTable().size());
         ctx.next();
     }
 
@@ -79,7 +79,7 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      */
     @Override
     public void onError(Throwable event, ServerWebSocket webSocket, OnExceptionRoutingContext ctx) {
-        removeServerWebSocket(webSocket);
+        wsOnlineClientTable().remove(webSocket);
         event.printStackTrace();
         ctx.next();
     }
