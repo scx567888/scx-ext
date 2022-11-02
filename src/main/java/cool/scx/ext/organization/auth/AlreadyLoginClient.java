@@ -28,8 +28,8 @@ public final class AlreadyLoginClient {
     public String token;
 
     /**
-     * 对应的 webSocketBinaryHandlerID
+     * 对应的 webSocket 的 ID 我们统一使用 binaryHandlerID
      */
-    public String webSocketBinaryHandlerID;
+    public String webSocketID;
 
 }
