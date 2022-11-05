@@ -6,8 +6,6 @@ import cool.scx.core.vo.Redirections;
 import cool.scx.util.ansi.Ansi;
 import io.vertx.ext.web.Router;
 
-import java.net.BindException;
-
 /**
  * 监听 80 端口并将所有 http 请求重定向 到 https
  */
@@ -44,10 +42,7 @@ public class RedirectsModule extends ScxModule {
             if (http.succeeded()) {
                 Ansi.out().brightMagenta("转发服务器启动成功 http -> https, 端口号 : " + port + " !!!").println();
             } else {
-                var cause = http.cause();
-                if (cause instanceof BindException) {
-                    cause.printStackTrace();
-                }
+                http.cause().printStackTrace();
             }
         });
     }
