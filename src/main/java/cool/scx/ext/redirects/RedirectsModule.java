@@ -8,6 +8,9 @@ import io.vertx.ext.web.Router;
 
 /**
  * 监听 80 端口并将所有 http 请求重定向 到 https
+ *
+ * @author scx567888
+ * @version 1.15.2
  */
 public class RedirectsModule extends ScxModule {
 
