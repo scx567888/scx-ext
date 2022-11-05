@@ -31,7 +31,10 @@ public class RedirectsModule extends ScxModule {
 
     @Override
     public void start() {
-        init();
+        //只有当开启 https 的时候才进行转发
+        if (ScxContext.coreConfig().isHttpsEnabled()) {
+            init();
+        }
     }
 
     private void init() {
