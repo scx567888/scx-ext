@@ -34,25 +34,6 @@ public class RedirectsModule extends ScxModule {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String name() {
-        return "SCX_EXT-" + super.name();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void start() {
-        //只有当开启 https 的时候才进行转发
-        if (ScxContext.coreConfig().isHttpsEnabled()) {
-            startRedirects(ScxContext.vertx(), this.port);
-        }
-    }
-
-    /**
      * 也可以直接以工具类的形式调用
      */
     public static void startRedirects(Vertx vertx, int port) {
@@ -69,6 +50,25 @@ public class RedirectsModule extends ScxModule {
                 http.cause().printStackTrace();
             }
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String name() {
+        return "SCX_EXT-" + super.name();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void start() {
+        //只有当开启 https 的时候才进行转发
+        if (ScxContext.coreConfig().isHttpsEnabled()) {
+            startRedirects(ScxContext.vertx(), this.port);
+        }
     }
 
 }
