@@ -1,17 +1,17 @@
-package cool.scx.ext.organization.base.impl;
+package cool.scx.ext.organization_impl.impl;
 
 import cool.scx.core.annotation.ScxModel;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
-import cool.scx.ext.organization.base.BaseRole;
+import cool.scx.ext.organization.base.BaseDept;
 
 /**
- * <p>Role class.</p>
+ * <p>Dept class.</p>
  *
  * @author scx567888
  * @version 1.13.5
  */
 @UseCRUDApi
 @ScxModel(tablePrefix = "organization")
-public final class Role extends BaseRole {
+public final class Dept extends BaseDept {
 
 }

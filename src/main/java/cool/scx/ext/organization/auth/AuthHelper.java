@@ -2,16 +2,17 @@ package cool.scx.ext.organization.auth;
 
 import cool.scx.ext.organization.exception.AuthException;
 import cool.scx.ext.organization.exception.UnknownDeviceException;
+import cool.scx.ext.organization.exception.WrongPasswordException;
 import cool.scx.ext.organization.type.DeviceType;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.StringUtils;
 import io.vertx.ext.web.RoutingContext;
 
-import static cool.scx.ext.organization.auth.AuthHandler.SCX_AUTH_DEVICE_KEY;
-import static cool.scx.ext.organization.auth.AuthHandler.SCX_AUTH_TOKEN_KEY;
+import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_DEVICE_KEY;
+import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
 
-public class AuthHelper {
+public final class AuthHelper {
 
     /**
      * 根据 设备类型自行判断 获取 token
@@ -94,6 +95,25 @@ public class AuthHelper {
                 //这里就不知道 设备类型了 我们直接抛出一个异常
                     throw new UnknownDeviceException();
         };
+    }
+
+
+    /**
+     * 校验密码
+     *
+     * @param plainPassword     明文密码
+     * @param encryptedPassword 用户的加密密码
+     */
+    public static void checkPasswordOrThrow(String plainPassword, String encryptedPassword) {
+        boolean b;
+        try {
+            b = CryptoUtils.checkPassword(plainPassword, encryptedPassword);
+        } catch (Exception e) {
+            throw new WrongPasswordException(e);
+        }
+        if (!b) {
+            throw new WrongPasswordException();
+        }
     }
 
 }

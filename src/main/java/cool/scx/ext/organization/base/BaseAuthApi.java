@@ -8,7 +8,6 @@ import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;
 import cool.scx.core.vo.Json;
 import cool.scx.ext.organization.annotation.ApiPerms;
-import cool.scx.ext.organization.auth.AuthHandler;
 import cool.scx.ext.organization.exception.AuthException;
 import cool.scx.ext.organization.type.DeviceType;
 import cool.scx.ext.organization.type.UserInfoWrapper;
@@ -29,7 +28,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     /**
      * a
      */
-    protected final AuthHandler<T> authHandler;
+    protected final BaseAuthHandler<T> authHandler;
 
     /**
      * a
@@ -42,7 +41,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
      * @param authHandler a
      * @param userService a
      */
-    protected BaseAuthApi(AuthHandler<T> authHandler, BaseUserService<T> userService) {
+    protected BaseAuthApi(BaseAuthHandler<T> authHandler, BaseUserService<T> userService) {
         this.authHandler = authHandler;
         this.userService = userService;
     }

@@ -13,6 +13,13 @@ import cool.scx.util.CaseUtils;
  */
 public abstract class AuthException extends BadRequestException {
 
+    public AuthException(Exception e) {
+        super(e);
+    }
+
+    public AuthException() {
+    }
+
     /**
      * {@inheritDoc}
      */

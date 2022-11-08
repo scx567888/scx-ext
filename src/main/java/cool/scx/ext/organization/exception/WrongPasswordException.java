@@ -8,4 +8,11 @@ package cool.scx.ext.organization.exception;
  */
 public final class WrongPasswordException extends AuthException {
 
+    public WrongPasswordException(Exception e) {
+        super(e);
+    }
+
+    public WrongPasswordException() {
+    }
+
 }

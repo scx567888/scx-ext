@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.base.impl;
+package cool.scx.ext.organization_impl.impl;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.ext.organization.base.BaseDeptService;

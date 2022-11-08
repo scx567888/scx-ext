@@ -5,6 +5,7 @@ import cool.scx.core.http.exception.UnauthorizedException;
 import cool.scx.core.mvc.ScxMappingHandler;
 import cool.scx.core.mvc.ScxMappingInterceptor;
 import cool.scx.ext.organization.annotation.ApiPerms;
+import cool.scx.ext.organization.base.BaseAuthHandler;
 import io.vertx.ext.web.RoutingContext;
 
 import java.lang.reflect.Method;
@@ -21,14 +22,14 @@ import static cool.scx.util.StringUtils.notBlank;
  */
 public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
 
-    private final AuthHandler<?> authHandler;
+    private final BaseAuthHandler<?> authHandler;
 
     /**
      * 缓存池
      */
     private final Map<ScxMappingHandler, AuthPerms> SCX_AUTH_PERMS_CACHE = new HashMap<>();
 
-    public PermsAnnotationInterceptor(AuthHandler<?> authHandler) {
+    public PermsAnnotationInterceptor(BaseAuthHandler<?> authHandler) {
         this.authHandler = authHandler;
     }
 
