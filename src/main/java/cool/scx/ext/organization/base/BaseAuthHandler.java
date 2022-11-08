@@ -30,6 +30,12 @@ import java.util.*;
 import static cool.scx.ext.organization.auth.AuthHelper.*;
 
 
+/**
+ * <p>Abstract BaseAuthHandler class.</p>
+ *
+ * @author scx567888
+ * @version 1.15.4
+ */
 public abstract class BaseAuthHandler<U extends BaseUser> {
 
     /**
@@ -82,6 +88,15 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      */
     protected final UserRoleService userRoleService;
 
+    /**
+     * <p>Constructor for BaseAuthHandler.</p>
+     *
+     * @param userService     a {@link cool.scx.ext.organization.base.BaseUserService} object
+     * @param roleService     a {@link cool.scx.ext.organization.base.BaseRoleService} object
+     * @param deptService     a {@link cool.scx.ext.organization.base.BaseDeptService} object
+     * @param userDeptService a {@link cool.scx.ext.organization.base.UserDeptService} object
+     * @param userRoleService a {@link cool.scx.ext.organization.base.UserRoleService} object
+     */
     protected BaseAuthHandler(BaseUserService<U> userService, BaseRoleService<?> roleService, BaseDeptService<?> deptService, UserDeptService userDeptService, UserRoleService userRoleService) {
         this.userService = userService;
         this.roleService = roleService;
@@ -408,6 +423,12 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         return deptHasPerm || roleHasPerm;
     }
 
+    /**
+     * <p>hasPerm.</p>
+     *
+     * @param permFlag a {@link cool.scx.ext.organization.auth.PermFlag} object
+     * @return a boolean
+     */
     public final boolean hasPerm(PermFlag permFlag) {
         return hasPerm(permFlag.permString());
     }

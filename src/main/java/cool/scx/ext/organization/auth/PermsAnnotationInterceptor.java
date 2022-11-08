@@ -29,6 +29,11 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
      */
     private final Map<ScxMappingHandler, AuthPerms> SCX_AUTH_PERMS_CACHE = new HashMap<>();
 
+    /**
+     * <p>Constructor for PermsAnnotationInterceptor.</p>
+     *
+     * @param authHandler a {@link cool.scx.ext.organization.base.BaseAuthHandler} object
+     */
     public PermsAnnotationInterceptor(BaseAuthHandler<?> authHandler) {
         this.authHandler = authHandler;
     }

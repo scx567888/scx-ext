@@ -17,7 +17,7 @@ public final class LoggedInClientTable {
     /**
      * <p>put.</p>
      *
-     * @param loggedInClients a {@link LoggedInClient} object
+     * @param loggedInClients a {@link cool.scx.ext.organization.type.LoggedInClient} object
      */
     public void add(LoggedInClient... loggedInClients) {
         Collections.addAll(list, loggedInClients);
@@ -36,7 +36,7 @@ public final class LoggedInClientTable {
      * <p>getByUserID.</p>
      *
      * @param userID a {@link java.lang.Long} object
-     * @return an array of {@link LoggedInClient} objects
+     * @return an array of {@link cool.scx.ext.organization.type.LoggedInClient} objects
      */
     public List<LoggedInClient> getByUserID(Long userID) {
         return list.stream().filter(c -> Objects.equals(c.userID, userID)).toList();
@@ -45,8 +45,8 @@ public final class LoggedInClientTable {
     /**
      * <p>getByLoginDevice.</p>
      *
-     * @param deviceType a {@link DeviceType} object
-     * @return an array of {@link LoggedInClient} objects
+     * @param deviceType a {@link cool.scx.ext.organization.type.DeviceType} object
+     * @return an array of {@link cool.scx.ext.organization.type.LoggedInClient} objects
      */
     public List<LoggedInClient> getByLoginDevice(DeviceType deviceType) {
         return list.stream().filter(c -> Objects.equals(c.loginDevice, deviceType)).toList();
@@ -56,7 +56,7 @@ public final class LoggedInClientTable {
      * <p>getByToken.</p>
      *
      * @param token a {@link java.lang.String} object
-     * @return a {@link LoggedInClient} object
+     * @return a {@link cool.scx.ext.organization.type.LoggedInClient} object
      */
     public LoggedInClient getByToken(String token) {
         return list.stream().filter(c -> Objects.equals(c.token, token)).findAny().orElse(null);
@@ -66,7 +66,7 @@ public final class LoggedInClientTable {
      * <p>getByWebSocketID.</p>
      *
      * @param webSocketID a {@link java.lang.String} object
-     * @return a {@link LoggedInClient} object
+     * @return a {@link cool.scx.ext.organization.type.LoggedInClient} object
      */
     public LoggedInClient getByWebSocketID(String webSocketID) {
         return list.stream().filter(c -> Objects.equals(c.webSocketID, webSocketID)).findAny().orElse(null);
@@ -85,7 +85,7 @@ public final class LoggedInClientTable {
     /**
      * <p>removeByLoginDevice.</p>
      *
-     * @param deviceType a {@link DeviceType} object
+     * @param deviceType a {@link cool.scx.ext.organization.type.DeviceType} object
      * @return a boolean
      */
     public boolean removeByLoginDevice(DeviceType deviceType) {
@@ -117,7 +117,7 @@ public final class LoggedInClientTable {
      * <p>getByWebSocketBinaryHandlerID.</p>
      *
      * @param socket a {@link java.lang.String} object
-     * @return a {@link LoggedInClient} object
+     * @return a {@link cool.scx.ext.organization.type.LoggedInClient} object
      */
     public LoggedInClient getByWebSocket(ServerWebSocket socket) {
         return getByWebSocketID(socket.binaryHandlerID());
@@ -127,7 +127,7 @@ public final class LoggedInClientTable {
      * <p>getByWebSocketBinaryHandlerID.</p>
      *
      * @param socket a {@link java.lang.String} object
-     * @return a {@link LoggedInClient} object
+     * @return a {@link cool.scx.ext.organization.type.LoggedInClient} object
      */
     public boolean removeByWebSocket(ServerWebSocket socket) {
         return removeByWebSocketID(socket.binaryHandlerID());
@@ -136,7 +136,7 @@ public final class LoggedInClientTable {
     /**
      * <p>getAllAlreadyLoginClients.</p>
      *
-     * @return an array of {@link LoggedInClient} objects
+     * @return an array of {@link cool.scx.ext.organization.type.LoggedInClient} objects
      */
     public List<LoggedInClient> loggedInClients() {
         return new ArrayList<>(list);
