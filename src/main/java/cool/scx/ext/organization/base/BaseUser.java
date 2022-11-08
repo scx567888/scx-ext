@@ -1,5 +1,6 @@
 package cool.scx.ext.organization.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.core.annotation.Column;
 import cool.scx.core.base.BaseModel;
 
@@ -20,6 +21,7 @@ public abstract class BaseUser extends BaseModel {
     /**
      * 密码
      */
+    @JsonIgnore
     public String password;
 
     /**
