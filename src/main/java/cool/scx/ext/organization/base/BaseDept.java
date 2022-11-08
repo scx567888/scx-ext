@@ -1,6 +1,5 @@
 package cool.scx.ext.organization.base;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.core.annotation.Column;
 
 /**
@@ -20,7 +19,6 @@ public class BaseDept extends PermsModel {
      * 排序
      */
     @Column(notNull = true, defaultValue = "0", needIndex = true)
-    @JsonIgnore
     public Integer deptOrder;
 
     /**
