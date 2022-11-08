@@ -2,11 +2,9 @@ package cool.scx.ext.organization.auth;
 
 import cool.scx.ext.organization.exception.AuthException;
 import cool.scx.ext.organization.exception.UnknownDeviceException;
-import cool.scx.ext.organization.exception.WrongPasswordException;
 import cool.scx.ext.organization.type.DeviceType;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
-import cool.scx.util.StringUtils;
 import io.vertx.ext.web.RoutingContext;
 
 import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_DEVICE_KEY;
@@ -42,7 +40,7 @@ public final class AuthHelper {
      * @return a
      */
     public static DeviceType getDeviceTypeByHeader(RoutingContext routingContext) {
-        String device = routingContext.request().getHeader(SCX_AUTH_DEVICE_KEY);
+        var device = routingContext.request().getHeader(SCX_AUTH_DEVICE_KEY);
         if (device == null) {
             return DeviceType.WEBSITE;
         }
@@ -71,16 +69,6 @@ public final class AuthHelper {
     }
 
     /**
-     * 加密密码
-     *
-     * @param plainPassword a {@link java.lang.String} object
-     * @return a {@link java.lang.String} object
-     */
-    public static String encryptPasswordOrNull(String plainPassword) {
-        return StringUtils.notBlank(plainPassword) ? CryptoUtils.encryptPassword(plainPassword.trim()) : null;
-    }
-
-    /**
      * 尝试获取一个可以作为认证的 Token 具体获取方式由设备类型决定
      *
      * @param ctx         a {@link io.vertx.ext.web.RoutingContext} object
@@ -103,36 +91,19 @@ public final class AuthHelper {
         };
     }
 
-
     /**
      * 校验密码
      *
-     * @param plainPassword     明文密码
-     * @param encryptedPassword 用户的加密密码
+     * @param plainPassword     a
+     * @param encryptedPassword a
+     * @return a
      */
-    public static void checkPasswordOrThrow(String plainPassword, String encryptedPassword) {
-        boolean b;
+    public static boolean checkPassword(String plainPassword, String encryptedPassword) {
         try {
-            b = CryptoUtils.checkPassword(plainPassword, encryptedPassword);
+            return CryptoUtils.checkPassword(plainPassword, encryptedPassword);
         } catch (Exception e) {
-            throw new WrongPasswordException(e);
+            return false;
         }
-        if (!b) {
-            throw new WrongPasswordException();
-        }
-    }
-
-    /**
-     * 检查新密码 (只验空)
-     *
-     * @param password password
-     * @return 去除首位空格后的 密码
-     */
-    public static String checkNewPassword(String password) {
-        if (StringUtils.isBlank(password)) {
-            throw new IllegalArgumentException("新密码不能为空 !!!");
-        }
-        return password.trim();
     }
 
 }

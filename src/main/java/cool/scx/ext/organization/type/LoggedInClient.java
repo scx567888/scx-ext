@@ -32,4 +32,14 @@ public final class LoggedInClient {
      */
     public String webSocketID;
 
+    public LoggedInClient() {
+
+    }
+
+    public LoggedInClient(String token, Long userID, DeviceType loginDevice) {
+        this.userID = userID;
+        this.loginDevice = loginDevice;
+        this.token = token;
+    }
+
 }
