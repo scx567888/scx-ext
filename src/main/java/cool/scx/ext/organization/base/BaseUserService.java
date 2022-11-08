@@ -18,12 +18,12 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
     /**
      * a
      */
-    private final UserRoleService userRoleService;
+    protected final UserRoleService userRoleService;
 
     /**
      * a
      */
-    private final UserDeptService userDeptService;
+    protected final UserDeptService userDeptService;
 
     /**
      * 构造函数
