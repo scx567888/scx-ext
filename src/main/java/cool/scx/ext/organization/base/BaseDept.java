@@ -1,6 +1,7 @@
 package cool.scx.ext.organization.base;
 
 import cool.scx.core.annotation.Column;
+import cool.scx.ext.organization.type.PermsModel;
 
 /**
  * 部门

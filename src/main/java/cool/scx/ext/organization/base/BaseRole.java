@@ -1,5 +1,7 @@
 package cool.scx.ext.organization.base;
 
+`import cool.scx.ext.organization.type.PermsModel;
+
 /**
  * 角色
  *
