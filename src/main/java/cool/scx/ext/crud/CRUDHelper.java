@@ -1,6 +1,7 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.ScxContext;
+import cool.scx.core.ScxHelper;
 import cool.scx.core.annotation.NoColumn;
 import cool.scx.core.base.BaseModel;
 import cool.scx.core.base.BaseModelService;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -119,17 +121,19 @@ public final class CRUDHelper {
     @SuppressWarnings("unchecked")
     private static HashMap<String, CRUDApiInfo> initBaseModelNameCRUDApiInfoMapping() {
         var tempMap = new HashMap<String, CRUDApiInfo>();
-        for (var m : ScxContext.scxModules()) {
-            for (var c : m.scxBaseModelClassList()) {
-                var useCRUDApiAnnotation = c.getAnnotation(UseCRUDApi.class);
-                if (useCRUDApiAnnotation != null) {
-                    var crudApiInfo = new CRUDApiInfo(useCRUDApiAnnotation, (Class<BaseModel>) c);
-                    //获取上一个重名的
-                    var last = tempMap.get(crudApiInfo.baseModelName);
-                    tempMap.put(crudApiInfo.baseModelName, crudApiInfo);
-                    if (last != null) {
-                        Ansi.out().brightRed("检测到重复名称的 BaseModel ").brightYellow("[" + last.baseModelClass.getName() + "] ").blue("[" + c.getName() + "]").brightRed(" 可能会导致根据名称调用时意义不明确 !!! 建议修改 !!!").println();
-                    }
+        var classList = Arrays.stream(ScxContext.scxModules())
+                .flatMap(c -> c.classList().stream())
+                .filter(ScxHelper::isScxBaseModelClass)
+                .toList();
+        for (var c : classList) {
+            var useCRUDApiAnnotation = c.getAnnotation(UseCRUDApi.class);
+            if (useCRUDApiAnnotation != null) {
+                var crudApiInfo = new CRUDApiInfo(useCRUDApiAnnotation, (Class<BaseModel>) c);
+                //获取上一个重名的
+                var last = tempMap.get(crudApiInfo.baseModelName);
+                tempMap.put(crudApiInfo.baseModelName, crudApiInfo);
+                if (last != null) {
+                    Ansi.out().brightRed("检测到重复名称的 BaseModel ").brightYellow("[" + last.baseModelClass.getName() + "] ").blue("[" + c.getName() + "]").brightRed(" 可能会导致根据名称调用时意义不明确 !!! 建议修改 !!!").println();
                 }
             }
         }
@@ -144,20 +148,22 @@ public final class CRUDHelper {
     @SuppressWarnings("unchecked")
     private static Map<Class<BaseModel>, Class<BaseModelService<BaseModel>>> initBaseModelClassBaseModelServiceClassMapping() {
         // 因为一个 BaseModel 可能由多个 BaseModelService 的实现 这里使用 HashSetValuedHashMap 存储
-        MultiMap<Class<BaseModel>, Class<BaseModelService<BaseModel>>> classClassHashSetValuedHashMap = new MultiMap<>();
+        var classClassHashSetValuedHashMap = new MultiMap<Class<BaseModel>, Class<BaseModelService<BaseModel>>>();
         // baseModelClassList
         var baseModelClassList = CRUDHelper.BASE_MODEL_NAME_CRUD_API_INFO_MAPPING.values().stream().map(c -> c.baseModelClass).toList();
         //循环读取
-        for (var m : ScxContext.scxModules()) {
-            for (var c : m.scxBaseModelServiceClassList()) {
-                //这里获取 泛型
-                var typeArguments = ((ParameterizedType) c.getGenericSuperclass()).getActualTypeArguments();
+        var classList = Arrays.stream(ScxContext.scxModules())
+                .flatMap(c -> c.classList().stream())
+                .filter(ScxHelper::isScxBaseModelServiceClass)
+                .toList();
+        for (var c : classList) {
+            //这里获取 泛型
+            var typeArguments = ((ParameterizedType) c.getGenericSuperclass()).getActualTypeArguments();
 
-                var baseModelClass = (Class<BaseModel>) typeArguments[0];
-                //我们只需要 包含在 baseModelClassList 中的 baseModelService
-                if (baseModelClassList.contains(baseModelClass)) {
-                    classClassHashSetValuedHashMap.put(baseModelClass, (Class<BaseModelService<BaseModel>>) c);
-                }
+            var baseModelClass = (Class<BaseModel>) typeArguments[0];
+            //我们只需要 包含在 baseModelClassList 中的 baseModelService
+            if (baseModelClassList.contains(baseModelClass)) {
+                classClassHashSetValuedHashMap.put(baseModelClass, (Class<BaseModelService<BaseModel>>) c);
             }
         }
 
