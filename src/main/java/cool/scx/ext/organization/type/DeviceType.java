@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.auth;
+package cool.scx.ext.organization.type;
 
 /**
  * 登录设备类型
@@ -37,7 +37,7 @@ public enum DeviceType {
      * <p>of.</p>
      *
      * @param name a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.organization.auth.DeviceType} object
+     * @return a {@link DeviceType} object
      */
     public static DeviceType of(String name) {
         var upperCaseName = name.trim().toUpperCase();
