@@ -35,6 +35,9 @@ public class RedirectsModule extends ScxModule {
 
     /**
      * 也可以直接以工具类的形式调用
+     *
+     * @param vertx a {@link io.vertx.core.Vertx} object
+     * @param port  a int
      */
     public static void startRedirects(Vertx vertx, int port) {
         var router = Router.router(vertx);

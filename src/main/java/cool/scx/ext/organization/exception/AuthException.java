@@ -13,10 +13,18 @@ import cool.scx.util.CaseUtils;
  */
 public abstract class AuthException extends BadRequestException {
 
+    /**
+     * <p>Constructor for AuthException.</p>
+     *
+     * @param e a {@link java.lang.Exception} object
+     */
     public AuthException(Exception e) {
         super(e);
     }
 
+    /**
+     * <p>Constructor for AuthException.</p>
+     */
     public AuthException() {
     }
 

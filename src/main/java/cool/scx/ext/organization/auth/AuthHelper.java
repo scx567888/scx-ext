@@ -12,6 +12,12 @@ import io.vertx.ext.web.RoutingContext;
 import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_DEVICE_KEY;
 import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
 
+/**
+ * <p>AuthHelper class.</p>
+ *
+ * @author scx567888
+ * @version 1.15.4
+ */
 public final class AuthHelper {
 
     /**
@@ -78,7 +84,7 @@ public final class AuthHelper {
      * 尝试获取一个可以作为认证的 Token 具体获取方式由设备类型决定
      *
      * @param ctx         a {@link io.vertx.ext.web.RoutingContext} object
-     * @param loginDevice a {@link DeviceType} object
+     * @param loginDevice a {@link cool.scx.ext.organization.type.DeviceType} object
      * @return a {@link java.lang.String} object
      * @throws cool.scx.ext.organization.exception.AuthException if any.
      */

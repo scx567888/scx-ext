@@ -18,6 +18,9 @@ import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
  */
 public class OrganizationModule extends ScxModule {
 
+    /**
+     * <p>initAuth.</p>
+     */
     public static void initAuth() {
         var authHandler = (BaseAuthHandler<?>) ScxContext.getBean(BaseAuthHandler.class);
         //绑定事件
@@ -30,12 +33,18 @@ public class OrganizationModule extends ScxModule {
         ScxContext.router().vertxRouter().route().order(1).handler(new ScxAuthCookieHandler());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         initAuth();
         ScxContext.getBean(BaseAuthHandler.class).readSessionFromFile();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
         ScxContext.getBean(BaseAuthHandler.class).writeSessionToFile();

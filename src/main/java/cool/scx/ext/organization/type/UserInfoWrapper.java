@@ -59,7 +59,7 @@ public class UserInfoWrapper {
      * <p>Constructor for ScxUserInfo.</p>
      *
      * @param user         a {@link cool.scx.ext.organization.base.BaseUser} object
-     * @param permsWrapper a {@link PermsWrapper} object
+     * @param permsWrapper a {@link cool.scx.ext.organization.type.PermsWrapper} object
      */
     public UserInfoWrapper(BaseUser user, PermsWrapper permsWrapper) {
         this.id = user.id;
