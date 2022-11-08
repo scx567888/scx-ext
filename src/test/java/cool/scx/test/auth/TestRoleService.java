@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.base.impl;
+package cool.scx.test.auth;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.ext.organization.base.BaseRoleService;
@@ -11,14 +11,14 @@ import cool.scx.ext.organization.base.UserRoleService;
  * @version 1.13.5
  */
 @ScxService
-public final class RoleService extends BaseRoleService<Role> {
+public final class TestRoleService extends BaseRoleService<TestRole> {
 
     /**
      * <p>Constructor for RoleService.</p>
      *
-     * @param userRoleService a {@link cool.scx.ext.organization.base.UserRoleService} object
+     * @param userRoleService a {@link UserRoleService} object
      */
-    public RoleService(UserRoleService userRoleService) {
+    public TestRoleService(UserRoleService userRoleService) {
         super(userRoleService);
     }
 

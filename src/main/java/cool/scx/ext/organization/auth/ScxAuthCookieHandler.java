@@ -5,7 +5,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.http.impl.CookieImpl;
 import io.vertx.ext.web.RoutingContext;
 
-import static cool.scx.ext.organization.auth.ScxAuth.SCX_AUTH_TOKEN_KEY;
+import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
 
 /**
  * <p>ScxAuthCookieHandler class.</p>
@@ -13,7 +13,7 @@ import static cool.scx.ext.organization.auth.ScxAuth.SCX_AUTH_TOKEN_KEY;
  * @author scx567888
  * @version 1.11.8
  */
-final class ScxAuthCookieHandler implements Handler<RoutingContext> {
+public final class ScxAuthCookieHandler implements Handler<RoutingContext> {
 
     /**
      * Constant <code>COOKIE_MAX_AGE=1800000L</code>

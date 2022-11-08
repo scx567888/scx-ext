@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.base.impl;
+package cool.scx.test.auth;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.ext.organization.base.BaseDeptService;
@@ -11,14 +11,14 @@ import cool.scx.ext.organization.base.UserDeptService;
  * @version 1.13.5
  */
 @ScxService
-public final class DeptService extends BaseDeptService<Dept> {
+public final class TestDeptService extends BaseDeptService<TestDept> {
 
     /**
      * <p>Constructor for DeptService.</p>
      *
-     * @param userDeptService a {@link cool.scx.ext.organization.base.UserDeptService} object
+     * @param userDeptService a {@link UserDeptService} object
      */
-    public DeptService(UserDeptService userDeptService) {
+    public TestDeptService(UserDeptService userDeptService) {
         super(userDeptService);
     }
 

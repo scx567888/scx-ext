@@ -51,9 +51,10 @@ public class PermFlagController {
     @SuppressWarnings("unchecked")
     private List<PermFlag> initPermFlags() {
         var permClassList = Arrays.stream(ScxContext.scxModules())
-                .flatMap(c -> c.allClassList().stream()
-                        .filter(d -> PermFlag.class.isAssignableFrom(d) && !d.isInterface())
-                        .map(d -> (Class<PermFlag>) d)).toList();
+                .flatMap(c -> c.classList().stream())
+                .filter(d -> PermFlag.class.isAssignableFrom(d) && !d.isInterface())
+                .map(d -> (Class<PermFlag>) d)
+                .toList();
 
         return permClassList.stream()
                 .flatMap(c -> c.isEnum() ?
