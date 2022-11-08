@@ -5,8 +5,6 @@ import cool.scx.core.base.BaseModelService;
 
 import java.util.List;
 
-import static cool.scx.ext.organization.auth.AuthHelper.encryptPasswordOrNull;
-
 /**
  * 核心用户 service
  *
@@ -45,14 +43,12 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
      * @return a
      */
     public T addWithDeptAndRole(T user, List<Long> deptIDs, List<Long> roleIDs) {
-        user.password = encryptPasswordOrNull(user.password);
         //这里需要保证事务
         return ScxContext.autoTransaction(() -> {
             var newUser = this.add(user);
             userDeptService.addDeptListWithUserID(newUser.id, deptIDs);
             userRoleService.addRoleListWithUserID(newUser.id, roleIDs);
-            //并不直接返回 newUser 而是重新 get 获取是为了填充 deptIDs 和 roleIDs 字段
-            return get(newUser.id);
+            return newUser;
         });
     }
 
@@ -65,7 +61,6 @@ public abstract class BaseUserService<T extends BaseUser> extends BaseModelServi
      * @return a
      */
     public T updateWithDeptAndRole(T user, List<Long> deptIDs, List<Long> roleIDs) {
-        user.password = encryptPasswordOrNull(user.password);
         //这里需要保证事务
         return ScxContext.autoTransaction(() -> {
             //更新就是先删除再保存

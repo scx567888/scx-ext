@@ -10,10 +10,15 @@ import cool.scx.ext.organization.exception.UnknownLoginHandlerException;
 import cool.scx.ext.organization.exception.UnknownUserException;
 import cool.scx.ext.organization.exception.UsernameAlreadyExistsException;
 import cool.scx.ext.organization.exception.WrongPasswordException;
-import cool.scx.ext.organization.type.*;
+import cool.scx.ext.organization.type.LoggedInClient;
+import cool.scx.ext.organization.type.LoggedInClientTable;
+import cool.scx.ext.organization.type.PermsModel;
+import cool.scx.ext.organization.type.PermsWrapper;
 import cool.scx.ext.ws.WSMessage;
 import cool.scx.sql.base.Query;
 import cool.scx.sql.base.SelectFilter;
+import cool.scx.sql.base.UpdateFilter;
+import cool.scx.sql.where.WhereOption;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
@@ -151,7 +156,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         // 尝试登录 登录失败会直接走到 catch 中进行处理
         var loginUser = tryLogin(username, password);
         //走到这里表示 即 "成功获取到了 token" 也 登录成功了 我们将这些信息加入到 TestAuth 里的 ALREADY_LOGIN_CLIENTS 列表中
-        addLoginItem(token, loginUser, loginDevice);
+        LOGGED_IN_CLIENT_TABLE.add(new LoggedInClient(token, loginUser.id, loginDevice));
         //这里根据登录设备向客户端返回不同的信息
         return token;
     }
@@ -171,7 +176,10 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         if (needLoginUser == null) {
             throw new UnknownUserException();
         }
-        checkPasswordOrThrow(password, needLoginUser.password);
+        var b = checkPassword(password, needLoginUser.password);
+        if (!b) {
+            throw new WrongPasswordException();
+        }
         return needLoginUser;
     }
 
@@ -202,23 +210,23 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @return user
      */
     public U changePasswordByAdmin(String newPassword, Long id) {
-        checkNowLoginUserIsAdmin();
-        var needChangeUser = checkNeedChangeUserByID(id);
-        needChangeUser.password = CryptoUtils.encryptPassword(checkNewPassword(newPassword));
-        return userService.update(needChangeUser);
-    }
-
-    /**
-     * 检查当前用户是不是管理员
-     *
-     * @return 登录的用户
-     */
-    public BaseUser checkNowLoginUserIsAdmin() {
-        var loginUser = checkCurrentUserOrThrow();
+        var loginUser = getCurrentUser();
+        if (loginUser == null) {
+            throw new UnauthorizedException("请登录 !!!");
+        }
         if (!loginUser.isAdmin) {
             throw new NoPermException("非管理员无权限修改用户的用户名 !!!");
         }
-        return loginUser;
+        var needChangeUser = userService.get(id);
+        //不存在账号报错
+        if (needChangeUser == null) {
+            throw new UnknownUserException();
+        }
+        if (StringUtils.isBlank(newPassword)) {
+            throw new IllegalArgumentException("新密码不能为空 !!!");
+        }
+        needChangeUser.password = CryptoUtils.encryptPassword(newPassword.trim());
+        return userService.update(needChangeUser, UpdateFilter.ofIncluded("password"));
     }
 
     /**
@@ -229,10 +237,23 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @return a
      */
     public U changePasswordBySelf(String newPassword, String oldPassword) {
-        var loginUser = checkCurrentUserOrThrow();
-        checkPasswordOrThrow(oldPassword, loginUser.password);
-        var needChangeUser = checkNeedChangeUserByID(loginUser.id);
-        needChangeUser.password = CryptoUtils.encryptPassword(checkNewPassword(newPassword));
+        var loginUser = getCurrentUser();
+        if (loginUser == null) {
+            throw new UnauthorizedException("请登录 !!!");
+        }
+        var b = checkPassword(oldPassword, loginUser.password);
+        if (!b) {
+            throw new WrongPasswordException();
+        }
+        var needChangeUser = userService.get(loginUser.id);
+        //不存在账号报错
+        if (needChangeUser == null) {
+            throw new UnknownUserException();
+        }
+        if (StringUtils.isBlank(newPassword)) {
+            throw new IllegalArgumentException("新密码不能为空 !!!");
+        }
+        needChangeUser.password = CryptoUtils.encryptPassword(newPassword.trim());
         return userService.update(needChangeUser);
     }
 
@@ -244,32 +265,19 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @return a
      */
     public U changeUsernameBySelf(String newUsername, String password) {
-        var loginUser = checkCurrentUserOrThrow();
-        checkPasswordOrThrow(password, loginUser.password);
+        var loginUser = getCurrentUser();
+        if (loginUser == null) {
+            throw new UnauthorizedException("请登录 !!!");
+        }
+        var b = checkPassword(password, loginUser.password);
+        if (!b) {
+            throw new WrongPasswordException();
+        }
         var needChangeUser = checkNeedChangeUserByID(loginUser.id);
-        needChangeUser.username = checkNewUsernameStr(newUsername, needChangeUser.id);
+        needChangeUser.username = checkNewUsername(newUsername, needChangeUser.id);
         return userService.update(needChangeUser);
     }
 
-    /**
-     * 检查新用户名 (验空和是否重复)
-     *
-     * @param username username
-     * @param id       用户名 (用来校验用户名是否唯一)
-     * @return 去除首位空格后的 密码
-     */
-    public String checkNewUsernameStr(String username, Long id) {
-        if (StringUtils.isBlank(username)) {
-            throw new IllegalArgumentException("新用户名不能为空 !!!");
-        }
-        username = username.trim();
-        //判断数据库中是否已有重名用户
-        var count = userService.count(new Query().equal("username", username).notEqual("id", id));
-        if (count != 0) {
-            throw new UsernameAlreadyExistsException();
-        }
-        return username;
-    }
 
     /**
      * 根据 id 获取 用户 和 get 的区别是返回值永远不为空且只包含 [id, password, username] 三个字段
@@ -292,7 +300,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      *
      * @return a
      */
-    public PermsWrapper getPerms() {
+    public final PermsWrapper getPerms() {
         return getPerms(getCurrentUser());
     }
 
@@ -354,18 +362,9 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         // 尝试登录 登录失败会直接走到 catch 中进行处理
         var loginUser = findThirdPartyLoginHandler(accountType).tryLogin(uniqueID, accessToken);
         //走到这里表示 即 "成功获取到了 token" 也 登录成功了 我们将这些信息加入到 TestAuth 里的 ALREADY_LOGIN_CLIENTS 列表中
-        addLoginItem(token, loginUser, loginDevice);
+        LOGGED_IN_CLIENT_TABLE.add(new LoggedInClient(token, loginUser.id, loginDevice));
         //这里根据登录设备向客户端返回不同的信息
         return token;
-    }
-
-    /**
-     * a
-     *
-     * @return a
-     */
-    public List<LoggedInClient> loggedInClients() {
-        return LOGGED_IN_CLIENT_TABLE.loggedInClients();
     }
 
     /**
@@ -465,7 +464,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param webSocketID a {@link java.lang.String} object
      * @return a T object
      */
-    public U getLoginUserByWebSocketID(String webSocketID) {
+    public U getCurrentUserByWebSocketID(String webSocketID) {
         var client = LOGGED_IN_CLIENT_TABLE.getByWebSocketID(webSocketID);
         return client != null ? userService.get(client.userID) : null;
     }
@@ -476,11 +475,10 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param socket a {@link io.vertx.core.http.ServerWebSocket} object
      * @return a T object
      */
-    public U getLoginUserByWebSocket(ServerWebSocket socket) {
+    public U getCurrentUserByWebSocket(ServerWebSocket socket) {
         var client = LOGGED_IN_CLIENT_TABLE.getByWebSocket(socket);
         return client != null ? userService.get(client.userID) : null;
     }
-
 
     /**
      * 从文件中读取 LoginItem
@@ -509,33 +507,34 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         }
     }
 
-
     /**
-     * 添加用户到 登录列表中
+     * 检查新用户名 (验空和是否重复)
      *
-     * @param token       token
-     * @param authUser    认证成功的用户
-     * @param loginDevice 登录设备
+     * @param username username
+     * @param id       用户名 (用来校验用户名是否唯一)
+     * @return 去除首位空格后的 密码
      */
-    public void addLoginItem(String token, BaseUser authUser, DeviceType loginDevice) {
-        var client = new LoggedInClient();
-        client.token = token;
-        client.userID = authUser.id;
-        client.loginDevice = loginDevice;
-        LOGGED_IN_CLIENT_TABLE.add(client);
+    public String checkNewUsername(String username, Long id) {
+        if (StringUtils.isBlank(username)) {
+            throw new IllegalArgumentException("新用户名不能为空 !!!");
+        }
+        username = username.trim();
+        //判断数据库中是否已有重名用户
+        var count = userService.count(new Query().equal("username", username).notEqual("id", id, WhereOption.SKIP_IF_NULL));
+        if (count != 0) {
+            throw new UsernameAlreadyExistsException();
+        }
+        return username;
     }
 
     /**
-     * 检查当前登录用户
+     * 检查新用户名 (验空和是否重复)
      *
-     * @return user
+     * @param username username
+     * @return 去除首位空格后的 密码
      */
-    public BaseUser checkCurrentUserOrThrow() {
-        var loginUser = getCurrentUser();
-        if (loginUser == null) {
-            throw new UnauthorizedException("请登录 !!!");
-        }
-        return loginUser;
+    public String checkNewUsername(String username) {
+        return checkNewUsername(username, null);
     }
 
 }
