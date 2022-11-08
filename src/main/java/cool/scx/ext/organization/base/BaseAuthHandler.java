@@ -2,17 +2,21 @@ package cool.scx.ext.organization.base;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import cool.scx.core.ScxContext;
+import cool.scx.core.http.exception.NoPermException;
 import cool.scx.core.http.exception.UnauthorizedException;
 import cool.scx.ext.organization.auth.PermFlag;
 import cool.scx.ext.organization.auth.ThirdPartyLoginHandler;
 import cool.scx.ext.organization.exception.UnknownLoginHandlerException;
 import cool.scx.ext.organization.exception.UnknownUserException;
+import cool.scx.ext.organization.exception.UsernameAlreadyExistsException;
 import cool.scx.ext.organization.exception.WrongPasswordException;
 import cool.scx.ext.organization.type.*;
 import cool.scx.ext.ws.WSMessage;
 import cool.scx.sql.base.Query;
 import cool.scx.sql.base.SelectFilter;
+import cool.scx.util.CryptoUtils;
 import cool.scx.util.ObjectUtils;
+import cool.scx.util.StringUtils;
 import cool.scx.util.ansi.Ansi;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.ext.web.RoutingContext;
@@ -52,7 +56,6 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * 第三方登录 login handler 映射
      */
     protected final Map<String, ThirdPartyLoginHandler<?>> THIRD_PARTY_LOGIN_HANDLER_MAP = new HashMap<>();
-
 
     /**
      * 用户
@@ -183,7 +186,25 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param id          id
      * @return user
      */
-    public abstract U changePasswordByAdmin(String newPassword, Long id);
+    public U changePasswordByAdmin(String newPassword, Long id) {
+        checkNowLoginUserIsAdmin();
+        var needChangeUser = checkNeedChangeUserByID(id);
+        needChangeUser.password = CryptoUtils.encryptPassword(checkNewPassword(newPassword));
+        return userService.update(needChangeUser);
+    }
+
+    /**
+     * 检查当前用户是不是管理员
+     *
+     * @return 登录的用户
+     */
+    public BaseUser checkNowLoginUserIsAdmin() {
+        var loginUser = checkCurrentUserOrThrow();
+        if (!loginUser.isAdmin) {
+            throw new NoPermException("非管理员无权限修改用户的用户名 !!!");
+        }
+        return loginUser;
+    }
 
     /**
      * 修改当前登录用户的 密码
@@ -192,7 +213,13 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param oldPassword 用来校验的密码
      * @return a
      */
-    public abstract U changePasswordBySelf(String newPassword, String oldPassword);
+    public U changePasswordBySelf(String newPassword, String oldPassword) {
+        var loginUser = checkCurrentUserOrThrow();
+        checkPasswordOrThrow(oldPassword, loginUser.password);
+        var needChangeUser = checkNeedChangeUserByID(loginUser.id);
+        needChangeUser.password = CryptoUtils.encryptPassword(checkNewPassword(newPassword));
+        return userService.update(needChangeUser);
+    }
 
     /**
      * 修改当前登录用户的 用户名
@@ -201,7 +228,49 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param password    用来校验的密码
      * @return a
      */
-    public abstract U changeUsernameBySelf(String newUsername, String password);
+    public U changeUsernameBySelf(String newUsername, String password) {
+        var loginUser = checkCurrentUserOrThrow();
+        checkPasswordOrThrow(password, loginUser.password);
+        var needChangeUser = checkNeedChangeUserByID(loginUser.id);
+        needChangeUser.username = checkNewUsernameStr(newUsername, needChangeUser.id);
+        return userService.update(needChangeUser);
+    }
+
+    /**
+     * 检查新用户名 (验空和是否重复)
+     *
+     * @param username username
+     * @param id       用户名 (用来校验用户名是否唯一)
+     * @return 去除首位空格后的 密码
+     */
+    public String checkNewUsernameStr(String username, Long id) {
+        if (StringUtils.isBlank(username)) {
+            throw new IllegalArgumentException("新用户名不能为空 !!!");
+        }
+        username = username.trim();
+        //判断数据库中是否已有重名用户
+        var count = userService.count(new Query().equal("username", username).notEqual("id", id));
+        if (count != 0) {
+            throw new UsernameAlreadyExistsException();
+        }
+        return username;
+    }
+
+    /**
+     * 根据 id 获取 用户 和 get 的区别是返回值永远不为空且只包含 [id, password, username] 三个字段
+     * 如果对应 id 的用户未找到则抛出移除
+     *
+     * @param id id
+     * @return r
+     */
+    public U checkNeedChangeUserByID(Long id) {
+        var needChangeUser = userService.get(id, SelectFilter.ofIncluded().addIncluded("id", "password", "username"));
+        //不存在账号报错
+        if (needChangeUser == null) {
+            throw new UnknownUserException();
+        }
+        return needChangeUser;
+    }
 
     /**
      * a
@@ -290,12 +359,13 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param type 类型
      * @return handler
      */
-    public final ThirdPartyLoginHandler<?> findThirdPartyLoginHandler(String type) {
+    @SuppressWarnings("unchecked")
+    public final ThirdPartyLoginHandler<U> findThirdPartyLoginHandler(String type) {
         var thirdPartyLoginHandler = THIRD_PARTY_LOGIN_HANDLER_MAP.get(type);
         if (thirdPartyLoginHandler == null) {
             throw new UnknownLoginHandlerException();
         }
-        return thirdPartyLoginHandler;
+        return (ThirdPartyLoginHandler<U>) thirdPartyLoginHandler;
     }
 
     /**

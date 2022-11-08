@@ -1,4 +1,4 @@
-package cool.scx.ext.organization_impl.impl;
+package cool.scx.test.auth;
 
 import cool.scx.core.annotation.ScxModel;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
@@ -11,7 +11,7 @@ import cool.scx.ext.organization.base.BaseRole;
  * @version 1.13.5
  */
 @UseCRUDApi
-@ScxModel(tablePrefix = "organization")
-public final class Role extends BaseRole {
+@ScxModel(tableName = "test_role")
+public final class TestRole extends BaseRole {
 
 }

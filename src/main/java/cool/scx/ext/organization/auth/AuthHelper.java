@@ -116,4 +116,17 @@ public final class AuthHelper {
         }
     }
 
+    /**
+     * 检查新密码 (只验空)
+     *
+     * @param password password
+     * @return 去除首位空格后的 密码
+     */
+    public static String checkNewPassword(String password) {
+        if (StringUtils.isBlank(password)) {
+            throw new IllegalArgumentException("新密码不能为空 !!!");
+        }
+        return password.trim();
+    }
+
 }

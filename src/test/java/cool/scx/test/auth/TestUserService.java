@@ -1,23 +1,21 @@
 package cool.scx.test.auth;
 
 import cool.scx.core.annotation.ScxService;
-import cool.scx.ext.organization.base.BaseDeptService;
-import cool.scx.ext.organization.base.BaseRoleService;
 import cool.scx.ext.organization.base.BaseUserService;
-import cool.scx.ext.organization.base.impl.DeptService;
-import cool.scx.ext.organization.base.impl.RoleService;
+import cool.scx.ext.organization.base.UserDeptService;
+import cool.scx.ext.organization.base.UserRoleService;
 
 @ScxService
 public class TestUserService extends BaseUserService<TestUser> {
 
     /**
-     * <p>Constructor for UserService.</p>
+     * 构造函数
      *
-     * @param deptService a {@link BaseDeptService} object
-     * @param roleService a {@link BaseRoleService} object
+     * @param userRoleService a
+     * @param userDeptService a
      */
-    public TestUserService(DeptService deptService, RoleService roleService) {
-        super(deptService, roleService);
+    public TestUserService(UserRoleService userRoleService, UserDeptService userDeptService) {
+        super(userRoleService, userDeptService);
     }
 
 }

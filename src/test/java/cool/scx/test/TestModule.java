@@ -13,7 +13,6 @@ import cool.scx.ext.organization.OrganizationModule;
 import cool.scx.ext.organization.base.BaseUserService;
 import cool.scx.ext.static_server.StaticServerModule;
 import cool.scx.ext.ws.WSModule;
-import cool.scx.test.auth.TestUserService;
 import cool.scx.test.bb.BBService;
 import cool.scx.test.website.UserListWebSiteHandler;
 import cool.scx.test.website.WriteTimeHandler;
@@ -54,8 +53,7 @@ public class TestModule extends ScxModule {
                         new CRUDModule(),
                         new FixTableModule(),
                         new FSSModule(),
-                        new OrganizationModule()
-                                .setUserServiceClass(TestUserService.class),
+                        new OrganizationModule(),
                         new StaticServerModule())
                 .configure(ScxCoreFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
                 .run();
