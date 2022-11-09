@@ -31,7 +31,7 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
     /**
      * <p>Constructor for PermsAnnotationInterceptor.</p>
      *
-     * @param authHandler a {@link BaseAuthHandler} object
+     * @param authHandler a {@link cool.scx.ext.organization.auth.BaseAuthHandler} object
      */
     public PermsAnnotationInterceptor(BaseAuthHandler<?> authHandler) {
         this.authHandler = authHandler;
