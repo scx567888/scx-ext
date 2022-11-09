@@ -10,6 +10,7 @@ import cool.scx.sql.base.SelectFilter;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.sql.where.WhereType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -137,18 +138,62 @@ public final class CRUDListParam {
     }
 
     /**
-     * 获取 Query
+     * <p>Getter for the field <code>pagination</code>.</p>
      *
-     * @param modelClass a
-     * @return a
-     * @throws cool.scx.core.http.exception.BadRequestException if any.
+     * @param query a {@link cool.scx.sql.base.Query} object
      */
-    public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
-        var query = new Query();
-        //先处理一下分页
+    private void getPagination(Query query) {
+        if (this.pagination != null) {
+            try {
+                checkPagination(query, this.pagination);
+            } catch (Exception ignored) {
+
+            }
+        }
+    }
+
+    /**
+     * <p>getPaginationOrThrow.</p>
+     *
+     * @param query a {@link cool.scx.sql.base.Query} object
+     */
+    private void getPaginationOrThrow(Query query) {
         if (this.pagination != null) {
             checkPagination(query, this.pagination);
         }
+    }
+
+    /**
+     * <p>getOrderBy.</p>
+     *
+     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param modelClass a {@link java.lang.Class} object
+     */
+    public void getOrderBy(Query query, Class<? extends BaseModel> modelClass) {
+        if (this.orderByBodyList != null) {
+            for (var orderByBody : this.orderByBodyList) {
+                if (orderByBody.fieldName != null && orderByBody.sortType != null) {
+                    try {
+                        //校验 fieldName 是否正确
+                        CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
+                        //检查 sortType 是否正确
+                        var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
+                        query.orderBy().add(orderByBody.fieldName, sortType);
+                    } catch (Exception ignored) {
+
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * <p>getOrderByOrThrow.</p>
+     *
+     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param modelClass a {@link java.lang.Class} object
+     */
+    public void getOrderByOrThrow(Query query, Class<? extends BaseModel> modelClass) {
         if (this.orderByBodyList != null) {
             for (var orderByBody : this.orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
@@ -160,6 +205,47 @@ public final class CRUDListParam {
                 }
             }
         }
+    }
+
+    /**
+     * <p>getWhere.</p>
+     *
+     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param modelClass a {@link java.lang.Class} object
+     */
+    public void getWhere(Query query, Class<? extends BaseModel> modelClass) {
+        if (this.whereBodyList != null) {
+            for (var crudWhereBody : this.whereBodyList) {
+                if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
+                    try {
+                        //校验 fieldName 是否正确
+                        CRUDHelper.checkFieldName(modelClass, crudWhereBody.fieldName);
+                        //检查 whereType 是否正确
+                        var whereType = checkWhereType(crudWhereBody.fieldName, crudWhereBody.whereType);
+                        //检查参数数量是否正确
+                        checkWhereBodyParametersSize(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                        if (whereType.paramSize() == 0) {
+                            query.where().add0(crudWhereBody.fieldName, whereType);
+                        } else if (whereType.paramSize() == 1) {
+                            query.where().add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
+                        } else if (whereType.paramSize() == 2) {
+                            query.where().add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                        }
+                    } catch (Exception ignored) {
+
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * <p>getWhereOrThrow.</p>
+     *
+     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param modelClass a {@link java.lang.Class} object
+     */
+    public void getWhereOrThrow(Query query, Class<? extends BaseModel> modelClass) {
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
@@ -179,6 +265,37 @@ public final class CRUDListParam {
                 }
             }
         }
+    }
+
+    /**
+     * 获取 Query
+     *
+     * @param modelClass a
+     * @return a
+     * @throws cool.scx.core.http.exception.BadRequestException if any.
+     */
+    public Query getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
+        var query = new Query();
+        //先处理一下分页
+        getPaginationOrThrow(query);
+        getOrderByOrThrow(query, modelClass);
+        getWhereOrThrow(query, modelClass);
+        return query;
+    }
+
+    /**
+     * <p>getQuery.</p>
+     *
+     * @param modelClass a {@link java.lang.Class} object
+     * @return a {@link cool.scx.sql.base.Query} object
+     * @throws cool.scx.core.http.exception.BadRequestException if any.
+     */
+    public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
+        var query = new Query();
+        //先处理一下分页
+        getPagination(query);
+        getOrderBy(query, modelClass);
+        getWhere(query, modelClass);
         return query;
     }
 
@@ -189,7 +306,7 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
+    public SelectFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
@@ -205,6 +322,44 @@ public final class CRUDListParam {
         }
         return selectFilter;
     }
+
+    /**
+     * <p>getSelectFilter.</p>
+     *
+     * @param modelClass      a {@link java.lang.Class} object
+     * @param scxDaoTableInfo a {@link cool.scx.sql.TableInfo} object
+     * @return a {@link cool.scx.sql.base.SelectFilter} object
+     */
+    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
+        if (selectFilterBody == null) {
+            return SelectFilter.ofExcluded();
+        }
+        var filterMode = checkFilterMode(selectFilterBody.filterMode);
+        String[] legalFieldName;
+        if (selectFilterBody.fieldNames != null) {
+            var list = new ArrayList<String>();
+            for (var fieldName : selectFilterBody.fieldNames) {
+                try {
+                    list.add(CRUDHelper.checkFieldName(modelClass, fieldName));
+                } catch (Exception ignored) {
+
+                }
+            }
+            legalFieldName = list.toArray(new String[0]);
+        } else {
+            legalFieldName = new String[0];
+        }
+        var selectFilter = switch (filterMode) {
+            case EXCLUDED -> SelectFilter.ofExcluded().addExcluded(legalFieldName);
+            case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
+        };
+        //防止空列查询
+        if (selectFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
+            throw new EmptySelectColumnException(filterMode, selectFilterBody.fieldNames);
+        }
+        return selectFilter;
+    }
+
 
     /**
      * a
