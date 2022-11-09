@@ -10,6 +10,7 @@ import cool.scx.sql.base.SelectFilter;
 import cool.scx.sql.order_by.OrderByType;
 import cool.scx.sql.where.WhereType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -136,7 +137,17 @@ public final class CRUDListParam {
         }
     }
 
-    public void getPagination(Query query) {
+    private void getPagination(Query query) {
+        if (this.pagination != null) {
+            try {
+                checkPagination(query, this.pagination);
+            } catch (Exception ignored) {
+
+            }
+        }
+    }
+
+    private void getPaginationOrThrow(Query query) {
         if (this.pagination != null) {
             checkPagination(query, this.pagination);
         }
@@ -146,10 +157,26 @@ public final class CRUDListParam {
         if (this.orderByBodyList != null) {
             for (var orderByBody : this.orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
-                    //校验 fieldName 是否正确
-                    if (modelClass != null) {
+                    try {
+                        //校验 fieldName 是否正确
                         CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
+                        //检查 sortType 是否正确
+                        var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
+                        query.orderBy().add(orderByBody.fieldName, sortType);
+                    } catch (Exception ignored) {
+
                     }
+                }
+            }
+        }
+    }
+
+    public void getOrderByOrThrow(Query query, Class<? extends BaseModel> modelClass) {
+        if (this.orderByBodyList != null) {
+            for (var orderByBody : this.orderByBodyList) {
+                if (orderByBody.fieldName != null && orderByBody.sortType != null) {
+                    //校验 fieldName 是否正确
+                    CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
                     //检查 sortType 是否正确
                     var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
                     query.orderBy().add(orderByBody.fieldName, sortType);
@@ -162,10 +189,34 @@ public final class CRUDListParam {
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
-                    //校验 fieldName 是否正确
-                    if (modelClass != null) {
+                    try {
+                        //校验 fieldName 是否正确
                         CRUDHelper.checkFieldName(modelClass, crudWhereBody.fieldName);
+                        //检查 whereType 是否正确
+                        var whereType = checkWhereType(crudWhereBody.fieldName, crudWhereBody.whereType);
+                        //检查参数数量是否正确
+                        checkWhereBodyParametersSize(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                        if (whereType.paramSize() == 0) {
+                            query.where().add0(crudWhereBody.fieldName, whereType);
+                        } else if (whereType.paramSize() == 1) {
+                            query.where().add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
+                        } else if (whereType.paramSize() == 2) {
+                            query.where().add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                        }
+                    } catch (Exception ignored) {
+
                     }
+                }
+            }
+        }
+    }
+
+    public void getWhereOrThrow(Query query, Class<? extends BaseModel> modelClass) {
+        if (this.whereBodyList != null) {
+            for (var crudWhereBody : this.whereBodyList) {
+                if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
+                    //校验 fieldName 是否正确
+                    CRUDHelper.checkFieldName(modelClass, crudWhereBody.fieldName);
                     //检查 whereType 是否正确
                     var whereType = checkWhereType(crudWhereBody.fieldName, crudWhereBody.whereType);
                     //检查参数数量是否正确
@@ -189,6 +240,15 @@ public final class CRUDListParam {
      * @return a
      * @throws cool.scx.core.http.exception.BadRequestException if any.
      */
+    public Query getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
+        var query = new Query();
+        //先处理一下分页
+        getPaginationOrThrow(query);
+        getOrderByOrThrow(query, modelClass);
+        getWhereOrThrow(query, modelClass);
+        return query;
+    }
+
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var query = new Query();
         //先处理一下分页
@@ -198,10 +258,6 @@ public final class CRUDListParam {
         return query;
     }
 
-    public Query getQuery() throws BadRequestException {
-        return getQuery(null);
-    }
-
     /**
      * 获取 b
      *
@@ -209,14 +265,41 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public SelectFilter getSelectFilter(TableInfo scxDaoTableInfo, Class<? extends BaseModel> modelClass) {
+    public SelectFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
         var filterMode = checkFilterMode(selectFilterBody.filterMode);
-        var legalFieldName = new String[0];
+        var legalFieldName = selectFilterBody.fieldNames != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new) : new String[0];
+        var selectFilter = switch (filterMode) {
+            case EXCLUDED -> SelectFilter.ofExcluded().addExcluded(legalFieldName);
+            case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
+        };
+        //防止空列查询
+        if (selectFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
+            throw new EmptySelectColumnException(filterMode, selectFilterBody.fieldNames);
+        }
+        return selectFilter;
+    }
+
+    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
+        if (selectFilterBody == null) {
+            return SelectFilter.ofExcluded();
+        }
+        var filterMode = checkFilterMode(selectFilterBody.filterMode);
+        String[] legalFieldName;
         if (selectFilterBody.fieldNames != null) {
-            legalFieldName = modelClass != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new) : selectFilterBody.fieldNames;
+            var list = new ArrayList<String>();
+            for (var fieldName : selectFilterBody.fieldNames) {
+                try {
+                    list.add(CRUDHelper.checkFieldName(modelClass, fieldName));
+                } catch (Exception ignored) {
+
+                }
+            }
+            legalFieldName = list.toArray(new String[0]);
+        } else {
+            legalFieldName = new String[0];
         }
         var selectFilter = switch (filterMode) {
             case EXCLUDED -> SelectFilter.ofExcluded().addExcluded(legalFieldName);
@@ -229,9 +312,6 @@ public final class CRUDListParam {
         return selectFilter;
     }
 
-    public SelectFilter getSelectFilter(TableInfo scxDaoTableInfo) {
-        return getSelectFilter(scxDaoTableInfo, null);
-    }
 
     /**
      * a
