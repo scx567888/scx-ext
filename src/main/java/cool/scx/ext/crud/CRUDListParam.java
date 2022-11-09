@@ -136,6 +136,52 @@ public final class CRUDListParam {
         }
     }
 
+    public void getPagination(Query query) {
+        if (this.pagination != null) {
+            checkPagination(query, this.pagination);
+        }
+    }
+
+    public void getOrderBy(Query query, Class<? extends BaseModel> modelClass) {
+        if (this.orderByBodyList != null) {
+            for (var orderByBody : this.orderByBodyList) {
+                if (orderByBody.fieldName != null && orderByBody.sortType != null) {
+                    //校验 fieldName 是否正确
+                    if (modelClass != null) {
+                        CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
+                    }
+                    //检查 sortType 是否正确
+                    var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
+                    query.orderBy().add(orderByBody.fieldName, sortType);
+                }
+            }
+        }
+    }
+
+    public void getWhere(Query query, Class<? extends BaseModel> modelClass) {
+        if (this.whereBodyList != null) {
+            for (var crudWhereBody : this.whereBodyList) {
+                if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
+                    //校验 fieldName 是否正确
+                    if (modelClass != null) {
+                        CRUDHelper.checkFieldName(modelClass, crudWhereBody.fieldName);
+                    }
+                    //检查 whereType 是否正确
+                    var whereType = checkWhereType(crudWhereBody.fieldName, crudWhereBody.whereType);
+                    //检查参数数量是否正确
+                    checkWhereBodyParametersSize(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                    if (whereType.paramSize() == 0) {
+                        query.where().add0(crudWhereBody.fieldName, whereType);
+                    } else if (whereType.paramSize() == 1) {
+                        query.where().add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
+                    } else if (whereType.paramSize() == 2) {
+                        query.where().add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 获取 Query
      *
@@ -146,75 +192,14 @@ public final class CRUDListParam {
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var query = new Query();
         //先处理一下分页
-        if (this.pagination != null) {
-            checkPagination(query, this.pagination);
-        }
-        if (this.orderByBodyList != null) {
-            for (var orderByBody : this.orderByBodyList) {
-                if (orderByBody.fieldName != null && orderByBody.sortType != null) {
-                    //校验 fieldName 是否正确
-                    CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
-                    //检查 sortType 是否正确
-                    var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
-                    query.orderBy().add(orderByBody.fieldName, sortType);
-                }
-            }
-        }
-        if (this.whereBodyList != null) {
-            for (var crudWhereBody : this.whereBodyList) {
-                if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
-                    //校验 fieldName 是否正确
-                    CRUDHelper.checkFieldName(modelClass, crudWhereBody.fieldName);
-                    //检查 whereType 是否正确
-                    var whereType = checkWhereType(crudWhereBody.fieldName, crudWhereBody.whereType);
-                    //检查参数数量是否正确
-                    checkWhereBodyParametersSize(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
-                    if (whereType.paramSize() == 0) {
-                        query.where().add0(crudWhereBody.fieldName, whereType);
-                    } else if (whereType.paramSize() == 1) {
-                        query.where().add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
-                    } else if (whereType.paramSize() == 2) {
-                        query.where().add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
-                    }
-                }
-            }
-        }
+        getPagination(query);
+        getOrderBy(query, modelClass);
+        getWhere(query, modelClass);
         return query;
     }
 
     public Query getQuery() throws BadRequestException {
-        var query = new Query();
-        //先处理一下分页
-        if (this.pagination != null) {
-            checkPagination(query, this.pagination);
-        }
-        if (this.orderByBodyList != null) {
-            for (var orderByBody : this.orderByBodyList) {
-                if (orderByBody.fieldName != null && orderByBody.sortType != null) {
-                    //检查 sortType 是否正确
-                    var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
-                    query.orderBy().add(orderByBody.fieldName, sortType);
-                }
-            }
-        }
-        if (this.whereBodyList != null) {
-            for (var crudWhereBody : this.whereBodyList) {
-                if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
-                    //检查 whereType 是否正确
-                    var whereType = checkWhereType(crudWhereBody.fieldName, crudWhereBody.whereType);
-                    //检查参数数量是否正确
-                    checkWhereBodyParametersSize(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
-                    if (whereType.paramSize() == 0) {
-                        query.where().add0(crudWhereBody.fieldName, whereType);
-                    } else if (whereType.paramSize() == 1) {
-                        query.where().add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
-                    } else if (whereType.paramSize() == 2) {
-                        query.where().add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
-                    }
-                }
-            }
-        }
-        return query;
+        return getQuery(null);
     }
 
     /**
@@ -224,12 +209,15 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
+    public SelectFilter getSelectFilter(TableInfo scxDaoTableInfo, Class<? extends BaseModel> modelClass) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
         var filterMode = checkFilterMode(selectFilterBody.filterMode);
-        var legalFieldName = selectFilterBody.fieldNames != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new) : new String[0];
+        var legalFieldName = new String[0];
+        if (selectFilterBody.fieldNames != null) {
+            legalFieldName = modelClass != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new) : selectFilterBody.fieldNames;
+        }
         var selectFilter = switch (filterMode) {
             case EXCLUDED -> SelectFilter.ofExcluded().addExcluded(legalFieldName);
             case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
@@ -239,6 +227,10 @@ public final class CRUDListParam {
             throw new EmptySelectColumnException(filterMode, selectFilterBody.fieldNames);
         }
         return selectFilter;
+    }
+
+    public SelectFilter getSelectFilter(TableInfo scxDaoTableInfo) {
+        return getSelectFilter(scxDaoTableInfo, null);
     }
 
     /**

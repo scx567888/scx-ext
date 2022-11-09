@@ -123,7 +123,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var query = crudListParam.getQuery(baseModelClass);
-        var selectFilter = crudListParam.getSelectFilter(baseModelClass, baseModelService._baseDao()._tableInfo());
+        var selectFilter = crudListParam.getSelectFilter(baseModelService._baseDao()._tableInfo(), baseModelClass);
         var list = baseModelService.list(query, selectFilter);
         var total = baseModelService.count(query);
         return new CRUDListResult(list, total);
