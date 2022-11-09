@@ -2,13 +2,13 @@ package cool.scx.ext.organization;
 
 import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
+import cool.scx.ext.organization.auth.BaseAuthHandler;
 import cool.scx.ext.organization.auth.PermsAnnotationInterceptor;
 import cool.scx.ext.organization.auth.ScxAuthCookieHandler;
-import cool.scx.ext.organization.base.BaseAuthHandler;
 import cool.scx.ext.ws.WSContext;
 
-import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_DEVICE_KEY;
-import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
+import static cool.scx.ext.organization.auth.BaseAuthHandler.SCX_AUTH_DEVICE_KEY;
+import static cool.scx.ext.organization.auth.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
 
 /**
  * <p>OrganizationModule class.</p>

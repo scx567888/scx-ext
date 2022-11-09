@@ -1,4 +1,4 @@
-package cool.scx.ext.organization.base;
+package cool.scx.ext.organization.auth;
 
 import cool.scx.core.annotation.FromBody;
 import cool.scx.core.annotation.ScxMapping;
@@ -8,6 +8,8 @@ import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;
 import cool.scx.core.vo.Json;
 import cool.scx.ext.organization.annotation.ApiPerms;
+import cool.scx.ext.organization.base.BaseUser;
+import cool.scx.ext.organization.base.BaseUserService;
 import cool.scx.ext.organization.exception.AuthException;
 import cool.scx.ext.organization.type.DeviceType;
 import cool.scx.ext.organization.type.UserInfoWrapper;

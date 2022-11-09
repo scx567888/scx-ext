@@ -1,6 +1,7 @@
 package cool.scx.ext.organization.base;
 
 import cool.scx.core.annotation.Column;
+import cool.scx.core.base.BaseModel;
 
 /**
  * 账号表 处理登录信息用
@@ -8,7 +9,7 @@ import cool.scx.core.annotation.Column;
  * @author scx567888
  * @version 1.11.8
  */
-public abstract class BaseAccount extends UserInfoModel {
+public class BaseAccount extends BaseModel {
 
     /**
      * 唯一ID

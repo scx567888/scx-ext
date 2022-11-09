@@ -7,8 +7,8 @@ import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import io.vertx.ext.web.RoutingContext;
 
-import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_DEVICE_KEY;
-import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
+import static cool.scx.ext.organization.auth.BaseAuthHandler.SCX_AUTH_DEVICE_KEY;
+import static cool.scx.ext.organization.auth.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
 
 /**
  * <p>AuthHelper class.</p>

@@ -1,5 +1,6 @@
 package cool.scx.test.auth;
 
+import cool.scx.ext.organization.auth.BaseAuthHandler;
 import cool.scx.ext.organization.base.*;
 import org.springframework.stereotype.Component;
 

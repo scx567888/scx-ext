@@ -5,7 +5,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.http.impl.CookieImpl;
 import io.vertx.ext.web.RoutingContext;
 
-import static cool.scx.ext.organization.base.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
+import static cool.scx.ext.organization.auth.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
 
 /**
  * <p>ScxAuthCookieHandler class.</p>

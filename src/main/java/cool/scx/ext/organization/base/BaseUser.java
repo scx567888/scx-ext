@@ -10,7 +10,7 @@ import cool.scx.core.base.BaseModel;
  * @author scx567888
  * @version 1.1.2
  */
-public abstract class BaseUser extends BaseModel {
+public class BaseUser extends BaseModel {
 
     /**
      * 用户名 (注意 !!! ,用户名在业务上是可以被修改的 所以切记不要将用户名作为任何业务的关联字段)
