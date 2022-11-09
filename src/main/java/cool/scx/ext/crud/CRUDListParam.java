@@ -182,6 +182,41 @@ public final class CRUDListParam {
         return query;
     }
 
+    public Query getQuery() throws BadRequestException {
+        var query = new Query();
+        //先处理一下分页
+        if (this.pagination != null) {
+            checkPagination(query, this.pagination);
+        }
+        if (this.orderByBodyList != null) {
+            for (var orderByBody : this.orderByBodyList) {
+                if (orderByBody.fieldName != null && orderByBody.sortType != null) {
+                    //检查 sortType 是否正确
+                    var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
+                    query.orderBy().add(orderByBody.fieldName, sortType);
+                }
+            }
+        }
+        if (this.whereBodyList != null) {
+            for (var crudWhereBody : this.whereBodyList) {
+                if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
+                    //检查 whereType 是否正确
+                    var whereType = checkWhereType(crudWhereBody.fieldName, crudWhereBody.whereType);
+                    //检查参数数量是否正确
+                    checkWhereBodyParametersSize(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                    if (whereType.paramSize() == 0) {
+                        query.where().add0(crudWhereBody.fieldName, whereType);
+                    } else if (whereType.paramSize() == 1) {
+                        query.where().add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
+                    } else if (whereType.paramSize() == 2) {
+                        query.where().add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                    }
+                }
+            }
+        }
+        return query;
+    }
+
     /**
      * 获取 b
      *
