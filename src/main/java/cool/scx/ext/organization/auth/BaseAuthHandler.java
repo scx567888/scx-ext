@@ -1,11 +1,10 @@
-package cool.scx.ext.organization.base;
+package cool.scx.ext.organization.auth;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import cool.scx.core.ScxContext;
 import cool.scx.core.http.exception.NoPermException;
 import cool.scx.core.http.exception.UnauthorizedException;
-import cool.scx.ext.organization.auth.PermFlag;
-import cool.scx.ext.organization.auth.ThirdPartyLoginHandler;
+import cool.scx.ext.organization.base.*;
 import cool.scx.ext.organization.exception.UnknownLoginHandlerException;
 import cool.scx.ext.organization.exception.UnknownUserException;
 import cool.scx.ext.organization.exception.UsernameAlreadyExistsException;

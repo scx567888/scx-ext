@@ -32,10 +32,20 @@ public final class LoggedInClient {
      */
     public String webSocketID;
 
+    /**
+     * <p>Constructor for LoggedInClient.</p>
+     */
     public LoggedInClient() {
 
     }
 
+    /**
+     * <p>Constructor for LoggedInClient.</p>
+     *
+     * @param token       a {@link java.lang.String} object
+     * @param userID      a {@link java.lang.Long} object
+     * @param loginDevice a {@link cool.scx.ext.organization.type.DeviceType} object
+     */
     public LoggedInClient(String token, Long userID, DeviceType loginDevice) {
         this.userID = userID;
         this.loginDevice = loginDevice;

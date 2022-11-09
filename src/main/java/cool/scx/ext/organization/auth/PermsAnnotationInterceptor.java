@@ -5,7 +5,6 @@ import cool.scx.core.http.exception.UnauthorizedException;
 import cool.scx.core.mvc.ScxMappingHandler;
 import cool.scx.core.mvc.ScxMappingInterceptor;
 import cool.scx.ext.organization.annotation.ApiPerms;
-import cool.scx.ext.organization.base.BaseAuthHandler;
 import io.vertx.ext.web.RoutingContext;
 
 import java.lang.reflect.Method;
@@ -32,7 +31,7 @@ public final class PermsAnnotationInterceptor implements ScxMappingInterceptor {
     /**
      * <p>Constructor for PermsAnnotationInterceptor.</p>
      *
-     * @param authHandler a {@link cool.scx.ext.organization.base.BaseAuthHandler} object
+     * @param authHandler a {@link cool.scx.ext.organization.auth.BaseAuthHandler} object
      */
     public PermsAnnotationInterceptor(BaseAuthHandler<?> authHandler) {
         this.authHandler = authHandler;
