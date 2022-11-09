@@ -44,7 +44,7 @@ public final class LoggedInClient {
      *
      * @param token       a {@link java.lang.String} object
      * @param userID      a {@link java.lang.Long} object
-     * @param loginDevice a {@link DeviceType} object
+     * @param loginDevice a {@link cool.scx.ext.auth.DeviceType} object
      */
     public LoggedInClient(String token, Long userID, DeviceType loginDevice) {
         this.userID = userID;

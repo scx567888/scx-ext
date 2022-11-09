@@ -56,8 +56,8 @@ public class UserInfo {
     /**
      * <p>Constructor for ScxUserInfo.</p>
      *
-     * @param user  a {@link BaseUser} object
-     * @param perms a {@link Perms} object
+     * @param user  a {@link cool.scx.ext.auth.BaseUser} object
+     * @param perms a {@link cool.scx.ext.auth.Perms} object
      */
     public UserInfo(BaseUser user, Perms perms) {
         this.id = user.id;

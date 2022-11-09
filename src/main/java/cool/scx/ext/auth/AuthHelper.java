@@ -6,6 +6,9 @@ import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import io.vertx.ext.web.RoutingContext;
 
+import java.util.HashSet;
+import java.util.List;
+
 import static cool.scx.ext.auth.BaseAuthHandler.SCX_AUTH_DEVICE_KEY;
 import static cool.scx.ext.auth.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
 
@@ -71,7 +74,7 @@ public final class AuthHelper {
      * 尝试获取一个可以作为认证的 Token 具体获取方式由设备类型决定
      *
      * @param ctx         a {@link io.vertx.ext.web.RoutingContext} object
-     * @param loginDevice a {@link DeviceType} object
+     * @param loginDevice a {@link cool.scx.ext.auth.DeviceType} object
      * @return a {@link java.lang.String} object
      * @throws cool.scx.ext.auth.exception.AuthException if any.
      */
@@ -103,6 +106,34 @@ public final class AuthHelper {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * <p>mergePermsModels.</p>
+     *
+     * @param permsModelList a {@link java.util.List} object
+     * @return a {@link cool.scx.ext.auth.Perms} object
+     */
+    public static Perms mergePermsModels(List<PermsModel> permsModelList) {
+        var pageElementPerms = new HashSet<String>();
+        var pagePerms = new HashSet<String>();
+        var perms = new HashSet<String>();
+        var apiPerms = new HashSet<String>();
+        for (var p : permsModelList) {
+            if (p.pagePerms != null) {
+                pagePerms.addAll(p.pagePerms);
+            }
+            if (p.pageElementPerms != null) {
+                pageElementPerms.addAll(p.pageElementPerms);
+            }
+            if (p.perms != null) {
+                perms.addAll(p.perms);
+            }
+            if (p.apiPerms != null) {
+                apiPerms.addAll(p.apiPerms);
+            }
+        }
+        return new Perms(perms, pagePerms, pageElementPerms, apiPerms);
     }
 
 }

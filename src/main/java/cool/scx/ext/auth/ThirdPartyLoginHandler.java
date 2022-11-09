@@ -13,7 +13,7 @@ public interface ThirdPartyLoginHandler<T extends BaseUser> {
      *
      * @param uniqueID    a {@link java.lang.String} object
      * @param accessToken a {@link java.lang.String} object
-     * @return a {@link BaseUser} object
+     * @return a {@link cool.scx.ext.auth.BaseUser} object
      */
     T tryLogin(String uniqueID, String accessToken);
 
@@ -60,8 +60,8 @@ public interface ThirdPartyLoginHandler<T extends BaseUser> {
      *
      * @param uniqueID    a {@link java.lang.String} object
      * @param accessToken a {@link java.lang.String} object
-     * @param defaultUser a {@link BaseUser} object
-     * @return a {@link BaseUser} object
+     * @param defaultUser a {@link cool.scx.ext.auth.BaseUser} object
+     * @return a {@link cool.scx.ext.auth.BaseUser} object
      */
     T signup(String uniqueID, String accessToken, T defaultUser);
 

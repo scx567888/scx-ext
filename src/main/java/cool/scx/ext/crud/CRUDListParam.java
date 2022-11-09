@@ -137,6 +137,11 @@ public final class CRUDListParam {
         }
     }
 
+    /**
+     * <p>Getter for the field <code>pagination</code>.</p>
+     *
+     * @param query a {@link cool.scx.sql.base.Query} object
+     */
     private void getPagination(Query query) {
         if (this.pagination != null) {
             try {
@@ -147,12 +152,23 @@ public final class CRUDListParam {
         }
     }
 
+    /**
+     * <p>getPaginationOrThrow.</p>
+     *
+     * @param query a {@link cool.scx.sql.base.Query} object
+     */
     private void getPaginationOrThrow(Query query) {
         if (this.pagination != null) {
             checkPagination(query, this.pagination);
         }
     }
 
+    /**
+     * <p>getOrderBy.</p>
+     *
+     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param modelClass a {@link java.lang.Class} object
+     */
     public void getOrderBy(Query query, Class<? extends BaseModel> modelClass) {
         if (this.orderByBodyList != null) {
             for (var orderByBody : this.orderByBodyList) {
@@ -171,6 +187,12 @@ public final class CRUDListParam {
         }
     }
 
+    /**
+     * <p>getOrderByOrThrow.</p>
+     *
+     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param modelClass a {@link java.lang.Class} object
+     */
     public void getOrderByOrThrow(Query query, Class<? extends BaseModel> modelClass) {
         if (this.orderByBodyList != null) {
             for (var orderByBody : this.orderByBodyList) {
@@ -185,6 +207,12 @@ public final class CRUDListParam {
         }
     }
 
+    /**
+     * <p>getWhere.</p>
+     *
+     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param modelClass a {@link java.lang.Class} object
+     */
     public void getWhere(Query query, Class<? extends BaseModel> modelClass) {
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
@@ -211,6 +239,12 @@ public final class CRUDListParam {
         }
     }
 
+    /**
+     * <p>getWhereOrThrow.</p>
+     *
+     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param modelClass a {@link java.lang.Class} object
+     */
     public void getWhereOrThrow(Query query, Class<? extends BaseModel> modelClass) {
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
@@ -249,6 +283,13 @@ public final class CRUDListParam {
         return query;
     }
 
+    /**
+     * <p>getQuery.</p>
+     *
+     * @param modelClass a {@link java.lang.Class} object
+     * @return a {@link cool.scx.sql.base.Query} object
+     * @throws cool.scx.core.http.exception.BadRequestException if any.
+     */
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var query = new Query();
         //先处理一下分页
@@ -282,6 +323,13 @@ public final class CRUDListParam {
         return selectFilter;
     }
 
+    /**
+     * <p>getSelectFilter.</p>
+     *
+     * @param modelClass      a {@link java.lang.Class} object
+     * @param scxDaoTableInfo a {@link cool.scx.sql.TableInfo} object
+     * @return a {@link cool.scx.sql.base.SelectFilter} object
+     */
     public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
