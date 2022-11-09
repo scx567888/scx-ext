@@ -1,9 +1,8 @@
 package cool.scx.test.auth;
 
 import cool.scx.core.annotation.ScxMapping;
-import cool.scx.ext.organization.auth.BaseAuthApi;
-import cool.scx.ext.organization.auth.BaseAuthHandler;
-import cool.scx.ext.organization.base.BaseUserService;
+import cool.scx.ext.auth.BaseAuthApi;
+import cool.scx.ext.auth.BaseAuthHandler;
 
 /**
  * 默认认证 api 推荐使用
@@ -21,7 +20,7 @@ public class TestAuthApi extends BaseAuthApi<TestUser> {
      * @param authHandler a
      * @param userService a
      */
-    protected TestAuthApi(BaseAuthHandler<TestUser> authHandler, BaseUserService<TestUser> userService) {
+    protected TestAuthApi(BaseAuthHandler<TestUser> authHandler, TestUserService userService) {
         super(authHandler, userService);
     }
 

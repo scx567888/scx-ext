@@ -1,11 +1,11 @@
 package cool.scx.ext;
 
 import cool.scx.core.Scx;
+import cool.scx.ext.auth.AuthModule;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
-import cool.scx.ext.organization.OrganizationModule;
 import cool.scx.ext.static_server.StaticServerModule;
 import cool.scx.ext.ws.WSModule;
 
@@ -31,7 +31,7 @@ public class AllExtApp {
                         new CRUDModule(),
                         new FixTableModule(),
                         new FSSModule(),
-                        new OrganizationModule(),
+                        new AuthModule(),
                         new StaticServerModule())
                 .setArgs(args)
                 .run();
