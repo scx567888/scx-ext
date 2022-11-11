@@ -100,8 +100,12 @@ public abstract class BaseAuthApi<T extends BaseUser> {
      * @return a {@link cool.scx.core.vo.DataJson} object
      */
     @ScxMapping(method = HttpMethod.POST)
-    public DataJson signup(@FromBody String username, @FromBody String password) {
-        return DataJson.ok().data(authHandler.signup(username, password));
+    public BaseVo signup(@FromBody String username, @FromBody String password) {
+        try {
+            return DataJson.ok().data(authHandler.signup(username, password));
+        } catch (AuthException e) {
+            return e.toBaseVo();
+        }
     }
 
     /**
@@ -113,8 +117,12 @@ public abstract class BaseAuthApi<T extends BaseUser> {
      * @return a {@link cool.scx.core.vo.DataJson} object
      */
     @ScxMapping(method = HttpMethod.POST)
-    public DataJson signupByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType) {
-        return DataJson.ok().data(authHandler.signupByThirdParty(uniqueID, accessToken, accountType));
+    public BaseVo signupByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType) {
+        try {
+            return DataJson.ok().data(authHandler.signupByThirdParty(uniqueID, accessToken, accountType));
+        } catch (AuthException e) {
+            return e.toBaseVo();
+        }
     }
 
     /**
@@ -170,7 +178,11 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ApiPerms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo changeUsernameBySelf(@FromBody String newUsername, @FromBody String password) throws UnauthorizedException {
-        return DataJson.ok().data(authHandler.changeUsernameBySelf(newUsername, password));
+        try {
+            return DataJson.ok().data(authHandler.changeUsernameBySelf(newUsername, password));
+        } catch (AuthException e) {
+            return e.toBaseVo();
+        }
     }
 
     /**
@@ -184,7 +196,11 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ApiPerms(checkPerms = false)
     @ScxMapping(method = HttpMethod.POST)
     public BaseVo changePasswordBySelf(@FromBody String newPassword, @FromBody String oldPassword) throws UnauthorizedException {
-        return DataJson.ok().data(authHandler.changePasswordBySelf(newPassword, oldPassword));
+        try {
+            return DataJson.ok().data(authHandler.changePasswordBySelf(newPassword, oldPassword));
+        } catch (AuthException e) {
+            return e.toBaseVo();
+        }
     }
 
     /**
@@ -197,7 +213,11 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ApiPerms
     @ScxMapping(method = {HttpMethod.PUT})
     public BaseVo changePasswordByAdmin(@FromBody String newPassword, @FromBody Long userID) {
-        return DataJson.ok().data(authHandler.changePasswordByAdmin(newPassword, userID));
+        try {
+            return DataJson.ok().data(authHandler.changePasswordByAdmin(newPassword, userID));
+        } catch (AuthException e) {
+            return e.toBaseVo();
+        }
     }
 
 }
