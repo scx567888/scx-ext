@@ -41,11 +41,6 @@ public enum CRUDApiType {
     /**
      * a
      */
-    REVOKE_DELETE,
-
-    /**
-     * a
-     */
     CHECK_UNIQUE
 
 }

@@ -32,19 +32,6 @@ public interface CRUDHandler {
     }
 
     /**
-     * <p>revokeDelete.</p>
-     *
-     * @param modelName model 名称
-     * @param id        model 的 id
-     * @return r
-     */
-    default boolean revokeDelete(String modelName, Long id) {
-        var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
-        var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
-        return baseModelService.revokeDelete(id) == 1;
-    }
-
-    /**
      * 批量删除
      *
      * @param modelName model 名称

@@ -132,24 +132,6 @@ public class CRUDController {
     }
 
     /**
-     * 撤销删除
-     *
-     * @param modelName a {@link java.lang.String} object.
-     * @param id        a {@link java.lang.Integer} object.
-     * @return a {@link cool.scx.core.vo.Json} object.
-     */
-    @ScxMapping(value = ":modelName/revoke-delete/:id", method = HttpMethod.GET)
-    public Json revokeDelete(@FromPath String modelName, @FromPath Long id) {
-        checkHasThisApi(modelName, REVOKE_DELETE);
-        if (!ScxContext.coreConfig().tombstone()) {
-            return Json.fail("not-used-tombstone");
-        } else {
-            var b = crudHandler.revokeDelete(modelName, id);
-            return b ? Json.ok() : Json.fail();
-        }
-    }
-
-    /**
      * 校验唯一性
      *
      * @param modelName a
