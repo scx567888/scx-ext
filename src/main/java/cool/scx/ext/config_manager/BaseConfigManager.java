@@ -4,6 +4,12 @@ import cool.scx.core.base.BaseModelService;
 import cool.scx.sql.base.Query;
 import cool.scx.sql.base.UpdateFilter;
 
+/**
+ * <p>Abstract BaseConfigManager class.</p>
+ *
+ * @author scx567888
+ * @version 1.15.8
+ */
 public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends BaseUserConfig> {
 
     /**
@@ -14,6 +20,12 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
     protected final BaseModelService<S> systemConfigService;
     protected final BaseModelService<U> userConfigService;
 
+    /**
+     * <p>Constructor for BaseConfigManager.</p>
+     *
+     * @param systemConfigService a {@link cool.scx.core.base.BaseModelService} object
+     * @param userConfigService   a {@link cool.scx.core.base.BaseModelService} object
+     */
     public BaseConfigManager(BaseModelService<S> systemConfigService, BaseModelService<U> userConfigService) {
         this.systemConfigService = systemConfigService;
         this.userConfigService = userConfigService;
@@ -83,14 +95,34 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
         }
     }
 
+    /**
+     * <p>getDefaultUserConfig.</p>
+     *
+     * @return a U object
+     */
     public abstract U getDefaultUserConfig();
 
+    /**
+     * <p>getDefaultSystemConfig.</p>
+     *
+     * @return a S object
+     */
     public abstract S getDefaultSystemConfig();
 
+    /**
+     * <p>Getter for the field <code>systemConfigService</code>.</p>
+     *
+     * @return a {@link cool.scx.core.base.BaseModelService} object
+     */
     public final BaseModelService<S> getSystemConfigService() {
         return systemConfigService;
     }
 
+    /**
+     * <p>Getter for the field <code>userConfigService</code>.</p>
+     *
+     * @return a {@link cool.scx.core.base.BaseModelService} object
+     */
     public final BaseModelService<U> getUserConfigService() {
         return userConfigService;
     }

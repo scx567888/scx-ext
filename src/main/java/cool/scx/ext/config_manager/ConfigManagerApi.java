@@ -14,6 +14,12 @@ import io.vertx.core.http.ServerWebSocket;
 
 import java.util.Map;
 
+/**
+ * <p>ConfigManagerApi class.</p>
+ *
+ * @author scx567888
+ * @version 1.15.8
+ */
 @ScxMapping("api")
 @ScxWebSocketMapping(value = "/scx", order = 1)
 public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConfig> implements BaseWebSocketHandler {
@@ -31,6 +37,12 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
     private final Class<S> systemConfigClass;
     private final Class<U> userConfigClass;
 
+    /**
+     * <p>Constructor for ConfigManagerApi.</p>
+     *
+     * @param configManager a {@link cool.scx.ext.config_manager.BaseConfigManager} object
+     * @param authHandler   a {@link cool.scx.ext.auth.BaseAuthHandler} object
+     */
     public ConfigManagerApi(BaseConfigManager<S, U> configManager, BaseAuthHandler<?> authHandler) {
         this.configManager = configManager;
         this.authHandler = authHandler;
