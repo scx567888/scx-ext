@@ -2,7 +2,7 @@ package cool.scx.ext.config_manager;
 
 import cool.scx.core.ScxModule;
 
-public class ScxConfigManagerModule extends ScxModule {
+public class ConfigManagerModule extends ScxModule {
     /**
      * {@inheritDoc}
      */

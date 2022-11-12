@@ -14,7 +14,7 @@ import io.vertx.core.http.ServerWebSocket;
 
 @ScxMapping("api")
 @ScxWebSocketMapping(value = "/scx", order = 1)
-public class ScxConfigManagerApi<S extends ScxSystemConfig, U extends ScxUserConfig> implements BaseWebSocketHandler {
+public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConfig> implements BaseWebSocketHandler {
 
     /**
      * 事件名称
@@ -24,11 +24,11 @@ public class ScxConfigManagerApi<S extends ScxSystemConfig, U extends ScxUserCon
      * a
      */
     public static final String ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME = "onScxSystemConfigChange";
-    protected final ScxConfigManager<S, U> scxConfigManager;
+    protected final BaseConfigManager<S, U> baseConfigManager;
     protected final BaseAuthHandler<?> authHandler;
 
-    public ScxConfigManagerApi(ScxConfigManager<S, U> scxConfigManager, BaseAuthHandler<?> authHandler) {
-        this.scxConfigManager = scxConfigManager;
+    public ConfigManagerApi(BaseConfigManager<S, U> baseConfigManager, BaseAuthHandler<?> authHandler) {
+        this.baseConfigManager = baseConfigManager;
         this.authHandler = authHandler;
         initHandler();
     }
@@ -42,7 +42,7 @@ public class ScxConfigManagerApi<S extends ScxSystemConfig, U extends ScxUserCon
     @ApiPerms
     @ScxMapping(value = "user-config", method = HttpMethod.PUT)
     public Json update(S config) {
-        var newScxConfig = scxConfigManager.updateSystemConfig(config);
+        var newScxConfig = baseConfigManager.updateSystemConfig(config);
         WSContext.wsPublishAll(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, newScxConfig);
         return Json.ok();
     }
@@ -57,7 +57,7 @@ public class ScxConfigManagerApi<S extends ScxSystemConfig, U extends ScxUserCon
     @ScxMapping(value = "system-config", method = HttpMethod.PUT)
     public Json update(U config) {
         var user = authHandler.getCurrentUser();
-        var newScxConfig = scxConfigManager.updateUserConfig(user.id, config);
+        var newScxConfig = baseConfigManager.updateUserConfig(user.id, config);
         //获取当前登录用户的所有的在线连接客户端并发送事件
         var allWebSocket = authHandler.loggedInClientTable()
                 .getByUserID(user.id).stream()
@@ -79,7 +79,7 @@ public class ScxConfigManagerApi<S extends ScxSystemConfig, U extends ScxUserCon
             var token = ObjectUtils.convertValue(objectMap.get("token"), String.class);
             var client = authHandler.loggedInClientTable().getByToken(token);
             if (client != null) {
-                WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, scxConfigManager.getUserConfig(client.userID), webSocket);
+                WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, baseConfigManager.getUserConfig(client.userID), webSocket);
             }
         });
     }
@@ -90,7 +90,7 @@ public class ScxConfigManagerApi<S extends ScxSystemConfig, U extends ScxUserCon
     @Override
     public void onOpen(ServerWebSocket webSocket, OnOpenRoutingContext context) {
         //连接时我们广播事件
-        WSContext.wsPublish(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, scxConfigManager.getSystemConfig(), webSocket);
+        WSContext.wsPublish(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, baseConfigManager.getSystemConfig(), webSocket);
     }
 
 }

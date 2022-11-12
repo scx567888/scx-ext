@@ -4,7 +4,7 @@ import cool.scx.core.base.BaseModelService;
 import cool.scx.sql.base.Query;
 import cool.scx.sql.base.UpdateFilter;
 
-public abstract class ScxConfigManager<S extends ScxSystemConfig, U extends ScxUserConfig> {
+public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends BaseUserConfig> {
 
     /**
      * Constant <code>DEFAULT_CONFIG_NAME="ScxSystemConfig"</code>
@@ -14,7 +14,7 @@ public abstract class ScxConfigManager<S extends ScxSystemConfig, U extends ScxU
     protected final BaseModelService<S> systemConfigService;
     protected final BaseModelService<U> userConfigService;
 
-    public ScxConfigManager(BaseModelService<S> systemConfigService, BaseModelService<U> userConfigService) {
+    public BaseConfigManager(BaseModelService<S> systemConfigService, BaseModelService<U> userConfigService) {
         this.systemConfigService = systemConfigService;
         this.userConfigService = userConfigService;
     }
