@@ -12,6 +12,8 @@ import cool.scx.ext.ws.WSContext;
 import cool.scx.util.ObjectUtils;
 import io.vertx.core.http.ServerWebSocket;
 
+import java.util.Map;
+
 @ScxMapping("api")
 @ScxWebSocketMapping(value = "/scx", order = 1)
 public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConfig> implements BaseWebSocketHandler {
@@ -24,12 +26,16 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      * a
      */
     public static final String ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME = "onScxSystemConfigChange";
-    protected final BaseConfigManager<S, U> baseConfigManager;
+    protected final BaseConfigManager<S, U> configManager;
     protected final BaseAuthHandler<?> authHandler;
+    private final Class<S> systemConfigClass;
+    private final Class<U> userConfigClass;
 
-    public ConfigManagerApi(BaseConfigManager<S, U> baseConfigManager, BaseAuthHandler<?> authHandler) {
-        this.baseConfigManager = baseConfigManager;
+    public ConfigManagerApi(BaseConfigManager<S, U> configManager, BaseAuthHandler<?> authHandler) {
+        this.configManager = configManager;
         this.authHandler = authHandler;
+        this.systemConfigClass = configManager.getSystemConfigService()._baseDao()._entityClass();
+        this.userConfigClass = configManager.getUserConfigService()._baseDao()._entityClass();
         initHandler();
     }
 
@@ -40,10 +46,11 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      * @return a {@link cool.scx.core.vo.Json} object
      */
     @ApiPerms
-    @ScxMapping(value = "user-config", method = HttpMethod.PUT)
-    public Json update(S config) {
-        var newScxConfig = baseConfigManager.updateSystemConfig(config);
-        WSContext.wsPublishAll(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, newScxConfig);
+    @ScxMapping(value = "system-config", method = HttpMethod.PUT)
+    public Json updateSystemConfig(Map<String, Object> config) {
+        var systemConfig = ObjectUtils.convertValue(config, systemConfigClass);
+        var newConfig = configManager.updateSystemConfig(systemConfig);
+        WSContext.wsPublishAll(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, newConfig);
         return Json.ok();
     }
 
@@ -54,17 +61,18 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      * @return a {@link cool.scx.core.vo.Json} object
      */
     @ApiPerms(checkPerms = false)
-    @ScxMapping(value = "system-config", method = HttpMethod.PUT)
-    public Json update(U config) {
+    @ScxMapping(value = "user-config", method = HttpMethod.PUT)
+    public Json updateUserConfig(Map<String, Object> config) {
         var user = authHandler.getCurrentUser();
-        var newScxConfig = baseConfigManager.updateUserConfig(user.id, config);
+        var userConfig = ObjectUtils.convertValue(config, userConfigClass);
+        var newConfig = configManager.updateUserConfig(user.id, userConfig);
         //获取当前登录用户的所有的在线连接客户端并发送事件
         var allWebSocket = authHandler.loggedInClientTable()
                 .getByUserID(user.id).stream()
                 .map(c -> WSContext.getOnlineClient(c.webSocketID))
                 .toList();
         //广播事件
-        WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, newScxConfig, allWebSocket);
+        WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, newConfig, allWebSocket);
         return Json.ok();
     }
 
@@ -79,7 +87,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
             var token = ObjectUtils.convertValue(objectMap.get("token"), String.class);
             var client = authHandler.loggedInClientTable().getByToken(token);
             if (client != null) {
-                WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, baseConfigManager.getUserConfig(client.userID), webSocket);
+                WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, configManager.getUserConfig(client.userID), webSocket);
             }
         });
     }
@@ -90,7 +98,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
     @Override
     public void onOpen(ServerWebSocket webSocket, OnOpenRoutingContext context) {
         //连接时我们广播事件
-        WSContext.wsPublish(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, baseConfigManager.getSystemConfig(), webSocket);
+        WSContext.wsPublish(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, configManager.getSystemConfig(), webSocket);
     }
 
 }

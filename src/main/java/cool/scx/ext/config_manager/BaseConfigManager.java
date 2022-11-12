@@ -87,4 +87,12 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
 
     public abstract S getDefaultSystemConfig();
 
+    public final BaseModelService<S> getSystemConfigService() {
+        return systemConfigService;
+    }
+
+    public final BaseModelService<U> getUserConfigService() {
+        return userConfigService;
+    }
+
 }
