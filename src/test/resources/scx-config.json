@@ -2,7 +2,6 @@
   "scx": {
     "port": 8080,
     "allowed-origin": "*",
-    "tombstone": true,
     "data-source": {
       "host": "127.0.0.1",
       "port": 3306,
