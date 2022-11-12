@@ -60,13 +60,6 @@ public @interface UseCRUDApi {
     boolean batchDelete() default true;
 
     /**
-     * revokeDelete
-     *
-     * @return a boolean
-     */
-    boolean revokeDelete() default true;
-
-    /**
      * checkUnique
      *
      * @return a boolean

@@ -54,11 +54,6 @@ public final class CRUDApiInfo {
     /**
      * a
      */
-    public final boolean revokeDelete;
-
-    /**
-     * a
-     */
     public final boolean checkUnique;
 
     /**
@@ -76,7 +71,6 @@ public final class CRUDApiInfo {
         this.update = useCRUDApi.update();
         this.delete = useCRUDApi.delete();
         this.batchDelete = useCRUDApi.batchDelete();
-        this.revokeDelete = useCRUDApi.revokeDelete();
         this.checkUnique = useCRUDApi.checkUnique();
     }
 
@@ -94,7 +88,6 @@ public final class CRUDApiInfo {
             case UPDATE -> update;
             case DELETE -> delete;
             case BATCH_DELETE -> batchDelete;
-            case REVOKE_DELETE -> revokeDelete;
             case CHECK_UNIQUE -> checkUnique;
         };
     }
