@@ -21,8 +21,7 @@ import cool.scx.test.auth.TestUserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.StringUtils;
-import cool.scx.util.zip.VirtualDirectory;
-import cool.scx.util.zip.VirtualFile;
+import cool.scx.util.ZipBuilder;
 import io.vertx.ext.web.RoutingContext;
 
 import java.nio.charset.StandardCharsets;
@@ -103,14 +102,11 @@ public class WebSiteController {
      */
     @ScxMapping(method = HttpMethod.GET)
     public BaseVo zip() throws Exception {
-        var virtualDirectory = VirtualDirectory.of("第一个目录");
-        virtualDirectory.put("第二个目录", VirtualFile.of("第二个目录中的文件.txt", "文件内容".getBytes(StandardCharsets.UTF_8)));
-        virtualDirectory.getOrCreate("这是一系列空目录/这是一系列空目录/这是一系列空目录/这是一系列空目录/这是一系列空目录");
-        var orCreate = virtualDirectory.getOrCreate("这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录");
-        if (orCreate instanceof VirtualDirectory a) {
-            a.put(VirtualFile.of("一个二维码图片.png", QRCodeUtils.getQRCode("一个二维码图片", 300)));
-        }
-        byte[] bytes = virtualDirectory.toZipBytes();
+        var zipBuilder = new ZipBuilder()
+                .put("第一个目录/第二个目录/第二个目录中的文件.txt", "文件内容".getBytes(StandardCharsets.UTF_8))
+                .put("这是一系列空目录/这是一系列空目录/这是一系列空目录/这是一系列空目录/这是一系列空目录")
+                .put("这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/一个二维码图片.png", QRCodeUtils.getQRCode("一个二维码图片", 300));
+        byte[] bytes = zipBuilder.toZipBytes();
         return Download.of(bytes, "测试压缩包.zip");
     }
 
