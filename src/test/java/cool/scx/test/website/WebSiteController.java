@@ -102,10 +102,10 @@ public class WebSiteController {
      */
     @ScxMapping(method = HttpMethod.GET)
     public BaseVo zip() throws Exception {
-        var zipBuilder=new ZipBuilder()
-                .put("第一个目录/第二个目录/第二个目录中的文件.txt","文件内容".getBytes(StandardCharsets.UTF_8))
+        var zipBuilder = new ZipBuilder()
+                .put("第一个目录/第二个目录/第二个目录中的文件.txt", "文件内容".getBytes(StandardCharsets.UTF_8))
                 .put("这是一系列空目录/这是一系列空目录/这是一系列空目录/这是一系列空目录/这是一系列空目录")
-                .put("这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/一个二维码图片.png",QRCodeUtils.getQRCode("一个二维码图片", 300));
+                .put("这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/一个二维码图片.png", QRCodeUtils.getQRCode("一个二维码图片", 300));
         byte[] bytes = zipBuilder.toZipBytes();
         return Download.of(bytes, "测试压缩包.zip");
     }
