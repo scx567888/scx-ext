@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>scx-ext</name>
 
-    <version>1.15.11</version>
+    <version>1.16.0</version>
 
     <description>Extension modules for SCX</description>
     <url>https://github.com/scx567888/scx-ext</url>
