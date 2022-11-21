@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>scx-ext</name>
 
-    <version>1.16.2</version>
+    <version>1.16.3</version>
 
     <description>Extension modules for SCX</description>
     <url>https://github.com/scx567888/scx-ext</url>
@@ -75,7 +75,6 @@
 
     <dependencies>
 
-        <!-- scx 核心包 -->
         <dependency>
             <groupId>cool.scx</groupId>
             <artifactId>scx</artifactId>
@@ -85,24 +84,33 @@
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
+            <version>${zxing.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
 
     <properties>
+
         <scx.mainClass>cool.scx.ext.AllExtApp</scx.mainClass>
+
         <scx.version>1.18.13</scx.version>
+        <zxing.version>3.5.0</zxing.version>
+        <poi.version>5.2.3</poi.version>
+        <testng.version>7.6.1</testng.version>
+
     </properties>
 
 </project>
