@@ -105,7 +105,7 @@
 
         <scx.mainClass>cool.scx.ext.AllExtApp</scx.mainClass>
 
-        <scx.version>1.18.14</scx.version>
+        <scx.version>1.19.0</scx.version>
         <zxing.version>3.5.1</zxing.version>
         <poi.version>5.2.3</poi.version>
 
