@@ -6,14 +6,14 @@
     <parent>
         <groupId>cool.scx</groupId>
         <artifactId>scx-parent</artifactId>
-        <version>12</version>
+        <version>13</version>
     </parent>
 
     <artifactId>scx-ext</artifactId>
     <packaging>jar</packaging>
     <name>scx-ext</name>
 
-    <version>1.16.3</version>
+    <version>1.16.4</version>
 
     <description>Extension modules for SCX</description>
     <url>https://github.com/scx567888/scx-ext</url>
@@ -96,7 +96,6 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -109,7 +108,6 @@
         <scx.version>1.18.14</scx.version>
         <zxing.version>3.5.1</zxing.version>
         <poi.version>5.2.3</poi.version>
-        <testng.version>7.6.1</testng.version>
 
     </properties>
 
