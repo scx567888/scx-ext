@@ -25,5 +25,5 @@ jobs:
       - name: 上传 构建和测试 生成的文件
         uses: actions/upload-artifact@v3
         with:
-          name: scx-ext-artifact
-          path: target/
+          name: scx-ext-all-artifact
+          path: ./*/target/

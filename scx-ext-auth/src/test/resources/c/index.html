@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+[#include "/login.html"/]
+<h1>首页</h1>
+测试单条内容
+<h1>${name!}</h1>
+<h2>${age!}</h2>
+<br>
+<a href="/test-transaction">测试事务</a>
+<table style="border: 1px green solid">
+    <tr>
+        <th>用户名</th>
+        <th>昵称</th>
+    </tr>
+    [#list userList as user]
+    <tr>
+        <td>${user.username!}</td>
+        <td>${user.phoneNumber!}</td>
+    </tr>
+    [/#list]
+</table>
+测试嵌入页面
+[#include "/about.html"/]
+</body>
+</html>
