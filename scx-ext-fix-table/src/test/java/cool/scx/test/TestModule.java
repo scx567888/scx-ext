@@ -8,7 +8,7 @@ import cool.scx.core.enumeration.ScxCoreFeature;
 import cool.scx.ext.auth.AuthModule;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.crud.CRUDModule;
-import cool.scx.ext.fixtable.FixTableModule;
+import cool.scx.ext.fix_table.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.ext.static_server.StaticServerModule;
 import cool.scx.ext.ws.WSModule;
