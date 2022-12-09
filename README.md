@@ -42,7 +42,7 @@ English | [简体中文](./README.zh-CN.md)
 ``` xml
 <dependency>
     <groupId>cool.scx</groupId>
-    <artifactId>scx-ext</artifactId>
+    <artifactId>scx-ext-xxx</artifactId>
     <version>{version}</version>
 </dependency>
 ```

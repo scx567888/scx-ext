@@ -42,7 +42,7 @@
 ``` xml
 <dependency>
     <groupId>cool.scx</groupId>
-    <artifactId>scx-ext</artifactId>
+    <artifactId>scx-ext-xxx</artifactId>
     <version>{version}</version>
 </dependency>
 ```
