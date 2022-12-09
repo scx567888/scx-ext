@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <version>2.0.0</version>
 
-    <name>SCX Ext crud</name>
+    <name>SCX Ext CRUD</name>
     <url>https://github.com/scx567888/scx-ext</url>
     <description>
         Extension modules for SCX
