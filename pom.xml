@@ -9,8 +9,8 @@
         <version>2</version>
     </parent>
 
-    <artifactId>scx-ext</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>scx-ext-parent</artifactId>
+    <packaging>pom</packaging>
     <version>2.0.0</version>
 
     <name>SCX Ext</name>
@@ -39,6 +39,18 @@
         <developerConnection>scm:git:https://github.com/scx567888/scx-ext.git</developerConnection>
         <url>https://github.com/scx567888/scx-ext</url>
     </scm>
+
+    <modules>
+        <module>scx-ext-auth</module>
+        <module>scx-ext-cms</module>
+        <module>scx-ext-common</module>
+        <module>scx-ext-config-manager</module>
+        <module>scx-ext-crud</module>
+        <module>scx-ext-fix-table</module>
+        <module>scx-ext-fss</module>
+        <module>scx-ext-redirects</module>
+        <module>scx-ext-ws</module>
+    </modules>
 
     <build>
         <plugins>
@@ -80,33 +92,29 @@
         </plugins>
     </build>
 
-    <dependencies>
+    <dependencyManagement>
+        <dependencies>
 
-        <dependency>
-            <groupId>cool.scx</groupId>
-            <artifactId>scx-core</artifactId>
-            <version>${scx.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>cool.scx</groupId>
+                <artifactId>scx-core</artifactId>
+                <version>${scx.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>javase</artifactId>
-            <version>${zxing.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>javase</artifactId>
+                <version>${zxing.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies>
+        </dependencies>
+    </dependencyManagement>
 
     <properties>
 
