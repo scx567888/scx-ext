@@ -1,4 +1,4 @@
-package cool.scx.test.other;
+package cool.scx.ext.cms.test.other;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

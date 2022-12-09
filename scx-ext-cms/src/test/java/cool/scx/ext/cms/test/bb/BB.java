@@ -1,4 +1,4 @@
-package cool.scx.test.bb;
+package cool.scx.ext.cms.test.bb;
 
 import cool.scx.core.annotation.ScxModel;
 import cool.scx.core.base.BaseModel;

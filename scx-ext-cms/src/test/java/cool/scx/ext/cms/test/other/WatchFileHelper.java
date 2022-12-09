@@ -1,4 +1,4 @@
-package cool.scx.test.other;
+package cool.scx.ext.cms.test.other;
 
 import java.io.File;
 import java.io.IOException;

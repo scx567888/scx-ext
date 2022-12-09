@@ -1,12 +1,11 @@
-package cool.scx.test.website;
+package cool.scx.ext.cms.test.website;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.vo.Html;
+import cool.scx.ext.cms.test.auth.TestUser;
+import cool.scx.ext.cms.test.auth.TestUserService;
 import cool.scx.ext.cms.web_site.WebSiteHandler;
 import cool.scx.sql.base.Query;
-import cool.scx.test.auth.TestContext;
-import cool.scx.test.auth.TestUser;
-import cool.scx.test.auth.TestUserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 
@@ -66,7 +65,6 @@ public class UserListWebSiteHandler implements WebSiteHandler {
         html.add("userList", users);
         html.add("name", "小明");
         html.add("age", 22);
-        html.add("loginUser", TestContext.getCurrentUser());
     }
 
     @Override
