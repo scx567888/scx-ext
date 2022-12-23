@@ -6,7 +6,7 @@
     <parent>
         <groupId>cool.scx</groupId>
         <artifactId>scx-parent</artifactId>
-        <version>13</version>
+        <version>14</version>
     </parent>
 
     <artifactId>scx-ext</artifactId>
