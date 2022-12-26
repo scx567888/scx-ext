@@ -6,12 +6,12 @@
     <parent>
         <groupId>cool.scx</groupId>
         <artifactId>scx-parent</artifactId>
-        <version>14</version>
+        <version>15</version>
     </parent>
 
     <artifactId>scx-ext</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.2</version>
+    <version>2.0.3</version>
 
     <name>SCX Ext</name>
     <url>https://github.com/scx567888/scx-ext</url>
@@ -67,16 +67,6 @@
                 </configuration>
             </plugin>
 
-            <!-- 对 jar 包等文件进行 gpg 签名  -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <configuration>
-                    <!-- 这里启用签名 -->
-                    <skip>${maven.gpg.skip}</skip>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 
@@ -111,12 +101,9 @@
     <properties>
 
         <!-- *********************** 以下为依赖包版本 *********************** -->
-        <scx.version>2.0.2</scx.version>
+        <scx.version>2.0.3</scx.version>
         <zxing.version>3.5.1</zxing.version>
         <poi.version>5.2.3</poi.version>
-
-        <!-- ************************ 其他配置 ************************ -->
-        <maven.gpg.skip>false</maven.gpg.skip>
 
     </properties>
 
