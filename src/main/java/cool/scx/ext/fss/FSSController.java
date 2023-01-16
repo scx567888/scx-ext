@@ -92,7 +92,7 @@ public class FSSController {
         fssObject.fileSizeDisplay = oldFSSObject.fileSizeDisplay;
         fssObject.fileSize = oldFSSObject.fileSize;
         fssObject.fileMD5 = oldFSSObject.fileMD5;
-        fssObject.fileExtension = FileUtils.getFileExtension(fssObject.fileName);
+        fssObject.fileExtension = FileUtils.getExtension(fssObject.fileName);
         return fssObject;
     }
 
@@ -120,7 +120,7 @@ public class FSSController {
         fssObject.fileSizeDisplay = FileUtils.longToDisplaySize(fileSize);
         fssObject.fileSize = fileSize;
         fssObject.fileMD5 = fileMD5;
-        fssObject.fileExtension = FileUtils.getFileExtension(fssObject.fileName);
+        fssObject.fileExtension = FileUtils.getExtension(fssObject.fileName);
         fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileMD5, fileName};
         return fssObject;
     }

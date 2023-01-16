@@ -21,7 +21,7 @@ import cool.scx.test.auth.TestUserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.StringUtils;
-import cool.scx.util.ZipBuilder;
+import cool.scx.util.zip.ZipBuilder;
 import io.vertx.ext.web.RoutingContext;
 
 import java.nio.charset.StandardCharsets;
@@ -55,7 +55,7 @@ public class WebSiteController {
         } catch (Exception e) {
             sb.append("出错了 后滚后数据库中数据条数 : ").append(bean.list().size());
         }
-        Html.ofString(sb.toString()).handle(ctx);
+        Html.ofString(sb.toString()).accept(ctx);
     }
 
 
@@ -106,7 +106,7 @@ public class WebSiteController {
                 .put("第一个目录/第二个目录/第二个目录中的文件.txt", "文件内容".getBytes(StandardCharsets.UTF_8))
                 .put("这是一系列空目录/这是一系列空目录/这是一系列空目录/这是一系列空目录/这是一系列空目录")
                 .put("这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/这不是一系列空目录/一个二维码图片.png", QRCodeUtils.getQRCode("一个二维码图片", 300));
-        byte[] bytes = zipBuilder.toZipBytes();
+        byte[] bytes = zipBuilder.toBytes();
         return Download.of(bytes, "测试压缩包.zip");
     }
 

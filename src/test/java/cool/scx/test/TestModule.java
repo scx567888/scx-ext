@@ -16,7 +16,8 @@ import cool.scx.test.auth.TestUserService;
 import cool.scx.test.bb.BBService;
 import cool.scx.test.website.UserListWebSiteHandler;
 import cool.scx.test.website.WriteTimeHandler;
-import cool.scx.util.http.HttpClientHelper;
+import io.vertx.core.http.HttpMethod;
+import io.vertx.core.http.RequestOptions;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -63,8 +64,9 @@ public class TestModule extends ScxModule {
     public static void test0() throws IOException, InterruptedException {
         var userService = ScxContext.getBean(TestUserService.class);
         System.err.println("访问页面前数据条数 : " + userService.list().size());
-        HttpClientHelper.get("http://localhost:8080/");
-        System.err.println("访问页面后数据条数 : " + userService.list().size());
+        ScxContext.vertx().createHttpClient()
+                .request(new RequestOptions().setMethod(HttpMethod.GET).setAbsoluteURI("http://localhost:8080/"))
+                .onSuccess(c-> System.err.println("访问页面后数据条数 : " + userService.list().size()));
     }
 
     @Test

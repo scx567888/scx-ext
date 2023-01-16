@@ -1,9 +1,9 @@
 package cool.scx.ext.ws;
 
-import cool.scx.functional.ScxHandlerA;
 import io.vertx.core.http.ServerWebSocket;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 /**
  * <p>WSContext class.</p>
@@ -36,11 +36,11 @@ public class WSContext {
      * <p>wsConsumer.</p>
      *
      * @param address a {@link java.lang.String} object
-     * @param handler a {@link cool.scx.functional.ScxHandlerA} object
+     * @param handler a {@link Consumer} object
      * @param <T>     a T class
      * @return a {@link cool.scx.ext.ws.WSEventBus} object
      */
-    public static <T> WSEventBus wsConsumer(String address, ScxHandlerA<WSMessage<T>> handler) {
+    public static <T> WSEventBus wsConsumer(String address, Consumer<WSMessage<T>> handler) {
         return wsEventBus.wsConsumer(address, handler);
     }
 

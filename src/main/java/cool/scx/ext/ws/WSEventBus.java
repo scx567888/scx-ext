@@ -1,7 +1,6 @@
 package cool.scx.ext.ws;
 
 import cool.scx.core.eventbus.ZeroCopyMessageCodec;
-import cool.scx.functional.ScxHandlerA;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.EventBus;
@@ -9,6 +8,7 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.ServerWebSocket;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 import static cool.scx.core.eventbus.ZeroCopyMessageCodec.ZERO_COPY_CODEC_NAME;
 
@@ -93,12 +93,12 @@ public class WSEventBus {
      * <p>wsConsumer.</p>
      *
      * @param address a {@link java.lang.String} object
-     * @param handler a {@link cool.scx.functional.ScxHandlerA} object
+     * @param handler a {@link Consumer} object
      * @param <T>     a T class
      * @return a {@link cool.scx.ext.ws.WSEventBus} object
      */
-    public <T> WSEventBus wsConsumer(String address, ScxHandlerA<WSMessage<T>> handler) {
-        vertxEventBus.consumer(address, (Message<WSMessage<T>> c) -> handler.handle(c.body()));
+    public <T> WSEventBus wsConsumer(String address, Consumer<WSMessage<T>> handler) {
+        vertxEventBus.consumer(address, (Message<WSMessage<T>> c) -> handler.accept(c.body()));
         return this;
     }
 

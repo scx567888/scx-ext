@@ -44,7 +44,7 @@ public class RedirectsModule extends ScxModule {
         router.route().handler(c -> {
             var oldURI = c.request().absoluteURI();
             var newURI = "https" + oldURI.substring("http".length());
-            Redirections.ofTemporary(newURI).handle(c);
+            Redirections.ofTemporary(newURI).accept(c);
         });
         vertx.createHttpServer().requestHandler(router).listen(port, (http) -> {
             if (http.succeeded()) {
@@ -69,7 +69,7 @@ public class RedirectsModule extends ScxModule {
     @Override
     public void start() {
         //只有当开启 https 的时候才进行转发
-        if (ScxContext.coreConfig().isHttpsEnabled()) {
+        if (ScxContext.options().isHttpsEnabled()) {
             startRedirects(ScxContext.vertx(), this.port);
         }
     }
