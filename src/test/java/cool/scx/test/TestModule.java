@@ -12,6 +12,7 @@ import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.ext.static_server.StaticServerModule;
 import cool.scx.ext.ws.WSModule;
+import cool.scx.http_client.ScxHttpClientHelper;
 import cool.scx.test.auth.TestUserService;
 import cool.scx.test.bb.BBService;
 import cool.scx.test.website.UserListWebSiteHandler;
@@ -64,9 +65,8 @@ public class TestModule extends ScxModule {
     public static void test0() throws IOException, InterruptedException {
         var userService = ScxContext.getBean(TestUserService.class);
         System.err.println("访问页面前数据条数 : " + userService.list().size());
-        ScxContext.vertx().createHttpClient()
-                .request(new RequestOptions().setMethod(HttpMethod.GET).setAbsoluteURI("http://localhost:8080/"))
-                .onSuccess(c-> System.err.println("访问页面后数据条数 : " + userService.list().size()));
+        ScxHttpClientHelper.get("http://localhost:8080/");
+        System.err.println("访问页面后数据条数 : " + userService.list().size());
     }
 
     @Test

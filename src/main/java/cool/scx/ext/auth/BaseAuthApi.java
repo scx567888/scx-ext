@@ -3,7 +3,7 @@ package cool.scx.ext.auth;
 import cool.scx.core.annotation.FromBody;
 import cool.scx.core.annotation.ScxMapping;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.core.enumeration.HttpMethod;
+import cool.scx.enumeration.HttpMethod;
 import cool.scx.core.http.exception.UnauthorizedException;
 import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;

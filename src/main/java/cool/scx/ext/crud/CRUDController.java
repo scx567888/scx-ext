@@ -4,7 +4,7 @@ import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.FromBody;
 import cool.scx.core.annotation.FromPath;
 import cool.scx.core.annotation.ScxMapping;
-import cool.scx.core.enumeration.HttpMethod;
+import cool.scx.enumeration.HttpMethod;
 import cool.scx.core.vo.BaseVo;
 import cool.scx.core.vo.DataJson;
 import cool.scx.core.vo.Json;

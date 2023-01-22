@@ -1,7 +1,7 @@
 package cool.scx.ext.fss;
 
 import cool.scx.core.annotation.*;
-import cool.scx.core.enumeration.HttpMethod;
+import cool.scx.enumeration.HttpMethod;
 import cool.scx.core.http.exception.InternalServerErrorException;
 import cool.scx.core.http.exception.NotFoundException;
 import cool.scx.core.type.UploadedEntity;

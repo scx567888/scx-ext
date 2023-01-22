@@ -3,7 +3,7 @@ package cool.scx.ext.cms.web_site;
 import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.FromPath;
 import cool.scx.core.annotation.ScxMapping;
-import cool.scx.core.enumeration.HttpMethod;
+import cool.scx.enumeration.HttpMethod;
 import cool.scx.core.http.exception.NotFoundException;
 import cool.scx.core.vo.Html;
 import cool.scx.ext.cms.CMSModule;

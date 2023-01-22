@@ -3,7 +3,7 @@ package cool.scx.ext.config_manager;
 import cool.scx.core.annotation.ScxMapping;
 import cool.scx.core.annotation.ScxWebSocketMapping;
 import cool.scx.core.base.BaseWebSocketHandler;
-import cool.scx.core.enumeration.HttpMethod;
+import cool.scx.enumeration.HttpMethod;
 import cool.scx.core.vo.Json;
 import cool.scx.core.websocket.OnOpenRoutingContext;
 import cool.scx.ext.auth.BaseAuthHandler;
