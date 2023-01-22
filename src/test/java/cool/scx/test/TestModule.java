@@ -17,8 +17,6 @@ import cool.scx.test.auth.TestUserService;
 import cool.scx.test.bb.BBService;
 import cool.scx.test.website.UserListWebSiteHandler;
 import cool.scx.test.website.WriteTimeHandler;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.RequestOptions;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
