@@ -1,6 +1,6 @@
 package cool.scx.test.website;
 
-import cool.scx.core.ScxConstant;
+import cool.scx.constant.ScxConstant;
 import cool.scx.core.ScxContext;
 import cool.scx.core.annotation.FromQuery;
 import cool.scx.core.annotation.ScxMapping;
@@ -142,7 +142,7 @@ public class WebSiteController {
             }
         }
 
-        return "初始化成功 : " + ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now());
+        return "初始化成功 : " + ScxConstant.NORMAL_DATE_TIME.format(LocalDateTime.now());
     }
 
 }

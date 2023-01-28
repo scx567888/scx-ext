@@ -1,6 +1,6 @@
 package cool.scx.test.website;
 
-import cool.scx.core.ScxConstant;
+import cool.scx.constant.ScxConstant;
 import cool.scx.core.ScxContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class WriteTimeHandler {
     public static void registerHandler() {
         //注册事件
         ScxContext.scheduler().scheduleAtFixedRate((status) -> {
-            var nowTime = ScxConstant.DEFAULT_DATETIME_FORMATTER.format(LocalDateTime.now());
+            var nowTime = ScxConstant.NORMAL_DATE_TIME.format(LocalDateTime.now());
             wsPublishAll("writeTime", nowTime);
         }, Duration.ofSeconds(1));
         //注册一个监控前台浏览器宽高变化的 handler
