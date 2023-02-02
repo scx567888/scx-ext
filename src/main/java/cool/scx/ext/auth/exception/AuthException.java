@@ -1,8 +1,8 @@
 package cool.scx.ext.auth.exception;
 
-import cool.scx.core.http.exception.BadRequestException;
-import cool.scx.core.vo.BaseVo;
-import cool.scx.core.vo.Json;
+import cool.scx.mvc.exception.BadRequestException;
+import cool.scx.mvc.vo.BaseVo;
+import cool.scx.mvc.vo.Json;
 import cool.scx.util.CaseUtils;
 
 /**

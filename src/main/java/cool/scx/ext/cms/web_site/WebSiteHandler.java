@@ -1,6 +1,6 @@
 package cool.scx.ext.cms.web_site;
 
-import cool.scx.core.vo.Html;
+import cool.scx.mvc.vo.Html;
 
 /**
  * <p>WebSiteHandler interface.</p>

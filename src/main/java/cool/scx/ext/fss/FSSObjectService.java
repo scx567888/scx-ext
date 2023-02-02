@@ -2,7 +2,7 @@ package cool.scx.ext.fss;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.sql.base.Query;
+import cool.scx.dao.Query;
 import cool.scx.util.FileUtils;
 
 import java.io.IOException;

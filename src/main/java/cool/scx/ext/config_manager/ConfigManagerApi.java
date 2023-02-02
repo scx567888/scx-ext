@@ -1,14 +1,14 @@
 package cool.scx.ext.config_manager;
 
-import cool.scx.core.annotation.ScxMapping;
-import cool.scx.core.annotation.ScxWebSocketMapping;
-import cool.scx.core.base.BaseWebSocketHandler;
-import cool.scx.core.vo.Json;
-import cool.scx.core.websocket.OnOpenRoutingContext;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.ext.auth.BaseAuthHandler;
 import cool.scx.ext.auth.annotation.ApiPerms;
 import cool.scx.ext.ws.WSContext;
+import cool.scx.mvc.annotation.ScxMapping;
+import cool.scx.mvc.annotation.ScxWebSocketMapping;
+import cool.scx.mvc.base.BaseWebSocketHandler;
+import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.websocket.OnOpenRoutingContext;
 import cool.scx.util.ObjectUtils;
 import io.vertx.core.http.ServerWebSocket;
 

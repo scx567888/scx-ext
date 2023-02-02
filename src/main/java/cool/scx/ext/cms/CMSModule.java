@@ -1,8 +1,9 @@
 package cool.scx.ext.cms;
 
+import cool.scx.core.Scx;
 import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
-import cool.scx.core.base.BaseTemplateDirective;
+import cool.scx.mvc.base.BaseTemplateDirective;
 import cool.scx.ext.cms.directive.ChannelListDirective;
 import cool.scx.ext.cms.directive.ContentListDirective;
 import cool.scx.ext.cms.web_site.WebSiteHandler;
@@ -33,13 +34,13 @@ public class CMSModule extends ScxModule {
      * {@inheritDoc}
      */
     @Override
-    public void start() {
+    public void start(Scx scx) {
         //添加默认指令和用户指令到 模板指令中
         for (var aClass : this.defaultDirective()) {
-            ScxContext.template().addDirective(aClass);
+            ScxContext.scxMvc().templateHandler().addDirective(scx.beanFactory().getBean(aClass));
         }
         for (var aClass : this.getUserDirective()) {
-            ScxContext.template().addDirective(aClass);
+            ScxContext.scxMvc().templateHandler().addDirective(scx.beanFactory().getBean(aClass));
         }
     }
 

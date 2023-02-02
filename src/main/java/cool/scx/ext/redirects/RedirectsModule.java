@@ -1,8 +1,9 @@
 package cool.scx.ext.redirects;
 
+import cool.scx.core.Scx;
 import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
-import cool.scx.core.vo.Redirections;
+import cool.scx.mvc.vo.Redirections;
 import cool.scx.util.ansi.Ansi;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
@@ -67,7 +68,7 @@ public class RedirectsModule extends ScxModule {
      * {@inheritDoc}
      */
     @Override
-    public void start() {
+    public void start(Scx scx) {
         //只有当开启 https 的时候才进行转发
         if (ScxContext.options().isHttpsEnabled()) {
             startRedirects(ScxContext.vertx(), this.port);

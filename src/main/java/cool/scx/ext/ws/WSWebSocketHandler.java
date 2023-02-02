@@ -1,12 +1,12 @@
 package cool.scx.ext.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cool.scx.core.annotation.ScxWebSocketMapping;
-import cool.scx.core.base.BaseWebSocketHandler;
-import cool.scx.core.websocket.OnCloseRoutingContext;
-import cool.scx.core.websocket.OnExceptionRoutingContext;
-import cool.scx.core.websocket.OnFrameRoutingContext;
-import cool.scx.core.websocket.OnOpenRoutingContext;
+import cool.scx.mvc.annotation.ScxWebSocketMapping;
+import cool.scx.mvc.base.BaseWebSocketHandler;
+import cool.scx.mvc.websocket.OnCloseRoutingContext;
+import cool.scx.mvc.websocket.OnExceptionRoutingContext;
+import cool.scx.mvc.websocket.OnFrameRoutingContext;
+import cool.scx.mvc.websocket.OnOpenRoutingContext;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.http.WebSocketFrame;
 import org.slf4j.Logger;

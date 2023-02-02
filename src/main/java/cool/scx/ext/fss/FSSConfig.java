@@ -1,6 +1,7 @@
 package cool.scx.ext.fss;
 
 import cool.scx.config.handler_impl.AppRootHandler;
+import cool.scx.core.Scx;
 import cool.scx.core.ScxContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +29,8 @@ public class FSSConfig {
     /**
      * <p>initConfig.</p>
      */
-    static void initConfig() {
-        uploadFilePath = ScxContext.config().get("fss.physical-file-path", AppRootHandler.of(ScxContext.environment(), "AppRoot:/FSS_FILES/"));
+    static void initConfig(Scx scx) {
+        uploadFilePath = scx.scxConfig().get("fss.physical-file-path", AppRootHandler.of(ScxContext.environment(), "AppRoot:/FSS_FILES/"));
         logger.debug("FSS 物理文件存储位置  -->  {}", uploadFilePath);
     }
 

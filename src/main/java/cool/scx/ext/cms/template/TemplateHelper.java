@@ -1,9 +1,9 @@
 package cool.scx.ext.cms.template;
 
 import cool.scx.core.ScxContext;
-import cool.scx.core.annotation.FromUpload;
-import cool.scx.core.type.UploadedEntity;
-import cool.scx.core.vo.Json;
+import cool.scx.mvc.annotation.FromUpload;
+import cool.scx.mvc.type.UploadedEntity;
+import cool.scx.mvc.vo.Json;
 import cool.scx.util.FileUtils;
 
 import java.io.File;

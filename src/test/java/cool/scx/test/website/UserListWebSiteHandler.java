@@ -1,9 +1,9 @@
 package cool.scx.test.website;
 
 import cool.scx.core.annotation.ScxService;
-import cool.scx.core.vo.Html;
 import cool.scx.ext.cms.web_site.WebSiteHandler;
-import cool.scx.sql.base.Query;
+import cool.scx.dao.Query;
+import cool.scx.mvc.vo.Html;
 import cool.scx.test.auth.TestContext;
 import cool.scx.test.auth.TestUser;
 import cool.scx.test.auth.TestUserService;

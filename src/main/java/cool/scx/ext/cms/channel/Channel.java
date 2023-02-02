@@ -1,8 +1,8 @@
 package cool.scx.ext.cms.channel;
 
-import cool.scx.core.annotation.Column;
-import cool.scx.core.annotation.ScxModel;
 import cool.scx.core.base.BaseModel;
+import cool.scx.dao.annotation.Column;
+import cool.scx.dao.annotation.Table;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @version 0.3.6
  */
 @UseCRUDApi
-@ScxModel(tablePrefix = "cms")
+@Table(tablePrefix = "cms")
 public class Channel extends BaseModel {
 
     /**

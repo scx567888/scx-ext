@@ -1,14 +1,14 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.core.http.exception.BadRequestException;
+import cool.scx.dao.BaseDaoTableInfo;
+import cool.scx.dao.ColumnInfoFilter;
+import cool.scx.dao.Query;
+import cool.scx.dao.SelectFilter;
+import cool.scx.dao.order_by.OrderByType;
+import cool.scx.dao.where.WhereType;
 import cool.scx.ext.crud.exception.*;
-import cool.scx.sql.TableInfo;
-import cool.scx.sql.base.ColumnInfoFilter;
-import cool.scx.sql.base.Query;
-import cool.scx.sql.base.SelectFilter;
-import cool.scx.sql.order_by.OrderByType;
-import cool.scx.sql.where.WhereType;
+import cool.scx.mvc.exception.BadRequestException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,7 +140,7 @@ public final class CRUDListParam {
     /**
      * <p>Getter for the field <code>pagination</code>.</p>
      *
-     * @param query a {@link cool.scx.sql.base.Query} object
+     * @param query a {@link cool.scx.dao.Query} object
      */
     private void getPagination(Query query) {
         if (this.pagination != null) {
@@ -155,7 +155,7 @@ public final class CRUDListParam {
     /**
      * <p>getPaginationOrThrow.</p>
      *
-     * @param query a {@link cool.scx.sql.base.Query} object
+     * @param query a {@link cool.scx.dao.Query} object
      */
     private void getPaginationOrThrow(Query query) {
         if (this.pagination != null) {
@@ -166,7 +166,7 @@ public final class CRUDListParam {
     /**
      * <p>getOrderBy.</p>
      *
-     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param query      a {@link cool.scx.dao.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
     public void getOrderBy(Query query, Class<? extends BaseModel> modelClass) {
@@ -190,7 +190,7 @@ public final class CRUDListParam {
     /**
      * <p>getOrderByOrThrow.</p>
      *
-     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param query      a {@link cool.scx.dao.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
     public void getOrderByOrThrow(Query query, Class<? extends BaseModel> modelClass) {
@@ -210,7 +210,7 @@ public final class CRUDListParam {
     /**
      * <p>getWhere.</p>
      *
-     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param query      a {@link cool.scx.dao.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
     public void getWhere(Query query, Class<? extends BaseModel> modelClass) {
@@ -242,7 +242,7 @@ public final class CRUDListParam {
     /**
      * <p>getWhereOrThrow.</p>
      *
-     * @param query      a {@link cool.scx.sql.base.Query} object
+     * @param query      a {@link cool.scx.dao.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
     public void getWhereOrThrow(Query query, Class<? extends BaseModel> modelClass) {
@@ -287,7 +287,7 @@ public final class CRUDListParam {
      * <p>getQuery.</p>
      *
      * @param modelClass a {@link java.lang.Class} object
-     * @return a {@link cool.scx.sql.base.Query} object
+     * @return a {@link cool.scx.dao.Query} object
      * @throws cool.scx.core.http.exception.BadRequestException if any.
      */
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
@@ -306,7 +306,7 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public SelectFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
+    public SelectFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, BaseDaoTableInfo<?> scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
@@ -330,7 +330,7 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a {@link cool.scx.sql.TableInfo} object
      * @return a {@link cool.scx.sql.base.SelectFilter} object
      */
-    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo scxDaoTableInfo) {
+    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, BaseDaoTableInfo<?> scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
