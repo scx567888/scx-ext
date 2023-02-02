@@ -5,7 +5,6 @@ import cool.scx.dao.UpdateFilter;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.ext.auth.annotation.ApiPerms;
 import cool.scx.ext.auth.exception.AuthException;
-
 import cool.scx.mvc.annotation.FromBody;
 import cool.scx.mvc.annotation.ScxMapping;
 import cool.scx.mvc.exception.UnauthorizedException;

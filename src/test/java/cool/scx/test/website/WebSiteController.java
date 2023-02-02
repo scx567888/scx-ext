@@ -10,11 +10,11 @@ import cool.scx.ext.cms.content.Content;
 import cool.scx.ext.cms.content.ContentService;
 import cool.scx.ext.util.Excel;
 import cool.scx.ext.util.QRCodeUtils;
+import cool.scx.mvc.annotation.FromQuery;
 import cool.scx.mvc.annotation.ScxMapping;
 import cool.scx.mvc.vo.BaseVo;
-import cool.scx.mvc.vo.Html;
 import cool.scx.mvc.vo.Download;
-import cool.scx.mvc.annotation.FromQuery;
+import cool.scx.mvc.vo.Html;
 import cool.scx.mvc.vo.Raw;
 import cool.scx.test.auth.TestUser;
 import cool.scx.test.auth.TestUserService;
@@ -55,7 +55,7 @@ public class WebSiteController {
         } catch (Exception e) {
             sb.append("出错了 后滚后数据库中数据条数 : ").append(bean.list().size());
         }
-        Html.ofString(sb.toString()).accept(ctx,ScxContext.scxMvc().templateHandler());
+        Html.ofString(sb.toString()).accept(ctx, ScxContext.scxMvc().templateHandler());
     }
 
 
