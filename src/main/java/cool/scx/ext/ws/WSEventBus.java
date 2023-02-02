@@ -22,11 +22,6 @@ public class WSEventBus {
 
     private final EventBus vertxEventBus = initVertxEventBus();
 
-    /**
-     * <p>initVertxEventBus.</p>
-     *
-     * @return a {@link io.vertx.core.eventbus.EventBus} object
-     */
     private static EventBus initVertxEventBus() {
         return Vertx.vertx().eventBus().registerCodec(ZeroCopyMessageCodec.DEFAULT_INSTANCE);
     }

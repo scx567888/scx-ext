@@ -1,6 +1,5 @@
 package cool.scx.ext.fss;
 
-import cool.scx.core.annotation.*;
 import cool.scx.mvc.annotation.*;
 import cool.scx.mvc.exception.InternalServerErrorException;
 import cool.scx.mvc.exception.NotFoundException;
@@ -57,7 +56,7 @@ public class FSSController {
      *
      * @param fssObject a {@link cool.scx.ext.fss.FSSObject} object
      * @return a {@link java.io.File} object
-     * @throws cool.scx.core.http.exception.NotFoundException if any.
+     * @throws cool.scx.mvc.exception.NotFoundException if any.
      */
     private static Path checkPhysicalFile(FSSObject fssObject) throws NotFoundException {
         var physicalFile = getPhysicalFilePath(fssObject);
@@ -163,7 +162,7 @@ public class FSSController {
      * todo 优化性能
      *
      * @param fssObjectID a {@link java.lang.String} object.
-     * @return a {@link cool.scx.core.vo.Download} object.
+     * @return a {@link cool.scx.mvc.vo.Download} object.
      */
     @ScxMapping(value = "/download/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Download download(@FromPath String fssObjectID) {
@@ -179,7 +178,7 @@ public class FSSController {
      * @param width       a {@link java.lang.Integer} object.
      * @param height      a {@link java.lang.Integer} object.
      * @param type        a {@link java.lang.String} object
-     * @return a {@link cool.scx.core.vo.Raw} object.
+     * @return a {@link cool.scx.mvc.vo.Raw} object.
      */
     @ScxMapping(value = "/image/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Image image(@FromPath String fssObjectID,
@@ -199,7 +198,7 @@ public class FSSController {
      * 展示文件
      *
      * @param fssObjectID id
-     * @return a {@link cool.scx.core.vo.Raw} object.
+     * @return a {@link cool.scx.mvc.vo.Raw} object.
      */
     @ScxMapping(value = "/raw/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
     public Raw raw(@FromPath String fssObjectID) {
@@ -334,7 +333,7 @@ public class FSSController {
      * <p>listFile.</p>
      *
      * @param fssObjectID a {@link java.util.Map} object.
-     * @return a {@link cool.scx.core.vo.Json} object.
+     * @return a {@link cool.scx.mvc.vo.Json} object.
      */
     @ScxMapping(value = "/info", method = HttpMethod.POST)
     public BaseVo info(@FromBody String fssObjectID) {

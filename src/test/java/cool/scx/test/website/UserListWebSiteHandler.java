@@ -25,11 +25,6 @@ public class UserListWebSiteHandler implements WebSiteHandler {
 
     private final TestUserService userService;
 
-    /**
-     * <p>Constructor for TestUserListWebSiteHandler.</p>
-     *
-     * @param userService a {@link BaseUserService} object
-     */
     public UserListWebSiteHandler(TestUserService userService) {
         this.userService = userService;
     }

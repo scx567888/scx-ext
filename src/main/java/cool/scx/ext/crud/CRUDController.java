@@ -52,7 +52,7 @@ public class CRUDController {
      *
      * @param modelName     a {@link java.lang.String} object.
      * @param crudListParam a
-     * @return a {@link cool.scx.core.vo.Json} object.
+     * @return a
      */
     @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
     public Json list(@FromPath String modelName, CRUDListParam crudListParam) {
@@ -66,7 +66,7 @@ public class CRUDController {
      *
      * @param modelName a {@link java.lang.String} object.
      * @param id        a {@link java.lang.Long} object.
-     * @return a {@link cool.scx.core.vo.Json} object.
+     * @return a
      */
     @ScxMapping(value = ":modelName/:id", method = HttpMethod.GET)
     public BaseVo info(@FromPath String modelName, @FromPath Long id) {
@@ -80,7 +80,7 @@ public class CRUDController {
      *
      * @param modelName a {@link java.lang.String} object.
      * @param saveModel a {@link java.util.Map} object.
-     * @return a {@link cool.scx.core.vo.Json} object.
+     * @return a
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.POST)
     public BaseVo add(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> saveModel) {
@@ -94,7 +94,7 @@ public class CRUDController {
      *
      * @param modelName       a {@link java.lang.String} object.
      * @param crudUpdateParam a {@link java.util.Map} object.
-     * @return a {@link cool.scx.core.vo.Json} object.
+     * @return a
      */
     @ScxMapping(value = ":modelName", method = HttpMethod.PUT)
     public BaseVo update(@FromPath String modelName, CRUDUpdateParam crudUpdateParam) {
@@ -122,7 +122,7 @@ public class CRUDController {
      *
      * @param modelName a {@link java.lang.String} object.
      * @param deleteIDs a {@link java.util.Map} object.
-     * @return a {@link cool.scx.core.vo.Json} object.
+     * @return a
      */
     @ScxMapping(value = ":modelName/batch-delete", method = HttpMethod.DELETE)
     public Json batchDelete(@FromPath String modelName, @FromBody long[] deleteIDs) {

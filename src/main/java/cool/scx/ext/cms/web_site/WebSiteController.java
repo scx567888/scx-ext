@@ -27,13 +27,6 @@ public class WebSiteController {
     private final CMSConfigService cmsConfigService;
     private final WebSiteHandler webSiteHandler;
 
-    /**
-     * <p>Constructor for WebSiteController.</p>
-     *
-     * @param contentService   a {@link cool.scx.ext.cms.content.ContentService} object
-     * @param channelService   a {@link cool.scx.ext.cms.channel.ChannelService} object
-     * @param cmsConfigService a {@link cool.scx.ext.cms.cms_config.CMSConfigService} object
-     */
     public WebSiteController(ContentService contentService, ChannelService channelService, CMSConfigService cmsConfigService) {
         this.contentService = contentService;
         this.channelService = channelService;
@@ -42,12 +35,6 @@ public class WebSiteController {
         this.webSiteHandler = ScxContext.getBean(webSiteHandlerClass);
     }
 
-    /**
-     * <p>index.</p>
-     *
-     * @return a {@link cool.scx.core.vo.Html} object
-     * @throws java.lang.Exception if any.
-     */
     @ScxMapping(value = "/", method = HttpMethod.GET)
     public Html index() throws Exception {
         var cmsConfig = cmsConfigService.getCMSConfig();
@@ -63,13 +50,6 @@ public class WebSiteController {
         return html;
     }
 
-    /**
-     * <p>column.</p>
-     *
-     * @param channelPath a {@link java.lang.String} object
-     * @return a {@link cool.scx.core.vo.Html} object
-     * @throws java.lang.Exception if any.
-     */
     @ScxMapping(value = "/:channelPath", method = HttpMethod.GET)
     public Html channel(@FromPath String channelPath) throws Exception {
         var channelByPath = channelService.getChannelByPath(channelPath);
@@ -95,14 +75,6 @@ public class WebSiteController {
         return html;
     }
 
-    /**
-     * <p>article.</p>
-     *
-     * @param channelPath a {@link java.lang.String} object
-     * @param contentID   a {@link java.lang.Long} object
-     * @return a {@link cool.scx.core.vo.Html} object
-     * @throws java.lang.Exception if any.
-     */
     @ScxMapping(value = "/:channelPath/:contentID", method = HttpMethod.GET)
     public Html content(@FromPath String channelPath, @FromPath Long contentID) throws Exception {
         //栏目为空直接 404

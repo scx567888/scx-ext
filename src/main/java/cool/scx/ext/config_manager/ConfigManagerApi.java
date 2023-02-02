@@ -55,7 +55,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      * 更新系统配置
      *
      * @param config a
-     * @return a {@link cool.scx.core.vo.Json} object
+     * @return a
      */
     @ApiPerms
     @ScxMapping(value = "system-config", method = HttpMethod.PUT)
@@ -70,7 +70,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      * <p>update.</p>
      *
      * @param config a a
-     * @return a {@link cool.scx.core.vo.Json} object
+     * @return a
      */
     @ApiPerms(checkPerms = false)
     @ScxMapping(value = "user-config", method = HttpMethod.PUT)

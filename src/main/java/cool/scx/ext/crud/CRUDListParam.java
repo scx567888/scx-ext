@@ -272,7 +272,7 @@ public final class CRUDListParam {
      *
      * @param modelClass a
      * @return a
-     * @throws cool.scx.core.http.exception.BadRequestException if any.
+     * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
     public Query getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var query = new Query();
@@ -288,7 +288,7 @@ public final class CRUDListParam {
      *
      * @param modelClass a {@link java.lang.Class} object
      * @return a {@link cool.scx.dao.Query} object
-     * @throws cool.scx.core.http.exception.BadRequestException if any.
+     * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var query = new Query();
@@ -328,7 +328,7 @@ public final class CRUDListParam {
      *
      * @param modelClass      a {@link java.lang.Class} object
      * @param scxDaoTableInfo a {@link cool.scx.sql.TableInfo} object
-     * @return a {@link cool.scx.sql.base.SelectFilter} object
+     * @return a {@link cool.scx.dao.SelectFilter} object
      */
     public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, BaseDaoTableInfo<?> scxDaoTableInfo) {
         if (selectFilterBody == null) {
