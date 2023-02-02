@@ -36,7 +36,7 @@ public final class LoggedInClientTable {
      * <p>getByUserID.</p>
      *
      * @param userID a {@link java.lang.Long} object
-     * @return an array of {@link cool.scx.ext.auth.LoggedInClient} objects
+     * @return an  of {@link cool.scx.ext.auth.LoggedInClient} objects
      */
     public List<LoggedInClient> getByUserID(Long userID) {
         return list.stream().filter(c -> Objects.equals(c.userID, userID)).toList();
@@ -46,7 +46,7 @@ public final class LoggedInClientTable {
      * <p>getByLoginDevice.</p>
      *
      * @param deviceType a {@link cool.scx.ext.auth.DeviceType} object
-     * @return an array of {@link cool.scx.ext.auth.LoggedInClient} objects
+     * @return an of {@link cool.scx.ext.auth.LoggedInClient} objects
      */
     public List<LoggedInClient> getByLoginDevice(DeviceType deviceType) {
         return list.stream().filter(c -> Objects.equals(c.loginDevice, deviceType)).toList();
@@ -136,7 +136,7 @@ public final class LoggedInClientTable {
     /**
      * <p>getAllAlreadyLoginClients.</p>
      *
-     * @return an array of {@link cool.scx.ext.auth.LoggedInClient} objects
+     * @return an of {@link cool.scx.ext.auth.LoggedInClient} objects
      */
     public List<LoggedInClient> loggedInClients() {
         return new ArrayList<>(list);

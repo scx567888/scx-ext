@@ -1,11 +1,11 @@
 package cool.scx.ext.crud;
 
-import cool.scx.core.mvc.ScxMappingMethodParameterHandler;
-import cool.scx.core.mvc.ScxMappingRoutingContextInfo;
+import cool.scx.mvc.ScxMvcParameterHandler;
+import cool.scx.mvc.ScxMvcRequestInfo;
 
 import java.lang.reflect.Parameter;
 
-import static cool.scx.core.mvc.parameter_handler.FromBodyMethodParameterHandler.getValueFromBody;
+import static cool.scx.mvc.parameter_handler.FromBodyParameterHandler.getValueFromBody;
 import static cool.scx.util.ObjectUtils.constructType;
 
 /**
@@ -14,7 +14,7 @@ import static cool.scx.util.ObjectUtils.constructType;
  * @author scx567888
  * @version 1.10.8
  */
-public final class CRUDListParamMethodParameterHandler implements ScxMappingMethodParameterHandler {
+public final class CRUDListParamMethodParameterHandler implements ScxMvcParameterHandler {
 
     /**
      * a
@@ -33,7 +33,7 @@ public final class CRUDListParamMethodParameterHandler implements ScxMappingMeth
      * {@inheritDoc}
      */
     @Override
-    public Object handle(Parameter parameter, ScxMappingRoutingContextInfo info) throws Exception {
+    public Object handle(Parameter parameter, ScxMvcRequestInfo info) throws Exception {
         var javaType = constructType(parameter.getParameterizedType());
         var name = parameter.getName();
         var required = false;

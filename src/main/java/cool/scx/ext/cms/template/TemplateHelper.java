@@ -1,9 +1,9 @@
 package cool.scx.ext.cms.template;
 
 import cool.scx.core.ScxContext;
-import cool.scx.core.annotation.FromUpload;
-import cool.scx.core.type.UploadedEntity;
-import cool.scx.core.vo.Json;
+import cool.scx.mvc.annotation.FromUpload;
+import cool.scx.mvc.type.UploadedEntity;
+import cool.scx.mvc.vo.Json;
 import cool.scx.util.FileUtils;
 
 import java.io.File;
@@ -100,7 +100,7 @@ public final class TemplateHelper {
     /**
      * <p>Index.</p>
      *
-     * @return a {@link cool.scx.core.vo.Json} object.
+     * @return a {@link cool.scx.mvc.vo.Json} object.
      * @throws java.io.IOException if any.
      */
     public static Json index() throws IOException {
@@ -116,7 +116,7 @@ public final class TemplateHelper {
      * 获取文件内容
      *
      * @param filePath 文件路径
-     * @return a {@link cool.scx.core.vo.Json} object.
+     * @return a {@link cool.scx.mvc.vo.Json} object.
      */
     public static Json getFileContent(String filePath) {
         try {
@@ -150,13 +150,6 @@ public final class TemplateHelper {
         }
     }
 
-    /**
-     * <p>delete.</p>
-     *
-     * @param filePath a {@link java.util.Map} object.
-     * @return a {@link cool.scx.core.vo.Json} object.
-     * @throws java.io.IOException if any.
-     */
     public static Json delete(String filePath) throws IOException {
         boolean b = checkPath(filePath);
         if (b) {
@@ -167,14 +160,6 @@ public final class TemplateHelper {
         }
     }
 
-    /**
-     * a
-     *
-     * @param file     a
-     * @param filePath a
-     * @return a
-     * @throws java.io.IOException a
-     */
     public static Json upload(@FromUpload UploadedEntity file, String filePath) throws IOException {
         if (checkPath(filePath)) {
             FileUtils.write(Path.of(filePath, file.fileName()), file.buffer().getBytes());
@@ -189,7 +174,7 @@ public final class TemplateHelper {
      *
      * @param newFilePath 原文件路径
      * @param oldFilePath 新文件路径
-     * @return a {@link cool.scx.core.vo.Json} object.
+     * @return a {@link cool.scx.mvc.vo.Json} object.
      */
     public static Json rename(String newFilePath, String oldFilePath) {
         var b = checkPath(newFilePath);

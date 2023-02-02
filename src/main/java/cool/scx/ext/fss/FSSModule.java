@@ -1,5 +1,6 @@
 package cool.scx.ext.fss;
 
+import cool.scx.core.Scx;
 import cool.scx.core.ScxModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,8 @@ public class FSSModule extends ScxModule {
      * start
      */
     @Override
-    public void start() {
-        FSSConfig.initConfig();
+    public void start(Scx scx) {
+        FSSConfig.initConfig(scx);
     }
 
     /**

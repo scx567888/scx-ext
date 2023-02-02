@@ -3,7 +3,6 @@ package cool.scx.test;
 import cool.scx.core.Scx;
 import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
-import cool.scx.core.dao.ScxDaoHelper;
 import cool.scx.core.enumeration.ScxCoreFeature;
 import cool.scx.ext.auth.AuthModule;
 import cool.scx.ext.cms.CMSModule;
@@ -77,8 +76,8 @@ public class TestModule extends ScxModule {
      * {@inheritDoc}
      */
     @Override
-    public void start() {
-        ScxDaoHelper.fixTable();
+    public void start(Scx scx) {
+        scx.fixTable();
         WriteTimeHandler.registerHandler();
     }
 

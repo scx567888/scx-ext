@@ -3,17 +3,18 @@ package cool.scx.ext.auth;
 import com.fasterxml.jackson.core.type.TypeReference;
 import cool.scx.core.ScxContext;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.core.http.exception.NoPermException;
-import cool.scx.core.http.exception.UnauthorizedException;
+import cool.scx.dao.Query;
+import cool.scx.dao.SelectFilter;
+import cool.scx.dao.UpdateFilter;
+import cool.scx.dao.where.WhereOption;
 import cool.scx.ext.auth.exception.UnknownLoginHandlerException;
 import cool.scx.ext.auth.exception.UnknownUserException;
 import cool.scx.ext.auth.exception.UsernameAlreadyExistsException;
 import cool.scx.ext.auth.exception.WrongPasswordException;
 import cool.scx.ext.ws.WSMessage;
-import cool.scx.sql.base.Query;
-import cool.scx.sql.base.SelectFilter;
-import cool.scx.sql.base.UpdateFilter;
-import cool.scx.sql.where.WhereOption;
+import cool.scx.mvc.ScxMvc;
+import cool.scx.mvc.exception.ForbiddenException;
+import cool.scx.mvc.exception.UnauthorizedException;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
@@ -85,7 +86,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @return a
      */
     public U getCurrentUser() {
-        return getCurrentUser(ScxContext.routingContext());
+        return getCurrentUser(ScxMvc.routingContext());
     }
 
     /**
@@ -184,7 +185,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
             throw new UnauthorizedException("请登录 !!!");
         }
         if (!loginUser.isAdmin) {
-            throw new NoPermException("非管理员无权限修改用户的用户名 !!!");
+            throw new ForbiddenException("非管理员无权限修改用户的用户名 !!!");
         }
         var needChangeUser = userService.get(id);
         //不存在账号报错
@@ -378,7 +379,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @return a
      */
     public LoggedInClient getCurrentClient() {
-        return LOGGED_IN_CLIENT_TABLE.getByToken(getToken(ScxContext.routingContext()));
+        return LOGGED_IN_CLIENT_TABLE.getByToken(getToken(ScxMvc.routingContext()));
     }
 
     /**

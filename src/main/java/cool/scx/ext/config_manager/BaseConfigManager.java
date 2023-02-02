@@ -1,8 +1,8 @@
 package cool.scx.ext.config_manager;
 
 import cool.scx.core.base.BaseModelService;
-import cool.scx.sql.base.Query;
-import cool.scx.sql.base.UpdateFilter;
+import cool.scx.dao.Query;
+import cool.scx.dao.UpdateFilter;
 
 /**
  * <p>Abstract BaseConfigManager class.</p>

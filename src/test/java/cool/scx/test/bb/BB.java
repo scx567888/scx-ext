@@ -1,9 +1,9 @@
 package cool.scx.test.bb;
 
-import cool.scx.core.annotation.ScxModel;
 import cool.scx.core.base.BaseModel;
+import cool.scx.dao.annotation.Table;
 
-@ScxModel
+@Table
 public class BB extends BaseModel {
     public String name;
     public UU uu;

@@ -2,12 +2,6 @@ package cool.scx.test.website;
 
 import cool.scx.constant.ScxConstant;
 import cool.scx.core.ScxContext;
-import cool.scx.core.annotation.FromQuery;
-import cool.scx.core.annotation.ScxMapping;
-import cool.scx.core.vo.BaseVo;
-import cool.scx.core.vo.Download;
-import cool.scx.core.vo.Html;
-import cool.scx.core.vo.Raw;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.enumeration.RawType;
 import cool.scx.ext.cms.channel.Channel;
@@ -16,6 +10,12 @@ import cool.scx.ext.cms.content.Content;
 import cool.scx.ext.cms.content.ContentService;
 import cool.scx.ext.util.Excel;
 import cool.scx.ext.util.QRCodeUtils;
+import cool.scx.mvc.annotation.FromQuery;
+import cool.scx.mvc.annotation.ScxMapping;
+import cool.scx.mvc.vo.BaseVo;
+import cool.scx.mvc.vo.Download;
+import cool.scx.mvc.vo.Html;
+import cool.scx.mvc.vo.Raw;
 import cool.scx.test.auth.TestUser;
 import cool.scx.test.auth.TestUserService;
 import cool.scx.util.CryptoUtils;
@@ -55,7 +55,7 @@ public class WebSiteController {
         } catch (Exception e) {
             sb.append("出错了 后滚后数据库中数据条数 : ").append(bean.list().size());
         }
-        Html.ofString(sb.toString()).accept(ctx);
+        Html.ofString(sb.toString()).accept(ctx, ScxContext.scxMvc().templateHandler());
     }
 
 

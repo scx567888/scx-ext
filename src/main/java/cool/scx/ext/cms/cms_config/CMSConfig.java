@@ -1,8 +1,8 @@
 package cool.scx.ext.cms.cms_config;
 
-import cool.scx.core.annotation.Column;
-import cool.scx.core.annotation.ScxModel;
 import cool.scx.core.base.BaseModel;
+import cool.scx.dao.annotation.Column;
+import cool.scx.dao.annotation.Table;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 /**
@@ -12,7 +12,7 @@ import cool.scx.ext.crud.annotation.UseCRUDApi;
  * @version 1.3.9
  */
 @UseCRUDApi
-@ScxModel(tablePrefix = "cms")
+@Table(tablePrefix = "cms")
 public class CMSConfig extends BaseModel {
 
     /**

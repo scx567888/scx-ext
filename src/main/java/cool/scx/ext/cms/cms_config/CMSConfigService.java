@@ -2,7 +2,7 @@ package cool.scx.ext.cms.cms_config;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.sql.base.Query;
+import cool.scx.dao.Query;
 
 /**
  * <p>CmsConfigService class.</p>

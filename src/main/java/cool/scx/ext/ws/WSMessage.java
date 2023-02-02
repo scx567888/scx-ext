@@ -62,13 +62,6 @@ public class WSMessage<T> {
         this.headers = new HashMap<>(headers);
     }
 
-    /**
-     * <p>fromJson.</p>
-     *
-     * @param json a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.ws.WSMessage} object
-     * @throws com.fasterxml.jackson.core.JsonProcessingException if any.
-     */
     public static WSMessage<Object> fromJson(String json) throws JsonProcessingException {
         var jsonNode = ObjectUtils.jsonMapper().readValue(json, ObjectUtils.MAP_TYPE);
         var wsMessage = new WSMessage<>();
@@ -109,22 +102,11 @@ public class WSMessage<T> {
         return body;
     }
 
-    /**
-     * <p>Setter for the field <code>webSocket</code>.</p>
-     *
-     * @param webSocket a {@link io.vertx.core.http.ServerWebSocket} object
-     * @return a {@link cool.scx.ext.ws.WSMessage} object
-     */
     WSMessage<T> setWebSocket(ServerWebSocket webSocket) {
         this.webSocket = webSocket;
         return this;
     }
 
-    /**
-     * <p>webSocket.</p>
-     *
-     * @return a {@link io.vertx.core.http.ServerWebSocket} object
-     */
     public ServerWebSocket webSocket() {
         return this.webSocket;
     }

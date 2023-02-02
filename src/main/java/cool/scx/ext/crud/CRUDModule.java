@@ -1,6 +1,6 @@
 package cool.scx.ext.crud;
 
-import cool.scx.core.ScxContext;
+import cool.scx.core.Scx;
 import cool.scx.core.ScxModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +43,10 @@ public class CRUDModule extends ScxModule {
      * {@inheritDoc}
      */
     @Override
-    public void start() {
+    public void start(Scx scx) {
         //这里添加额外的参数处理器 保证 CRUDListParam 类型的参数永不为空
-        ScxContext.scxMappingConfiguration().addMethodParameterHandler(0, CRUDListParamMethodParameterHandler.DEFAULT_INSTANCE);
-        ScxContext.scxMappingConfiguration().addMethodParameterHandler(0, CRUDUpdateParamMethodParameterHandler.DEFAULT_INSTANCE);
+        scx.scxMvc().addParameterHandler(0, CRUDListParamMethodParameterHandler.DEFAULT_INSTANCE);
+        scx.scxMvc().addParameterHandler(0, CRUDUpdateParamMethodParameterHandler.DEFAULT_INSTANCE);
         logger.info("已添加用于处理类型为 CRUDListParam   的 MethodParameterHandler  -->  {}", CRUDListParamMethodParameterHandler.class.getName());
         logger.info("已添加用于处理类型为 CRUDUpdateParam 的 MethodParameterHandler  -->  {}", CRUDUpdateParamMethodParameterHandler.class.getName());
         logger.info("CRUDHandler 实现类  -->  {}", this.crudHandlerClass.getName());

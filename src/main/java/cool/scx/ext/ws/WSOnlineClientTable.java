@@ -19,52 +19,24 @@ public class WSOnlineClientTable {
      */
     private final Map<String, ServerWebSocket> onlineClients = new HashMap<>();
 
-    /**
-     * <p>add.</p>
-     *
-     * @param sockets a {@link io.vertx.core.http.ServerWebSocket} object
-     */
     public void add(ServerWebSocket... sockets) {
         for (var socket : sockets) {
             this.onlineClients.put(socket.binaryHandlerID(), socket);
         }
     }
 
-    /**
-     * <p>remove.</p>
-     *
-     * @param webSocketID a {@link java.lang.String} object
-     * @return a {@link io.vertx.core.http.ServerWebSocket} object
-     */
     public ServerWebSocket remove(String webSocketID) {
         return onlineClients.remove(webSocketID);
     }
 
-    /**
-     * <p>remove.</p>
-     *
-     * @param webSocket a {@link io.vertx.core.http.ServerWebSocket} object
-     * @return a {@link io.vertx.core.http.ServerWebSocket} object
-     */
     public ServerWebSocket remove(ServerWebSocket webSocket) {
         return onlineClients.remove(webSocket.binaryHandlerID());
     }
 
-    /**
-     * <p>get.</p>
-     *
-     * @param webSocketsID a {@link java.lang.String} object
-     * @return a {@link io.vertx.core.http.ServerWebSocket} object
-     */
     public ServerWebSocket get(String webSocketsID) {
         return onlineClients.get(webSocketsID);
     }
 
-    /**
-     * <p>onlineClients.</p>
-     *
-     * @return a {@link java.util.Collection} object
-     */
     public Collection<ServerWebSocket> onlineClients() {
         return onlineClients.values();
     }

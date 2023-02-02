@@ -1,8 +1,8 @@
 package cool.scx.ext.fixtable;
 
+import cool.scx.core.Scx;
 import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
-import cool.scx.core.dao.ScxDaoHelper;
 import cool.scx.util.ConsoleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,15 +53,15 @@ public class FixTableModule extends ScxModule {
      * {@inheritDoc}
      */
     @Override
-    public void start() {
+    public void start(Scx scx) {
         ScxContext.scheduler().submit(() -> {
-            if (!ScxContext.dao().checkDataSource()) {
+            if (!scx.checkDataSource()) {
                 logger.error("数据源连接失败!!! 已跳过修复表!!!");
                 return;
             }
-            if (ScxDaoHelper.checkNeedFixTable()) {
+            if (scx.checkNeedFixTable()) {
                 if (confirmFixTable()) {
-                    ScxDaoHelper.fixTable();
+                    scx.fixTable();
                 } else {
                     logger.debug("用户已取消修复表 !!!");
                 }

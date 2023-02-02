@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.directive;
 
-import cool.scx.sql.base.Query;
-import cool.scx.sql.order_by.OrderByType;
+import cool.scx.dao.Query;
+import cool.scx.dao.order_by.OrderByType;
 import cool.scx.util.ObjectUtils;
 
 import java.util.Map;

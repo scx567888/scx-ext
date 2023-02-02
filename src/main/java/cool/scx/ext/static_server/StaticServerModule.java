@@ -1,5 +1,6 @@
 package cool.scx.ext.static_server;
 
+import cool.scx.core.Scx;
 import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
 import cool.scx.util.ScxExceptionHelper;
@@ -60,10 +61,10 @@ public class StaticServerModule extends ScxModule {
      * {@inheritDoc}
      */
     @Override
-    public void start() {
+    public void start(Scx scx) {
         var staticServers = getStaticServersByConfig();
         logger.info("静态资源服务器 -->  {}", staticServers.stream().map(StaticServer::location).collect(Collectors.joining(", ", "[", "]")));
-        registerStaticServerHandler(ScxContext.router().vertxRouter(), staticServers);
+        registerStaticServerHandler(ScxContext.router(), staticServers);
     }
 
     /**

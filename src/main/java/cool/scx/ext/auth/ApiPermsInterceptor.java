@@ -1,10 +1,10 @@
 package cool.scx.ext.auth;
 
-import cool.scx.core.http.exception.NoPermException;
-import cool.scx.core.http.exception.UnauthorizedException;
-import cool.scx.core.mvc.ScxMappingHandler;
-import cool.scx.core.mvc.ScxMappingInterceptor;
 import cool.scx.ext.auth.annotation.ApiPerms;
+import cool.scx.mvc.ScxMappingHandler;
+import cool.scx.mvc.ScxMvcInterceptor;
+import cool.scx.mvc.exception.ForbiddenException;
+import cool.scx.mvc.exception.UnauthorizedException;
 import io.vertx.ext.web.RoutingContext;
 
 import java.lang.reflect.Method;
@@ -19,7 +19,7 @@ import static cool.scx.util.StringUtils.notBlank;
  * @author scx567888
  * @version 1.11.7
  */
-public final class ApiPermsInterceptor implements ScxMappingInterceptor {
+public final class ApiPermsInterceptor implements ScxMvcInterceptor {
 
     private final BaseAuthHandler<BaseUser> authHandler;
 
@@ -54,7 +54,7 @@ public final class ApiPermsInterceptor implements ScxMappingInterceptor {
                     && !authHandler.getPerms(currentUser).apiPerms().contains(p.permStr)
             ) {
                 //否则先查看是否需要校验权限 然后查看是否不为 admin 再查看是否权限串中不包含当前权限 都满足则表示需要执行没权限的 handler
-                throw new NoPermException();
+                throw new ForbiddenException();
             }
         }
     }
