@@ -1,7 +1,6 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.dao.BaseDaoTableInfo;
 import cool.scx.dao.ColumnInfoFilter;
 import cool.scx.dao.Query;
 import cool.scx.dao.SelectFilter;
@@ -9,6 +8,7 @@ import cool.scx.dao.order_by.OrderByType;
 import cool.scx.dao.where.WhereType;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.mvc.exception.BadRequestException;
+import cool.scx.sql.TableInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -306,7 +306,7 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public SelectFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, BaseDaoTableInfo<?> scxDaoTableInfo) {
+    public SelectFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, TableInfo<?> scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
@@ -330,7 +330,7 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a {@link cool.scx.sql.TableInfo} object
      * @return a {@link cool.scx.dao.SelectFilter} object
      */
-    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, BaseDaoTableInfo<?> scxDaoTableInfo) {
+    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo<?> scxDaoTableInfo) {
         if (selectFilterBody == null) {
             return SelectFilter.ofExcluded();
         }
