@@ -317,7 +317,7 @@ public final class CRUDListParam {
             case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
         };
         //防止空列查询
-        if (selectFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
+        if (selectFilter.filter(scxDaoTableInfo).length == 0) {
             throw new EmptySelectColumnException(filterMode, selectFilterBody.fieldNames);
         }
         return selectFilter;
@@ -354,7 +354,7 @@ public final class CRUDListParam {
             case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
         };
         //防止空列查询
-        if (selectFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
+        if (selectFilter.filter(scxDaoTableInfo).length == 0) {
             throw new EmptySelectColumnException(filterMode, selectFilterBody.fieldNames);
         }
         return selectFilter;

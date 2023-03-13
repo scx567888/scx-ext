@@ -51,7 +51,7 @@ public final class CRUDUpdateParam {
         var legalFieldName = Arrays.stream(needUpdateFieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new);
         var updateFilter = UpdateFilter.ofIncluded(false).addIncluded(legalFieldName);
         //防止空列更新
-        if (updateFilter.filter(scxDaoTableInfo.columnInfos()).length == 0) {
+        if (updateFilter.filter(scxDaoTableInfo).length == 0) {
             throw new EmptyUpdateColumnException();
         }
         return updateFilter;
