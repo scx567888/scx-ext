@@ -8,7 +8,7 @@ import cool.scx.dao.order_by.OrderByType;
 import cool.scx.dao.where.WhereType;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.sql.TableInfo;
+import cool.scx.sql.mapping.TableInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -327,7 +327,7 @@ public final class CRUDListParam {
      * <p>getSelectFilter.</p>
      *
      * @param modelClass      a {@link java.lang.Class} object
-     * @param scxDaoTableInfo a {@link cool.scx.sql.TableInfo} object
+     * @param scxDaoTableInfo a {@link cool.scx.sql.mapping.TableInfo} object
      * @return a {@link cool.scx.dao.SelectFilter} object
      */
     public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo<?> scxDaoTableInfo) {
