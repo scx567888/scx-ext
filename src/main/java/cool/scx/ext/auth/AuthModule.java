@@ -24,7 +24,7 @@ public class AuthModule extends ScxModule {
         var authHandler = (BaseAuthHandler<BaseUser>) ScxContext.getBean(BaseAuthHandler.class);
         //绑定事件
         WSContext.wsConsumer("bind-websocket-by-token", authHandler::bindWebSocketByToken);
-        //设置处理器 ScxMapping 前置处理器
+        //设置处理器 ScxRoute 前置处理器
         scx.scxMvc().setInterceptor(new ApiPermsInterceptor(authHandler));
         //设置请求头
         scx.scxHttpRouter().corsHandler().allowedHeader(SCX_AUTH_TOKEN_KEY).allowedHeader(SCX_AUTH_DEVICE_KEY);

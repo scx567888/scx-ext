@@ -2,7 +2,7 @@ package cool.scx.test.auth;
 
 import cool.scx.ext.auth.BaseAuthApi;
 import cool.scx.ext.auth.BaseAuthHandler;
-import cool.scx.mvc.annotation.ScxMapping;
+import cool.scx.mvc.annotation.ScxRoute;
 
 /**
  * 默认认证 api 推荐使用
@@ -11,7 +11,7 @@ import cool.scx.mvc.annotation.ScxMapping;
  * @author scx567888
  * @version 0.3.6
  */
-@ScxMapping("/api/auth")
+@ScxRoute("/api/auth")
 public class TestAuthApi extends BaseAuthApi<TestUser> {
 
     /**

@@ -11,7 +11,7 @@ import cool.scx.ext.cms.content.ContentService;
 import cool.scx.ext.util.Excel;
 import cool.scx.ext.util.QRCodeUtils;
 import cool.scx.mvc.annotation.FromQuery;
-import cool.scx.mvc.annotation.ScxMapping;
+import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Download;
 import cool.scx.mvc.vo.Html;
@@ -34,10 +34,10 @@ import java.time.LocalDateTime;
  * @version 0.3.6
  * @since 1.3.14
  */
-@ScxMapping("/")
+@ScxRoute("/")
 public class WebSiteController {
 
-    @ScxMapping(method = HttpMethod.GET)
+    @ScxRoute(methods = HttpMethod.GET)
     public static void TestTransaction(RoutingContext ctx) throws Exception {
         var sb = new StringBuilder();
         var bean = ScxContext.getBean(TestUserService.class);
@@ -64,7 +64,7 @@ public class WebSiteController {
      *
      * @return a {@link BaseVo} object
      */
-    @ScxMapping(method = HttpMethod.GET)
+    @ScxRoute(methods = HttpMethod.GET)
     public BaseVo excel() {
         Excel excel = Excel.get07Excel("测试1", 1000);
         for (int i = 0; i < 999; i = i + 1) {
@@ -84,7 +84,7 @@ public class WebSiteController {
      * @param value a {@link java.lang.String} object
      * @return a {@link BaseVo} object
      */
-    @ScxMapping(method = HttpMethod.GET)
+    @ScxRoute(methods = HttpMethod.GET)
     public BaseVo qrcode(@FromQuery(required = false) String value) {
         if (StringUtils.isBlank(value)) {
             value = RandomUtils.randomUUID() + " : 前面的是UUID";
@@ -100,7 +100,7 @@ public class WebSiteController {
      *
      * @return a {@link BaseVo} object
      */
-    @ScxMapping(method = HttpMethod.GET)
+    @ScxRoute(methods = HttpMethod.GET)
     public BaseVo zip() throws Exception {
         var zipBuilder = new ZipBuilder()
                 .put("第一个目录/第二个目录/第二个目录中的文件.txt", "文件内容".getBytes(StandardCharsets.UTF_8))
@@ -110,7 +110,7 @@ public class WebSiteController {
         return Download.of(bytes, "测试压缩包.zip");
     }
 
-    @ScxMapping(method = HttpMethod.GET)
+    @ScxRoute(methods = HttpMethod.GET)
     public Object initCMS() {
         var s = ScxContext.getBean(ChannelService.class);
         var c = ScxContext.getBean(ContentService.class);

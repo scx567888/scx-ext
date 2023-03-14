@@ -1,7 +1,7 @@
 package cool.scx.ext.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cool.scx.mvc.annotation.ScxWebSocketMapping;
+import cool.scx.mvc.annotation.ScxWebSocketRoute;
 import cool.scx.mvc.base.BaseWebSocketHandler;
 import cool.scx.mvc.websocket.OnCloseRoutingContext;
 import cool.scx.mvc.websocket.OnExceptionRoutingContext;
@@ -22,7 +22,7 @@ import static cool.scx.ext.ws.WSContext.wsOnlineClientTable;
  * @author scx567888
  * @version 1.0.16
  */
-@ScxWebSocketMapping("/scx")
+@ScxWebSocketRoute("/scx")
 public class WSWebSocketHandler implements BaseWebSocketHandler {
 
     /**
