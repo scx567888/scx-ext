@@ -1,8 +1,8 @@
 package cool.scx.ext.auth;
 
 import cool.scx.ext.auth.annotation.ApiPerms;
-import cool.scx.mvc.ScxMappingHandler;
 import cool.scx.mvc.ScxMvcInterceptor;
+import cool.scx.mvc.ScxRouteHandler;
 import cool.scx.mvc.exception.ForbiddenException;
 import cool.scx.mvc.exception.UnauthorizedException;
 import io.vertx.ext.web.RoutingContext;
@@ -26,7 +26,7 @@ public final class ApiPermsInterceptor implements ScxMvcInterceptor {
     /**
      * 缓存池
      */
-    private final Map<ScxMappingHandler, AuthPerms> SCX_AUTH_PERMS_CACHE = new HashMap<>();
+    private final Map<ScxRouteHandler, AuthPerms> SCX_AUTH_PERMS_CACHE = new HashMap<>();
 
     /**
      * <p>Constructor for PermsAnnotationInterceptor.</p>
@@ -41,7 +41,7 @@ public final class ApiPermsInterceptor implements ScxMvcInterceptor {
      * {@inheritDoc}
      */
     @Override
-    public void preHandle(RoutingContext context, ScxMappingHandler scxMappingHandler) {
+    public void preHandle(RoutingContext context, ScxRouteHandler scxMappingHandler) {
         var p = getScxAuthPerms(scxMappingHandler);
         if (p.needCheckPerms) {
             //先获取登录的用户
@@ -60,12 +60,12 @@ public final class ApiPermsInterceptor implements ScxMvcInterceptor {
     }
 
     /**
-     * 根据 ScxMappingHandler 获取  ScxAuthPerms (内部使用了简单的缓存)
+     * 根据 ScxRouteHandler 获取  ScxAuthPerms (内部使用了简单的缓存)
      *
      * @param s s
      * @return s
      */
-    private AuthPerms getScxAuthPerms(ScxMappingHandler s) {
+    private AuthPerms getScxAuthPerms(ScxRouteHandler s) {
         var p = SCX_AUTH_PERMS_CACHE.get(s);
         if (p == null) {
             p = new AuthPerms(s.clazz, s.method);

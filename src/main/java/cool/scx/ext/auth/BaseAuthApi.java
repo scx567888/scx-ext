@@ -6,7 +6,7 @@ import cool.scx.enumeration.HttpMethod;
 import cool.scx.ext.auth.annotation.ApiPerms;
 import cool.scx.ext.auth.exception.AuthException;
 import cool.scx.mvc.annotation.FromBody;
-import cool.scx.mvc.annotation.ScxMapping;
+import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.exception.UnauthorizedException;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.DataJson;
@@ -45,7 +45,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
         this.userService = userService;
     }
 
-    @ScxMapping(method = HttpMethod.POST)
+    @ScxRoute(methods = HttpMethod.POST)
     public BaseVo login(@FromBody String username, @FromBody String password, RoutingContext ctx) {
         try {
             var token = authHandler.login(username, password, ctx);
@@ -60,7 +60,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
         }
     }
 
-    @ScxMapping(method = HttpMethod.POST)
+    @ScxRoute(methods = HttpMethod.POST)
     public BaseVo loginByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType, RoutingContext ctx) {
         try {
             var token = authHandler.loginByThirdParty(uniqueID, accessToken, accountType, ctx);
@@ -75,7 +75,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
         }
     }
 
-    @ScxMapping(method = HttpMethod.POST)
+    @ScxRoute(methods = HttpMethod.POST)
     public BaseVo signup(@FromBody String username, @FromBody String password) {
         try {
             return DataJson.ok().data(authHandler.signup(username, password));
@@ -84,7 +84,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
         }
     }
 
-    @ScxMapping(method = HttpMethod.POST)
+    @ScxRoute(methods = HttpMethod.POST)
     public BaseVo signupByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType) {
         try {
             return DataJson.ok().data(authHandler.signupByThirdParty(uniqueID, accessToken, accountType));
@@ -93,14 +93,14 @@ public abstract class BaseAuthApi<T extends BaseUser> {
         }
     }
 
-    @ScxMapping(method = HttpMethod.POST)
+    @ScxRoute(methods = HttpMethod.POST)
     public Json logout(RoutingContext routingContext) {
         authHandler.logout(routingContext);
         return Json.ok();
     }
 
     @ApiPerms(checkPerms = false)
-    @ScxMapping(method = HttpMethod.GET)
+    @ScxRoute(methods = HttpMethod.GET)
     public BaseVo info(RoutingContext routingContext) throws UnauthorizedException {
         var user = authHandler.getCurrentUser(routingContext);
         //返回登录用户的信息给前台 含用户基本信息还有的所有角色的权限
@@ -108,7 +108,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     }
 
     @ApiPerms(checkPerms = false)
-    @ScxMapping(method = HttpMethod.POST)
+    @ScxRoute(methods = HttpMethod.POST)
     public DataJson changeUserAvatar(@FromBody String newAvatar) throws UnauthorizedException {
         var loginUser = authHandler.getCurrentUser();
         loginUser.avatar = newAvatar;
@@ -116,7 +116,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     }
 
     @ApiPerms(checkPerms = false)
-    @ScxMapping(method = HttpMethod.POST)
+    @ScxRoute(methods = HttpMethod.POST)
     public BaseVo changeUsernameBySelf(@FromBody String newUsername, @FromBody String password) throws UnauthorizedException {
         try {
             return DataJson.ok().data(authHandler.changeUsernameBySelf(newUsername, password));
@@ -126,7 +126,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     }
 
     @ApiPerms(checkPerms = false)
-    @ScxMapping(method = HttpMethod.POST)
+    @ScxRoute(methods = HttpMethod.POST)
     public BaseVo changePasswordBySelf(@FromBody String newPassword, @FromBody String oldPassword) throws UnauthorizedException {
         try {
             return DataJson.ok().data(authHandler.changePasswordBySelf(newPassword, oldPassword));
@@ -136,7 +136,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     }
 
     @ApiPerms
-    @ScxMapping(method = {HttpMethod.PUT})
+    @ScxRoute(methods = {HttpMethod.PUT})
     public BaseVo changePasswordByAdmin(@FromBody String newPassword, @FromBody Long userID) {
         try {
             return DataJson.ok().data(authHandler.changePasswordByAdmin(newPassword, userID));

@@ -5,7 +5,7 @@ import cool.scx.enumeration.HttpMethod;
 import cool.scx.ext.crud.exception.CRUDApiAlreadyDisableException;
 import cool.scx.mvc.annotation.FromBody;
 import cool.scx.mvc.annotation.FromPath;
-import cool.scx.mvc.annotation.ScxMapping;
+import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.DataJson;
 import cool.scx.mvc.vo.Json;
@@ -20,7 +20,7 @@ import static cool.scx.ext.crud.CRUDApiType.*;
  * @author scx567888
  * @version 1.0.10
  */
-@ScxMapping("api/crud")
+@ScxRoute("api/crud")
 public class CRUDController {
 
     private final CRUDHandler crudHandler;
@@ -54,7 +54,7 @@ public class CRUDController {
      * @param crudListParam a
      * @return a
      */
-    @ScxMapping(value = ":modelName/list", method = HttpMethod.POST)
+    @ScxRoute(value = ":modelName/list", methods = HttpMethod.POST)
     public Json list(@FromPath String modelName, CRUDListParam crudListParam) {
         checkHasThisApi(modelName, LIST);
         var crudListResult = crudHandler.list(modelName, crudListParam);
@@ -68,7 +68,7 @@ public class CRUDController {
      * @param id        a {@link java.lang.Long} object.
      * @return a
      */
-    @ScxMapping(value = ":modelName/:id", method = HttpMethod.GET)
+    @ScxRoute(value = ":modelName/:id", methods = HttpMethod.GET)
     public BaseVo info(@FromPath String modelName, @FromPath Long id) {
         checkHasThisApi(modelName, INFO);
         var info = crudHandler.info(modelName, id);
@@ -82,7 +82,7 @@ public class CRUDController {
      * @param saveModel a {@link java.util.Map} object.
      * @return a
      */
-    @ScxMapping(value = ":modelName", method = HttpMethod.POST)
+    @ScxRoute(value = ":modelName", methods = HttpMethod.POST)
     public BaseVo add(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> saveModel) {
         checkHasThisApi(modelName, ADD);
         var savedModel = crudHandler.add(modelName, saveModel);
@@ -96,7 +96,7 @@ public class CRUDController {
      * @param crudUpdateParam a {@link java.util.Map} object.
      * @return a
      */
-    @ScxMapping(value = ":modelName", method = HttpMethod.PUT)
+    @ScxRoute(value = ":modelName", methods = HttpMethod.PUT)
     public BaseVo update(@FromPath String modelName, CRUDUpdateParam crudUpdateParam) {
         checkHasThisApi(modelName, UPDATE);
         var updatedModel = crudHandler.update(modelName, crudUpdateParam);
@@ -110,7 +110,7 @@ public class CRUDController {
      * @param id        a
      * @return j
      */
-    @ScxMapping(value = ":modelName/:id", method = HttpMethod.DELETE)
+    @ScxRoute(value = ":modelName/:id", methods = HttpMethod.DELETE)
     public Json delete(@FromPath String modelName, @FromPath Long id) {
         checkHasThisApi(modelName, DELETE);
         var b = crudHandler.delete(modelName, id);
@@ -124,7 +124,7 @@ public class CRUDController {
      * @param deleteIDs a {@link java.util.Map} object.
      * @return a
      */
-    @ScxMapping(value = ":modelName/batch-delete", method = HttpMethod.DELETE)
+    @ScxRoute(value = ":modelName/batch-delete", methods = HttpMethod.DELETE)
     public Json batchDelete(@FromPath String modelName, @FromBody long[] deleteIDs) {
         checkHasThisApi(modelName, BATCH_DELETE);
         var deletedCount = crudHandler.batchDelete(modelName, deleteIDs);
@@ -140,7 +140,7 @@ public class CRUDController {
      * @param id        a
      * @return a
      */
-    @ScxMapping(value = ":modelName/check-unique/:fieldName", method = HttpMethod.POST)
+    @ScxRoute(value = ":modelName/check-unique/:fieldName", methods = HttpMethod.POST)
     public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {
         checkHasThisApi(modelName, CHECK_UNIQUE);
         var isUnique = crudHandler.checkUnique(modelName, fieldName, value, id);

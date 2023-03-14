@@ -7,7 +7,7 @@ import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.cms_config.CMSConfigService;
 import cool.scx.ext.cms.content.ContentService;
 import cool.scx.mvc.annotation.FromPath;
-import cool.scx.mvc.annotation.ScxMapping;
+import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.exception.NotFoundException;
 import cool.scx.mvc.vo.Html;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author scx567888
  * @version 1.3.9
  */
-@ScxMapping("/")
+@ScxRoute("/")
 public class WebSiteController {
 
     private final ContentService contentService;
@@ -35,7 +35,7 @@ public class WebSiteController {
         this.webSiteHandler = ScxContext.getBean(webSiteHandlerClass);
     }
 
-    @ScxMapping(value = "/", method = HttpMethod.GET)
+    @ScxRoute(value = "/", methods = HttpMethod.GET)
     public Html index() throws Exception {
         var cmsConfig = cmsConfigService.getCMSConfig();
         var indexTemplatePath = cmsConfig.defaultIndexTemplate;
@@ -50,7 +50,7 @@ public class WebSiteController {
         return html;
     }
 
-    @ScxMapping(value = "/:channelPath", method = HttpMethod.GET)
+    @ScxRoute(value = "/:channelPath", methods = HttpMethod.GET)
     public Html channel(@FromPath String channelPath) throws Exception {
         var channelByPath = channelService.getChannelByPath(channelPath);
         if (channelByPath == null) {
@@ -75,7 +75,7 @@ public class WebSiteController {
         return html;
     }
 
-    @ScxMapping(value = "/:channelPath/:contentID", method = HttpMethod.GET)
+    @ScxRoute(value = "/:channelPath/:contentID", methods = HttpMethod.GET)
     public Html content(@FromPath String channelPath, @FromPath Long contentID) throws Exception {
         //栏目为空直接 404
         var channelByPath = channelService.getChannelByPath(channelPath);

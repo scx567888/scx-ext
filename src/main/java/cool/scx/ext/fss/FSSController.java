@@ -28,7 +28,7 @@ import static java.nio.file.StandardOpenOption.*;
  * @author scx567888
  * @version 0.3.6
  */
-@ScxMapping("/api/fss")
+@ScxRoute("/api/fss")
 public class FSSController {
 
     /**
@@ -164,7 +164,7 @@ public class FSSController {
      * @param fssObjectID a {@link java.lang.String} object.
      * @return a {@link cool.scx.mvc.vo.Download} object.
      */
-    @ScxMapping(value = "/download/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
+    @ScxRoute(value = "/download/:fssObjectID", methods = {HttpMethod.GET, HttpMethod.HEAD})
     public Download download(@FromPath String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
@@ -180,7 +180,7 @@ public class FSSController {
      * @param type        a {@link java.lang.String} object
      * @return a {@link cool.scx.mvc.vo.Raw} object.
      */
-    @ScxMapping(value = "/image/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
+    @ScxRoute(value = "/image/:fssObjectID", methods = {HttpMethod.GET, HttpMethod.HEAD})
     public Image image(@FromPath String fssObjectID,
                        @FromQuery(value = "w", required = false) Integer width,
                        @FromQuery(value = "h", required = false) Integer height,
@@ -200,7 +200,7 @@ public class FSSController {
      * @param fssObjectID id
      * @return a {@link cool.scx.mvc.vo.Raw} object.
      */
-    @ScxMapping(value = "/raw/:fssObjectID", method = {HttpMethod.GET, HttpMethod.HEAD})
+    @ScxRoute(value = "/raw/:fssObjectID", methods = {HttpMethod.GET, HttpMethod.HEAD})
     public Raw raw(@FromPath String fssObjectID) {
         var fssObject = checkFSSObjectID(fssObjectID);
         var file = checkPhysicalFile(fssObject);
@@ -219,7 +219,7 @@ public class FSSController {
      * @return r
      * @throws java.lang.Exception s
      */
-    @ScxMapping(value = "/upload", method = HttpMethod.POST)
+    @ScxRoute(value = "/upload", methods = HttpMethod.POST)
     public Json upload(@FromBody String fileName,
                        @FromBody Long fileSize,
                        @FromBody String fileMD5,
@@ -280,7 +280,7 @@ public class FSSController {
      * @return a
      * @throws java.io.IOException a
      */
-    @ScxMapping(value = "/delete", method = HttpMethod.DELETE)
+    @ScxRoute(value = "/delete", methods = HttpMethod.DELETE)
     public Json delete(@FromBody String fssObjectID) throws IOException {
         //先获取文件的基本信息
         fssObjectService.delete(fssObjectID);
@@ -296,7 +296,7 @@ public class FSSController {
      * @return f
      * @throws java.io.IOException f
      */
-    @ScxMapping(value = "check-any-file-exists-by-this-md5", method = HttpMethod.POST)
+    @ScxRoute(value = "check-any-file-exists-by-this-md5", methods = HttpMethod.POST)
     public Json checkAnyFileExistsByThisMD5(@FromBody String fileName,
                                             @FromBody Long fileSize,
                                             @FromBody String fileMD5) throws IOException {
@@ -335,7 +335,7 @@ public class FSSController {
      * @param fssObjectID a {@link java.util.Map} object.
      * @return a {@link cool.scx.mvc.vo.Json} object.
      */
-    @ScxMapping(value = "/info", method = HttpMethod.POST)
+    @ScxRoute(value = "/info", methods = HttpMethod.POST)
     public BaseVo info(@FromBody String fssObjectID) {
         if (fssObjectID != null) {
             return DataJson.ok().data(fssObjectService.findByFSSObjectID(fssObjectID));
@@ -350,7 +350,7 @@ public class FSSController {
      * @param fssObjectIDs a
      * @return a
      */
-    @ScxMapping(value = "/list-info", method = HttpMethod.POST)
+    @ScxRoute(value = "/list-info", methods = HttpMethod.POST)
     public BaseVo listInfo(@FromBody List<String> fssObjectIDs) {
         if (fssObjectIDs != null && fssObjectIDs.size() > 0) {
             return DataJson.ok().data(fssObjectService.findByFSSObjectIDs(fssObjectIDs));
