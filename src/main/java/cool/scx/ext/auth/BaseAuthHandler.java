@@ -411,7 +411,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
 
                 }
             }
-            Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + i + " 条数据!!!").println();
+            Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + i + " 条 Session 数据!!!").println();
         } catch (Exception ignored) {
 
         }
