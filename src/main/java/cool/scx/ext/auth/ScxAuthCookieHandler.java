@@ -31,6 +31,8 @@ public final class ScxAuthCookieHandler implements Handler<RoutingContext> {
             Cookie cookie = new CookieImpl(SCX_AUTH_TOKEN_KEY, RandomUtils.randomUUID())
                     .setMaxAge(COOKIE_MAX_AGE)
                     .setSecure(true)
+                    .setHttpOnly(true)
+                    .setPath("/")
                     .setSameSite(CookieSameSite.NONE);
             ctx.request().response().addCookie(cookie);
         }
