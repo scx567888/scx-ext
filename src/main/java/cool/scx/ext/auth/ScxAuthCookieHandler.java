@@ -2,6 +2,8 @@ package cool.scx.ext.auth;
 
 import cool.scx.util.RandomUtils;
 import io.vertx.core.Handler;
+import io.vertx.core.http.Cookie;
+import io.vertx.core.http.CookieSameSite;
 import io.vertx.core.http.impl.CookieImpl;
 import io.vertx.ext.web.RoutingContext;
 
@@ -26,7 +28,13 @@ public final class ScxAuthCookieHandler implements Handler<RoutingContext> {
     @Override
     public void handle(RoutingContext ctx) {
         if (ctx.request().getCookie(SCX_AUTH_TOKEN_KEY) == null) {
-            ctx.request().response().addCookie(new CookieImpl(SCX_AUTH_TOKEN_KEY, RandomUtils.randomUUID()).setMaxAge(COOKIE_MAX_AGE));
+            Cookie cookie = new CookieImpl(SCX_AUTH_TOKEN_KEY, RandomUtils.randomUUID())
+                    .setMaxAge(COOKIE_MAX_AGE)
+                    .setSecure(true)
+                    .setHttpOnly(true)
+                    .setPath("/")
+                    .setSameSite(CookieSameSite.NONE);
+            ctx.request().response().addCookie(cookie);
         }
         ctx.next();
     }

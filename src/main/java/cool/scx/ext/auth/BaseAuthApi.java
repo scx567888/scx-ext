@@ -13,8 +13,6 @@ import cool.scx.mvc.vo.DataJson;
 import cool.scx.mvc.vo.Json;
 import io.vertx.ext.web.RoutingContext;
 
-import static cool.scx.ext.auth.AuthHelper.getDeviceTypeByHeader;
-
 /**
  * 默认认证 api 推荐使用
  * 也可以不用此 api 但需要将 自定义 AuthHandler 的实现中的方法清空
@@ -49,12 +47,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     public BaseVo login(@FromBody String username, @FromBody String password, RoutingContext ctx) {
         try {
             var token = authHandler.login(username, password, ctx);
-            //这里根据登录设备向客户端返回不同的信息
-            if (getDeviceTypeByHeader(ctx) == DeviceType.WEBSITE) {
-                return Json.fail("login-successful");
-            } else {
-                return Json.ok().put("token", token);
-            }
+            return Json.ok().put("token", token);
         } catch (AuthException e) {
             return e.toBaseVo();
         }
@@ -64,12 +57,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     public BaseVo loginByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType, RoutingContext ctx) {
         try {
             var token = authHandler.loginByThirdParty(uniqueID, accessToken, accountType, ctx);
-            //这里根据登录设备向客户端返回不同的信息
-            if (getDeviceTypeByHeader(ctx) == DeviceType.WEBSITE) {
-                return Json.fail("login-successful");
-            } else {
-                return Json.ok().put("token", token);
-            }
+            return Json.ok().put("token", token);
         } catch (AuthException e) {
             return e.toBaseVo();
         }

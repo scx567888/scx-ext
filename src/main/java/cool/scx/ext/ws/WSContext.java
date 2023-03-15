@@ -112,16 +112,6 @@ public class WSContext {
     }
 
     /**
-     * 根据 binaryHandlerID 获取 ServerWebSocket
-     *
-     * @param webSocketsID a
-     * @return a
-     */
-    public static ServerWebSocket getOnlineClient(String webSocketsID) {
-        return wsOnlineClientTable.get(webSocketsID);
-    }
-
-    /**
      * 获取当前所有在线的连接对象
      *
      * @return 当前所有在线的连接对象

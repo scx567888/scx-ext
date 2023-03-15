@@ -16,6 +16,8 @@ import static cool.scx.ext.auth.BaseAuthHandler.SCX_AUTH_TOKEN_KEY;
  */
 public class AuthModule extends ScxModule {
 
+    public static String BIND_WEBSOCKET_BY_TOKEN = "bind-websocket-by-token";
+
     /**
      * <p>initAuth.</p>
      */
@@ -23,7 +25,7 @@ public class AuthModule extends ScxModule {
     public static void init(Scx scx) {
         var authHandler = (BaseAuthHandler<BaseUser>) ScxContext.getBean(BaseAuthHandler.class);
         //绑定事件
-        WSContext.wsConsumer("bind-websocket-by-token", authHandler::bindWebSocketByToken);
+        WSContext.wsConsumer(BIND_WEBSOCKET_BY_TOKEN, authHandler::bindWebSocketByToken);
         //设置处理器 ScxRoute 前置处理器
         scx.scxMvc().setInterceptor(new ApiPermsInterceptor(authHandler));
         //设置请求头

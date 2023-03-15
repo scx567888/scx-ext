@@ -14,6 +14,8 @@ import io.vertx.core.http.ServerWebSocket;
 
 import java.util.Map;
 
+import static cool.scx.ext.auth.AuthModule.BIND_WEBSOCKET_BY_TOKEN;
+
 /**
  * <p>ConfigManagerApi class.</p>
  *
@@ -81,7 +83,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
         //获取当前登录用户的所有的在线连接客户端并发送事件
         var allWebSocket = authHandler.loggedInClientTable()
                 .getByUserID(user.id).stream()
-                .map(c -> WSContext.getOnlineClient(c.webSocketID))
+                .map(c -> c.webSocket)
                 .toList();
         //广播事件
         WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, newConfig, allWebSocket);
@@ -92,7 +94,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      * 初始化
      */
     public void initHandler() {
-        WSContext.wsConsumer("bind-websocket-by-token", wsParam -> {
+        WSContext.wsConsumer(BIND_WEBSOCKET_BY_TOKEN, wsParam -> {
             var webSocket = wsParam.webSocket();
             var objectMap = ObjectUtils.convertValue(wsParam.body(), ObjectUtils.MAP_TYPE);
             //获取 token
