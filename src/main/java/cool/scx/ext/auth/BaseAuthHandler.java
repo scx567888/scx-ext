@@ -1,6 +1,6 @@
 package cool.scx.ext.auth;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import cool.scx.core.ScxContext;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.dao.Query;
@@ -27,7 +27,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static cool.scx.ext.auth.AuthHelper.*;
@@ -397,12 +396,24 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * 从文件中读取 LoginItem
      */
     public void readSessionFromFile() {
-        try (var f = Files.newInputStream(SCX_SESSION_CACHE_PATH)) {
-            List<LoggedInClient> clients = ObjectUtils.jsonMapper().readValue(f, new TypeReference<>() {
-            });
-            LOGGED_IN_CLIENT_TABLE.addAll(clients);
-            Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + clients.size() + " 条数据!!!").println();
-        } catch (Exception ignored) {
+        try {
+            var data = Files.readAllBytes(SCX_SESSION_CACHE_PATH);
+            byte[] jsonBytes = CryptoUtils.decryptBinary(data, ScxContext.appKey());
+            var clients = ObjectUtils.jsonMapper().readTree(jsonBytes);
+            var i = 0;
+            for (JsonNode client : clients) {
+                try {
+                    LOGGED_IN_CLIENT_TABLE.add(new LoggedInClient(
+                            client.get("token").textValue(),
+                            client.get("userID").longValue(),
+                            DeviceType.of(client.get("loginDevice").textValue())));
+                    i = i + 1;
+                } catch (Exception ignored) {
+
+                }
+            }
+            Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + i + " 条数据!!!").println();
+        } catch (IOException ignored) {
 
         }
     }
@@ -411,10 +422,17 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * 写入 LoginItem 到文件中
      */
     public void writeSessionToFile() {
-        try (var f = Files.newOutputStream(SCX_SESSION_CACHE_PATH)) {
-            // 执行模块的 stop 生命周期
-            f.write(ObjectUtils.toJson(LOGGED_IN_CLIENT_TABLE.loggedInClients()).getBytes(StandardCharsets.UTF_8));
-            Ansi.out().red("保存 Session 到 " + SCX_SESSION_CACHE_PATH + " 中!!!").println();
+        var list = LOGGED_IN_CLIENT_TABLE.loggedInClients().stream().map(c -> {
+            var m = new HashMap<>();
+            m.put("userID", c.userID);
+            m.put("loginDevice", c.loginDevice);
+            m.put("token", c.token);
+            return m;
+        }).toList();
+        try {
+            byte[] jsonBytes = ObjectUtils.toJson(list).getBytes(StandardCharsets.UTF_8);
+            Files.write(SCX_SESSION_CACHE_PATH, CryptoUtils.encryptBinary(jsonBytes, ScxContext.appKey()));
+            Ansi.out().red("保存 " + list.size() + " 条 Session 数据到 " + SCX_SESSION_CACHE_PATH + " 中!!!").println();
         } catch (IOException ignored) {
 
         }
