@@ -2,9 +2,10 @@ package cool.scx.ext.ws;
 
 import io.vertx.core.http.ServerWebSocket;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <p>WSOnlineClientTable class.</p>
@@ -17,28 +18,18 @@ public class WSOnlineClientTable {
     /**
      * 存储所有在线的 连接
      */
-    private final Map<String, ServerWebSocket> onlineClients = new HashMap<>();
+    private final Set<ServerWebSocket> onlineClients = new HashSet<>();
 
-    public void add(ServerWebSocket... sockets) {
-        for (var socket : sockets) {
-            this.onlineClients.put(socket.binaryHandlerID(), socket);
-        }
+    public void add(ServerWebSocket sockets) {
+        this.onlineClients.add(sockets);
     }
 
-    public ServerWebSocket remove(String webSocketID) {
-        return onlineClients.remove(webSocketID);
-    }
-
-    public ServerWebSocket remove(ServerWebSocket webSocket) {
-        return onlineClients.remove(webSocket.binaryHandlerID());
-    }
-
-    public ServerWebSocket get(String webSocketsID) {
-        return onlineClients.get(webSocketsID);
+    public boolean remove(ServerWebSocket webSocket) {
+        return onlineClients.remove(webSocket);
     }
 
     public Collection<ServerWebSocket> onlineClients() {
-        return onlineClients.values();
+        return new ArrayList<>(onlineClients);
     }
 
     /**

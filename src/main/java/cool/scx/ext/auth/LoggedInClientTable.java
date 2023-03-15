@@ -63,16 +63,6 @@ public final class LoggedInClientTable {
     }
 
     /**
-     * <p>getByWebSocketID.</p>
-     *
-     * @param webSocketID a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.auth.LoggedInClient} object
-     */
-    public LoggedInClient getByWebSocketID(String webSocketID) {
-        return list.stream().filter(c -> Objects.equals(c.webSocketID, webSocketID)).findAny().orElse(null);
-    }
-
-    /**
      * <p>removeByUserID.</p>
      *
      * @param userID a {@link java.lang.Long} object
@@ -103,34 +93,23 @@ public final class LoggedInClientTable {
     }
 
     /**
-     * <p>removeByWebSocketBinaryHandlerID.</p>
+     * getByWebSocket
      *
-     * @param webSocketID a {@link java.lang.String} object
-     * @return a boolean
-     */
-    public boolean removeByWebSocketID(String webSocketID) {
-        return list.removeIf(c -> Objects.equals(c.webSocketID, webSocketID));
-    }
-
-
-    /**
-     * <p>getByWebSocketBinaryHandlerID.</p>
-     *
-     * @param socket a {@link java.lang.String} object
+     * @param webSocket a {@link java.lang.String} object
      * @return a {@link cool.scx.ext.auth.LoggedInClient} object
      */
-    public LoggedInClient getByWebSocket(ServerWebSocket socket) {
-        return getByWebSocketID(socket.binaryHandlerID());
+    public LoggedInClient getByWebSocket(ServerWebSocket webSocket) {
+        return list.stream().filter(c -> Objects.equals(c.webSocket, webSocket)).findAny().orElse(null);
     }
 
     /**
-     * <p>getByWebSocketBinaryHandlerID.</p>
+     * removeByWebSocket
      *
-     * @param socket a {@link java.lang.String} object
+     * @param webSocket a {@link java.lang.String} object
      * @return a {@link cool.scx.ext.auth.LoggedInClient} object
      */
-    public boolean removeByWebSocket(ServerWebSocket socket) {
-        return removeByWebSocketID(socket.binaryHandlerID());
+    public boolean removeByWebSocket(ServerWebSocket webSocket) {
+        return list.removeIf(c -> Objects.equals(c.webSocket, webSocket));
     }
 
     /**

@@ -1,5 +1,7 @@
 package cool.scx.ext.auth;
 
+import io.vertx.core.http.ServerWebSocket;
+
 /**
  * 已经登录的客户端
  *
@@ -28,9 +30,9 @@ public final class LoggedInClient {
     public String token;
 
     /**
-     * 对应的 webSocket 的 ID 我们统一使用 binaryHandlerID
+     * 对应的 webSocket
      */
-    public String webSocketID;
+    public ServerWebSocket webSocket;
 
     /**
      * <p>Constructor for LoggedInClient.</p>

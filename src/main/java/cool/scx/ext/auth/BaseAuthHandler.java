@@ -369,7 +369,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         var client = LOGGED_IN_CLIENT_TABLE.getByToken(token);
         if (client != null) {
             //这条 websocket 连接所携带的 token 验证通过
-            client.webSocketID = wsParam.webSocket().binaryHandlerID();
+            client.webSocket = wsParam.webSocket();
         }
     }
 
@@ -380,17 +380,6 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      */
     public LoggedInClient getCurrentClient() {
         return LOGGED_IN_CLIENT_TABLE.getByToken(getToken(ScxMvc.routingContext()));
-    }
-
-    /**
-     * <p>getLoginUserByWebSocketID.</p>
-     *
-     * @param webSocketID a {@link java.lang.String} object
-     * @return a T object
-     */
-    public U getCurrentUserByWebSocketID(String webSocketID) {
-        var client = LOGGED_IN_CLIENT_TABLE.getByWebSocketID(webSocketID);
-        return client != null ? userService.get(client.userID) : null;
     }
 
     /**

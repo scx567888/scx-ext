@@ -43,7 +43,7 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
     @Override
     public void onOpen(ServerWebSocket webSocket, OnOpenRoutingContext ctx) {
         wsOnlineClientTable().add(webSocket);
-        logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), wsOnlineClientTable().size());
+        logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.remoteAddress(), wsOnlineClientTable().size());
         ctx.next();
     }
 
@@ -56,7 +56,7 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
     public void onClose(ServerWebSocket webSocket, OnCloseRoutingContext ctx) {
         //如果客户端终止连接 将此条连接作废
         wsOnlineClientTable().remove(webSocket);
-        logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.binaryHandlerID(), wsOnlineClientTable().size());
+        logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.remoteAddress(), wsOnlineClientTable().size());
         ctx.next();
     }
 
