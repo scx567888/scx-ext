@@ -413,7 +413,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
                 }
             }
             Ansi.out().brightGreen("成功从 " + SCX_SESSION_CACHE_PATH + " 中恢复 " + i + " 条数据!!!").println();
-        } catch (IOException ignored) {
+        } catch (Exception ignored) {
 
         }
     }
@@ -433,7 +433,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
             byte[] jsonBytes = ObjectUtils.toJson(list).getBytes(StandardCharsets.UTF_8);
             Files.write(SCX_SESSION_CACHE_PATH, CryptoUtils.encryptBinary(jsonBytes, ScxContext.appKey()));
             Ansi.out().red("保存 " + list.size() + " 条 Session 数据到 " + SCX_SESSION_CACHE_PATH + " 中!!!").println();
-        } catch (IOException ignored) {
+        } catch (Exception ignored) {
 
         }
     }
