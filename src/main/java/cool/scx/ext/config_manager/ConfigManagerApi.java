@@ -14,6 +14,8 @@ import io.vertx.core.http.ServerWebSocket;
 
 import java.util.Map;
 
+import static cool.scx.ext.auth.AuthModule.BIND_WEBSOCKET_BY_TOKEN;
+
 /**
  * <p>ConfigManagerApi class.</p>
  *
@@ -92,7 +94,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      * 初始化
      */
     public void initHandler() {
-        WSContext.wsConsumer("bind-websocket-by-token", wsParam -> {
+        WSContext.wsConsumer(BIND_WEBSOCKET_BY_TOKEN, wsParam -> {
             var webSocket = wsParam.webSocket();
             var objectMap = ObjectUtils.convertValue(wsParam.body(), ObjectUtils.MAP_TYPE);
             //获取 token
