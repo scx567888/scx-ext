@@ -1,7 +1,7 @@
 package cool.scx.test.auth;
 
 import cool.scx.ext.auth.BaseAuthHandler;
-import cool.scx.ext.auth.Perms;
+import cool.scx.ext.auth.type.Perms;
 import org.springframework.stereotype.Component;
 
 @Component

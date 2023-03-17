@@ -1,4 +1,4 @@
-package cool.scx.ext.auth;
+package cool.scx.ext.auth.type;
 
 import io.vertx.core.http.ServerWebSocket;
 
@@ -8,17 +8,17 @@ import io.vertx.core.http.ServerWebSocket;
  * @author scx567888
  * @version 1.11.7
  */
-public final class LoggedInClient {
+public final class Session {
 
     /**
      * 唯一 ID 用于标识用户
      */
-    public Long userID;
+    private final Long userID;
 
     /**
      * 登陆的设备类型
      */
-    public DeviceType loginDevice;
+    private final DeviceType loginDevice;
 
     /**
      * 本质上一个是一个随机字符串
@@ -27,7 +27,7 @@ public final class LoggedInClient {
      * <p>
      * 来源可以多种 header , cookie , url 等
      */
-    public String token;
+    private final String token;
 
     /**
      * 对应的 webSocket
@@ -36,22 +36,27 @@ public final class LoggedInClient {
 
     /**
      * <p>Constructor for LoggedInClient.</p>
-     */
-    public LoggedInClient() {
-
-    }
-
-    /**
-     * <p>Constructor for LoggedInClient.</p>
      *
      * @param token       a {@link java.lang.String} object
      * @param userID      a {@link java.lang.Long} object
-     * @param loginDevice a {@link cool.scx.ext.auth.DeviceType} object
+     * @param loginDevice a {@link DeviceType} object
      */
-    public LoggedInClient(String token, Long userID, DeviceType loginDevice) {
+    public Session(String token, Long userID, DeviceType loginDevice) {
         this.userID = userID;
         this.loginDevice = loginDevice;
         this.token = token;
+    }
+
+    public String token() {
+        return token;
+    }
+
+    public Long userID() {
+        return userID;
+    }
+
+    public DeviceType loginDevice() {
+        return loginDevice;
     }
 
 }

@@ -8,6 +8,8 @@ package cool.scx.ext.auth.exception;
  */
 public final class WrongPasswordException extends AuthException {
 
+    private Long userID;
+
     /**
      * <p>Constructor for WrongPasswordException.</p>
      *
@@ -21,6 +23,14 @@ public final class WrongPasswordException extends AuthException {
      * <p>Constructor for WrongPasswordException.</p>
      */
     public WrongPasswordException() {
+    }
+
+    public WrongPasswordException(Long userID) {
+        this.userID = userID;
+    }
+
+    public Long userID() {
+        return userID;
     }
 
 }

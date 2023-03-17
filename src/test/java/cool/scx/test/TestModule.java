@@ -78,7 +78,7 @@ public class TestModule extends ScxModule {
     @Override
     public void start(Scx scx) {
         scx.fixTable();
-        WriteTimeHandler.registerHandler();
+        WriteTimeHandler.registerHandler(scx);
     }
 
     /**

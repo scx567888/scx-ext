@@ -101,7 +101,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
             var token = ObjectUtils.convertValue(objectMap.get("token"), String.class);
             var client = authHandler.loggedInClientTable().getByToken(token);
             if (client != null) {
-                WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, configManager.getUserConfig(client.userID), webSocket);
+                WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, configManager.getUserConfig(client.userID()), webSocket);
             }
         });
     }

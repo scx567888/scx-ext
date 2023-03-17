@@ -2,6 +2,8 @@ package cool.scx.ext.auth;
 
 import cool.scx.ext.auth.exception.AuthException;
 import cool.scx.ext.auth.exception.UnknownDeviceException;
+import cool.scx.ext.auth.type.DeviceType;
+import cool.scx.ext.auth.type.Perms;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import io.vertx.ext.web.RoutingContext;
@@ -74,7 +76,7 @@ public final class AuthHelper {
      * 尝试获取一个可以作为认证的 Token 具体获取方式由设备类型决定
      *
      * @param ctx         a {@link io.vertx.ext.web.RoutingContext} object
-     * @param loginDevice a {@link cool.scx.ext.auth.DeviceType} object
+     * @param loginDevice a {@link DeviceType} object
      * @return a {@link java.lang.String} object
      * @throws cool.scx.ext.auth.exception.AuthException if any.
      */
@@ -112,7 +114,7 @@ public final class AuthHelper {
      * <p>mergePermsModels.</p>
      *
      * @param permsModelList a {@link java.util.List} object
-     * @return a {@link cool.scx.ext.auth.Perms} object
+     * @return a {@link Perms} object
      */
     public static Perms mergePermsModels(List<PermsModel> permsModelList) {
         var pageElementPerms = new HashSet<String>();

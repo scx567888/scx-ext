@@ -1,7 +1,9 @@
-package cool.scx.ext.auth;
+package cool.scx.ext.auth.type;
+
+import cool.scx.ext.auth.BaseUser;
 
 /**
- * <p>ScxUserInfo class.</p>
+ * todo 如果移除此类 getUserInfo 直接返回 { user : xxx, perms : xxx } 会不会更好 ? 会不会存在暴露 user 内部信息的可能 ?
  *
  * @author scx567888
  * @version 1.11.8
@@ -57,7 +59,7 @@ public class UserInfo {
      * <p>Constructor for ScxUserInfo.</p>
      *
      * @param user  a {@link cool.scx.ext.auth.BaseUser} object
-     * @param perms a {@link cool.scx.ext.auth.Perms} object
+     * @param perms a {@link Perms} object
      */
     public UserInfo(BaseUser user, Perms perms) {
         this.id = user.id;

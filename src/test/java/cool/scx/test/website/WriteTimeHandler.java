@@ -1,7 +1,7 @@
 package cool.scx.test.website;
 
 import cool.scx.constant.ScxConstant;
-import cool.scx.core.ScxContext;
+import cool.scx.core.Scx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +18,9 @@ public class WriteTimeHandler {
     /**
      * 注册所有的 handler 请在模块 start 中调用
      */
-    public static void registerHandler() {
+    public static void registerHandler(Scx scx) {
         //注册事件
-        ScxContext.scheduler().scheduleAtFixedRate((status) -> {
+        scx.scxScheduler().scheduleAtFixedRate((status) -> {
             var nowTime = ScxConstant.NORMAL_DATE_TIME.format(LocalDateTime.now());
             wsPublishAll("writeTime", nowTime);
         }, Duration.ofSeconds(1));
