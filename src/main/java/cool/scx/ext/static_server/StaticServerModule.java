@@ -1,7 +1,6 @@
 package cool.scx.ext.static_server;
 
 import cool.scx.core.Scx;
-import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
 import cool.scx.util.ScxExceptionHelper;
 import io.vertx.ext.web.Router;
@@ -30,15 +29,6 @@ public class StaticServerModule extends ScxModule {
     /**
      * a
      *
-     * @return a
-     */
-    private static List<StaticServer> getStaticServersByConfig() {
-        return ScxContext.config().get("static-servers", new ConvertStaticServerHandler(ScxContext.environment()));
-    }
-
-    /**
-     * a
-     *
      * @param vertxRouter   a
      * @param staticServers a
      */
@@ -62,9 +52,9 @@ public class StaticServerModule extends ScxModule {
      */
     @Override
     public void start(Scx scx) {
-        var staticServers = getStaticServersByConfig();
+        var staticServers = scx.scxConfig().get("static-servers", new ConvertStaticServerHandler(scx.scxEnvironment()));
         logger.info("静态资源服务器 -->  {}", staticServers.stream().map(StaticServer::location).collect(Collectors.joining(", ", "[", "]")));
-        registerStaticServerHandler(ScxContext.router(), staticServers);
+        registerStaticServerHandler(scx.scxHttpRouter(), staticServers);
     }
 
     /**

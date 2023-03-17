@@ -1,7 +1,6 @@
 package cool.scx.ext.redirects;
 
 import cool.scx.core.Scx;
-import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
 import cool.scx.mvc.vo.Redirections;
 import cool.scx.util.ansi.Ansi;
@@ -44,7 +43,8 @@ public class RedirectsModule extends ScxModule {
         var router = Router.router(vertx);
         router.route().handler(c -> {
             var oldURI = c.request().absoluteURI();
-            var newURI = "https" + oldURI.substring("http".length());
+            // 4 = "http".length()
+            var newURI = "https" + oldURI.substring(4);
             Redirections.ofTemporary(newURI).accept(c);
         });
         vertx.createHttpServer().requestHandler(router).listen(port, (http) -> {
@@ -70,8 +70,8 @@ public class RedirectsModule extends ScxModule {
     @Override
     public void start(Scx scx) {
         //只有当开启 https 的时候才进行转发
-        if (ScxContext.options().isHttpsEnabled()) {
-            startRedirects(ScxContext.vertx(), this.port);
+        if (scx.scxOptions().isHttpsEnabled()) {
+            startRedirects(scx.vertx(), this.port);
         }
     }
 
