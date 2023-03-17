@@ -151,7 +151,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         }
         var b = checkPassword(password, needLoginUser.password);
         if (!b) {
-            throw new WrongPasswordException(needLoginUser);
+            throw new WrongPasswordException(needLoginUser.id);
         }
         return needLoginUser;
     }
@@ -216,7 +216,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         }
         var b = checkPassword(oldPassword, loginUser.password);
         if (!b) {
-            throw new WrongPasswordException(loginUser);
+            throw new WrongPasswordException(loginUser.id);
         }
         var needChangeUser = userService.get(loginUser.id);
         //不存在账号报错
@@ -237,14 +237,14 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param password    用来校验的密码
      * @return a
      */
-    public U changeUsernameBySelf(String newUsername, String password) {
+    public U changeUsernameBySelf(String newUsername, String password) throws UnauthorizedException, WrongPasswordException {
         var loginUser = getCurrentUser();
         if (loginUser == null) {
             throw new UnauthorizedException("请登录 !!!");
         }
         var b = checkPassword(password, loginUser.password);
         if (!b) {
-            throw new WrongPasswordException(loginUser);
+            throw new WrongPasswordException(loginUser.id);
         }
         var needChangeUser = checkNeedChangeUserByID(loginUser.id);
         needChangeUser.username = checkNewUsername(newUsername, needChangeUser.id);
