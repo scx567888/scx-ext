@@ -1,4 +1,4 @@
-package cool.scx.ext.auth;
+package cool.scx.ext.auth.type;
 
 import io.vertx.core.http.ServerWebSocket;
 
@@ -8,7 +8,7 @@ import io.vertx.core.http.ServerWebSocket;
  * @author scx567888
  * @version 1.11.7
  */
-public final class LoggedInClient {
+public final class Session {
 
     /**
      * 唯一 ID 用于标识用户
@@ -37,7 +37,7 @@ public final class LoggedInClient {
     /**
      * <p>Constructor for LoggedInClient.</p>
      */
-    public LoggedInClient() {
+    public Session() {
 
     }
 
@@ -46,9 +46,9 @@ public final class LoggedInClient {
      *
      * @param token       a {@link java.lang.String} object
      * @param userID      a {@link java.lang.Long} object
-     * @param loginDevice a {@link cool.scx.ext.auth.DeviceType} object
+     * @param loginDevice a {@link DeviceType} object
      */
-    public LoggedInClient(String token, Long userID, DeviceType loginDevice) {
+    public Session(String token, Long userID, DeviceType loginDevice) {
         this.userID = userID;
         this.loginDevice = loginDevice;
         this.token = token;

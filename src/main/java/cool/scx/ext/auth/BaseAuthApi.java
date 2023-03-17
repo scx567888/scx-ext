@@ -5,6 +5,7 @@ import cool.scx.dao.UpdateFilter;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.ext.auth.annotation.ApiPerms;
 import cool.scx.ext.auth.exception.AuthException;
+import cool.scx.ext.auth.type.UserInfo;
 import cool.scx.mvc.annotation.FromBody;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.exception.UnauthorizedException;
@@ -46,8 +47,8 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ScxRoute(methods = HttpMethod.POST)
     public BaseVo login(@FromBody String username, @FromBody String password, RoutingContext ctx) {
         try {
-            var token = authHandler.login(username, password, ctx);
-            return Json.ok().put("token", token);
+            var loginResult = authHandler.login(username, password, ctx);
+            return Json.ok().put("token", loginResult.token());
         } catch (AuthException e) {
             return e.toBaseVo();
         }
@@ -56,8 +57,8 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ScxRoute(methods = HttpMethod.POST)
     public BaseVo loginByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType, RoutingContext ctx) {
         try {
-            var token = authHandler.loginByThirdParty(uniqueID, accessToken, accountType, ctx);
-            return Json.ok().put("token", token);
+            var loginResult = authHandler.loginByThirdParty(uniqueID, accessToken, accountType, ctx);
+            return Json.ok().put("token", loginResult.token());
         } catch (AuthException e) {
             return e.toBaseVo();
         }

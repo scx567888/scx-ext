@@ -1,4 +1,4 @@
-package cool.scx.ext.auth;
+package cool.scx.ext.auth.type;
 
 import java.util.Set;
 

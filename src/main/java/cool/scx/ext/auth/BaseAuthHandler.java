@@ -11,6 +11,7 @@ import cool.scx.ext.auth.exception.UnknownLoginHandlerException;
 import cool.scx.ext.auth.exception.UnknownUserException;
 import cool.scx.ext.auth.exception.UsernameAlreadyExistsException;
 import cool.scx.ext.auth.exception.WrongPasswordException;
+import cool.scx.ext.auth.type.*;
 import cool.scx.ext.ws.WSMessage;
 import cool.scx.mvc.ScxMvc;
 import cool.scx.mvc.exception.ForbiddenException;
@@ -57,7 +58,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
     /**
      * 存储所有的登录的客户端
      */
-    protected final LoggedInClientTable LOGGED_IN_CLIENT_TABLE = new LoggedInClientTable();
+    protected final SessionStore SESSION_STORE = new SessionStore();
 
     /**
      * 第三方登录 login handler 映射
@@ -104,7 +105,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @return a
      */
     public U getCurrentUserByToken(String token) {
-        var client = LOGGED_IN_CLIENT_TABLE.getByToken(token);
+        var client = SESSION_STORE.getByToken(token);
         return client != null ? userService.get(client.userID) : null;
     }
 
@@ -116,7 +117,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param ctx      a
      * @return a
      */
-    public String login(String username, String password, RoutingContext ctx) {
+    public LoginResult<U> login(String username, String password, RoutingContext ctx) throws UnknownUserException, WrongPasswordException {
         // 先获取登录的设备类型
         var loginDevice = getDeviceTypeByHeader(ctx);
         // 尝试根据设备类型获取一个可以用来认证的 token
@@ -124,9 +125,9 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         // 尝试登录 登录失败会直接走到 catch 中进行处理
         var loginUser = tryLogin(username, password);
         //走到这里表示 即 "成功获取到了 token" 也 登录成功了 我们将这些信息加入到 TestAuth 里的 ALREADY_LOGIN_CLIENTS 列表中
-        LOGGED_IN_CLIENT_TABLE.add(new LoggedInClient(token, loginUser.id, loginDevice));
+        SESSION_STORE.add(new Session(token, loginUser.id, loginDevice));
         //这里根据登录设备向客户端返回不同的信息
-        return token;
+        return new LoginResult<>(token, loginUser);
     }
 
     /**
@@ -167,7 +168,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @return a
      */
     public boolean logout(RoutingContext context) {
-        return LOGGED_IN_CLIENT_TABLE.removeByToken(getToken(context));
+        return SESSION_STORE.removeByToken(getToken(context));
     }
 
     /**
@@ -204,7 +205,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param oldPassword 用来校验的密码
      * @return a
      */
-    public U changePasswordBySelf(String newPassword, String oldPassword) {
+    public U changePasswordBySelf(String newPassword, String oldPassword) throws WrongPasswordException, UnknownUserException {
         var loginUser = getCurrentUser();
         if (loginUser == null) {
             throw new UnauthorizedException("请登录 !!!");
@@ -299,7 +300,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param ctx         a
      * @return a
      */
-    public String loginByThirdParty(String uniqueID, String accessToken, String accountType, RoutingContext ctx) {
+    public LoginResult<U> loginByThirdParty(String uniqueID, String accessToken, String accountType, RoutingContext ctx) {
         // 先获取登录的设备类型
         var loginDevice = getDeviceTypeByHeader(ctx);
         // 尝试根据设备类型获取一个可以用来认证的 token
@@ -307,9 +308,9 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         // 尝试登录 登录失败会直接走到 catch 中进行处理
         var loginUser = findThirdPartyLoginHandler(accountType).tryLogin(uniqueID, accessToken);
         //走到这里表示 即 "成功获取到了 token" 也 登录成功了 我们将这些信息加入到 TestAuth 里的 ALREADY_LOGIN_CLIENTS 列表中
-        LOGGED_IN_CLIENT_TABLE.add(new LoggedInClient(token, loginUser.id, loginDevice));
+        SESSION_STORE.add(new Session(token, loginUser.id, loginDevice));
         //这里根据登录设备向客户端返回不同的信息
-        return token;
+        return new LoginResult<>(token, loginUser);
     }
 
     /**
@@ -332,8 +333,8 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      *
      * @return a
      */
-    public final LoggedInClientTable loggedInClientTable() {
-        return LOGGED_IN_CLIENT_TABLE;
+    public final SessionStore loggedInClientTable() {
+        return SESSION_STORE;
     }
 
     /**
@@ -364,7 +365,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         //获取 token
         var token = ObjectUtils.convertValue(objectMap.get("token"), String.class);
         //判断 token 是否有效
-        var client = LOGGED_IN_CLIENT_TABLE.getByToken(token);
+        var client = SESSION_STORE.getByToken(token);
         if (client != null) {
             //这条 websocket 连接所携带的 token 验证通过
             client.webSocket = wsParam.webSocket();
@@ -376,8 +377,8 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      *
      * @return a
      */
-    public LoggedInClient getCurrentClient() {
-        return LOGGED_IN_CLIENT_TABLE.getByToken(getToken(ScxMvc.routingContext()));
+    public Session getCurrentClient() {
+        return SESSION_STORE.getByToken(getToken(ScxMvc.routingContext()));
     }
 
     /**
@@ -387,7 +388,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @return a T object
      */
     public U getCurrentUserByWebSocket(ServerWebSocket socket) {
-        var client = LOGGED_IN_CLIENT_TABLE.getByWebSocket(socket);
+        var client = SESSION_STORE.getByWebSocket(socket);
         return client != null ? userService.get(client.userID) : null;
     }
 
@@ -402,7 +403,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
             var i = 0;
             for (JsonNode client : clients) {
                 try {
-                    LOGGED_IN_CLIENT_TABLE.add(new LoggedInClient(
+                    SESSION_STORE.add(new Session(
                             client.get("token").textValue(),
                             client.get("userID").longValue(),
                             DeviceType.of(client.get("loginDevice").textValue())));
@@ -421,7 +422,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * 写入 LoginItem 到文件中
      */
     public void writeSessionToFile() {
-        var list = LOGGED_IN_CLIENT_TABLE.loggedInClients().stream().map(c -> {
+        var list = SESSION_STORE.loggedInClients().stream().map(c -> {
             var m = new HashMap<>();
             m.put("userID", c.userID);
             m.put("loginDevice", c.loginDevice);

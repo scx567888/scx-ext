@@ -1,4 +1,4 @@
-package cool.scx.ext.auth;
+package cool.scx.ext.auth.type;
 
 import io.vertx.core.http.ServerWebSocket;
 
@@ -10,16 +10,16 @@ import java.util.*;
  * @author scx567888
  * @version 1.11.8
  */
-public final class LoggedInClientTable {
+public final class SessionStore {
 
-    private final List<LoggedInClient> list = new ArrayList<>();
+    private final List<Session> list = new ArrayList<>();
 
     /**
      * <p>put.</p>
      *
-     * @param loggedInClients a {@link cool.scx.ext.auth.LoggedInClient} object
+     * @param loggedInClients a {@link Session} object
      */
-    public void add(LoggedInClient... loggedInClients) {
+    public void add(Session... loggedInClients) {
         Collections.addAll(list, loggedInClients);
     }
 
@@ -28,7 +28,7 @@ public final class LoggedInClientTable {
      *
      * @param loggedInClients a
      */
-    public void addAll(Collection<LoggedInClient> loggedInClients) {
+    public void addAll(Collection<Session> loggedInClients) {
         list.addAll(loggedInClients);
     }
 
@@ -36,19 +36,19 @@ public final class LoggedInClientTable {
      * <p>getByUserID.</p>
      *
      * @param userID a {@link java.lang.Long} object
-     * @return an  of {@link cool.scx.ext.auth.LoggedInClient} objects
+     * @return an  of {@link Session} objects
      */
-    public List<LoggedInClient> getByUserID(Long userID) {
+    public List<Session> getByUserID(Long userID) {
         return list.stream().filter(c -> Objects.equals(c.userID, userID)).toList();
     }
 
     /**
      * <p>getByLoginDevice.</p>
      *
-     * @param deviceType a {@link cool.scx.ext.auth.DeviceType} object
-     * @return an of {@link cool.scx.ext.auth.LoggedInClient} objects
+     * @param deviceType a {@link DeviceType} object
+     * @return an of {@link Session} objects
      */
-    public List<LoggedInClient> getByLoginDevice(DeviceType deviceType) {
+    public List<Session> getByLoginDevice(DeviceType deviceType) {
         return list.stream().filter(c -> Objects.equals(c.loginDevice, deviceType)).toList();
     }
 
@@ -56,9 +56,9 @@ public final class LoggedInClientTable {
      * <p>getByToken.</p>
      *
      * @param token a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.auth.LoggedInClient} object
+     * @return a {@link Session} object
      */
-    public LoggedInClient getByToken(String token) {
+    public Session getByToken(String token) {
         return list.stream().filter(c -> Objects.equals(c.token, token)).findAny().orElse(null);
     }
 
@@ -75,7 +75,7 @@ public final class LoggedInClientTable {
     /**
      * <p>removeByLoginDevice.</p>
      *
-     * @param deviceType a {@link cool.scx.ext.auth.DeviceType} object
+     * @param deviceType a {@link DeviceType} object
      * @return a boolean
      */
     public boolean removeByLoginDevice(DeviceType deviceType) {
@@ -96,9 +96,9 @@ public final class LoggedInClientTable {
      * getByWebSocket
      *
      * @param webSocket a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.auth.LoggedInClient} object
+     * @return a {@link Session} object
      */
-    public LoggedInClient getByWebSocket(ServerWebSocket webSocket) {
+    public Session getByWebSocket(ServerWebSocket webSocket) {
         return list.stream().filter(c -> Objects.equals(c.webSocket, webSocket)).findAny().orElse(null);
     }
 
@@ -106,7 +106,7 @@ public final class LoggedInClientTable {
      * removeByWebSocket
      *
      * @param webSocket a {@link java.lang.String} object
-     * @return a {@link cool.scx.ext.auth.LoggedInClient} object
+     * @return a {@link Session} object
      */
     public boolean removeByWebSocket(ServerWebSocket webSocket) {
         return list.removeIf(c -> Objects.equals(c.webSocket, webSocket));
@@ -115,9 +115,9 @@ public final class LoggedInClientTable {
     /**
      * <p>getAllAlreadyLoginClients.</p>
      *
-     * @return an of {@link cool.scx.ext.auth.LoggedInClient} objects
+     * @return an of {@link Session} objects
      */
-    public List<LoggedInClient> loggedInClients() {
+    public List<Session> loggedInClients() {
         return new ArrayList<>(list);
     }
 
