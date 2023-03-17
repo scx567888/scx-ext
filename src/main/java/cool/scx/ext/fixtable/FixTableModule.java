@@ -1,7 +1,6 @@
 package cool.scx.ext.fixtable;
 
 import cool.scx.core.Scx;
-import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
 import cool.scx.util.ConsoleUtils;
 import org.slf4j.Logger;
@@ -54,7 +53,7 @@ public class FixTableModule extends ScxModule {
      */
     @Override
     public void start(Scx scx) {
-        ScxContext.scheduler().submit(() -> {
+        scx.scxScheduler().submit(() -> {
             if (!scx.checkDataSource()) {
                 logger.error("数据源连接失败!!! 已跳过修复表!!!");
                 return;
