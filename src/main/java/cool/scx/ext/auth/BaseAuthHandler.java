@@ -11,7 +11,10 @@ import cool.scx.ext.auth.exception.UnknownLoginHandlerException;
 import cool.scx.ext.auth.exception.UnknownUserException;
 import cool.scx.ext.auth.exception.UsernameAlreadyExistsException;
 import cool.scx.ext.auth.exception.WrongPasswordException;
-import cool.scx.ext.auth.type.*;
+import cool.scx.ext.auth.type.DeviceType;
+import cool.scx.ext.auth.type.Perms;
+import cool.scx.ext.auth.type.Session;
+import cool.scx.ext.auth.type.SessionStore;
 import cool.scx.ext.ws.WSMessage;
 import cool.scx.mvc.ScxMvc;
 import cool.scx.mvc.exception.ForbiddenException;
@@ -106,7 +109,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      */
     public U getCurrentUserByToken(String token) {
         var client = SESSION_STORE.getByToken(token);
-        return client != null ? userService.get(client.userID) : null;
+        return client != null ? userService.get(client.userID()) : null;
     }
 
     /**
@@ -117,7 +120,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param ctx      a
      * @return a
      */
-    public LoginResult<U> login(String username, String password, RoutingContext ctx) throws UnknownUserException, WrongPasswordException {
+    public Session login(String username, String password, RoutingContext ctx) throws UnknownUserException, WrongPasswordException {
         // 先获取登录的设备类型
         var loginDevice = getDeviceTypeByHeader(ctx);
         // 尝试根据设备类型获取一个可以用来认证的 token
@@ -125,9 +128,10 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         // 尝试登录 登录失败会直接走到 catch 中进行处理
         var loginUser = tryLogin(username, password);
         //走到这里表示 即 "成功获取到了 token" 也 登录成功了 我们将这些信息加入到 TestAuth 里的 ALREADY_LOGIN_CLIENTS 列表中
-        SESSION_STORE.add(new Session(token, loginUser.id, loginDevice));
+        var session = new Session(token, loginUser.id, loginDevice);
+        SESSION_STORE.add(session);
         //这里根据登录设备向客户端返回不同的信息
-        return new LoginResult<>(token, loginUser);
+        return session;
     }
 
     /**
@@ -147,7 +151,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         }
         var b = checkPassword(password, needLoginUser.password);
         if (!b) {
-            throw new WrongPasswordException();
+            throw new WrongPasswordException(needLoginUser);
         }
         return needLoginUser;
     }
@@ -212,7 +216,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         }
         var b = checkPassword(oldPassword, loginUser.password);
         if (!b) {
-            throw new WrongPasswordException();
+            throw new WrongPasswordException(loginUser);
         }
         var needChangeUser = userService.get(loginUser.id);
         //不存在账号报错
@@ -240,7 +244,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         }
         var b = checkPassword(password, loginUser.password);
         if (!b) {
-            throw new WrongPasswordException();
+            throw new WrongPasswordException(loginUser);
         }
         var needChangeUser = checkNeedChangeUserByID(loginUser.id);
         needChangeUser.username = checkNewUsername(newUsername, needChangeUser.id);
@@ -300,7 +304,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @param ctx         a
      * @return a
      */
-    public LoginResult<U> loginByThirdParty(String uniqueID, String accessToken, String accountType, RoutingContext ctx) {
+    public Session loginByThirdParty(String uniqueID, String accessToken, String accountType, RoutingContext ctx) {
         // 先获取登录的设备类型
         var loginDevice = getDeviceTypeByHeader(ctx);
         // 尝试根据设备类型获取一个可以用来认证的 token
@@ -308,9 +312,10 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         // 尝试登录 登录失败会直接走到 catch 中进行处理
         var loginUser = findThirdPartyLoginHandler(accountType).tryLogin(uniqueID, accessToken);
         //走到这里表示 即 "成功获取到了 token" 也 登录成功了 我们将这些信息加入到 TestAuth 里的 ALREADY_LOGIN_CLIENTS 列表中
-        SESSION_STORE.add(new Session(token, loginUser.id, loginDevice));
+        var session = new Session(token, loginUser.id, loginDevice);
+        SESSION_STORE.add(session);
         //这里根据登录设备向客户端返回不同的信息
-        return new LoginResult<>(token, loginUser);
+        return session;
     }
 
     /**
@@ -389,7 +394,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      */
     public U getCurrentUserByWebSocket(ServerWebSocket socket) {
         var client = SESSION_STORE.getByWebSocket(socket);
-        return client != null ? userService.get(client.userID) : null;
+        return client != null ? userService.get(client.userID()) : null;
     }
 
     /**
@@ -424,9 +429,9 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
     public void writeSessionToFile() {
         var list = SESSION_STORE.loggedInClients().stream().map(c -> {
             var m = new HashMap<>();
-            m.put("userID", c.userID);
-            m.put("loginDevice", c.loginDevice);
-            m.put("token", c.token);
+            m.put("userID", c.userID());
+            m.put("loginDevice", c.loginDevice());
+            m.put("token", c.token());
             return m;
         }).toList();
         try {

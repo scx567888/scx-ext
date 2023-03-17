@@ -39,7 +39,7 @@ public final class SessionStore {
      * @return an  of {@link Session} objects
      */
     public List<Session> getByUserID(Long userID) {
-        return list.stream().filter(c -> Objects.equals(c.userID, userID)).toList();
+        return list.stream().filter(c -> Objects.equals(c.userID(), userID)).toList();
     }
 
     /**
@@ -49,7 +49,7 @@ public final class SessionStore {
      * @return an of {@link Session} objects
      */
     public List<Session> getByLoginDevice(DeviceType deviceType) {
-        return list.stream().filter(c -> Objects.equals(c.loginDevice, deviceType)).toList();
+        return list.stream().filter(c -> Objects.equals(c.loginDevice(), deviceType)).toList();
     }
 
     /**
@@ -59,7 +59,7 @@ public final class SessionStore {
      * @return a {@link Session} object
      */
     public Session getByToken(String token) {
-        return list.stream().filter(c -> Objects.equals(c.token, token)).findAny().orElse(null);
+        return list.stream().filter(c -> Objects.equals(c.token(), token)).findAny().orElse(null);
     }
 
     /**
@@ -69,7 +69,7 @@ public final class SessionStore {
      * @return a boolean
      */
     public boolean removeByUserID(Long userID) {
-        return list.removeIf(c -> Objects.equals(c.userID, userID));
+        return list.removeIf(c -> Objects.equals(c.userID(), userID));
     }
 
     /**
@@ -79,7 +79,7 @@ public final class SessionStore {
      * @return a boolean
      */
     public boolean removeByLoginDevice(DeviceType deviceType) {
-        return list.removeIf(c -> Objects.equals(c.loginDevice, deviceType));
+        return list.removeIf(c -> Objects.equals(c.loginDevice(), deviceType));
     }
 
     /**
@@ -89,7 +89,7 @@ public final class SessionStore {
      * @return a boolean
      */
     public boolean removeByToken(String token) {
-        return list.removeIf(c -> Objects.equals(c.token, token));
+        return list.removeIf(c -> Objects.equals(c.token(), token));
     }
 
     /**

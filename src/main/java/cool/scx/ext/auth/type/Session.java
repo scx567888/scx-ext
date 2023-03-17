@@ -13,12 +13,12 @@ public final class Session {
     /**
      * 唯一 ID 用于标识用户
      */
-    public Long userID;
+    private final Long userID;
 
     /**
      * 登陆的设备类型
      */
-    public DeviceType loginDevice;
+    private final DeviceType loginDevice;
 
     /**
      * 本质上一个是一个随机字符串
@@ -27,19 +27,12 @@ public final class Session {
      * <p>
      * 来源可以多种 header , cookie , url 等
      */
-    public String token;
+    private final String token;
 
     /**
      * 对应的 webSocket
      */
     public ServerWebSocket webSocket;
-
-    /**
-     * <p>Constructor for LoggedInClient.</p>
-     */
-    public Session() {
-
-    }
 
     /**
      * <p>Constructor for LoggedInClient.</p>
@@ -52,6 +45,18 @@ public final class Session {
         this.userID = userID;
         this.loginDevice = loginDevice;
         this.token = token;
+    }
+
+    public String token() {
+        return token;
+    }
+
+    public Long userID() {
+        return userID;
+    }
+
+    public DeviceType loginDevice() {
+        return loginDevice;
     }
 
 }

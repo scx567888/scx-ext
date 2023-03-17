@@ -47,8 +47,8 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ScxRoute(methods = HttpMethod.POST)
     public BaseVo login(@FromBody String username, @FromBody String password, RoutingContext ctx) {
         try {
-            var loginResult = authHandler.login(username, password, ctx);
-            return Json.ok().put("token", loginResult.token());
+            var session = authHandler.login(username, password, ctx);
+            return Json.ok().put("token", session.token());
         } catch (AuthException e) {
             return e.toBaseVo();
         }

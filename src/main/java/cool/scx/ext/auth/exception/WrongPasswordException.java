@@ -1,5 +1,7 @@
 package cool.scx.ext.auth.exception;
 
+import cool.scx.ext.auth.BaseUser;
+
 /**
  * 密码错误异常
  *
@@ -7,6 +9,8 @@ package cool.scx.ext.auth.exception;
  * @version 0.3.6
  */
 public final class WrongPasswordException extends AuthException {
+
+    private BaseUser user;
 
     /**
      * <p>Constructor for WrongPasswordException.</p>
@@ -21,6 +25,14 @@ public final class WrongPasswordException extends AuthException {
      * <p>Constructor for WrongPasswordException.</p>
      */
     public WrongPasswordException() {
+    }
+
+    public WrongPasswordException(BaseUser loginUser) {
+        this.user = loginUser;
+    }
+
+    public BaseUser user() {
+        return user;
     }
 
 }
