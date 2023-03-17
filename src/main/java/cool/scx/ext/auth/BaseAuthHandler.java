@@ -377,7 +377,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      *
      * @return a
      */
-    public Session getCurrentClient() {
+    public Session getCurrentSession() {
         return SESSION_STORE.getByToken(getToken(ScxMvc.routingContext()));
     }
 
