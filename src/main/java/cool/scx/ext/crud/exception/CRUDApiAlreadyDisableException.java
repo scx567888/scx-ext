@@ -2,7 +2,7 @@ package cool.scx.ext.crud.exception;
 
 import cool.scx.ext.crud.CRUDApiType;
 import cool.scx.mvc.exception.NotFoundException;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.Data;
 
 /**
  * a
@@ -29,7 +29,7 @@ public final class CRUDApiAlreadyDisableException extends NotFoundException {
      * @param apiType   a {@link cool.scx.ext.crud.CRUDApiType} object
      */
     public CRUDApiAlreadyDisableException(String modelName, CRUDApiType apiType) {
-        super(Json.fail("crud-api-already-disable").put("model-name", modelName).put("api-name", apiType.name()).toJson(""));
+        super(Data.fail("crud-api-already-disable").put("model-name", modelName).put("api-name", apiType.name()).toJson(""));
         this.modelName = modelName;
         this.apiType = apiType;
     }

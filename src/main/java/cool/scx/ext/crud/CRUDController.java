@@ -7,8 +7,7 @@ import cool.scx.mvc.annotation.FromBody;
 import cool.scx.mvc.annotation.FromPath;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.vo.BaseVo;
-import cool.scx.mvc.vo.DataJson;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.Data;
 
 import java.util.Map;
 
@@ -55,10 +54,10 @@ public class CRUDController {
      * @return a
      */
     @ScxRoute(value = ":modelName/list", methods = HttpMethod.POST)
-    public Json list(@FromPath String modelName, CRUDListParam crudListParam) {
+    public Data list(@FromPath String modelName, CRUDListParam crudListParam) {
         checkHasThisApi(modelName, LIST);
         var crudListResult = crudHandler.list(modelName, crudListParam);
-        return Json.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
+        return Data.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }
 
     /**
@@ -72,7 +71,7 @@ public class CRUDController {
     public BaseVo info(@FromPath String modelName, @FromPath Long id) {
         checkHasThisApi(modelName, INFO);
         var info = crudHandler.info(modelName, id);
-        return DataJson.ok().data(info);
+        return Data.ok(info);
     }
 
     /**
@@ -86,7 +85,7 @@ public class CRUDController {
     public BaseVo add(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> saveModel) {
         checkHasThisApi(modelName, ADD);
         var savedModel = crudHandler.add(modelName, saveModel);
-        return DataJson.ok().data(savedModel);
+        return Data.ok(savedModel);
     }
 
     /**
@@ -100,7 +99,7 @@ public class CRUDController {
     public BaseVo update(@FromPath String modelName, CRUDUpdateParam crudUpdateParam) {
         checkHasThisApi(modelName, UPDATE);
         var updatedModel = crudHandler.update(modelName, crudUpdateParam);
-        return DataJson.ok().data(updatedModel);
+        return Data.ok(updatedModel);
     }
 
     /**
@@ -111,10 +110,10 @@ public class CRUDController {
      * @return j
      */
     @ScxRoute(value = ":modelName/:id", methods = HttpMethod.DELETE)
-    public Json delete(@FromPath String modelName, @FromPath Long id) {
+    public BaseVo delete(@FromPath String modelName, @FromPath Long id) {
         checkHasThisApi(modelName, DELETE);
         var b = crudHandler.delete(modelName, id);
-        return b ? Json.ok() : Json.fail();
+        return b ? Data.ok() : Data.fail();
     }
 
     /**
@@ -125,10 +124,10 @@ public class CRUDController {
      * @return a
      */
     @ScxRoute(value = ":modelName/batch-delete", methods = HttpMethod.DELETE)
-    public Json batchDelete(@FromPath String modelName, @FromBody long[] deleteIDs) {
+    public BaseVo batchDelete(@FromPath String modelName, @FromBody long[] deleteIDs) {
         checkHasThisApi(modelName, BATCH_DELETE);
         var deletedCount = crudHandler.batchDelete(modelName, deleteIDs);
-        return Json.ok().put("deletedCount", deletedCount);
+        return Data.ok().put("deletedCount", deletedCount);
     }
 
     /**
@@ -141,10 +140,10 @@ public class CRUDController {
      * @return a
      */
     @ScxRoute(value = ":modelName/check-unique/:fieldName", methods = HttpMethod.POST)
-    public Json checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {
+    public BaseVo checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {
         checkHasThisApi(modelName, CHECK_UNIQUE);
         var isUnique = crudHandler.checkUnique(modelName, fieldName, value, id);
-        return Json.ok().put("isUnique", isUnique);
+        return Data.ok().put("isUnique", isUnique);
     }
 
 }

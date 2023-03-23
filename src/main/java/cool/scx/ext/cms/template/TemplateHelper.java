@@ -3,7 +3,8 @@ package cool.scx.ext.cms.template;
 import cool.scx.core.ScxContext;
 import cool.scx.mvc.annotation.FromUpload;
 import cool.scx.mvc.type.UploadedEntity;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.BaseVo;
+import cool.scx.mvc.vo.Data;
 import cool.scx.util.FileUtils;
 
 import java.io.File;
@@ -103,13 +104,13 @@ public final class TemplateHelper {
      * @return a {@link cool.scx.mvc.vo.Json} object.
      * @throws java.io.IOException if any.
      */
-    public static Json index() throws IOException {
+    public static Data index() throws IOException {
         var allTemplateList = getTemplateList(ScxContext.options().templateRoot().toString());
         // 让文件夹永远在前边
         var directoryList = allTemplateList.stream().filter(templateInfo -> "Directory".equals(templateInfo.type)).collect(Collectors.toList());
         var fileList = allTemplateList.stream().filter(templateInfo -> "File".equals(templateInfo.type)).toList();
         directoryList.addAll(fileList);
-        return Json.ok().put("cmsRootTreeList", directoryList);
+        return Data.ok().put("cmsRootTreeList", directoryList);
     }
 
     /**
@@ -118,17 +119,17 @@ public final class TemplateHelper {
      * @param filePath 文件路径
      * @return a {@link cool.scx.mvc.vo.Json} object.
      */
-    public static Json getFileContent(String filePath) {
+    public static Data getFileContent(String filePath) {
         try {
             boolean b = checkPath(filePath);
             if (b) {
                 String fileContent = Files.readString(Paths.get(filePath));
-                return Json.ok().put("fileContent", fileContent);
+                return Data.ok().put("fileContent", fileContent);
             } else {
-                return Json.ok().put("fileContent", "文件无法访问");
+                return Data.ok().put("fileContent", "文件无法访问");
             }
         } catch (Exception exception) {
-            return Json.ok().put("fileContent", "此文件无法编辑");
+            return Data.ok().put("fileContent", "此文件无法编辑");
         }
     }
 
@@ -140,32 +141,32 @@ public final class TemplateHelper {
      * @return a
      * @throws java.io.IOException a
      */
-    public static Json setFileContent(String filePath, String fileContent) throws IOException {
+    public static Data setFileContent(String filePath, String fileContent) throws IOException {
         boolean b = checkPath(filePath);
         if (b) {
             Files.writeString(Path.of(filePath), fileContent);
             return getFileContent(filePath);
         } else {
-            return Json.fail("文件无法访问");
+            return Data.fail("文件无法访问");
         }
     }
 
-    public static Json delete(String filePath) throws IOException {
+    public static BaseVo delete(String filePath) throws IOException {
         boolean b = checkPath(filePath);
         if (b) {
             FileUtils.delete(Path.of(filePath));
-            return Json.ok();
+            return Data.ok();
         } else {
-            return Json.fail("文件无法访问");
+            return Data.fail("文件无法访问");
         }
     }
 
-    public static Json upload(@FromUpload UploadedEntity file, String filePath) throws IOException {
+    public static BaseVo upload(@FromUpload UploadedEntity file, String filePath) throws IOException {
         if (checkPath(filePath)) {
             FileUtils.write(Path.of(filePath, file.fileName()), file.buffer().getBytes());
-            return Json.ok();
+            return Data.ok();
         } else {
-            return Json.fail("文件无法访问");
+            return Data.fail("文件无法访问");
         }
     }
 
@@ -176,16 +177,16 @@ public final class TemplateHelper {
      * @param oldFilePath 新文件路径
      * @return a {@link cool.scx.mvc.vo.Json} object.
      */
-    public static Json rename(String newFilePath, String oldFilePath) {
+    public static Data rename(String newFilePath, String oldFilePath) {
         var b = checkPath(newFilePath);
         var b1 = checkPath(oldFilePath);
         if (b && b1) {
             Path path = Paths.get(oldFilePath);
             String parent = path.getParent().toFile().getPath();
             boolean b2 = path.toFile().renameTo(new File(parent + "\\" + newFilePath));
-            return b2 ? Json.ok() : Json.fail();
+            return b2 ? Data.ok() : Data.fail();
         } else {
-            return Json.fail("文件无法访问");
+            return Data.fail("文件无法访问");
         }
     }
 

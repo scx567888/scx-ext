@@ -2,7 +2,7 @@ package cool.scx.ext.auth.exception;
 
 import cool.scx.mvc.exception.BadRequestException;
 import cool.scx.mvc.vo.BaseVo;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.Data;
 import cool.scx.util.CaseUtils;
 
 /**
@@ -44,7 +44,7 @@ public abstract class AuthException extends BadRequestException {
     public BaseVo toBaseVo() {
         var simpleName = this.getClass().getSimpleName();
         var message = simpleName.replaceAll("Exception", "");
-        return Json.fail(CaseUtils.toKebab(message));
+        return Data.fail(CaseUtils.toKebab(message));
     }
 
 }
