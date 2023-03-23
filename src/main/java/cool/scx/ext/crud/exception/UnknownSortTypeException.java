@@ -1,7 +1,7 @@
 package cool.scx.ext.crud.exception;
 
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.Data;
 
 /**
  * a
@@ -18,7 +18,7 @@ public final class UnknownSortTypeException extends BadRequestException {
      * @param strSortType a
      */
     public UnknownSortTypeException(String fieldName, String strSortType) {
-        super(Json.fail("unknown-sort-type").put("field-name", fieldName).put("sort-type", strSortType).toJson(""));
+        super(Data.fail("unknown-sort-type").put("field-name", fieldName).put("sort-type", strSortType).toJson(""));
     }
 
 }

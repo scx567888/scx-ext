@@ -2,7 +2,7 @@ package cool.scx.ext.crud.exception;
 
 import cool.scx.dao.ColumnInfoFilter;
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.Data;
 
 /**
  * a
@@ -19,7 +19,7 @@ public final class EmptySelectColumnException extends BadRequestException {
      * @param fieldNames a
      */
     public EmptySelectColumnException(ColumnInfoFilter.FilterMode filterMode, String[] fieldNames) {
-        super(Json.fail("empty-select-column").put("filter-mode", filterMode).put("field-names", fieldNames).toJson(""));
+        super(Data.fail("empty-select-column").put("filter-mode", filterMode).put("field-names", fieldNames).toJson(""));
     }
 
 }

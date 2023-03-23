@@ -1,7 +1,7 @@
 package cool.scx.ext.crud.exception;
 
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.Data;
 
 /**
  * a
@@ -18,7 +18,7 @@ public final class PaginationParametersErrorException extends BadRequestExceptio
      * @param pageSize    a
      */
     public PaginationParametersErrorException(Integer currentPage, Integer pageSize) {
-        super(Json.fail("pagination-parameters-error").put("info", "currentPage 和 pageSize 均不能小于 0").put("currentPage", currentPage).put("pageSize", pageSize).toJson(""));
+        super(Data.fail("pagination-parameters-error").put("info", "currentPage 和 pageSize 均不能小于 0").put("currentPage", currentPage).put("pageSize", pageSize).toJson(""));
     }
 
 }

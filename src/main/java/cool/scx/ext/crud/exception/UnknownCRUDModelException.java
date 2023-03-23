@@ -1,7 +1,7 @@
 package cool.scx.ext.crud.exception;
 
 import cool.scx.mvc.exception.NotFoundException;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.Data;
 
 /**
  * a
@@ -22,7 +22,7 @@ public final class UnknownCRUDModelException extends NotFoundException {
      * @param modelName a
      */
     public UnknownCRUDModelException(String modelName) {
-        super(Json.fail("unknown-crud-model").put("model-name", modelName).toJson(""));
+        super(Data.fail("unknown-crud-model").put("model-name", modelName).toJson(""));
         this.modelName = modelName;
     }
 

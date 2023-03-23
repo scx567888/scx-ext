@@ -7,7 +7,7 @@ import cool.scx.ext.ws.WSContext;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.annotation.ScxWebSocketRoute;
 import cool.scx.mvc.base.BaseWebSocketHandler;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.Data;
 import cool.scx.mvc.websocket.OnOpenRoutingContext;
 import cool.scx.util.ObjectUtils;
 import io.vertx.core.http.ServerWebSocket;
@@ -61,11 +61,11 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      */
     @ApiPerms
     @ScxRoute(value = "system-config", methods = HttpMethod.PUT)
-    public Json updateSystemConfig(Map<String, Object> config) {
+    public Data updateSystemConfig(Map<String, Object> config) {
         var systemConfig = ObjectUtils.convertValue(config, systemConfigClass);
         var newConfig = configManager.updateSystemConfig(systemConfig);
         WSContext.wsPublishAll(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, newConfig);
-        return Json.ok();
+        return Data.ok();
     }
 
     /**
@@ -76,7 +76,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      */
     @ApiPerms(checkPerms = false)
     @ScxRoute(value = "user-config", methods = HttpMethod.PUT)
-    public Json updateUserConfig(Map<String, Object> config) {
+    public Data updateUserConfig(Map<String, Object> config) {
         var user = authHandler.getCurrentUser();
         var userConfig = ObjectUtils.convertValue(config, userConfigClass);
         var newConfig = configManager.updateUserConfig(user.id, userConfig);
@@ -87,7 +87,7 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
                 .toList();
         //广播事件
         WSContext.wsPublish(ON_SCX_USER_CONFIG_CHANGE_EVENT_NAME, newConfig, allWebSocket);
-        return Json.ok();
+        return Data.ok();
     }
 
     /**

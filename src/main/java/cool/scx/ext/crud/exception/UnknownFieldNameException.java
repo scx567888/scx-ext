@@ -1,7 +1,7 @@
 package cool.scx.ext.crud.exception;
 
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.mvc.vo.Json;
+import cool.scx.mvc.vo.Data;
 
 /**
  * a
@@ -17,7 +17,7 @@ public final class UnknownFieldNameException extends BadRequestException {
      * @param fieldName a
      */
     public UnknownFieldNameException(String fieldName) {
-        super(Json.fail("unknown-field-name").put("field-name", fieldName).toJson(""));
+        super(Data.fail("unknown-field-name").put("field-name", fieldName).toJson(""));
     }
 
 }
