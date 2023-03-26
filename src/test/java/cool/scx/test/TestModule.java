@@ -55,6 +55,7 @@ public class TestModule extends ScxModule {
                         new AuthModule(),
                         new StaticServerModule())
                 .configure(ScxCoreFeature.USE_DEVELOPMENT_ERROR_PAGE, true)
+                .configure(ScxCoreFeature.USE_SPY, true)
                 .run();
     }
 
