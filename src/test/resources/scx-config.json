@@ -32,7 +32,7 @@
       },
       "loggers": [
         {
-          "name": "cool.scx.sql.SQLRunner",
+          "name": "ScxSpy",
           "level": "DEBUG",
           "type": "CONSOLE",
           "stored-directory": "AppRoot:sql-logs",

@@ -2,8 +2,8 @@ package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
 import cool.scx.dao.UpdateFilter;
+import cool.scx.dao.mapping.TableInfo;
 import cool.scx.ext.crud.exception.EmptyUpdateColumnException;
-import cool.scx.sql.mapping.TableInfo;
 
 import java.util.Arrays;
 import java.util.Map;
