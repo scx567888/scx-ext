@@ -1,6 +1,6 @@
 package cool.scx.ext.crud.exception;
 
-import cool.scx.dao.where.WhereType;
+import cool.scx.dao.query.WhereType;
 import cool.scx.mvc.exception.BadRequestException;
 import cool.scx.mvc.vo.Data;
 

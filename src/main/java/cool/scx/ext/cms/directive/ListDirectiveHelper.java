@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.directive;
 
 import cool.scx.dao.Query;
-import cool.scx.dao.order_by.OrderByType;
+import cool.scx.dao.query.OrderByType;
 import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
@@ -33,9 +33,10 @@ public final class ListDirectiveHelper {
 
         if (limit != null && limit >= 0) {
             if (page != null && page >= 0) {
-                query.setPagination(page, limit);
+                //todo 此处需要重新计算 因为 page 和 offset 之间需要进行换算
+                query.setLimit(page, limit);
             } else {
-                query.setPagination(limit);
+                query.setLimit(limit);
             }
         }
 

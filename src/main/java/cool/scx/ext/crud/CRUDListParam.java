@@ -1,14 +1,14 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.dao.ColumnInfoFilter;
+import cool.scx.dao.ColumnFilter;
+import cool.scx.dao.ColumnMapping;
 import cool.scx.dao.Query;
-import cool.scx.dao.SelectFilter;
-import cool.scx.dao.mapping.TableInfo;
-import cool.scx.dao.order_by.OrderByType;
-import cool.scx.dao.where.WhereType;
+import cool.scx.dao.query.OrderByType;
+import cool.scx.dao.query.WhereType;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.mvc.exception.BadRequestException;
+import cool.scx.sql.mapping.Table;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,9 +105,9 @@ public final class CRUDListParam {
      * @return a
      * @throws cool.scx.ext.crud.exception.UnknownWhereTypeException a
      */
-    public static ColumnInfoFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereTypeException {
+    public static ColumnFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereTypeException {
         try {
-            return ColumnInfoFilter.FilterMode.of(filterMode);
+            return ColumnFilter.FilterMode.of(filterMode);
         } catch (Exception ignored) {
             throw new UnknownFilterModeException(filterMode);
         }
@@ -120,14 +120,15 @@ public final class CRUDListParam {
      * @param crudPagination a
      */
     public static void checkPagination(Query query, CRUDPagination crudPagination) {
+        //todo 这里需要重新计算 分页
         var pageSize = crudPagination.pageSize;
         var currentPage = crudPagination.currentPage;
         if (pageSize != null) {
             if (pageSize >= 0) {
                 if (currentPage == null) {
-                    query.setPagination(pageSize);
+                    query.setLimit(pageSize);
                 } else if (currentPage >= 0) {
-                    query.setPagination(currentPage, pageSize);
+                    query.setLimit(currentPage, pageSize);
                 } else {
                     throw new PaginationParametersErrorException(currentPage, pageSize);
                 }
@@ -306,15 +307,15 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public SelectFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, TableInfo<?> scxDaoTableInfo) {
+    public ColumnFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
         if (selectFilterBody == null) {
-            return SelectFilter.ofExcluded();
+            return ColumnFilter.ofExcluded();
         }
         var filterMode = checkFilterMode(selectFilterBody.filterMode);
         var legalFieldName = selectFilterBody.fieldNames != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new) : new String[0];
         var selectFilter = switch (filterMode) {
-            case EXCLUDED -> SelectFilter.ofExcluded().addExcluded(legalFieldName);
-            case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
+            case EXCLUDED -> ColumnFilter.ofExcluded().addExcluded(legalFieldName);
+            case INCLUDED -> ColumnFilter.ofIncluded().addIncluded(legalFieldName);
         };
         //防止空列查询
         if (selectFilter.filter(scxDaoTableInfo).length == 0) {
@@ -327,12 +328,12 @@ public final class CRUDListParam {
      * <p>getSelectFilter.</p>
      *
      * @param modelClass      a {@link java.lang.Class} object
-     * @param scxDaoTableInfo a {@link cool.scx.dao.mapping.TableInfo} object
-     * @return a {@link cool.scx.dao.SelectFilter} object
+     * @param scxDaoTableInfo a {@link cool.scx.sql.mapping.Table} object
+     * @return a {@link cool.scx.dao.ColumnFilter} object
      */
-    public SelectFilter getSelectFilter(Class<? extends BaseModel> modelClass, TableInfo<?> scxDaoTableInfo) {
+    public ColumnFilter getSelectFilter(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
         if (selectFilterBody == null) {
-            return SelectFilter.ofExcluded();
+            return ColumnFilter.ofExcluded();
         }
         var filterMode = checkFilterMode(selectFilterBody.filterMode);
         String[] legalFieldName;
@@ -350,8 +351,8 @@ public final class CRUDListParam {
             legalFieldName = new String[0];
         }
         var selectFilter = switch (filterMode) {
-            case EXCLUDED -> SelectFilter.ofExcluded().addExcluded(legalFieldName);
-            case INCLUDED -> SelectFilter.ofIncluded().addIncluded(legalFieldName);
+            case EXCLUDED -> ColumnFilter.ofExcluded().addExcluded(legalFieldName);
+            case INCLUDED -> ColumnFilter.ofIncluded().addIncluded(legalFieldName);
         };
         //防止空列查询
         if (selectFilter.filter(scxDaoTableInfo).length == 0) {
