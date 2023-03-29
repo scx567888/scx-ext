@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import cool.scx.core.ScxContext;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.dao.Query;
-import cool.scx.dao.SelectFilter;
-import cool.scx.dao.UpdateFilter;
-import cool.scx.dao.where.WhereOption;
+import cool.scx.dao.query.WhereOption;
 import cool.scx.ext.auth.exception.UnknownLoginHandlerException;
 import cool.scx.ext.auth.exception.UnknownUserException;
 import cool.scx.ext.auth.exception.UsernameAlreadyExistsException;
@@ -32,6 +30,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import static cool.scx.dao.ColumnFilter.ofIncluded;
 import static cool.scx.ext.auth.AuthHelper.*;
 
 
@@ -199,7 +198,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
             throw new IllegalArgumentException("新密码不能为空 !!!");
         }
         needChangeUser.password = CryptoUtils.encryptPassword(newPassword.trim());
-        return userService.update(needChangeUser, UpdateFilter.ofIncluded("password"));
+        return userService.update(needChangeUser, ofIncluded("password"));
     }
 
     /**
@@ -260,7 +259,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @return r
      */
     public U checkNeedChangeUserByID(Long id) {
-        var needChangeUser = userService.get(id, SelectFilter.ofIncluded().addIncluded("id", "password", "username"));
+        var needChangeUser = userService.get(id, ofIncluded().addIncluded("id", "password", "username"));
         //不存在账号报错
         if (needChangeUser == null) {
             throw new UnknownUserException();

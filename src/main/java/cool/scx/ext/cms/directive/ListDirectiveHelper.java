@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.directive;
 
 import cool.scx.dao.Query;
-import cool.scx.dao.order_by.OrderByType;
+import cool.scx.dao.query.OrderByType;
 import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
@@ -25,17 +25,17 @@ public final class ListDirectiveHelper {
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
         var orderByColumn = ObjectUtils.convertValue(params.get("orderByColumn"), String.class);
         var sortType = ObjectUtils.convertValue(params.get("sortType"), String.class);
-        var limit = ObjectUtils.convertValue(params.get("limit"), Integer.class);
-        var page = ObjectUtils.convertValue(params.get("page"), Integer.class);
+        var currentPage = ObjectUtils.convertValue(params.get("currentPage"), Integer.class);
+        var pageSize = ObjectUtils.convertValue(params.get("pageSize"), Integer.class);
         if (id != null) {
             query.equal("id", id);
         }
 
-        if (limit != null && limit >= 0) {
-            if (page != null && page >= 0) {
-                query.setPagination(page, limit);
+        if (pageSize != null && pageSize >= 0) {
+            if (currentPage != null && currentPage >= 0) {
+                query.setLimit(currentPage * pageSize, pageSize);
             } else {
-                query.setPagination(limit);
+                query.setLimit(pageSize);
             }
         }
 

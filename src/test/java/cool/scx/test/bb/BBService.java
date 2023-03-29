@@ -3,7 +3,7 @@ package cool.scx.test.bb;
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.dao.Query;
-import cool.scx.dao.where.WhereOption;
+import cool.scx.dao.query.WhereOption;
 
 import java.util.List;
 

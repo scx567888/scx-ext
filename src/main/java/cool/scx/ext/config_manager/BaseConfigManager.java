@@ -2,7 +2,8 @@ package cool.scx.ext.config_manager;
 
 import cool.scx.core.base.BaseModelService;
 import cool.scx.dao.Query;
-import cool.scx.dao.UpdateFilter;
+
+import static cool.scx.dao.ColumnFilter.ofExcluded;
 
 /**
  * <p>Abstract BaseConfigManager class.</p>
@@ -39,7 +40,7 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
      * @return a
      */
     public U updateUserConfig(Long userID, U newScxConfig) {
-        long size = userConfigService.update(newScxConfig, new Query().equal("userID", userID), UpdateFilter.ofExcluded().addExcluded("userID"));
+        long size = userConfigService.update(newScxConfig, new Query().equal("userID", userID), ofExcluded().addExcluded("userID"));
         if (size == 0) { //数据库中可能没有数据 也就是没更新成功
             newScxConfig.userID = userID;
             return userConfigService.add(newScxConfig);
@@ -86,7 +87,7 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
      * @return a T object
      */
     public S updateSystemConfig(S newScxConfig) {
-        long size = systemConfigService.update(newScxConfig, new Query().equal("configName", DEFAULT_SYSTEM_CONFIG_NAME), UpdateFilter.ofExcluded().addExcluded("configName"));
+        long size = systemConfigService.update(newScxConfig, new Query().equal("configName", DEFAULT_SYSTEM_CONFIG_NAME), ofExcluded().addExcluded("configName"));
         if (size == 0) { //数据库中可能没有数据 也就是没更新成功
             newScxConfig.configName = DEFAULT_SYSTEM_CONFIG_NAME;
             return systemConfigService.add(newScxConfig);

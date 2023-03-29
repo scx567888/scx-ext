@@ -1,7 +1,6 @@
 package cool.scx.ext.auth;
 
 import cool.scx.core.base.BaseModelService;
-import cool.scx.dao.UpdateFilter;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.ext.auth.annotation.ApiPerms;
 import cool.scx.ext.auth.exception.AuthException;
@@ -12,6 +11,8 @@ import cool.scx.mvc.exception.UnauthorizedException;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Data;
 import io.vertx.ext.web.RoutingContext;
+
+import static cool.scx.dao.ColumnFilter.ofIncluded;
 
 /**
  * 默认认证 api 推荐使用
@@ -100,7 +101,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     public BaseVo changeUserAvatar(@FromBody String newAvatar) throws UnauthorizedException {
         var loginUser = authHandler.getCurrentUser();
         loginUser.avatar = newAvatar;
-        return Data.ok(userService.update(loginUser, UpdateFilter.ofIncluded("avatar")));
+        return Data.ok(userService.update(loginUser, ofIncluded("avatar")));
     }
 
     @ApiPerms(checkPerms = false)
