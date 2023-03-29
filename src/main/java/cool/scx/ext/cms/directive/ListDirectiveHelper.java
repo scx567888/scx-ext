@@ -25,18 +25,17 @@ public final class ListDirectiveHelper {
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
         var orderByColumn = ObjectUtils.convertValue(params.get("orderByColumn"), String.class);
         var sortType = ObjectUtils.convertValue(params.get("sortType"), String.class);
-        var limit = ObjectUtils.convertValue(params.get("limit"), Integer.class);
-        var page = ObjectUtils.convertValue(params.get("page"), Integer.class);
+        var currentPage = ObjectUtils.convertValue(params.get("currentPage"), Integer.class);
+        var pageSize = ObjectUtils.convertValue(params.get("pageSize"), Integer.class);
         if (id != null) {
             query.equal("id", id);
         }
 
-        if (limit != null && limit >= 0) {
-            if (page != null && page >= 0) {
-                //todo 此处需要重新计算 因为 page 和 offset 之间需要进行换算
-                query.setLimit(page, limit);
+        if (pageSize != null && pageSize >= 0) {
+            if (currentPage != null && currentPage >= 0) {
+                query.setLimit(currentPage * pageSize, pageSize);
             } else {
-                query.setLimit(limit);
+                query.setLimit(pageSize);
             }
         }
 

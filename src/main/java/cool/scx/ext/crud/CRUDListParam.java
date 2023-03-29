@@ -120,7 +120,6 @@ public final class CRUDListParam {
      * @param crudPagination a
      */
     public static void checkPagination(Query query, CRUDPagination crudPagination) {
-        //todo 这里需要重新计算 分页
         var pageSize = crudPagination.pageSize;
         var currentPage = crudPagination.currentPage;
         if (pageSize != null) {
@@ -128,7 +127,7 @@ public final class CRUDListParam {
                 if (currentPage == null) {
                     query.setLimit(pageSize);
                 } else if (currentPage >= 0) {
-                    query.setLimit(currentPage, pageSize);
+                    query.setLimit(currentPage * pageSize, pageSize);
                 } else {
                     throw new PaginationParametersErrorException(currentPage, pageSize);
                 }
