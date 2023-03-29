@@ -36,6 +36,9 @@ public class FSSHelper {
     }
 
     public static Positions getPositions(String type) {
+        if (type == null) {
+            return null;
+        }
         return TYPE_POSITIONS_MAP.get(type.toLowerCase());
     }
 
