@@ -9,7 +9,7 @@ import cool.scx.mvc.annotation.FromBody;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.exception.UnauthorizedException;
 import cool.scx.mvc.vo.BaseVo;
-import cool.scx.mvc.vo.Data;
+import cool.scx.mvc.vo.Result;
 import io.vertx.ext.web.RoutingContext;
 
 import static cool.scx.dao.ColumnFilter.ofIncluded;
@@ -48,7 +48,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     public BaseVo login(@FromBody String username, @FromBody String password, RoutingContext ctx) {
         try {
             var session = authHandler.login(username, password, ctx);
-            return Data.ok().put("token", session.token());
+            return Result.ok().put("token", session.token());
         } catch (AuthException e) {
             return e.toBaseVo();
         }
@@ -58,7 +58,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     public BaseVo loginByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType, RoutingContext ctx) {
         try {
             var loginResult = authHandler.loginByThirdParty(uniqueID, accessToken, accountType, ctx);
-            return Data.ok().put("token", loginResult.token());
+            return Result.ok().put("token", loginResult.token());
         } catch (AuthException e) {
             return e.toBaseVo();
         }
@@ -67,7 +67,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ScxRoute(methods = HttpMethod.POST)
     public BaseVo signup(@FromBody String username, @FromBody String password) {
         try {
-            return Data.ok(authHandler.signup(username, password));
+            return Result.ok(authHandler.signup(username, password));
         } catch (AuthException e) {
             return e.toBaseVo();
         }
@@ -76,7 +76,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ScxRoute(methods = HttpMethod.POST)
     public BaseVo signupByThirdParty(@FromBody String uniqueID, @FromBody String accessToken, @FromBody String accountType) {
         try {
-            return Data.ok(authHandler.signupByThirdParty(uniqueID, accessToken, accountType));
+            return Result.ok(authHandler.signupByThirdParty(uniqueID, accessToken, accountType));
         } catch (AuthException e) {
             return e.toBaseVo();
         }
@@ -85,7 +85,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ScxRoute(methods = HttpMethod.POST)
     public BaseVo logout(RoutingContext routingContext) {
         authHandler.logout(routingContext);
-        return Data.ok();
+        return Result.ok();
     }
 
     @ApiPerms(checkPerms = false)
@@ -93,7 +93,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     public BaseVo info(RoutingContext routingContext) throws UnauthorizedException {
         var user = authHandler.getCurrentUser(routingContext);
         //返回登录用户的信息给前台 含用户基本信息还有的所有角色的权限
-        return Data.ok(new UserInfo(user, authHandler.getPerms(user)));
+        return Result.ok(new UserInfo(user, authHandler.getPerms(user)));
     }
 
     @ApiPerms(checkPerms = false)
@@ -101,14 +101,14 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     public BaseVo changeUserAvatar(@FromBody String newAvatar) throws UnauthorizedException {
         var loginUser = authHandler.getCurrentUser();
         loginUser.avatar = newAvatar;
-        return Data.ok(userService.update(loginUser, ofIncluded("avatar")));
+        return Result.ok(userService.update(loginUser, ofIncluded("avatar")));
     }
 
     @ApiPerms(checkPerms = false)
     @ScxRoute(methods = HttpMethod.POST)
     public BaseVo changeUsernameBySelf(@FromBody String newUsername, @FromBody String password) throws UnauthorizedException {
         try {
-            return Data.ok(authHandler.changeUsernameBySelf(newUsername, password));
+            return Result.ok(authHandler.changeUsernameBySelf(newUsername, password));
         } catch (AuthException e) {
             return e.toBaseVo();
         }
@@ -118,7 +118,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ScxRoute(methods = HttpMethod.POST)
     public BaseVo changePasswordBySelf(@FromBody String newPassword, @FromBody String oldPassword) throws UnauthorizedException {
         try {
-            return Data.ok(authHandler.changePasswordBySelf(newPassword, oldPassword));
+            return Result.ok(authHandler.changePasswordBySelf(newPassword, oldPassword));
         } catch (AuthException e) {
             return e.toBaseVo();
         }
@@ -128,7 +128,7 @@ public abstract class BaseAuthApi<T extends BaseUser> {
     @ScxRoute(methods = {HttpMethod.PUT})
     public BaseVo changePasswordByAdmin(@FromBody String newPassword, @FromBody Long userID) {
         try {
-            return Data.ok(authHandler.changePasswordByAdmin(newPassword, userID));
+            return Result.ok(authHandler.changePasswordByAdmin(newPassword, userID));
         } catch (AuthException e) {
             return e.toBaseVo();
         }

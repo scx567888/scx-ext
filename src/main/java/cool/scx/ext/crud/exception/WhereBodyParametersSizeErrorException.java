@@ -2,7 +2,7 @@ package cool.scx.ext.crud.exception;
 
 import cool.scx.dao.query.WhereType;
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.mvc.vo.Data;
+import cool.scx.mvc.vo.Result;
 
 /**
  * a
@@ -20,7 +20,7 @@ public final class WhereBodyParametersSizeErrorException extends BadRequestExcep
      * @param gotParametersSize a
      */
     public WhereBodyParametersSizeErrorException(String fieldName, WhereType whereType, int gotParametersSize) {
-        super(Data.fail("where-body-parameters-size-error")
+        super(Result.fail("where-body-parameters-size-error")
                 .put("field-name", fieldName)
                 .put("where-type", whereType)
                 .put("need-parameters-size", whereType.paramSize())

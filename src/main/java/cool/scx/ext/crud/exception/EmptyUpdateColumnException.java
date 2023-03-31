@@ -1,7 +1,7 @@
 package cool.scx.ext.crud.exception;
 
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.mvc.vo.Data;
+import cool.scx.mvc.vo.Result;
 
 /**
  * a
@@ -15,7 +15,7 @@ public final class EmptyUpdateColumnException extends BadRequestException {
      * <p>Constructor for EmptyUpdateColumnException.</p>
      */
     public EmptyUpdateColumnException() {
-        super(Data.fail("empty-update-column").toJson(""));
+        super(Result.fail("empty-update-column").toJson(""));
     }
 
 }

@@ -7,7 +7,7 @@ import cool.scx.mvc.annotation.FromBody;
 import cool.scx.mvc.annotation.FromPath;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.vo.BaseVo;
-import cool.scx.mvc.vo.Data;
+import cool.scx.mvc.vo.Result;
 
 import java.util.Map;
 
@@ -54,10 +54,10 @@ public class CRUDController {
      * @return a
      */
     @ScxRoute(value = ":modelName/list", methods = HttpMethod.POST)
-    public Data list(@FromPath String modelName, CRUDListParam crudListParam) {
+    public BaseVo list(@FromPath String modelName, CRUDListParam crudListParam) {
         checkHasThisApi(modelName, LIST);
         var crudListResult = crudHandler.list(modelName, crudListParam);
-        return Data.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
+        return Result.ok().put("items", crudListResult.list()).put("total", crudListResult.total());
     }
 
     /**
@@ -71,7 +71,7 @@ public class CRUDController {
     public BaseVo info(@FromPath String modelName, @FromPath Long id) {
         checkHasThisApi(modelName, INFO);
         var info = crudHandler.info(modelName, id);
-        return Data.ok(info);
+        return Result.ok(info);
     }
 
     /**
@@ -85,7 +85,7 @@ public class CRUDController {
     public BaseVo add(@FromPath String modelName, @FromBody(useAllBody = true) Map<String, Object> saveModel) {
         checkHasThisApi(modelName, ADD);
         var savedModel = crudHandler.add(modelName, saveModel);
-        return Data.ok(savedModel);
+        return Result.ok(savedModel);
     }
 
     /**
@@ -99,7 +99,7 @@ public class CRUDController {
     public BaseVo update(@FromPath String modelName, CRUDUpdateParam crudUpdateParam) {
         checkHasThisApi(modelName, UPDATE);
         var updatedModel = crudHandler.update(modelName, crudUpdateParam);
-        return Data.ok(updatedModel);
+        return Result.ok(updatedModel);
     }
 
     /**
@@ -113,7 +113,7 @@ public class CRUDController {
     public BaseVo delete(@FromPath String modelName, @FromPath Long id) {
         checkHasThisApi(modelName, DELETE);
         var b = crudHandler.delete(modelName, id);
-        return b ? Data.ok() : Data.fail();
+        return b ? Result.ok() : Result.fail();
     }
 
     /**
@@ -127,7 +127,7 @@ public class CRUDController {
     public BaseVo batchDelete(@FromPath String modelName, @FromBody long[] deleteIDs) {
         checkHasThisApi(modelName, BATCH_DELETE);
         var deletedCount = crudHandler.batchDelete(modelName, deleteIDs);
-        return Data.ok().put("deletedCount", deletedCount);
+        return Result.ok().put("deletedCount", deletedCount);
     }
 
     /**
@@ -143,7 +143,7 @@ public class CRUDController {
     public BaseVo checkUnique(@FromPath String modelName, @FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {
         checkHasThisApi(modelName, CHECK_UNIQUE);
         var isUnique = crudHandler.checkUnique(modelName, fieldName, value, id);
-        return Data.ok().put("isUnique", isUnique);
+        return Result.ok().put("isUnique", isUnique);
     }
 
 }

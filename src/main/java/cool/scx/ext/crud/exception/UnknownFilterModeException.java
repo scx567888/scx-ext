@@ -1,7 +1,7 @@
 package cool.scx.ext.crud.exception;
 
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.mvc.vo.Data;
+import cool.scx.mvc.vo.Result;
 
 /**
  * a
@@ -17,7 +17,7 @@ public final class UnknownFilterModeException extends BadRequestException {
      * @param filterMode a
      */
     public UnknownFilterModeException(String filterMode) {
-        super(Data.fail("unknown-filter-mode").put("filter-mode", filterMode).toJson(""));
+        super(Result.fail("unknown-filter-mode").put("filter-mode", filterMode).toJson(""));
     }
 
 }
