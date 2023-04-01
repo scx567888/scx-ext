@@ -256,7 +256,7 @@ public class FSSController {
             //存储到数据库
             var save = fssObjectService.add(newFSSObject);
             //像前台发送上传成功的消息
-            return Data.ok().put("type", "upload-success").put("item", save);
+            return Result.ok().put("type", "upload-success").put("item", save);
         } else {
             //这里我们从文件中读取上次(最后一次)上传到了哪个区块
             var lastUploadChunk = getLastUploadChunk(uploadConfigFile, chunkLength);
@@ -268,9 +268,9 @@ public class FSSController {
                 //将当前上传成功的区块索引和总区块长度保存到配置文件中
                 updateLastUploadChunk(uploadConfigFile, nowChunkIndex, chunkLength);
                 //像前台返回我们需要的下一个区块索引
-                return Data.ok().put("type", "need-more").put("item", needUploadChunkIndex + 1);
+                return Result.ok().put("type", "need-more").put("item", needUploadChunkIndex + 1);
             } else {//否则的话 我们向前台返回我们需要的区块索引
-                return Data.ok().put("type", "need-more").put("item", needUploadChunkIndex);
+                return Result.ok().put("type", "need-more").put("item", needUploadChunkIndex);
             }
         }
     }
@@ -286,7 +286,7 @@ public class FSSController {
     public BaseVo delete(@FromBody String fssObjectID) throws IOException {
         //先获取文件的基本信息
         fssObjectService.delete(fssObjectID);
-        return Data.ok();
+        return Result.ok();
     }
 
     /**
@@ -299,9 +299,9 @@ public class FSSController {
      * @throws java.io.IOException f
      */
     @ScxRoute(value = "check-any-file-exists-by-this-md5", methods = HttpMethod.POST)
-    public Data checkAnyFileExistsByThisMD5(@FromBody String fileName,
-                                            @FromBody Long fileSize,
-                                            @FromBody String fileMD5) throws IOException {
+    public BaseVo checkAnyFileExistsByThisMD5(@FromBody String fileName,
+                                              @FromBody Long fileSize,
+                                              @FromBody String fileMD5) throws IOException {
         //先判断 文件是否已经上传过 并且文件可用
         var fssObjectListByMd5 = fssObjectService.findFSSObjectListByMD5(fileMD5);
         if (fssObjectListByMd5.size() > 0) {
@@ -324,11 +324,11 @@ public class FSSController {
                 //有可能有之前的残留临时文件 再此一并清除
                 FileUtils.delete(getUploadTempPath(fileMD5));
                 //通知前台秒传成功
-                return Data.ok().put("type", "upload-by-md5-success").put("item", save);
+                return Result.ok().put("type", "upload-by-md5-success").put("item", save);
             }
         }
         //通知前台 没找到任何 和此 MD5 相同并且文件内容未损害的 文件
-        return Data.fail("no-any-file-exists-for-this-md5");
+        return Result.fail("no-any-file-exists-for-this-md5");
     }
 
     /**
@@ -340,9 +340,9 @@ public class FSSController {
     @ScxRoute(value = "/info", methods = HttpMethod.POST)
     public BaseVo info(@FromBody String fssObjectID) {
         if (fssObjectID != null) {
-            return Data.ok(fssObjectService.findByFSSObjectID(fssObjectID));
+            return Result.ok(fssObjectService.findByFSSObjectID(fssObjectID));
         } else {
-            return Data.ok(null);
+            return Result.ok(null);
         }
     }
 
@@ -355,9 +355,9 @@ public class FSSController {
     @ScxRoute(value = "/list-info", methods = HttpMethod.POST)
     public BaseVo listInfo(@FromBody List<String> fssObjectIDs) {
         if (fssObjectIDs != null && fssObjectIDs.size() > 0) {
-            return Data.ok(fssObjectService.findByFSSObjectIDs(fssObjectIDs));
+            return Result.ok(fssObjectService.findByFSSObjectIDs(fssObjectIDs));
         } else {
-            return Data.ok(new ArrayList<>());
+            return Result.ok(new ArrayList<>());
         }
     }
 

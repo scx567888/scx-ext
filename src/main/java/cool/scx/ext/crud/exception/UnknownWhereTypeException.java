@@ -1,7 +1,7 @@
 package cool.scx.ext.crud.exception;
 
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.mvc.vo.Data;
+import cool.scx.mvc.vo.Result;
 
 /**
  * a
@@ -18,7 +18,7 @@ public final class UnknownWhereTypeException extends BadRequestException {
      * @param strWhereType a
      */
     public UnknownWhereTypeException(String fieldName, String strWhereType) {
-        super(Data.fail("unknown-where-type").put("field-name", fieldName).put("where-type", strWhereType).toJson(""));
+        super(Result.fail("unknown-where-type").put("field-name", fieldName).put("where-type", strWhereType).toJson(""));
     }
 
 }

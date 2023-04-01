@@ -12,7 +12,7 @@
 
     <artifactId>scx-ext</artifactId>
     <packaging>jar</packaging>
-    <version>2.1.1</version>
+    <version>2.1.2</version>
 
     <name>SCX Ext</name>
     <url>https://github.com/scx567888/scx-ext</url>
@@ -102,7 +102,7 @@
     <properties>
 
         <!-- *********************** 以下为依赖包版本 *********************** -->
-        <scx.version>2.1.1</scx.version>
+        <scx.version>2.1.2</scx.version>
         <zxing.version>3.5.1</zxing.version>
         <poi.version>5.2.3</poi.version>
 
