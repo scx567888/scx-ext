@@ -17,7 +17,7 @@ public final class PaginationParametersErrorException extends BadRequestExceptio
      * @param currentPage a
      * @param pageSize    a
      */
-    public PaginationParametersErrorException(Integer currentPage, Integer pageSize) {
+    public PaginationParametersErrorException(Long currentPage, Long pageSize) {
         super(Result.fail("pagination-parameters-error").put("info", "currentPage 和 pageSize 均不能小于 0").put("currentPage", currentPage).put("pageSize", pageSize).toJson(""));
     }
 

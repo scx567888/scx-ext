@@ -369,12 +369,12 @@ public final class CRUDListParam {
         /**
          * 页码
          */
-        public Integer currentPage;
+        public Long currentPage;
 
         /**
          * 每页数据条数
          */
-        public Integer pageSize;
+        public Long pageSize;
     }
 
     /**
