@@ -25,8 +25,8 @@ public final class ListDirectiveHelper {
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
         var orderByColumn = ObjectUtils.convertValue(params.get("orderByColumn"), String.class);
         var sortType = ObjectUtils.convertValue(params.get("sortType"), String.class);
-        var currentPage = ObjectUtils.convertValue(params.get("currentPage"), Integer.class);
-        var pageSize = ObjectUtils.convertValue(params.get("pageSize"), Integer.class);
+        var currentPage = ObjectUtils.convertValue(params.get("currentPage"), Long.class);
+        var pageSize = ObjectUtils.convertValue(params.get("pageSize"), Long.class);
         if (id != null) {
             query.equal("id", id);
         }
