@@ -1,8 +1,8 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.dao.Query;
-import cool.scx.dao.query.WhereOption;
+import cool.scx.data.Query;
+import cool.scx.data.query.WhereOption;
 
 import java.util.Map;
 

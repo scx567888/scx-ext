@@ -1,14 +1,14 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.dao.ColumnFilter;
-import cool.scx.dao.ColumnMapping;
-import cool.scx.dao.Query;
-import cool.scx.dao.query.OrderByType;
-import cool.scx.dao.query.WhereType;
+import cool.scx.data.ColumnFilter;
+import cool.scx.data.ColumnMapping;
+import cool.scx.data.Query;
+import cool.scx.data.jdbc.mapping.Table;
+import cool.scx.data.query.OrderByType;
+import cool.scx.data.query.WhereType;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.mvc.exception.BadRequestException;
-import cool.scx.sql.mapping.Table;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,7 +140,7 @@ public final class CRUDListParam {
     /**
      * <p>Getter for the field <code>pagination</code>.</p>
      *
-     * @param query a {@link cool.scx.dao.Query} object
+     * @param query a {@link cool.scx.data.Query} object
      */
     private void getPagination(Query query) {
         if (this.pagination != null) {
@@ -155,7 +155,7 @@ public final class CRUDListParam {
     /**
      * <p>getPaginationOrThrow.</p>
      *
-     * @param query a {@link cool.scx.dao.Query} object
+     * @param query a {@link cool.scx.data.Query} object
      */
     private void getPaginationOrThrow(Query query) {
         if (this.pagination != null) {
@@ -166,7 +166,7 @@ public final class CRUDListParam {
     /**
      * <p>getOrderBy.</p>
      *
-     * @param query      a {@link cool.scx.dao.Query} object
+     * @param query      a {@link cool.scx.data.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
     public void getOrderBy(Query query, Class<? extends BaseModel> modelClass) {
@@ -190,7 +190,7 @@ public final class CRUDListParam {
     /**
      * <p>getOrderByOrThrow.</p>
      *
-     * @param query      a {@link cool.scx.dao.Query} object
+     * @param query      a {@link cool.scx.data.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
     public void getOrderByOrThrow(Query query, Class<? extends BaseModel> modelClass) {
@@ -210,7 +210,7 @@ public final class CRUDListParam {
     /**
      * <p>getWhere.</p>
      *
-     * @param query      a {@link cool.scx.dao.Query} object
+     * @param query      a {@link cool.scx.data.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
     public void getWhere(Query query, Class<? extends BaseModel> modelClass) {
@@ -242,7 +242,7 @@ public final class CRUDListParam {
     /**
      * <p>getWhereOrThrow.</p>
      *
-     * @param query      a {@link cool.scx.dao.Query} object
+     * @param query      a {@link cool.scx.data.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
     public void getWhereOrThrow(Query query, Class<? extends BaseModel> modelClass) {
@@ -287,7 +287,7 @@ public final class CRUDListParam {
      * <p>getQuery.</p>
      *
      * @param modelClass a {@link java.lang.Class} object
-     * @return a {@link cool.scx.dao.Query} object
+     * @return a {@link cool.scx.data.Query} object
      * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
@@ -327,8 +327,8 @@ public final class CRUDListParam {
      * <p>getSelectFilter.</p>
      *
      * @param modelClass      a {@link java.lang.Class} object
-     * @param scxDaoTableInfo a {@link cool.scx.sql.mapping.Table} object
-     * @return a {@link cool.scx.dao.ColumnFilter} object
+     * @param scxDaoTableInfo a {@link Table} object
+     * @return a {@link cool.scx.data.ColumnFilter} object
      */
     public ColumnFilter getSelectFilter(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
         if (selectFilterBody == null) {

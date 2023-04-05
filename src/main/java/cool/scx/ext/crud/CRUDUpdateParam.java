@@ -1,10 +1,10 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.dao.ColumnFilter;
-import cool.scx.dao.ColumnMapping;
+import cool.scx.data.ColumnFilter;
+import cool.scx.data.ColumnMapping;
+import cool.scx.data.jdbc.mapping.Table;
 import cool.scx.ext.crud.exception.EmptyUpdateColumnException;
-import cool.scx.sql.mapping.Table;
 
 import java.util.Arrays;
 import java.util.Map;

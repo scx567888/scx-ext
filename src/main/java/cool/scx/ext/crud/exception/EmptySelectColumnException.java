@@ -1,6 +1,6 @@
 package cool.scx.ext.crud.exception;
 
-import cool.scx.dao.ColumnFilter;
+import cool.scx.data.ColumnFilter;
 import cool.scx.mvc.exception.BadRequestException;
 import cool.scx.mvc.vo.Result;
 

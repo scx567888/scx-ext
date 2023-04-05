@@ -1,4 +1,4 @@
-package cool.scx.test.other;
+package cool.scx.ext.test.other;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

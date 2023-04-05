@@ -1,4 +1,4 @@
-package cool.scx.test.website;
+package cool.scx.ext.test.website;
 
 import cool.scx.constant.ScxConstant;
 import cool.scx.core.Scx;

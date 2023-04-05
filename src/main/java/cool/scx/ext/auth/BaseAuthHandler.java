@@ -3,8 +3,8 @@ package cool.scx.ext.auth;
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.scx.core.ScxContext;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.dao.Query;
-import cool.scx.dao.query.WhereOption;
+import cool.scx.data.Query;
+import cool.scx.data.query.WhereOption;
 import cool.scx.ext.auth.exception.UnknownLoginHandlerException;
 import cool.scx.ext.auth.exception.UnknownUserException;
 import cool.scx.ext.auth.exception.UsernameAlreadyExistsException;
@@ -30,7 +30,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cool.scx.dao.ColumnFilter.ofIncluded;
+import static cool.scx.data.ColumnFilter.ofIncluded;
 import static cool.scx.ext.auth.AuthHelper.*;
 
 

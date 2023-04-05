@@ -1,7 +1,7 @@
 package cool.scx.ext.config_manager;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.dao.annotation.Column;
+import cool.scx.data.annotation.Column;
 
 /**
  * <p>BaseUserConfig class.</p>

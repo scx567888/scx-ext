@@ -2,7 +2,7 @@ package cool.scx.ext.cms.channel;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.dao.Query;
+import cool.scx.data.Query;
 
 /**
  * ColumnService

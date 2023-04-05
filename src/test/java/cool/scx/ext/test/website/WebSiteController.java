@@ -1,4 +1,4 @@
-package cool.scx.test.website;
+package cool.scx.ext.test.website;
 
 import cool.scx.constant.ScxConstant;
 import cool.scx.core.ScxContext;
@@ -8,6 +8,8 @@ import cool.scx.ext.cms.channel.Channel;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.content.Content;
 import cool.scx.ext.cms.content.ContentService;
+import cool.scx.ext.test.auth.TestUser;
+import cool.scx.ext.test.auth.TestUserService;
 import cool.scx.ext.util.Excel;
 import cool.scx.ext.util.QRCodeUtils;
 import cool.scx.mvc.annotation.FromQuery;
@@ -16,8 +18,6 @@ import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Download;
 import cool.scx.mvc.vo.Html;
 import cool.scx.mvc.vo.Raw;
-import cool.scx.test.auth.TestUser;
-import cool.scx.test.auth.TestUserService;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.StringUtils;
