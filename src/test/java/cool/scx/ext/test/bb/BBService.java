@@ -1,9 +1,9 @@
-package cool.scx.test.bb;
+package cool.scx.ext.test.bb;
 
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.dao.Query;
-import cool.scx.dao.query.WhereOption;
+import cool.scx.data.Query;
+import cool.scx.data.query.WhereOption;
 
 import java.util.List;
 

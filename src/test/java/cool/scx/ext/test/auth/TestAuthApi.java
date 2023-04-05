@@ -1,4 +1,4 @@
-package cool.scx.test.auth;
+package cool.scx.ext.test.auth;
 
 import cool.scx.ext.auth.BaseAuthApi;
 import cool.scx.ext.auth.BaseAuthHandler;

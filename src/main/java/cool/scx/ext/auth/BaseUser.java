@@ -2,7 +2,7 @@ package cool.scx.ext.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.core.base.BaseModel;
-import cool.scx.dao.annotation.Column;
+import cool.scx.data.annotation.Column;
 
 /**
  * 核心用户类

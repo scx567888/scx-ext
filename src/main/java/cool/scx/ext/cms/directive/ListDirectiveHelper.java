@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.directive;
 
-import cool.scx.dao.Query;
-import cool.scx.dao.query.OrderByType;
+import cool.scx.data.Query;
+import cool.scx.data.query.OrderByType;
 import cool.scx.util.ObjectUtils;
 
 import java.util.Map;

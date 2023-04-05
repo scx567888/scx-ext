@@ -1,7 +1,7 @@
-package cool.scx.test.bb;
+package cool.scx.ext.test.bb;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.dao.annotation.Table;
+import cool.scx.data.annotation.Table;
 
 @Table
 public class BB extends BaseModel {

@@ -1,4 +1,4 @@
-package cool.scx.test;
+package cool.scx.ext.test;
 
 import cool.scx.core.Scx;
 import cool.scx.core.ScxContext;
@@ -10,12 +10,12 @@ import cool.scx.ext.crud.CRUDModule;
 import cool.scx.ext.fixtable.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.ext.static_server.StaticServerModule;
+import cool.scx.ext.test.auth.TestUserService;
+import cool.scx.ext.test.bb.BBService;
+import cool.scx.ext.test.website.UserListWebSiteHandler;
+import cool.scx.ext.test.website.WriteTimeHandler;
 import cool.scx.ext.ws.WSModule;
 import cool.scx.http_client.ScxHttpClientHelper;
-import cool.scx.test.auth.TestUserService;
-import cool.scx.test.bb.BBService;
-import cool.scx.test.website.UserListWebSiteHandler;
-import cool.scx.test.website.WriteTimeHandler;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
