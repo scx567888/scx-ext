@@ -96,7 +96,9 @@ class SingleFileStaticHandlerImpl implements Handler<RoutingContext> {
         HttpServerRequest request = context.request();
 
         if (request.method() != HttpMethod.GET && request.method() != HttpMethod.HEAD) {
-            if (LOG.isTraceEnabled()) LOG.trace("Not GET or HEAD so ignoring request");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Not GET or HEAD so ignoring request");
+            }
             context.next();
         } else {
             if (!request.isEnded()) {
@@ -254,7 +256,9 @@ class SingleFileStaticHandlerImpl implements Handler<RoutingContext> {
         Long end = null;
         MultiMap headers = null;
 
-        if (response.closed()) return;
+        if (response.closed()) {
+            return;
+        }
 
         // check if the client is making a range request
         String range = request.getHeader("Range");
