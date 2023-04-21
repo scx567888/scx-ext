@@ -1,8 +1,8 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.data.ColumnFilter;
-import cool.scx.data.ColumnMapping;
+import cool.scx.data.jdbc.ColumnFilter;
+import cool.scx.data.jdbc.ColumnMapping;
 import cool.scx.data.jdbc.mapping.Table;
 import cool.scx.ext.crud.exception.EmptyUpdateColumnException;
 

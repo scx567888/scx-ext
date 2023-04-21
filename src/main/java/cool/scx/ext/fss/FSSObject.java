@@ -2,8 +2,8 @@ package cool.scx.ext.fss;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.core.base.BaseModel;
-import cool.scx.data.annotation.Column;
-import cool.scx.data.annotation.Table;
+import cool.scx.data.jdbc.annotation.Column;
+import cool.scx.data.jdbc.annotation.Table;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 import java.time.LocalDateTime;

@@ -1,6 +1,6 @@
 package cool.scx.ext.test.auth;
 
-import cool.scx.data.annotation.Table;
+import cool.scx.data.jdbc.annotation.Table;
 import cool.scx.ext.auth.BaseUser;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 

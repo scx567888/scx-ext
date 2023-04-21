@@ -3,9 +3,7 @@
     "port": 8080,
     "allowed-origin": "*",
     "data-source": {
-      "host": "127.0.0.1",
-      "port": 3306,
-      "database": "scx",
+      "url": "jdbc:mysql://127.0.0.1:3306/scx",
       "username": "root",
       "password": "DECRYPT:gTNaUKkX4T0BRW0K8fnfh1t+ZKq/BIQ5XfHosseI7lW1P6S+Z/EmMi6hQWOxeVkK",
       "#password": "root",

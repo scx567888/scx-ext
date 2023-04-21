@@ -1,7 +1,7 @@
 package cool.scx.ext.auth;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.data.annotation.Column;
+import cool.scx.data.jdbc.annotation.Column;
 
 /**
  * 账号表 处理登录信息用
