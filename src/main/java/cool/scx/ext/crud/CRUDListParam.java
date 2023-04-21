@@ -1,9 +1,9 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.data.ColumnFilter;
-import cool.scx.data.ColumnMapping;
 import cool.scx.data.Query;
+import cool.scx.data.jdbc.ColumnFilter;
+import cool.scx.data.jdbc.ColumnMapping;
 import cool.scx.data.jdbc.mapping.Table;
 import cool.scx.data.query.OrderByType;
 import cool.scx.data.query.WhereType;
@@ -328,7 +328,7 @@ public final class CRUDListParam {
      *
      * @param modelClass      a {@link java.lang.Class} object
      * @param scxDaoTableInfo a {@link Table} object
-     * @return a {@link cool.scx.data.ColumnFilter} object
+     * @return a {@link cool.scx.data.jdbc.ColumnFilter} object
      */
     public ColumnFilter getSelectFilter(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
         if (selectFilterBody == null) {

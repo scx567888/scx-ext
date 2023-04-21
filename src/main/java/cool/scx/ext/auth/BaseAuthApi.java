@@ -12,7 +12,7 @@ import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
 import io.vertx.ext.web.RoutingContext;
 
-import static cool.scx.data.ColumnFilter.ofIncluded;
+import static cool.scx.data.jdbc.ColumnFilter.ofIncluded;
 
 /**
  * 默认认证 api 推荐使用

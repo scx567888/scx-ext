@@ -4,7 +4,7 @@ import cool.scx.core.ScxContext;
 import cool.scx.core.ScxHelper;
 import cool.scx.core.base.BaseModel;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.data.annotation.NoColumn;
+import cool.scx.data.jdbc.annotation.NoColumn;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 import cool.scx.ext.crud.exception.UnknownCRUDModelException;
 import cool.scx.ext.crud.exception.UnknownFieldNameException;

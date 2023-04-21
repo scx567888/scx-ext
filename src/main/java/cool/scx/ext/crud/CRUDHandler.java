@@ -68,7 +68,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = crudUpdateParam.getBaseModel(baseModelClass);
-        var updateFilter = crudUpdateParam.getUpdateFilter(baseModelClass, baseModelService._baseDao()._tableInfo());
+        var updateFilter = crudUpdateParam.getUpdateFilter(baseModelClass, baseModelService._dao()._tableInfo());
         return baseModelService.update(realObject, updateFilter);
     }
 
@@ -110,7 +110,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var query = crudListParam.getQueryOrThrow(baseModelClass);
-        var selectFilter = crudListParam.getSelectFilterOrThrow(baseModelClass, baseModelService._baseDao()._tableInfo());
+        var selectFilter = crudListParam.getSelectFilterOrThrow(baseModelClass, baseModelService._dao()._tableInfo());
         var list = baseModelService.list(query, selectFilter);
         var total = baseModelService.count(query);
         return new CRUDListResult(list, total);

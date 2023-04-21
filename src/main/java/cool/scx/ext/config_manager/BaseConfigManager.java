@@ -3,7 +3,7 @@ package cool.scx.ext.config_manager;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.data.Query;
 
-import static cool.scx.data.ColumnFilter.ofExcluded;
+import static cool.scx.data.jdbc.ColumnFilter.ofExcluded;
 
 /**
  * <p>Abstract BaseConfigManager class.</p>
