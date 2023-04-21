@@ -91,6 +91,15 @@
             <version>${poi.version}</version>
         </dependency>
 
+        <!-- ****************** 以下为测试依赖 ****************** -->
+
+        <dependency>
+            <groupId>cool.scx</groupId>
+            <artifactId>scx-data-jdbc-mysql</artifactId>
+            <version>${scx.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
