@@ -13,7 +13,7 @@
         fetch("/api/auth/login", {
             method: "POST",
             headers: {
-                "Content-type": 'application/json'
+                "Content-type": "application/json"
             },
             body: JSON.stringify({
                 username: username,
@@ -24,18 +24,18 @@
                 if (data.message === "ok") {
                     location.reload();
                 } else {
-                    alert(data.message)
+                    alert(data.message);
                 }
             });
-        })
+        });
     }
 
     function logout() {
         fetch("/api/auth/logout", {
             method: "POST",
             headers: {
-                "Content-type": 'application/json',
-                credentials: 'include',
+                "Content-type": "application/json",
+                credentials: "include",
             },
             body: JSON.stringify({})
         }).then(res => {
@@ -44,7 +44,7 @@
                     location.reload();
                 }
             });
-        })
+        });
     }
 </script>
 
