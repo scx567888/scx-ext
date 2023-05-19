@@ -11,5 +11,12 @@
     </parent>
 
     <artifactId>scx-ext-redirects</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX Ext Redirects</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX Ext Redirects
+    </description>
 
 </project>

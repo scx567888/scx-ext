@@ -11,6 +11,13 @@
     </parent>
 
     <artifactId>scx-ext-auth</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX Ext Auth</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX Ext Auth
+    </description>
 
     <dependencies>
 

@@ -11,6 +11,13 @@
     </parent>
 
     <artifactId>scx-ext-cms</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX Ext CMS</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX Ext CMS
+    </description>
 
     <dependencies>
 

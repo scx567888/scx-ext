@@ -11,6 +11,13 @@
     </parent>
 
     <artifactId>scx-ext-crud</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX Ext CRUD</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX Ext CRUD
+    </description>
 
     <dependencies>
 

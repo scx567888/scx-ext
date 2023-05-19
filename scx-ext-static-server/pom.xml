@@ -11,6 +11,13 @@
     </parent>
 
     <artifactId>scx-ext-static-server</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX Ext Static Server</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX Ext Static Server
+    </description>
 
     <dependencies>
 

@@ -11,6 +11,13 @@
     </parent>
 
     <artifactId>scx-ext-common</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX Ext Common</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX Ext Common
+    </description>
 
     <dependencies>
 

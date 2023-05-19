@@ -11,6 +11,13 @@
     </parent>
 
     <artifactId>scx-ext-fix-table</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX Ext Fix Table</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX Ext Fix Table
+    </description>
 
     <dependencies>
 

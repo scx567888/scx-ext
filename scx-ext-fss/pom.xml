@@ -11,6 +11,13 @@
     </parent>
 
     <artifactId>scx-ext-fss</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX Ext FSS</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX Ext FSS
+    </description>
 
     <dependencies>
 
