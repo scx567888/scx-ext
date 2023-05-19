@@ -43,16 +43,16 @@
     </scm>
 
     <modules>
-        <module>scx-ext-fss</module>
-        <module>scx-ext-crud</module>
-        <module>scx-ext-cms</module>
         <module>scx-ext-auth</module>
-        <module>scx-ext-config-manager</module>
-        <module>scx-ext-static-server</module>
-        <module>scx-ext-fix-table</module>
-        <module>scx-ext-redirects</module>
-        <module>scx-ext-ws</module>
+        <module>scx-ext-cms</module>
         <module>scx-ext-common</module>
+        <module>scx-ext-config-manager</module>
+        <module>scx-ext-crud</module>
+        <module>scx-ext-fix-table</module>
+        <module>scx-ext-fss</module>
+        <module>scx-ext-redirects</module>
+        <module>scx-ext-static-server</module>
+        <module>scx-ext-ws</module>
     </modules>
 
     <build>
