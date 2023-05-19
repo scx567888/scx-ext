@@ -19,4 +19,13 @@
         SCX Ext Redirects
     </description>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>cool.scx</groupId>
+            <artifactId>scx-core</artifactId>
+        </dependency>
+
+    </dependencies>
+
 </project>

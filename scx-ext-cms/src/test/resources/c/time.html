@@ -6,7 +6,8 @@
         timeShow.innerHTML = (JSON.parse(d.data).body);
     };
     window.onresize = (d) => {
-        const wsBody = {address: "onResizeBrowser",
+        const wsBody = {
+            address: "onResizeBrowser",
             body: {
                 height: d.target.innerHeight,
                 width: d.target.innerWidth

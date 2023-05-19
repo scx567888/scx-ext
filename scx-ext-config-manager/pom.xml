@@ -18,9 +18,9 @@
     <description>
         SCX Ext Config Manager
     </description>
-    
+
     <dependencies>
-        
+
         <dependency>
             <groupId>cool.scx</groupId>
             <artifactId>scx-core</artifactId>
