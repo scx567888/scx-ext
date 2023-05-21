@@ -10,7 +10,6 @@
         <relativePath/>
     </parent>
 
-    <groupId>cool.scx.ext</groupId>
     <artifactId>scx-ext</artifactId>
     <packaging>pom</packaging>
     <version>2.2.1</version>
