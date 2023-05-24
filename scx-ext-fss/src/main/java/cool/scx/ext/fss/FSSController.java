@@ -110,9 +110,9 @@ public class FSSController {
      */
     public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileMD5) {
         var now = LocalDateTime.now();
-        var yearStr = now.getYear() + "";
-        var monthStr = now.getMonthValue() + "";
-        var dayStr = now.getDayOfMonth() + "";
+        var yearStr = String.valueOf(now.getYear());
+        var monthStr = String.valueOf(now.getMonthValue());
+        var dayStr = String.valueOf(now.getDayOfMonth());
         var fssObject = new FSSObject();
         fssObject.fssObjectID = RandomUtils.randomUUID();
         fssObject.fileName = fileName;
