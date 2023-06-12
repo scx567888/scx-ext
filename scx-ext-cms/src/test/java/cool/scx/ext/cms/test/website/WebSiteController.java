@@ -1,6 +1,5 @@
 package cool.scx.ext.cms.test.website;
 
-import cool.scx.constant.ScxConstant;
 import cool.scx.core.ScxContext;
 import cool.scx.enumeration.HttpMethod;
 import cool.scx.enumeration.RawType;
@@ -26,6 +25,8 @@ import io.vertx.ext.web.RoutingContext;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+
+import static cool.scx.constant.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
 
 /**
  * 简单测试
@@ -142,7 +143,7 @@ public class WebSiteController {
             }
         }
 
-        return "初始化成功 : " + ScxConstant.NORMAL_DATE_TIME.format(LocalDateTime.now());
+        return "初始化成功 : " + yyyy_MM_dd_HH_mm_ss.format(LocalDateTime.now());
     }
 
 }
