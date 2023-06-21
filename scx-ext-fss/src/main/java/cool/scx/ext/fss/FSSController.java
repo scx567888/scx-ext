@@ -105,7 +105,7 @@ public class FSSController {
      *
      * @param fileName a {@link java.lang.String} object.
      * @param fileSize a {@link java.lang.Long} object.
-     * @param fileHash  a {@link java.lang.String} object.
+     * @param fileHash a {@link java.lang.String} object.
      * @return a {@link cool.scx.ext.fss.FSSObject} object.
      */
     public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileHash) {
@@ -121,7 +121,7 @@ public class FSSController {
         fssObject.fileSize = fileSize;
         fssObject.fileHash = fileHash;
         fssObject.fileExtension = FileUtils.getExtension(fssObject.fileName);
-        fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileMD5, fileName};
+        fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileHash, fileName};
         return fssObject;
     }
 
@@ -214,7 +214,7 @@ public class FSSController {
      *
      * @param fileName      文件名
      * @param fileSize      文件大小
-     * @param fileHash       文件 Hash
+     * @param fileHash      文件 Hash
      * @param chunkLength   分片总长度
      * @param nowChunkIndex 当前分片
      * @param fileData      文件内容
@@ -294,14 +294,14 @@ public class FSSController {
      *
      * @param fileName f
      * @param fileSize f
-     * @param fileHash  f
+     * @param fileHash f
      * @return f
      * @throws java.io.IOException f
      */
     @ScxRoute(value = "check-any-file-exists-by-hash", methods = HttpMethod.POST)
     public BaseVo checkAnyFileExistsByHash(@FromBody String fileName,
-                                              @FromBody Long fileSize,
-                                              @FromBody String fileHash) throws IOException {
+                                           @FromBody Long fileSize,
+                                           @FromBody String fileHash) throws IOException {
         //先判断 文件是否已经上传过 并且文件可用
         var fssObjectListByHash = fssObjectService.findFSSObjectListByHash(fileHash);
         if (fssObjectListByHash.size() > 0) {
