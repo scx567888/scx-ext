@@ -30,23 +30,23 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
     }
 
     /**
-     * 根据 md5 查找文件
+     * 根据 hash 查找文件
      *
-     * @param fileMD5 md5 值
+     * @param fileHash hash 值
      * @return 找的的数据
      */
-    public List<FSSObject> findFSSObjectListByMD5(String fileMD5) {
-        return list(new Query().equal("fileMD5", fileMD5).desc("uploadTime"));
+    public List<FSSObject> findFSSObjectListByHash(String fileHash) {
+        return list(new Query().equal("fileHash", fileHash).desc("uploadTime"));
     }
 
     /**
      * a
      *
-     * @param fileMD5 a
+     * @param fileHash a
      * @return a
      */
-    public long countByMD5(String fileMD5) {
-        return count(new Query().equal("fileMD5", fileMD5));
+    public long countByHash(String fileHash) {
+        return count(new Query().equal("fileHash", fileHash));
     }
 
     /**
@@ -80,7 +80,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
         var needDeleteFile = this.findByFSSObjectID(fssObjectID);
         if (needDeleteFile != null) {
             //判断文件是否被其他人引用过
-            long count = this.countByMD5(needDeleteFile.fileMD5);
+            long count = this.countByHash(needDeleteFile.fileHash);
             //没有被其他人引用过 可以删除物理文件
             if (count <= 1) {
                 var filePath = getPhysicalFilePath(needDeleteFile);

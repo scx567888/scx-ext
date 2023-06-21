@@ -52,10 +52,10 @@ public class FSSObject extends BaseModel {
     public LocalDateTime uploadTime;
 
     /**
-     * 文件的 md5 值
+     * 文件的 hash 值 (目前采用 md5)
      */
     @Column(needIndex = true, notNull = true)
-    public String fileMD5;
+    public String fileHash;
 
     /**
      * 文件拓展名

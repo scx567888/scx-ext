@@ -69,11 +69,11 @@ public class FSSController {
     /**
      * a
      *
-     * @param fileMD5 a
+     * @param fileHash a
      * @return a
      */
-    private static Path getUploadTempPath(String fileMD5) {
-        return FSSConfig.uploadFilePath().resolve("TEMP").resolve(fileMD5);
+    private static Path getUploadTempPath(String fileHash) {
+        return FSSConfig.uploadFilePath().resolve("TEMP").resolve(fileHash);
     }
 
     /**
@@ -91,7 +91,7 @@ public class FSSController {
         fssObject.filePath = oldFSSObject.filePath;
         fssObject.fileSizeDisplay = oldFSSObject.fileSizeDisplay;
         fssObject.fileSize = oldFSSObject.fileSize;
-        fssObject.fileMD5 = oldFSSObject.fileMD5;
+        fssObject.fileHash = oldFSSObject.fileHash;
         fssObject.fileExtension = FileUtils.getExtension(fssObject.fileName);
         return fssObject;
     }
@@ -105,10 +105,10 @@ public class FSSController {
      *
      * @param fileName a {@link java.lang.String} object.
      * @param fileSize a {@link java.lang.Long} object.
-     * @param fileMD5  a {@link java.lang.String} object.
+     * @param fileHash  a {@link java.lang.String} object.
      * @return a {@link cool.scx.ext.fss.FSSObject} object.
      */
-    public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileMD5) {
+    public static FSSObject createFSSObjectByFileInfo(String fileName, Long fileSize, String fileHash) {
         var now = LocalDateTime.now();
         var yearStr = String.valueOf(now.getYear());
         var monthStr = String.valueOf(now.getMonthValue());
@@ -119,7 +119,7 @@ public class FSSController {
         fssObject.uploadTime = now;
         fssObject.fileSizeDisplay = FileUtils.longToDisplaySize(fileSize);
         fssObject.fileSize = fileSize;
-        fssObject.fileMD5 = fileMD5;
+        fssObject.fileHash = fileHash;
         fssObject.fileExtension = FileUtils.getExtension(fssObject.fileName);
         fssObject.filePath = new String[]{yearStr, monthStr, dayStr, fileMD5, fileName};
         return fssObject;
@@ -214,7 +214,7 @@ public class FSSController {
      *
      * @param fileName      文件名
      * @param fileSize      文件大小
-     * @param fileMD5       文件md5
+     * @param fileHash       文件 Hash
      * @param chunkLength   分片总长度
      * @param nowChunkIndex 当前分片
      * @param fileData      文件内容
@@ -224,11 +224,11 @@ public class FSSController {
     @ScxRoute(value = "/upload", methods = HttpMethod.POST)
     public BaseVo upload(@FromBody String fileName,
                          @FromBody Long fileSize,
-                         @FromBody String fileMD5,
+                         @FromBody String fileHash,
                          @FromBody Integer chunkLength,
                          @FromBody Integer nowChunkIndex,
                          @FromUpload UploadedEntity fileData) throws Exception {
-        var uploadTempFile = getUploadTempPath(fileMD5).resolve("scx_fss.temp");
+        var uploadTempFile = getUploadTempPath(fileHash).resolve("scx_fss.temp");
         var uploadConfigFile = uploadTempFile.resolveSibling("scx_fss.upload_state");
 
         //判断是否上传的是最后一个分块 (因为 索引是以 0 开头的所以这里 -1)
@@ -236,15 +236,15 @@ public class FSSController {
             //先将数据写入临时文件中
             FileUtils.write(uploadTempFile, fileData.buffer().getBytes(), APPEND, CREATE, SYNC, WRITE);
             //获取文件描述信息创建 fssObject 对象
-            var newFSSObject = createFSSObjectByFileInfo(fileName, fileSize, fileMD5);
+            var newFSSObject = createFSSObjectByFileInfo(fileName, fileSize, fileHash);
             //获取文件真实的存储路径
             var fileStoragePath = Path.of(FSSConfig.uploadFilePath().toString(), newFSSObject.filePath);
             //计算 md5 只有前后台 md5 相同文件才算 正确
-            var serverMd5Str = DigestUtils.md5(uploadTempFile.toFile());
-            if (!fileMD5.equalsIgnoreCase(serverMd5Str)) {
+            var serverHashStr = DigestUtils.md5(uploadTempFile.toFile());
+            if (!fileHash.equalsIgnoreCase(serverHashStr)) {
                 //md5 不相同 说明临时文件可能损坏 删除临时文件
                 FileUtils.delete(uploadTempFile.getParent());
-                throw new InternalServerErrorException("上传文件失败 : MD5 校验失败 , 文件 : " + fileMD5);
+                throw new InternalServerErrorException("上传文件失败 : Hash 校验失败 , 文件 : " + fileHash);
             }
             //移动成功 说明文件上传成功
             //将临时文件移动并重命名到 真实的存储路径
@@ -294,25 +294,25 @@ public class FSSController {
      *
      * @param fileName f
      * @param fileSize f
-     * @param fileMD5  f
+     * @param fileHash  f
      * @return f
      * @throws java.io.IOException f
      */
-    @ScxRoute(value = "check-any-file-exists-by-this-md5", methods = HttpMethod.POST)
-    public BaseVo checkAnyFileExistsByThisMD5(@FromBody String fileName,
+    @ScxRoute(value = "check-any-file-exists-by-hash", methods = HttpMethod.POST)
+    public BaseVo checkAnyFileExistsByHash(@FromBody String fileName,
                                               @FromBody Long fileSize,
-                                              @FromBody String fileMD5) throws IOException {
+                                              @FromBody String fileHash) throws IOException {
         //先判断 文件是否已经上传过 并且文件可用
-        var fssObjectListByMd5 = fssObjectService.findFSSObjectListByMD5(fileMD5);
-        if (fssObjectListByMd5.size() > 0) {
+        var fssObjectListByHash = fssObjectService.findFSSObjectListByHash(fileHash);
+        if (fssObjectListByHash.size() > 0) {
             FSSObject canUseFssObject = null;//先假设一个可以使用的文件
             //循环处理
-            for (var fssObject : fssObjectListByMd5) {
+            for (var fssObject : fssObjectListByHash) {
                 //获取物理文件
                 var physicalFile = getPhysicalFilePath(fssObject).toFile();
                 //这里多校验一些内容避免出先差错
                 //第一 文件必须存在 第二 文件大小必须和前台获得的文件大小相同 第三 文件的 md5 校验结果也必须和前台发送过来的 md5 相同
-                if (physicalFile.exists() && physicalFile.length() == fileSize && fileMD5.equalsIgnoreCase(DigestUtils.md5(physicalFile))) {
+                if (physicalFile.exists() && physicalFile.length() == fileSize && fileHash.equalsIgnoreCase(DigestUtils.md5(physicalFile))) {
                     //这些都通过表示文件是可用的 赋值并跳出循环
                     canUseFssObject = fssObject;
                     break;
@@ -322,13 +322,13 @@ public class FSSController {
             if (canUseFssObject != null) {
                 var save = fssObjectService.add(copyFSSObject(fileName, canUseFssObject));
                 //有可能有之前的残留临时文件 再此一并清除
-                FileUtils.delete(getUploadTempPath(fileMD5));
+                FileUtils.delete(getUploadTempPath(fileHash));
                 //通知前台秒传成功
-                return Result.ok().put("type", "upload-by-md5-success").put("item", save);
+                return Result.ok().put("type", "upload-by-hash-success").put("item", save);
             }
         }
         //通知前台 没找到任何 和此 MD5 相同并且文件内容未损害的 文件
-        return Result.fail("no-any-file-exists-for-this-md5");
+        return Result.fail("no-any-file-exists-for-hash");
     }
 
     /**
