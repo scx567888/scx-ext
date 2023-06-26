@@ -111,6 +111,13 @@
                 <version>${poi.version}</version>
             </dependency>
 
+            <!-- slf4j 日志框架 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
             <!-- TestNG 测试包 -->
             <dependency>
                 <groupId>org.testng</groupId>
@@ -127,6 +134,7 @@
         <scx.version>2.2.6</scx.version>
         <zxing.version>3.5.1</zxing.version>
         <poi.version>5.2.3</poi.version>
+        <slf4j.version>2.0.7</slf4j.version>
         <testng.version>7.8.0</testng.version>
 
     </properties>
