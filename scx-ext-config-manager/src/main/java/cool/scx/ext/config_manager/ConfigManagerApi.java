@@ -111,9 +111,9 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
      * {@inheritDoc}
      */
     @Override
-    public void onOpen(ServerWebSocket webSocket, OnOpenRoutingContext context) {
+    public void onOpen(OnOpenRoutingContext context) {
         //连接时我们广播事件
-        WSContext.wsPublish(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, configManager.getSystemConfig(), webSocket);
+        WSContext.wsPublish(ON_SCX_SYSTEM_CONFIG_CHANGE_EVENT_NAME, configManager.getSystemConfig(), context.webSocket());
     }
 
 }
