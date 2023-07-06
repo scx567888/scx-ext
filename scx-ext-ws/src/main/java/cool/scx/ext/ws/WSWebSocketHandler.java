@@ -41,9 +41,9 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      * onOpen
      */
     @Override
-    public void onOpen(ServerWebSocket webSocket, OnOpenRoutingContext ctx) {
-        wsOnlineClientTable().add(webSocket);
-        logger.debug("{} 连接了!!! 当前总连接数 : {}", webSocket.remoteAddress(), wsOnlineClientTable().size());
+    public void onOpen(OnOpenRoutingContext ctx) {
+        wsOnlineClientTable().add(ctx.webSocket());
+        logger.debug("{} 连接了!!! 当前总连接数 : {}", ctx.webSocket().remoteAddress(), wsOnlineClientTable().size());
         ctx.next();
     }
 
@@ -53,10 +53,10 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      * onClose
      */
     @Override
-    public void onClose(ServerWebSocket webSocket, OnCloseRoutingContext ctx) {
+    public void onClose(OnCloseRoutingContext ctx) {
         //如果客户端终止连接 将此条连接作废
-        wsOnlineClientTable().remove(webSocket);
-        logger.debug("{} 关闭了!!! 当前总连接数 : {}", webSocket.remoteAddress(), wsOnlineClientTable().size());
+        wsOnlineClientTable().remove(ctx.webSocket());
+        logger.debug("{} 关闭了!!! 当前总连接数 : {}", ctx.webSocket().remoteAddress(), wsOnlineClientTable().size());
         ctx.next();
     }
 
@@ -64,11 +64,11 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      * {@inheritDoc}
      */
     @Override
-    public void onTextMessage(String textData, WebSocketFrame h, ServerWebSocket webSocket, OnFrameRoutingContext ctx) throws JsonProcessingException {
-        if (LOVE.equals(textData)) { //这里是心跳检测
-            webSocket.writeTextMessage(LOVE);
+    public void onTextMessage( OnFrameRoutingContext ctx) throws JsonProcessingException {
+        if (LOVE.equals(ctx.textData())) { //这里是心跳检测
+            ctx.webSocket().writeTextMessage(LOVE);
         } else { //这里是事件
-            WSContext.wsEventBus().publishByWSMessage(WSMessage.fromJson(textData).setWebSocket(webSocket));
+            WSContext.wsEventBus().publishByWSMessage(WSMessage.fromJson(ctx.textData()).setWebSocket(ctx.webSocket()));
         }
         ctx.next();
     }
@@ -78,9 +78,9 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      * {@inheritDoc}
      */
     @Override
-    public void onError(Throwable event, ServerWebSocket webSocket, OnExceptionRoutingContext ctx) {
-        wsOnlineClientTable().remove(webSocket);
-        event.printStackTrace();
+    public void onError(OnExceptionRoutingContext ctx) {
+        wsOnlineClientTable().remove(ctx.webSocket());
+        ctx.cause().printStackTrace();
         ctx.next();
     }
 
