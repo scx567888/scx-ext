@@ -7,8 +7,6 @@ import cool.scx.mvc.websocket.OnCloseRoutingContext;
 import cool.scx.mvc.websocket.OnExceptionRoutingContext;
 import cool.scx.mvc.websocket.OnFrameRoutingContext;
 import cool.scx.mvc.websocket.OnOpenRoutingContext;
-import io.vertx.core.http.ServerWebSocket;
-import io.vertx.core.http.WebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +62,7 @@ public class WSWebSocketHandler implements BaseWebSocketHandler {
      * {@inheritDoc}
      */
     @Override
-    public void onTextMessage( OnFrameRoutingContext ctx) throws JsonProcessingException {
+    public void onTextMessage(OnFrameRoutingContext ctx) throws JsonProcessingException {
         if (LOVE.equals(ctx.textData())) { //这里是心跳检测
             ctx.webSocket().writeTextMessage(LOVE);
         } else { //这里是事件
