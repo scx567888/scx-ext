@@ -5,7 +5,10 @@ import cool.scx.data.Query;
 import cool.scx.data.jdbc.ColumnFilter;
 import cool.scx.data.jdbc.ColumnMapping;
 import cool.scx.data.jdbc.mapping.Table;
-import cool.scx.data.query.*;
+import cool.scx.data.query.Logic;
+import cool.scx.data.query.OrderByBody;
+import cool.scx.data.query.OrderByType;
+import cool.scx.data.query.WhereType;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.mvc.exception.BadRequestException;
 
