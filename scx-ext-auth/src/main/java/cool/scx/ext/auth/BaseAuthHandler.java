@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static cool.scx.data.jdbc.ColumnFilter.ofIncluded;
+import static cool.scx.data.query.Logic.andSet;
 import static cool.scx.data.query.WhereBody.equal;
 import static cool.scx.ext.auth.AuthHelper.*;
 
@@ -457,7 +458,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         }
         username = username.trim();
         //判断数据库中是否已有重名用户
-        var count = userService.count(new Query().where(WhereBodySet.and().equal("username", username).notEqual("id", id, WhereOption.SKIP_IF_NULL)));
+        var count = userService.count(new Query().where(andSet().equal("username", username).notEqual("id", id, WhereOption.SKIP_IF_NULL)));
         if (count != 0) {
             throw new UsernameAlreadyExistsException();
         }
