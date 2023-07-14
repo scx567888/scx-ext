@@ -57,7 +57,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
                 userService.add(s);
             }
         }
-        var users = userService.list(new Query().setLimit(100L));
+        var users = userService.list(new Query().limit(100L));
         html.add("userList", users);
         html.add("name", "小明");
         html.add("age", 22);

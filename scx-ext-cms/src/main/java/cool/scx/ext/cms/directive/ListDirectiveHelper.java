@@ -1,7 +1,10 @@
 package cool.scx.ext.cms.directive;
 
 import cool.scx.data.Query;
+import cool.scx.data.query.OrderByBody;
 import cool.scx.data.query.OrderByType;
+import cool.scx.data.query.WhereBodySet;
+import cool.scx.data.query.WhereOption;
 import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
@@ -22,26 +25,29 @@ public final class ListDirectiveHelper {
      */
     public static Query createNormalListQuery(Map<?, ?> params) {
         var query = new Query();
-        var id = ObjectUtils.convertValue(params.get("id"), Long.class);
         var orderByColumn = ObjectUtils.convertValue(params.get("orderByColumn"), String.class);
         var sortType = ObjectUtils.convertValue(params.get("sortType"), String.class);
         var currentPage = ObjectUtils.convertValue(params.get("currentPage"), Long.class);
         var pageSize = ObjectUtils.convertValue(params.get("pageSize"), Long.class);
-        if (id != null) {
-            query.equal("id", id);
-        }
 
         if (pageSize != null && pageSize >= 0) {
             if (currentPage != null && currentPage >= 0) {
-                query.setLimit(currentPage * pageSize, pageSize);
+                query.limit(currentPage * pageSize, pageSize);
             } else {
-                query.setLimit(pageSize);
+                query.limit(pageSize);
             }
         }
 
         if (orderByColumn != null && sortType != null) {
-            query.orderBy().add(orderByColumn, OrderByType.of(sortType));
+            query.orderBy(OrderByBody.of(orderByColumn, OrderByType.of(sortType)));
         }
+        return query;
+    }
+
+    public static WhereBodySet createNormalListWhereBodySet(Map<?, ?> params) {
+        var query = WhereBodySet.and();
+        var id = ObjectUtils.convertValue(params.get("id"), Long.class);
+        query.equal("id", id, WhereOption.SKIP_IF_NULL);
         return query;
     }
 

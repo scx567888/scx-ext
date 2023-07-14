@@ -5,7 +5,9 @@ import cool.scx.data.Query;
 import cool.scx.data.jdbc.ColumnFilter;
 import cool.scx.data.jdbc.ColumnMapping;
 import cool.scx.data.jdbc.mapping.Table;
+import cool.scx.data.query.OrderByBody;
 import cool.scx.data.query.OrderByType;
+import cool.scx.data.query.WhereBodySet;
 import cool.scx.data.query.WhereType;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.mvc.exception.BadRequestException;
@@ -125,9 +127,9 @@ public final class CRUDListParam {
         if (pageSize != null) {
             if (pageSize >= 0) {
                 if (currentPage == null) {
-                    query.setLimit(pageSize);
+                    query.limit(pageSize);
                 } else if (currentPage >= 0) {
-                    query.setLimit(currentPage * pageSize, pageSize);
+                    query.limit(currentPage * pageSize, pageSize);
                 } else {
                     throw new PaginationParametersErrorException(currentPage, pageSize);
                 }
@@ -171,6 +173,7 @@ public final class CRUDListParam {
      */
     public void getOrderBy(Query query, Class<? extends BaseModel> modelClass) {
         if (this.orderByBodyList != null) {
+            var l = new ArrayList<OrderByBody>();
             for (var orderByBody : this.orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
                     try {
@@ -178,12 +181,13 @@ public final class CRUDListParam {
                         CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
                         //检查 sortType 是否正确
                         var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
-                        query.orderBy().add(orderByBody.fieldName, sortType);
+                        l.add(OrderByBody.of(orderByBody.fieldName, sortType));
                     } catch (Exception ignored) {
 
                     }
                 }
             }
+            query.orderBy(l.toArray(OrderByBody[]::new));
         }
     }
 
@@ -195,15 +199,17 @@ public final class CRUDListParam {
      */
     public void getOrderByOrThrow(Query query, Class<? extends BaseModel> modelClass) {
         if (this.orderByBodyList != null) {
+            var l = new ArrayList<OrderByBody>();
             for (var orderByBody : this.orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
                     //校验 fieldName 是否正确
                     CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
                     //检查 sortType 是否正确
                     var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
-                    query.orderBy().add(orderByBody.fieldName, sortType);
+                    l.add(OrderByBody.of(orderByBody.fieldName, sortType));
                 }
             }
+            query.orderBy(l.toArray(OrderByBody[]::new));
         }
     }
 
@@ -215,6 +221,7 @@ public final class CRUDListParam {
      */
     public void getWhere(Query query, Class<? extends BaseModel> modelClass) {
         if (this.whereBodyList != null) {
+            var l = WhereBodySet.and();
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
                     try {
@@ -225,17 +232,18 @@ public final class CRUDListParam {
                         //检查参数数量是否正确
                         checkWhereBodyParametersSize(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
                         if (whereType.paramSize() == 0) {
-                            query.where().add0(crudWhereBody.fieldName, whereType);
+                            l.add0(crudWhereBody.fieldName, whereType);
                         } else if (whereType.paramSize() == 1) {
-                            query.where().add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
+                            l.add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
                         } else if (whereType.paramSize() == 2) {
-                            query.where().add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                            l.add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
                         }
                     } catch (Exception ignored) {
 
                     }
                 }
             }
+            query.where(l);
         }
     }
 
@@ -247,6 +255,7 @@ public final class CRUDListParam {
      */
     public void getWhereOrThrow(Query query, Class<? extends BaseModel> modelClass) {
         if (this.whereBodyList != null) {
+            var l = WhereBodySet.and();
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
                     //校验 fieldName 是否正确
@@ -256,14 +265,15 @@ public final class CRUDListParam {
                     //检查参数数量是否正确
                     checkWhereBodyParametersSize(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
                     if (whereType.paramSize() == 0) {
-                        query.where().add0(crudWhereBody.fieldName, whereType);
+                        l.add0(crudWhereBody.fieldName, whereType);
                     } else if (whereType.paramSize() == 1) {
-                        query.where().add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
+                        l.add1(crudWhereBody.fieldName, whereType, crudWhereBody.value1);
                     } else if (whereType.paramSize() == 2) {
-                        query.where().add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
+                        l.add2(crudWhereBody.fieldName, whereType, crudWhereBody.value1, crudWhereBody.value2);
                     }
                 }
             }
+            query.where(l);
         }
     }
 
