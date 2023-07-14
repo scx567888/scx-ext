@@ -11,7 +11,6 @@ import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
 import cool.scx.mvc.websocket.OnOpenRoutingContext;
 import cool.scx.util.ObjectUtils;
-import io.vertx.core.http.ServerWebSocket;
 
 import java.util.Map;
 

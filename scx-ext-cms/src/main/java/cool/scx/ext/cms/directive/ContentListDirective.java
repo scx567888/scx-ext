@@ -35,22 +35,23 @@ public class ContentListDirective implements BaseTemplateDirective {
      */
     @Override
     public Object handle(Map<String, Object> params) {
+        var whereBodySet = ListDirectiveHelper.createNormalListWhereBodySet(params);
         var query = ListDirectiveHelper.createNormalListQuery(params);
         var channelID = ObjectUtils.convertValue(params.get("channelID"), Long.class);
         var hasContentTitleImage = ObjectUtils.convertValue(params.get("hasContentTitleImage"), Boolean.class);
 
         if (channelID != null) {
-            query.equal("channelID", channelID);
+            whereBodySet.equal("channelID", channelID);
         }
         if (hasContentTitleImage != null) {
             if (hasContentTitleImage) {
-                query.isNotNull("contentTitleImage");
+                whereBodySet.isNotNull("contentTitleImage");
             } else {
-                query.isNull("contentTitleImage");
+                whereBodySet.isNull("contentTitleImage");
             }
         }
 
-        return contentService.list(query);
+        return contentService.list(query.where(whereBodySet));
     }
 
     /**

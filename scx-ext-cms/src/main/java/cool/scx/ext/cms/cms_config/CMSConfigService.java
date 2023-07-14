@@ -4,6 +4,8 @@ import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.data.Query;
 
+import static cool.scx.data.query.WhereBody.equal;
+
 /**
  * <p>CmsConfigService class.</p>
  *
@@ -20,7 +22,7 @@ public class CMSConfigService extends BaseModelService<CMSConfig> {
      */
     public CMSConfig getCMSConfig() {
         //这里以 id 为 1 的数据作为标准
-        var cmsConfig = get(new Query().equal("configName", "defaultConfig"));
+        var cmsConfig = get(new Query().where(equal("configName", "defaultConfig")));
         if (cmsConfig != null) {
             return cmsConfig;
         }

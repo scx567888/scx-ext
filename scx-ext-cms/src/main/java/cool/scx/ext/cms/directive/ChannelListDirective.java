@@ -37,22 +37,23 @@ public class ChannelListDirective implements BaseTemplateDirective {
      */
     @Override
     public Object handle(Map<String, Object> params) {
+        var whereBodySet = ListDirectiveHelper.createNormalListWhereBodySet(params);
         var query = ListDirectiveHelper.createNormalListQuery(params);
         var parentID = ObjectUtils.convertValue(params.get("parentID"), Long.class);
         var hasChannelTitleImage = ObjectUtils.convertValue(params.get("hasChannelTitleImage"), Boolean.class);
 
         if (parentID != null) {
-            query.equal("parentID", parentID);
+            whereBodySet.equal("parentID", parentID);
         }
         if (hasChannelTitleImage != null) {
             if (hasChannelTitleImage) {
-                query.isNotNull("channelTitleImage");
+                whereBodySet.isNotNull("channelTitleImage");
             } else {
-                query.isNull("channelTitleImage");
+                whereBodySet.isNull("channelTitleImage");
             }
         }
 
-        return channelService.list(query);
+        return channelService.list(query.where(whereBodySet));
     }
 
     /**

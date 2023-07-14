@@ -10,6 +10,10 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.List;
 
+import static cool.scx.data.query.OrderByBody.desc;
+import static cool.scx.data.query.WhereBody.equal;
+import static cool.scx.data.query.WhereBody.in;
+
 /**
  * UploadFileService
  *
@@ -36,7 +40,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * @return 找的的数据
      */
     public List<FSSObject> findFSSObjectListByHash(String fileHash) {
-        return list(new Query().equal("fileHash", fileHash).desc("uploadTime"));
+        return list(new Query().where(equal("fileHash", fileHash)).orderBy(desc("uploadTime")));
     }
 
     /**
@@ -46,7 +50,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * @return a
      */
     public long countByHash(String fileHash) {
-        return count(new Query().equal("fileHash", fileHash));
+        return count(new Query().where(equal("fileHash", fileHash)));
     }
 
     /**
@@ -56,7 +60,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * @return a {@link cool.scx.ext.fss.FSSObject} object
      */
     public FSSObject findByFSSObjectID(String fssObjectID) {
-        return get(new Query().equal("fssObjectID", fssObjectID));
+        return get(new Query().where(equal("fssObjectID", fssObjectID)));
     }
 
     /**
@@ -66,7 +70,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * @return a
      */
     public List<FSSObject> findByFSSObjectIDs(List<String> fssObjectIDs) {
-        return list(new Query().in("fssObjectID", fssObjectIDs));
+        return list(new Query().where(in("fssObjectID", fssObjectIDs)));
     }
 
     /**
