@@ -5,10 +5,7 @@ import cool.scx.data.Query;
 import cool.scx.data.jdbc.ColumnFilter;
 import cool.scx.data.jdbc.ColumnMapping;
 import cool.scx.data.jdbc.mapping.Table;
-import cool.scx.data.query.OrderByBody;
-import cool.scx.data.query.OrderByType;
-import cool.scx.data.query.WhereBodySet;
-import cool.scx.data.query.WhereType;
+import cool.scx.data.query.*;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.mvc.exception.BadRequestException;
 
@@ -221,7 +218,7 @@ public final class CRUDListParam {
      */
     public void getWhere(Query query, Class<? extends BaseModel> modelClass) {
         if (this.whereBodyList != null) {
-            var l = WhereBodySet.and();
+            var l = Logic.andSet();
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
                     try {
@@ -255,7 +252,7 @@ public final class CRUDListParam {
      */
     public void getWhereOrThrow(Query query, Class<? extends BaseModel> modelClass) {
         if (this.whereBodyList != null) {
-            var l = WhereBodySet.and();
+            var l = Logic.andSet();
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
                     //校验 fieldName 是否正确

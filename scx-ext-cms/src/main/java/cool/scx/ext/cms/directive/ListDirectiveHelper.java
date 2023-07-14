@@ -1,10 +1,7 @@
 package cool.scx.ext.cms.directive;
 
 import cool.scx.data.Query;
-import cool.scx.data.query.OrderByBody;
-import cool.scx.data.query.OrderByType;
-import cool.scx.data.query.WhereBodySet;
-import cool.scx.data.query.WhereOption;
+import cool.scx.data.query.*;
 import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
@@ -45,7 +42,7 @@ public final class ListDirectiveHelper {
     }
 
     public static WhereBodySet createNormalListWhereBodySet(Map<?, ?> params) {
-        var query = WhereBodySet.and();
+        var query = Logic.andSet();
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
         query.equal("id", id, WhereOption.SKIP_IF_NULL);
         return query;
