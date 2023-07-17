@@ -128,12 +128,12 @@ public final class CRUDListParam {
             throw new PaginationParametersErrorException(currentPage, pageSize);
         }
         if (currentPage == null) {
-            return new Limit().set(pageSize);
+            return new Limit(0, pageSize);
         }
         if (currentPage < 0) {
             throw new PaginationParametersErrorException(currentPage, pageSize);
         }
-        return new Limit().set(currentPage * pageSize, pageSize);
+        return new Limit(currentPage * pageSize, pageSize);
     }
 
     /**
@@ -289,7 +289,7 @@ public final class CRUDListParam {
                 .where(where)
                 .groupBy()
                 .orderBy(orderBy)
-                .limit(limit.offset(), limit.rowCount());
+                .limit(limit.getOffset(), limit.getRowCount());
     }
 
     /**
@@ -307,7 +307,7 @@ public final class CRUDListParam {
                 .where(where)
                 .groupBy()
                 .orderBy(orderBy)
-                .limit(limit.offset(), limit.rowCount());
+                .limit(limit.getOffset(), limit.getRowCount());
     }
 
     /**

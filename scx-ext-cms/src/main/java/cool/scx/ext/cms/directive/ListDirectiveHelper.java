@@ -31,7 +31,7 @@ public final class ListDirectiveHelper {
             if (currentPage != null && currentPage >= 0) {
                 query.limit(currentPage * pageSize, pageSize);
             } else {
-                query.limit(pageSize);
+                query.rowCount(pageSize);
             }
         }
 
