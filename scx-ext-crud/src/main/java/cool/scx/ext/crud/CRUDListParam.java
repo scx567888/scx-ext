@@ -141,7 +141,7 @@ public final class CRUDListParam {
      *
      * @return a
      */
-    private Limit getLimit() {
+    public Limit getLimit() {
         if (this.pagination != null) {
             try {
                 return checkPagination(this.pagination);
@@ -157,7 +157,7 @@ public final class CRUDListParam {
      *
      * @return a
      */
-    private Limit getLimitOrThrow() {
+    public Limit getLimitOrThrow() {
         if (this.pagination != null) {
             return checkPagination(this.pagination);
         }
