@@ -29,7 +29,7 @@ public final class ListDirectiveHelper {
 
         if (pageSize != null && pageSize >= 0) {
             if (currentPage != null && currentPage >= 0) {
-                query.limit(currentPage * pageSize, pageSize);
+                query.offset(currentPage * pageSize).limit(pageSize);
             } else {
                 query.limit(pageSize);
             }

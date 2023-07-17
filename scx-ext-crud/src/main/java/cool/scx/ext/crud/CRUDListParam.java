@@ -5,10 +5,7 @@ import cool.scx.data.Query;
 import cool.scx.data.jdbc.ColumnFilter;
 import cool.scx.data.jdbc.ColumnMapping;
 import cool.scx.data.jdbc.mapping.Table;
-import cool.scx.data.query.Logic;
-import cool.scx.data.query.OrderByBody;
-import cool.scx.data.query.OrderByType;
-import cool.scx.data.query.WhereType;
+import cool.scx.data.query.*;
 import cool.scx.ext.crud.exception.*;
 import cool.scx.mvc.exception.BadRequestException;
 
@@ -118,62 +115,63 @@ public final class CRUDListParam {
     /**
      * 处理分页
      *
-     * @param query          a
      * @param crudPagination a
+     * @return a
      */
-    public static void checkPagination(Query query, CRUDPagination crudPagination) {
+    public static Limit checkPagination(CRUDPagination crudPagination) {
         var pageSize = crudPagination.pageSize;
         var currentPage = crudPagination.currentPage;
-        if (pageSize != null) {
-            if (pageSize >= 0) {
-                if (currentPage == null) {
-                    query.limit(pageSize);
-                } else if (currentPage >= 0) {
-                    query.limit(currentPage * pageSize, pageSize);
-                } else {
-                    throw new PaginationParametersErrorException(currentPage, pageSize);
-                }
-            } else {
-                throw new PaginationParametersErrorException(currentPage, pageSize);
-            }
+        if (pageSize == null) {
+            return new Limit();
         }
+        if (pageSize < 0) {
+            throw new PaginationParametersErrorException(currentPage, pageSize);
+        }
+        if (currentPage == null) {
+            return new Limit().limit(pageSize);
+        }
+        if (currentPage < 0) {
+            throw new PaginationParametersErrorException(currentPage, pageSize);
+        }
+        return new Limit().offset(currentPage * pageSize).limit(pageSize);
     }
 
     /**
      * <p>Getter for the field <code>pagination</code>.</p>
      *
-     * @param query a {@link cool.scx.data.Query} object
+     * @return a
      */
-    private void getPagination(Query query) {
+    public Limit getLimit() {
         if (this.pagination != null) {
             try {
-                checkPagination(query, this.pagination);
+                return checkPagination(this.pagination);
             } catch (Exception ignored) {
 
             }
         }
+        return new Limit();
     }
 
     /**
      * <p>getPaginationOrThrow.</p>
      *
-     * @param query a {@link cool.scx.data.Query} object
+     * @return a
      */
-    private void getPaginationOrThrow(Query query) {
+    public Limit getLimitOrThrow() {
         if (this.pagination != null) {
-            checkPagination(query, this.pagination);
+            return checkPagination(this.pagination);
         }
+        return new Limit();
     }
 
     /**
      * <p>getOrderBy.</p>
      *
-     * @param query      a {@link cool.scx.data.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
-    public void getOrderBy(Query query, Class<? extends BaseModel> modelClass) {
+    public OrderByBody[] getOrderByClauses(Class<? extends BaseModel> modelClass) {
+        var l = new ArrayList<OrderByBody>();
         if (this.orderByBodyList != null) {
-            var l = new ArrayList<OrderByBody>();
             for (var orderByBody : this.orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
                     try {
@@ -187,19 +185,19 @@ public final class CRUDListParam {
                     }
                 }
             }
-            query.orderBy(l.toArray(OrderByBody[]::new));
         }
+        return l.toArray(OrderByBody[]::new);
     }
 
     /**
      * <p>getOrderByOrThrow.</p>
      *
-     * @param query      a {@link cool.scx.data.Query} object
      * @param modelClass a {@link java.lang.Class} object
+     * @return a
      */
-    public void getOrderByOrThrow(Query query, Class<? extends BaseModel> modelClass) {
+    public OrderByBody[] getOrderByClausesOrThrow(Class<? extends BaseModel> modelClass) {
+        var l = new ArrayList<OrderByBody>();
         if (this.orderByBodyList != null) {
-            var l = new ArrayList<OrderByBody>();
             for (var orderByBody : this.orderByBodyList) {
                 if (orderByBody.fieldName != null && orderByBody.sortType != null) {
                     //校验 fieldName 是否正确
@@ -209,19 +207,18 @@ public final class CRUDListParam {
                     l.add(OrderByBody.of(orderByBody.fieldName, sortType));
                 }
             }
-            query.orderBy(l.toArray(OrderByBody[]::new));
         }
+        return l.toArray(OrderByBody[]::new);
     }
 
     /**
      * <p>getWhere.</p>
      *
-     * @param query      a {@link cool.scx.data.Query} object
      * @param modelClass a {@link java.lang.Class} object
      */
-    public void getWhere(Query query, Class<? extends BaseModel> modelClass) {
+    public WhereBodySet getWhereBodySet(Class<? extends BaseModel> modelClass) {
+        var l = Logic.andSet();
         if (this.whereBodyList != null) {
-            var l = Logic.andSet();
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
                     try {
@@ -243,19 +240,19 @@ public final class CRUDListParam {
                     }
                 }
             }
-            query.where(l);
         }
+        return l;
     }
 
     /**
      * <p>getWhereOrThrow.</p>
      *
-     * @param query      a {@link cool.scx.data.Query} object
      * @param modelClass a {@link java.lang.Class} object
+     * @return a
      */
-    public void getWhereOrThrow(Query query, Class<? extends BaseModel> modelClass) {
+    public WhereBodySet getWhereBodySetOrThrow(Class<? extends BaseModel> modelClass) {
+        var l = Logic.andSet();
         if (this.whereBodyList != null) {
-            var l = Logic.andSet();
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
                     //校验 fieldName 是否正确
@@ -273,8 +270,8 @@ public final class CRUDListParam {
                     }
                 }
             }
-            query.where(l);
         }
+        return l;
     }
 
     /**
@@ -285,12 +282,15 @@ public final class CRUDListParam {
      * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
     public Query getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
-        var query = new Query();
-        //先处理一下分页
-        getPaginationOrThrow(query);
-        getOrderByOrThrow(query, modelClass);
-        getWhereOrThrow(query, modelClass);
-        return query;
+        var whereBodySet = getWhereBodySetOrThrow(modelClass);
+        var orderByClauses = getOrderByClausesOrThrow(modelClass);
+        var limit = getLimitOrThrow();
+        return new Query()
+                .where(whereBodySet)
+                .groupBy()
+                .orderBy(orderByClauses)
+                .offset(limit.getOffset())
+                .limit(limit.getLimit());
     }
 
     /**
@@ -301,12 +301,15 @@ public final class CRUDListParam {
      * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
-        var query = new Query();
-        //先处理一下分页
-        getPagination(query);
-        getOrderBy(query, modelClass);
-        getWhere(query, modelClass);
-        return query;
+        var whereBodySet = getWhereBodySet(modelClass);
+        var orderByClauses = getOrderByClauses(modelClass);
+        var limit = getLimit();
+        return new Query()
+                .where(whereBodySet)
+                .groupBy()
+                .orderBy(orderByClauses)
+                .offset(limit.getOffset())
+                .limit(limit.getLimit());
     }
 
     /**
