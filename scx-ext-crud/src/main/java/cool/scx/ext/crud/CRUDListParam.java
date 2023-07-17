@@ -128,12 +128,12 @@ public final class CRUDListParam {
             throw new PaginationParametersErrorException(currentPage, pageSize);
         }
         if (currentPage == null) {
-            return new Limit(0, pageSize);
+            return new Limit().limit(pageSize);
         }
         if (currentPage < 0) {
             throw new PaginationParametersErrorException(currentPage, pageSize);
         }
-        return new Limit(currentPage * pageSize, pageSize);
+        return new Limit().offset(currentPage * pageSize).limit(pageSize);
     }
 
     /**
@@ -169,7 +169,7 @@ public final class CRUDListParam {
      *
      * @param modelClass a {@link java.lang.Class} object
      */
-    public OrderByBody[] getOrderBy(Class<? extends BaseModel> modelClass) {
+    public OrderByBody[] getOrderByClauses(Class<? extends BaseModel> modelClass) {
         var l = new ArrayList<OrderByBody>();
         if (this.orderByBodyList != null) {
             for (var orderByBody : this.orderByBodyList) {
@@ -195,7 +195,7 @@ public final class CRUDListParam {
      * @param modelClass a {@link java.lang.Class} object
      * @return a
      */
-    public OrderByBody[] getOrderByOrThrow(Class<? extends BaseModel> modelClass) {
+    public OrderByBody[] getOrderByClausesOrThrow(Class<? extends BaseModel> modelClass) {
         var l = new ArrayList<OrderByBody>();
         if (this.orderByBodyList != null) {
             for (var orderByBody : this.orderByBodyList) {
@@ -216,7 +216,7 @@ public final class CRUDListParam {
      *
      * @param modelClass a {@link java.lang.Class} object
      */
-    public WhereBodySet getWhere(Class<? extends BaseModel> modelClass) {
+    public WhereBodySet getWhereBodySet(Class<? extends BaseModel> modelClass) {
         var l = Logic.andSet();
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
@@ -250,7 +250,7 @@ public final class CRUDListParam {
      * @param modelClass a {@link java.lang.Class} object
      * @return a
      */
-    public WhereBodySet getWhereOrThrow(Class<? extends BaseModel> modelClass) {
+    public WhereBodySet getWhereBodySetOrThrow(Class<? extends BaseModel> modelClass) {
         var l = Logic.andSet();
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
@@ -282,14 +282,15 @@ public final class CRUDListParam {
      * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
     public Query getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
-        var where = getWhereOrThrow(modelClass);
-        var orderBy = getOrderByOrThrow(modelClass);
+        var whereBodySet = getWhereBodySetOrThrow(modelClass);
+        var orderByClauses = getOrderByClausesOrThrow(modelClass);
         var limit = getLimitOrThrow();
         return new Query()
-                .where(where)
+                .where(whereBodySet)
                 .groupBy()
-                .orderBy(orderBy)
-                .limit(limit.getOffset(), limit.getRowCount());
+                .orderBy(orderByClauses)
+                .offset(limit.getOffset())
+                .limit(limit.getLimit());
     }
 
     /**
@@ -300,14 +301,15 @@ public final class CRUDListParam {
      * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
     public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
-        var where = getWhere(modelClass);
-        var orderBy = getOrderBy(modelClass);
+        var whereBodySet = getWhereBodySet(modelClass);
+        var orderByClauses = getOrderByClauses(modelClass);
         var limit = getLimit();
         return new Query()
-                .where(where)
+                .where(whereBodySet)
                 .groupBy()
-                .orderBy(orderBy)
-                .limit(limit.getOffset(), limit.getRowCount());
+                .orderBy(orderByClauses)
+                .offset(limit.getOffset())
+                .limit(limit.getLimit());
     }
 
     /**
