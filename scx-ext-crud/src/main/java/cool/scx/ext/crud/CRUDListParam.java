@@ -285,12 +285,17 @@ public final class CRUDListParam {
         var whereBodySet = getWhereBodySetOrThrow(modelClass);
         var orderByClauses = getOrderByClausesOrThrow(modelClass);
         var limit = getLimitOrThrow();
-        return new Query()
+        var query = new Query()
                 .where(whereBodySet)
                 .groupBy()
-                .orderBy(orderByClauses)
-                .offset(limit.getOffset())
-                .limit(limit.getLimit());
+                .orderBy(orderByClauses);
+        if (limit.getOffset() != null) {
+            query.offset(limit.getOffset());
+        }
+        if (limit.getLimit() != null) {
+            query.limit(limit.getLimit());
+        }
+        return query;
     }
 
     /**
@@ -304,12 +309,17 @@ public final class CRUDListParam {
         var whereBodySet = getWhereBodySet(modelClass);
         var orderByClauses = getOrderByClauses(modelClass);
         var limit = getLimit();
-        return new Query()
+        var query = new Query()
                 .where(whereBodySet)
                 .groupBy()
-                .orderBy(orderByClauses)
-                .offset(limit.getOffset())
-                .limit(limit.getLimit());
+                .orderBy(orderByClauses);
+        if (limit.getOffset() != null) {
+            query.offset(limit.getOffset());
+        }
+        if (limit.getLimit() != null) {
+            query.limit(limit.getLimit());
+        }
+        return query;
     }
 
     /**
