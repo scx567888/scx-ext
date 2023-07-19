@@ -30,7 +30,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cool.scx.data.jdbc.ColumnFilter.ofIncluded;
+import static cool.scx.data.FieldFilter.ofIncluded;
 import static cool.scx.data.query.Logic.andSet;
 import static cool.scx.data.query.WhereBody.equal;
 import static cool.scx.ext.auth.AuthHelper.*;

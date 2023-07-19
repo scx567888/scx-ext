@@ -1,9 +1,11 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
+import cool.scx.data.FieldFilter;
 import cool.scx.data.Query;
-import cool.scx.data.jdbc.ColumnFilter;
+import cool.scx.data.field_filter.FilterMode;
 import cool.scx.data.jdbc.ColumnMapping;
+import cool.scx.data.jdbc.FieldFilterHelper;
 import cool.scx.data.jdbc.mapping.Table;
 import cool.scx.data.query.*;
 import cool.scx.ext.crud.exception.*;
@@ -13,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static cool.scx.data.FieldFilter.ofExcluded;
+import static cool.scx.data.FieldFilter.ofIncluded;
 
 /**
  * a
@@ -104,9 +109,9 @@ public final class CRUDListParam {
      * @return a
      * @throws cool.scx.ext.crud.exception.UnknownWhereTypeException a
      */
-    public static ColumnFilter.FilterMode checkFilterMode(String filterMode) throws UnknownWhereTypeException {
+    public static FilterMode checkFilterMode(String filterMode) throws UnknownWhereTypeException {
         try {
-            return ColumnFilter.FilterMode.of(filterMode);
+            return FilterMode.of(filterMode);
         } catch (Exception ignored) {
             throw new UnknownFilterModeException(filterMode);
         }
@@ -329,18 +334,18 @@ public final class CRUDListParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public ColumnFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
+    public FieldFilter getSelectFilterOrThrow(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
         if (selectFilterBody == null) {
-            return ColumnFilter.ofExcluded();
+            return ofExcluded();
         }
         var filterMode = checkFilterMode(selectFilterBody.filterMode);
         var legalFieldName = selectFilterBody.fieldNames != null ? Arrays.stream(selectFilterBody.fieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new) : new String[0];
         var selectFilter = switch (filterMode) {
-            case EXCLUDED -> ColumnFilter.ofExcluded().addExcluded(legalFieldName);
-            case INCLUDED -> ColumnFilter.ofIncluded().addIncluded(legalFieldName);
+            case EXCLUDED -> ofExcluded(legalFieldName);
+            case INCLUDED -> ofIncluded(legalFieldName);
         };
         //防止空列查询
-        if (selectFilter.filter(scxDaoTableInfo).length == 0) {
+        if (FieldFilterHelper.filter(selectFilter, scxDaoTableInfo).length == 0) {
             throw new EmptySelectColumnException(filterMode, selectFilterBody.fieldNames);
         }
         return selectFilter;
@@ -351,11 +356,11 @@ public final class CRUDListParam {
      *
      * @param modelClass      a {@link java.lang.Class} object
      * @param scxDaoTableInfo a {@link Table} object
-     * @return a {@link cool.scx.data.jdbc.ColumnFilter} object
+     * @return a {@link FieldFilter} object
      */
-    public ColumnFilter getSelectFilter(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
+    public FieldFilter getSelectFilter(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
         if (selectFilterBody == null) {
-            return ColumnFilter.ofExcluded();
+            return ofExcluded();
         }
         var filterMode = checkFilterMode(selectFilterBody.filterMode);
         String[] legalFieldName;
@@ -373,11 +378,11 @@ public final class CRUDListParam {
             legalFieldName = new String[0];
         }
         var selectFilter = switch (filterMode) {
-            case EXCLUDED -> ColumnFilter.ofExcluded().addExcluded(legalFieldName);
-            case INCLUDED -> ColumnFilter.ofIncluded().addIncluded(legalFieldName);
+            case EXCLUDED -> ofExcluded(legalFieldName);
+            case INCLUDED -> ofIncluded(legalFieldName);
         };
         //防止空列查询
-        if (selectFilter.filter(scxDaoTableInfo).length == 0) {
+        if (FieldFilterHelper.filter(selectFilter, scxDaoTableInfo).length == 0) {
             throw new EmptySelectColumnException(filterMode, selectFilterBody.fieldNames);
         }
         return selectFilter;

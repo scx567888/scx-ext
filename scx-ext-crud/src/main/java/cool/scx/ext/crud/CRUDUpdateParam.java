@@ -1,13 +1,17 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.data.jdbc.ColumnFilter;
+import cool.scx.data.FieldFilter;
 import cool.scx.data.jdbc.ColumnMapping;
+import cool.scx.data.jdbc.FieldFilterHelper;
 import cool.scx.data.jdbc.mapping.Table;
 import cool.scx.ext.crud.exception.EmptyUpdateColumnException;
 
 import java.util.Arrays;
 import java.util.Map;
+
+import static cool.scx.data.FieldFilter.ofExcluded;
+import static cool.scx.data.FieldFilter.ofIncluded;
 
 /**
  * 更新实体类的封装
@@ -45,14 +49,14 @@ public final class CRUDUpdateParam {
      * @param scxDaoTableInfo a
      * @return a
      */
-    public ColumnFilter getUpdateFilter(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
+    public FieldFilter getUpdateFilter(Class<? extends BaseModel> modelClass, Table<? extends ColumnMapping> scxDaoTableInfo) {
         if (needUpdateFieldNames == null) {
-            return ColumnFilter.ofExcluded();
+            return ofExcluded();
         }
         var legalFieldName = Arrays.stream(needUpdateFieldNames).map(fieldName -> CRUDHelper.checkFieldName(modelClass, fieldName)).toArray(String[]::new);
-        var updateFilter = ColumnFilter.ofIncluded(false).addIncluded(legalFieldName);
+        var updateFilter = ofIncluded(legalFieldName).excludeIfFieldValueIsNull(false);
         //防止空列更新
-        if (updateFilter.filter(scxDaoTableInfo).length == 0) {
+        if (FieldFilterHelper.filter(updateFilter, scxDaoTableInfo).length == 0) {
             throw new EmptyUpdateColumnException();
         }
         return updateFilter;
