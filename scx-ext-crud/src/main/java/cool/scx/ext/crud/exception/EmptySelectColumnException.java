@@ -1,6 +1,6 @@
 package cool.scx.ext.crud.exception;
 
-import cool.scx.data.jdbc.ColumnFilter;
+import cool.scx.data.field_filter.FilterMode;
 import cool.scx.mvc.exception.BadRequestException;
 import cool.scx.mvc.vo.Result;
 
@@ -18,7 +18,7 @@ public final class EmptySelectColumnException extends BadRequestException {
      * @param filterMode a
      * @param fieldNames a
      */
-    public EmptySelectColumnException(ColumnFilter.FilterMode filterMode, String[] fieldNames) {
+    public EmptySelectColumnException(FilterMode filterMode, String[] fieldNames) {
         super(Result.fail("empty-select-column").put("filter-mode", filterMode).put("field-names", fieldNames).toJson(""));
     }
 

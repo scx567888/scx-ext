@@ -3,7 +3,7 @@ package cool.scx.ext.config_manager;
 import cool.scx.core.base.BaseModelService;
 import cool.scx.data.Query;
 
-import static cool.scx.data.jdbc.ColumnFilter.ofExcluded;
+import static cool.scx.data.FieldFilter.ofExcluded;
 import static cool.scx.data.query.WhereBody.equal;
 
 /**
@@ -41,7 +41,7 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
      * @return a
      */
     public U updateUserConfig(Long userID, U newScxConfig) {
-        long size = userConfigService.update(newScxConfig, new Query().where(equal("userID", userID)), ofExcluded().addExcluded("userID"));
+        long size = userConfigService.update(newScxConfig, new Query().where(equal("userID", userID)), ofExcluded("userID"));
         if (size == 0) { //数据库中可能没有数据 也就是没更新成功
             newScxConfig.userID = userID;
             return userConfigService.add(newScxConfig);
