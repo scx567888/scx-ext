@@ -1,6 +1,7 @@
 package cool.scx.ext.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import cool.scx.core.eventbus.ZeroCopyMessage;
 import cool.scx.util.ObjectUtils;
 import io.vertx.core.http.ServerWebSocket;
 
@@ -13,6 +14,7 @@ import java.util.Map;
  * @author scx567888
  * @version 1.15.0
  */
+@ZeroCopyMessage
 public class WSMessage<T> {
 
     private String address;
