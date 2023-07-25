@@ -3,6 +3,7 @@ package cool.scx.ext.crud;
 import cool.scx.core.base.BaseModel;
 import cool.scx.data.FieldFilter;
 import cool.scx.data.Query;
+import cool.scx.data.QueryImpl;
 import cool.scx.data.field_filter.FilterMode;
 import cool.scx.data.jdbc.ColumnMapping;
 import cool.scx.data.jdbc.FieldFilterHelper;
@@ -287,7 +288,7 @@ public final class CRUDListParam {
      * @return a
      * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
-    public Query getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
+    public QueryImpl getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var whereBodySet = getWhereBodySetOrThrow(modelClass);
         var orderByClauses = getOrderByClausesOrThrow(modelClass);
         var limit = getLimitOrThrow();
@@ -311,7 +312,7 @@ public final class CRUDListParam {
      * @return a {@link cool.scx.data.Query} object
      * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
-    public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
+    public QueryImpl getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var whereBodySet = getWhereBodySet(modelClass);
         var orderByClauses = getOrderByClauses(modelClass);
         var limit = getLimit();
