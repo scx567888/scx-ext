@@ -1,9 +1,9 @@
 package cool.scx.ext.config_manager;
 
 import cool.scx.core.base.BaseModelService;
-import cool.scx.data.Query;
 
 import static cool.scx.data.FieldFilter.ofExcluded;
+import static cool.scx.data.Query.query;
 import static cool.scx.data.query.WhereBody.equal;
 
 /**

@@ -3,7 +3,6 @@ package cool.scx.ext.auth;
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.scx.core.ScxContext;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.data.Query;
 import cool.scx.data.query.WhereOption;
 import cool.scx.ext.auth.exception.UnknownLoginHandlerException;
 import cool.scx.ext.auth.exception.UnknownUserException;

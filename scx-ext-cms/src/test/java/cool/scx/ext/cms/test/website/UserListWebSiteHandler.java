@@ -1,7 +1,6 @@
 package cool.scx.ext.cms.test.website;
 
 import cool.scx.core.annotation.ScxService;
-import cool.scx.data.Query;
 import cool.scx.ext.cms.test.auth.TestContext;
 import cool.scx.ext.cms.test.auth.TestUser;
 import cool.scx.ext.cms.test.auth.TestUserService;
