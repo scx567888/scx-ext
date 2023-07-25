@@ -1,11 +1,11 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
-import cool.scx.data.Query;
 import cool.scx.data.query.WhereOption;
 
 import java.util.Map;
 
+import static cool.scx.data.Query.query;
 import static cool.scx.data.query.Logic.andSet;
 
 /**
@@ -29,7 +29,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         CRUDHelper.checkFieldName(baseModelClass, fieldName);
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
-        var query = new Query().where(andSet().equal(fieldName, value).notEqual("id", id, WhereOption.SKIP_IF_NULL));
+        var query = query().where(andSet().equal(fieldName, value).notEqual("id", id, WhereOption.SKIP_IF_NULL));
         return baseModelService.count(query) == 0;
     }
 

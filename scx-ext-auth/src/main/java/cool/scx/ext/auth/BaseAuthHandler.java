@@ -3,7 +3,6 @@ package cool.scx.ext.auth;
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.scx.core.ScxContext;
 import cool.scx.core.base.BaseModelService;
-import cool.scx.data.Query;
 import cool.scx.data.query.WhereOption;
 import cool.scx.ext.auth.exception.UnknownLoginHandlerException;
 import cool.scx.ext.auth.exception.UnknownUserException;
@@ -31,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static cool.scx.data.FieldFilter.ofIncluded;
+import static cool.scx.data.Query.query;
 import static cool.scx.data.query.Logic.andSet;
 import static cool.scx.data.query.WhereBody.equal;
 import static cool.scx.ext.auth.AuthHelper.*;
@@ -145,7 +145,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
      * @throws cool.scx.ext.auth.exception.WrongPasswordException if any.
      */
     public U tryLogin(String username, String password) throws UnknownUserException, WrongPasswordException {
-        var needLoginUser = userService.get(new Query().where(equal("username", username)));
+        var needLoginUser = userService.get(query().where(equal("username", username)));
         //这里标识账号认证成功
         if (needLoginUser == null) {
             throw new UnknownUserException();
@@ -457,7 +457,7 @@ public abstract class BaseAuthHandler<U extends BaseUser> {
         }
         username = username.trim();
         //判断数据库中是否已有重名用户
-        var count = userService.count(new Query().where(andSet().equal("username", username).notEqual("id", id, WhereOption.SKIP_IF_NULL)));
+        var count = userService.count(query().where(andSet().equal("username", username).notEqual("id", id, WhereOption.SKIP_IF_NULL)));
         if (count != 0) {
             throw new UsernameAlreadyExistsException();
         }
