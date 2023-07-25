@@ -1,6 +1,7 @@
 package cool.scx.ext.cms.directive;
 
 import cool.scx.data.Query;
+import cool.scx.data.QueryImpl;
 import cool.scx.data.query.*;
 import cool.scx.util.ObjectUtils;
 
@@ -20,8 +21,8 @@ public final class ListDirectiveHelper {
      * @param params a
      * @return a
      */
-    public static Query createNormalListQuery(Map<?, ?> params) {
-        var query = new Query();
+    public static QueryImpl createNormalListQuery(Map<?, ?> params) {
+        var query = Query.query();
         var orderByColumn = ObjectUtils.convertValue(params.get("orderByColumn"), String.class);
         var sortType = ObjectUtils.convertValue(params.get("sortType"), String.class);
         var currentPage = ObjectUtils.convertValue(params.get("currentPage"), Long.class);

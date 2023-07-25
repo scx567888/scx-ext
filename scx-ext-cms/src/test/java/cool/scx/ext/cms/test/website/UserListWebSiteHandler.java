@@ -12,6 +12,8 @@ import cool.scx.util.RandomUtils;
 
 import java.util.ArrayList;
 
+import static cool.scx.data.Query.query;
+
 
 /**
  * <p>TestUserListWebSiteHandler class.</p>
@@ -34,7 +36,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
      */
     @Override
     public void indexHandler(Html html) {
-        long count = userService.count(new Query());
+        long count = userService.count();
         if (count < 50) {
             var s1 = new ArrayList<TestUser>();
             for (int i = 0; i < 25; i = i + 1) {
@@ -57,7 +59,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
                 userService.add(s);
             }
         }
-        var users = userService.list(new Query().limit(100L));
+        var users = userService.list(query().limit(100L));
         html.add("userList", users);
         html.add("name", "小明");
         html.add("age", 22);

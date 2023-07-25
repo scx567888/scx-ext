@@ -41,7 +41,7 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
      * @return a
      */
     public U updateUserConfig(Long userID, U newScxConfig) {
-        long size = userConfigService.update(newScxConfig, new Query().where(equal("userID", userID)), ofExcluded("userID"));
+        long size = userConfigService.update(newScxConfig, query().where(equal("userID", userID)), ofExcluded("userID"));
         if (size == 0) { //数据库中可能没有数据 也就是没更新成功
             newScxConfig.userID = userID;
             return userConfigService.add(newScxConfig);
@@ -57,7 +57,7 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
      * @return 配置
      */
     public U getUserConfig(Long userID) {
-        var config = userConfigService.get(new Query().where(equal("userID", userID)));
+        var config = userConfigService.get(query().where(equal("userID", userID)));
         if (config == null) {
             var c = getDefaultUserConfig();
             c.userID = userID;
@@ -72,7 +72,7 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
      * @return s
      */
     public S getSystemConfig() {
-        var config = systemConfigService.get(new Query().where(equal("configName", DEFAULT_SYSTEM_CONFIG_NAME)));
+        var config = systemConfigService.get(query().where(equal("configName", DEFAULT_SYSTEM_CONFIG_NAME)));
         if (config == null) {
             var c = getDefaultSystemConfig();
             c.configName = DEFAULT_SYSTEM_CONFIG_NAME;
@@ -88,7 +88,7 @@ public abstract class BaseConfigManager<S extends BaseSystemConfig, U extends Ba
      * @return a T object
      */
     public S updateSystemConfig(S newScxConfig) {
-        long size = systemConfigService.update(newScxConfig, new Query().where(equal("configName", DEFAULT_SYSTEM_CONFIG_NAME)), ofExcluded().addExcluded("configName"));
+        long size = systemConfigService.update(newScxConfig, query().where(equal("configName", DEFAULT_SYSTEM_CONFIG_NAME)), ofExcluded().addExcluded("configName"));
         if (size == 0) { //数据库中可能没有数据 也就是没更新成功
             newScxConfig.configName = DEFAULT_SYSTEM_CONFIG_NAME;
             return systemConfigService.add(newScxConfig);

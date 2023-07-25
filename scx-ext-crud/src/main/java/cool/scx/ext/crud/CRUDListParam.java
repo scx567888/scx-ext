@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static cool.scx.data.FieldFilter.ofExcluded;
 import static cool.scx.data.FieldFilter.ofIncluded;
+import static cool.scx.data.Query.query;
 
 /**
  * a
@@ -290,10 +291,10 @@ public final class CRUDListParam {
         var whereBodySet = getWhereBodySetOrThrow(modelClass);
         var orderByClauses = getOrderByClausesOrThrow(modelClass);
         var limit = getLimitOrThrow();
-        var query = new Query()
+        var query = query()
                 .where(whereBodySet)
                 .groupBy()
-                .orderBy(orderByClauses);
+                .orderBy((Object[]) orderByClauses);
         if (limit.getOffset() != null) {
             query.offset(limit.getOffset());
         }
@@ -314,10 +315,10 @@ public final class CRUDListParam {
         var whereBodySet = getWhereBodySet(modelClass);
         var orderByClauses = getOrderByClauses(modelClass);
         var limit = getLimit();
-        var query = new Query()
+        var query = query()
                 .where(whereBodySet)
                 .groupBy()
-                .orderBy(orderByClauses);
+                .orderBy((Object[]) orderByClauses);
         if (limit.getOffset() != null) {
             query.offset(limit.getOffset());
         }
