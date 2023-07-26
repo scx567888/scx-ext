@@ -2,7 +2,6 @@ package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
 import cool.scx.data.FieldFilter;
-import cool.scx.data.Query;
 import cool.scx.data.QueryImpl;
 import cool.scx.data.field_filter.FilterMode;
 import cool.scx.data.jdbc.ColumnMapping;
@@ -125,22 +124,22 @@ public final class CRUDListParam {
      * @param crudPagination a
      * @return a
      */
-    public static Limit checkPagination(CRUDPagination crudPagination) {
+    public static LimitInfo checkPagination(CRUDPagination crudPagination) {
         var pageSize = crudPagination.pageSize;
         var currentPage = crudPagination.currentPage;
         if (pageSize == null) {
-            return new Limit();
+            return new LimitInfo();
         }
         if (pageSize < 0) {
             throw new PaginationParametersErrorException(currentPage, pageSize);
         }
         if (currentPage == null) {
-            return new Limit().limit(pageSize);
+            return new LimitInfo().limit(pageSize);
         }
         if (currentPage < 0) {
             throw new PaginationParametersErrorException(currentPage, pageSize);
         }
-        return new Limit().offset(currentPage * pageSize).limit(pageSize);
+        return new LimitInfo().offset(currentPage * pageSize).limit(pageSize);
     }
 
     /**
@@ -148,7 +147,7 @@ public final class CRUDListParam {
      *
      * @return a
      */
-    public Limit getLimit() {
+    public LimitInfo getLimitInfo() {
         if (this.pagination != null) {
             try {
                 return checkPagination(this.pagination);
@@ -156,7 +155,7 @@ public final class CRUDListParam {
 
             }
         }
-        return new Limit();
+        return new LimitInfo();
     }
 
     /**
@@ -164,11 +163,11 @@ public final class CRUDListParam {
      *
      * @return a
      */
-    public Limit getLimitOrThrow() {
+    public LimitInfo getLimitInfoOrThrow() {
         if (this.pagination != null) {
             return checkPagination(this.pagination);
         }
-        return new Limit();
+        return new LimitInfo();
     }
 
     /**
@@ -291,7 +290,7 @@ public final class CRUDListParam {
     public QueryImpl getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var whereBodySet = getWhereBodySetOrThrow(modelClass);
         var orderByClauses = getOrderByClausesOrThrow(modelClass);
-        var limit = getLimitOrThrow();
+        var limit = getLimitInfoOrThrow();
         var query = query()
                 .where(whereBodySet)
                 .groupBy()
@@ -315,7 +314,7 @@ public final class CRUDListParam {
     public QueryImpl getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var whereBodySet = getWhereBodySet(modelClass);
         var orderByClauses = getOrderByClauses(modelClass);
-        var limit = getLimit();
+        var limit = getLimitInfo();
         var query = query()
                 .where(whereBodySet)
                 .groupBy()
