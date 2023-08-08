@@ -62,9 +62,9 @@ public class TestModule extends ScxModule {
     @Test
     public static void test0() throws IOException, InterruptedException {
         var userService = ScxContext.getBean(TestUserService.class);
-        System.err.println("访问页面前数据条数 : " + userService.list().size());
+        System.err.println("访问页面前数据条数 : " + userService.find().size());
         ScxHttpClientHelper.get("http://localhost:8080/");
-        System.err.println("访问页面后数据条数 : " + userService.list().size());
+        System.err.println("访问页面后数据条数 : " + userService.find().size());
     }
 
     @Test

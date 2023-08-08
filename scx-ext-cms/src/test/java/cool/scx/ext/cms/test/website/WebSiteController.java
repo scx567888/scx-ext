@@ -44,17 +44,17 @@ public class WebSiteController {
         var bean = ScxContext.getBean(TestUserService.class);
         try {
             ScxContext.sqlRunner().autoTransaction(() -> {
-                sb.append("事务开始前数据库中 数据条数 : ").append(bean.list().size()).append("</br>");
+                sb.append("事务开始前数据库中 数据条数 : ").append(bean.find().size()).append("</br>");
                 sb.append("现在插入 1 数据条数").append("</br>");
                 var u = new TestUser();
                 u.password = CryptoUtils.encryptPassword("123456");
                 u.username = "唯一name";
                 bean.add(u);
-                sb.append("现在数据库中数据条数 : ").append(bean.list().size()).append("</br>");
+                sb.append("现在数据库中数据条数 : ").append(bean.find().size()).append("</br>");
                 bean.add(u);
             });
         } catch (Exception e) {
-            sb.append("出错了 后滚后数据库中数据条数 : ").append(bean.list().size());
+            sb.append("出错了 后滚后数据库中数据条数 : ").append(bean.find().size());
         }
         Html.ofString(sb.toString()).accept(ctx, ScxContext.scxMvc().templateHandler());
     }

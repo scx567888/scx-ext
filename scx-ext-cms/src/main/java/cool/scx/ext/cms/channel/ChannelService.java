@@ -4,7 +4,7 @@ import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 
 import static cool.scx.data.Query.query;
-import static cool.scx.data.query.WhereBody.equal;
+import static cool.scx.data.query.WhereBody.eq;
 
 /**
  * ColumnService
@@ -22,7 +22,7 @@ public class ChannelService extends BaseModelService<Channel> {
      * @return a
      */
     public Channel getChannelByPath(String path) {
-        return get(query().where(equal("channelPath", path)));
+        return get(query().where(eq("channelPath", path)));
     }
 
 }

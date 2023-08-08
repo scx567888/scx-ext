@@ -29,7 +29,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         CRUDHelper.checkFieldName(baseModelClass, fieldName);
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
-        var query = query().where(andSet().equal(fieldName, value).notEqual("id", id, WhereOption.SKIP_IF_NULL));
+        var query = query().where(andSet().eq(fieldName, value).ne("id", id, WhereOption.SKIP_IF_NULL));
         return baseModelService.count(query) == 0;
     }
 
@@ -70,7 +70,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var realObject = crudUpdateParam.getBaseModel(baseModelClass);
-        var updateFilter = crudUpdateParam.getUpdateFilter(baseModelClass, baseModelService._dao()._tableInfo());
+        var updateFilter = crudUpdateParam.getUpdateFilter(baseModelClass, baseModelService.dao().tableInfo());
         return baseModelService.update(realObject, updateFilter);
     }
 
@@ -112,8 +112,8 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
         var query = crudListParam.getQueryOrThrow(baseModelClass);
-        var selectFilter = crudListParam.getSelectFilterOrThrow(baseModelClass, baseModelService._dao()._tableInfo());
-        var list = baseModelService.list(query, selectFilter);
+        var selectFilter = crudListParam.getSelectFilterOrThrow(baseModelClass, baseModelService.dao().tableInfo());
+        var list = baseModelService.find(query, selectFilter);
         var total = baseModelService.count(query);
         return new CRUDListResult(list, total);
     }

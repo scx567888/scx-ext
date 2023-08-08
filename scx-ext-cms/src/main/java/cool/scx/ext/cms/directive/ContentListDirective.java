@@ -41,7 +41,7 @@ public class ContentListDirective implements BaseTemplateDirective {
         var hasContentTitleImage = ObjectUtils.convertValue(params.get("hasContentTitleImage"), Boolean.class);
 
         if (channelID != null) {
-            whereBodySet.equal("channelID", channelID);
+            whereBodySet.eq("channelID", channelID);
         }
         if (hasContentTitleImage != null) {
             if (hasContentTitleImage) {
@@ -51,7 +51,7 @@ public class ContentListDirective implements BaseTemplateDirective {
             }
         }
 
-        return contentService.list(query.where(whereBodySet));
+        return contentService.find(query.where(whereBodySet));
     }
 
     /**
