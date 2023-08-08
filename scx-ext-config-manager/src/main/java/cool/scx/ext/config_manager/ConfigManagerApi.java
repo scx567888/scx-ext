@@ -48,8 +48,8 @@ public class ConfigManagerApi<S extends BaseSystemConfig, U extends BaseUserConf
     public ConfigManagerApi(BaseConfigManager<S, U> configManager, BaseAuthHandler<?> authHandler) {
         this.configManager = configManager;
         this.authHandler = authHandler;
-        this.systemConfigClass = configManager.getSystemConfigService()._entityClass();
-        this.userConfigClass = configManager.getUserConfigService()._entityClass();
+        this.systemConfigClass = configManager.getSystemConfigService().entityClass();
+        this.userConfigClass = configManager.getUserConfigService().entityClass();
         initHandler();
     }
 

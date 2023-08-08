@@ -6,7 +6,6 @@ import cool.scx.data.query.WhereOption;
 
 import java.util.List;
 
-import static cool.scx.data.Query.query;
 import static cool.scx.data.query.WhereBody.jsonContains;
 
 @ScxService
@@ -26,10 +25,10 @@ public class BBService extends BaseModelService<BB> {
         var aaa = new BB.UU();
 //        aaa.phoneNumber=new String[]{"150"};
         aaa.name = "666";
-        List<BB> list = this.list(query().where(jsonContains("uus", "{\"name\":\"666\"}", WhereOption.USE_ORIGINAL_VALUE)));
-        List<BB> list1 = this.list(query().where(jsonContains("uu.name", "666")));
-        List<BB> list2 = this.list(query().where(jsonContains("uus", aaa)));
-        List<BB> list3 = this.list(query().where(jsonContains("uus[0].phoneNumber[0]", "150")));
+        List<BB> list = this.find(jsonContains("uus", "{\"name\":\"666\"}", WhereOption.USE_ORIGINAL_VALUE));
+        List<BB> list1 = this.find(jsonContains("uu.name", "666"));
+        List<BB> list2 = this.find(jsonContains("uus", aaa));
+        List<BB> list3 = this.find(jsonContains("uus[0].phoneNumber[0]", "150"));
     }
 
 }
