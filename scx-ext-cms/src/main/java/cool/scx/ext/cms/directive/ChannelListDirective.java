@@ -43,7 +43,7 @@ public class ChannelListDirective implements BaseTemplateDirective {
         var hasChannelTitleImage = ObjectUtils.convertValue(params.get("hasChannelTitleImage"), Boolean.class);
 
         if (parentID != null) {
-            whereBodySet.equal("parentID", parentID);
+            whereBodySet.eq("parentID", parentID);
         }
         if (hasChannelTitleImage != null) {
             if (hasChannelTitleImage) {
@@ -53,7 +53,7 @@ public class ChannelListDirective implements BaseTemplateDirective {
             }
         }
 
-        return channelService.list(query.where(whereBodySet));
+        return channelService.find(query.where(whereBodySet));
     }
 
     /**

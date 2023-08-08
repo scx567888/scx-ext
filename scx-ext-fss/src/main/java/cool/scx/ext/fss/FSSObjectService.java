@@ -11,7 +11,7 @@ import java.util.List;
 
 import static cool.scx.data.Query.query;
 import static cool.scx.data.query.OrderByBody.desc;
-import static cool.scx.data.query.WhereBody.equal;
+import static cool.scx.data.query.WhereBody.eq;
 import static cool.scx.data.query.WhereBody.in;
 
 /**
@@ -40,7 +40,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * @return 找的的数据
      */
     public List<FSSObject> findFSSObjectListByHash(String fileHash) {
-        return list(query().where(equal("fileHash", fileHash)).orderBy(desc("uploadTime")));
+        return find(query().where(eq("fileHash", fileHash)).orderBy(desc("uploadTime")));
     }
 
     /**
@@ -50,7 +50,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * @return a
      */
     public long countByHash(String fileHash) {
-        return count(query().where(equal("fileHash", fileHash)));
+        return count(query().where(eq("fileHash", fileHash)));
     }
 
     /**
@@ -60,7 +60,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * @return a {@link cool.scx.ext.fss.FSSObject} object
      */
     public FSSObject findByFSSObjectID(String fssObjectID) {
-        return get(query().where(equal("fssObjectID", fssObjectID)));
+        return get(query().where(eq("fssObjectID", fssObjectID)));
     }
 
     /**
@@ -70,7 +70,7 @@ public class FSSObjectService extends BaseModelService<FSSObject> {
      * @return a
      */
     public List<FSSObject> findByFSSObjectIDs(List<String> fssObjectIDs) {
-        return list(query().where(in("fssObjectID", fssObjectIDs)));
+        return find(in("fssObjectID", fssObjectIDs));
     }
 
     /**

@@ -45,7 +45,7 @@ public final class ListDirectiveHelper {
     public static WhereBodySet createNormalListWhereBodySet(Map<?, ?> params) {
         var query = Logic.andSet();
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
-        query.equal("id", id, WhereOption.SKIP_IF_NULL);
+        query.eq("id", id, WhereOption.SKIP_IF_NULL);
         return query;
     }
 

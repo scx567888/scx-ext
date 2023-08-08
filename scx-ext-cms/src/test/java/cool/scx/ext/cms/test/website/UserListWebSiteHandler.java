@@ -11,7 +11,7 @@ import cool.scx.util.RandomUtils;
 
 import java.util.ArrayList;
 
-import static cool.scx.data.Query.query;
+import static cool.scx.data.Query.limit;
 
 
 /**
@@ -58,7 +58,7 @@ public class UserListWebSiteHandler implements WebSiteHandler {
                 userService.add(s);
             }
         }
-        var users = userService.list(query().limit(100L));
+        var users = userService.find(limit(100L));
         html.add("userList", users);
         html.add("name", "小明");
         html.add("age", 22);
