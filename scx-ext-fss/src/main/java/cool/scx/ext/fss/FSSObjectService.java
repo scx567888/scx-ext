@@ -10,9 +10,9 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static cool.scx.data.Query.query;
-import static cool.scx.data.query.OrderByBody.desc;
-import static cool.scx.data.query.WhereBody.eq;
-import static cool.scx.data.query.WhereBody.in;
+import static cool.scx.data.Query.desc;
+import static cool.scx.data.Query.eq;
+import static cool.scx.data.Query.in;
 
 /**
  * UploadFileService

@@ -37,13 +37,13 @@ public final class ListDirectiveHelper {
         }
 
         if (orderByColumn != null && sortType != null) {
-            query.orderBy(OrderByBody.of(orderByColumn, OrderByType.of(sortType)));
+            query.orderBy(new OrderByBody(orderByColumn, OrderByType.of(sortType)));
         }
         return query;
     }
 
     public static WhereBodySet createNormalListWhereBodySet(Map<?, ?> params) {
-        var query = Logic.andSet();
+        var query = Query.andSet();
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
         query.eq("id", id, WhereOption.SKIP_IF_NULL);
         return query;

@@ -6,7 +6,7 @@ import cool.scx.data.query.WhereOption;
 import java.util.Map;
 
 import static cool.scx.data.Query.query;
-import static cool.scx.data.query.Logic.andSet;
+import static cool.scx.data.Query.andSet;
 
 /**
  * crud 各个逻辑的 handler

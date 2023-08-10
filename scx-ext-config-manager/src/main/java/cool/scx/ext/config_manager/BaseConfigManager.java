@@ -4,7 +4,7 @@ import cool.scx.core.base.BaseModelService;
 
 import static cool.scx.data.FieldFilter.ofExcluded;
 import static cool.scx.data.Query.query;
-import static cool.scx.data.query.WhereBody.eq;
+import static cool.scx.data.Query.eq;
 
 /**
  * <p>Abstract BaseConfigManager class.</p>

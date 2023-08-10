@@ -2,6 +2,7 @@ package cool.scx.ext.crud;
 
 import cool.scx.core.base.BaseModel;
 import cool.scx.data.FieldFilter;
+import cool.scx.data.Query;
 import cool.scx.data.QueryImpl;
 import cool.scx.data.field_filter.FilterMode;
 import cool.scx.data.jdbc.ColumnMapping;
@@ -185,7 +186,7 @@ public final class CRUDListParam {
                         CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
                         //检查 sortType 是否正确
                         var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
-                        l.add(OrderByBody.of(orderByBody.fieldName, sortType));
+                        l.add(new OrderByBody(orderByBody.fieldName, sortType));
                     } catch (Exception ignored) {
 
                     }
@@ -210,7 +211,7 @@ public final class CRUDListParam {
                     CRUDHelper.checkFieldName(modelClass, orderByBody.fieldName);
                     //检查 sortType 是否正确
                     var sortType = checkSortType(orderByBody.fieldName, orderByBody.sortType);
-                    l.add(OrderByBody.of(orderByBody.fieldName, sortType));
+                    l.add(new OrderByBody(orderByBody.fieldName, sortType));
                 }
             }
         }
@@ -223,7 +224,7 @@ public final class CRUDListParam {
      * @param modelClass a {@link java.lang.Class} object
      */
     public WhereBodySet getWhereBodySet(Class<? extends BaseModel> modelClass) {
-        var l = Logic.andSet();
+        var l = Query.andSet();
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
@@ -257,7 +258,7 @@ public final class CRUDListParam {
      * @return a
      */
     public WhereBodySet getWhereBodySetOrThrow(Class<? extends BaseModel> modelClass) {
-        var l = Logic.andSet();
+        var l = Query.andSet();
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {

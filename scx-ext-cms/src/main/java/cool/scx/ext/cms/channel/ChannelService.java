@@ -4,7 +4,7 @@ import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 
 import static cool.scx.data.Query.query;
-import static cool.scx.data.query.WhereBody.eq;
+import static cool.scx.data.Query.eq;
 
 /**
  * ColumnService
