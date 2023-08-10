@@ -3,8 +3,8 @@ package cool.scx.ext.cms.channel;
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 
-import static cool.scx.data.Query.query;
 import static cool.scx.data.Query.eq;
+import static cool.scx.data.Query.query;
 
 /**
  * ColumnService
