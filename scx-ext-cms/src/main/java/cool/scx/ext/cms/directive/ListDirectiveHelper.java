@@ -2,7 +2,10 @@ package cool.scx.ext.cms.directive;
 
 import cool.scx.data.Query;
 import cool.scx.data.QueryImpl;
-import cool.scx.data.query.*;
+import cool.scx.data.query.OrderByBody;
+import cool.scx.data.query.OrderByType;
+import cool.scx.data.query.WhereBodySet;
+import cool.scx.data.query.WhereOption;
 import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
@@ -37,13 +40,13 @@ public final class ListDirectiveHelper {
         }
 
         if (orderByColumn != null && sortType != null) {
-            query.orderBy(OrderByBody.of(orderByColumn, OrderByType.of(sortType)));
+            query.orderBy(new OrderByBody(orderByColumn, OrderByType.of(sortType)));
         }
         return query;
     }
 
     public static WhereBodySet createNormalListWhereBodySet(Map<?, ?> params) {
-        var query = Logic.andSet();
+        var query = Query.andSet();
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
         query.eq("id", id, WhereOption.SKIP_IF_NULL);
         return query;
