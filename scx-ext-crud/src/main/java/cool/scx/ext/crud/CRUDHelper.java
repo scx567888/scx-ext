@@ -10,10 +10,10 @@ import cool.scx.ext.crud.exception.UnknownCRUDModelException;
 import cool.scx.ext.crud.exception.UnknownFieldNameException;
 import cool.scx.mvc.exception.BadRequestException;
 import cool.scx.mvc.exception.NotFoundException;
-import cool.scx.util.MultiMap;
 import cool.scx.util.ObjectUtils;
 import cool.scx.util.StringUtils;
 import cool.scx.util.ansi.Ansi;
+import cool.scx.util.multi_map.ListMultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -141,7 +141,7 @@ public final class CRUDHelper {
     @SuppressWarnings("unchecked")
     private static Map<Class<BaseModel>, Class<BaseModelService<BaseModel>>> initBaseModelClassBaseModelServiceClassMapping() {
         // 因为一个 BaseModel 可能由多个 BaseModelService 的实现 这里使用 HashSetValuedHashMap 存储
-        var classClassHashSetValuedHashMap = new MultiMap<Class<BaseModel>, Class<BaseModelService<BaseModel>>>();
+        var classClassHashSetValuedHashMap = new ListMultiMap<Class<BaseModel>, Class<BaseModelService<BaseModel>>>();
         // baseModelClassList
         var baseModelClassList = CRUDHelper.BASE_MODEL_NAME_CRUD_API_INFO_MAPPING.values().stream().map(c -> c.baseModelClass).toList();
         //循环读取
