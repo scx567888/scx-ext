@@ -20,6 +20,7 @@ import java.util.List;
 
 import static cool.scx.ext.fss.FSSObjectService.getPhysicalFilePath;
 import static cool.scx.util.HashUtils.md5;
+import static cool.scx.util.HashUtils.md5Hex;
 import static java.nio.file.StandardOpenOption.*;
 
 /**
@@ -240,7 +241,7 @@ public class FSSController {
             //获取文件真实的存储路径
             var fileStoragePath = Path.of(FSSConfig.uploadFilePath().toString(), newFSSObject.filePath);
             //计算 md5 只有前后台 md5 相同文件才算 正确
-            var serverHashStr = md5(uploadTempFile.toFile());
+            var serverHashStr = md5Hex(uploadTempFile.toFile());
             if (!fileHash.equalsIgnoreCase(serverHashStr)) {
                 //md5 不相同 说明临时文件可能损坏 删除临时文件
                 FileUtils.delete(uploadTempFile.getParent());
@@ -312,7 +313,7 @@ public class FSSController {
                 var physicalFile = getPhysicalFilePath(fssObject).toFile();
                 //这里多校验一些内容避免出先差错
                 //第一 文件必须存在 第二 文件大小必须和前台获得的文件大小相同 第三 文件的 md5 校验结果也必须和前台发送过来的 md5 相同
-                if (physicalFile.exists() && physicalFile.length() == fileSize && fileHash.equalsIgnoreCase(md5(physicalFile))) {
+                if (physicalFile.exists() && physicalFile.length() == fileSize && fileHash.equalsIgnoreCase(md5Hex(physicalFile))) {
                     //这些都通过表示文件是可用的 赋值并跳出循环
                     canUseFssObject = fssObject;
                     break;
