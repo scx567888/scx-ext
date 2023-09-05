@@ -11,7 +11,7 @@ import cool.scx.util.RandomUtils;
 
 import java.util.ArrayList;
 
-import static cool.scx.data.Query.limit;
+import static cool.scx.data.QueryBuilder.limit;
 
 
 /**

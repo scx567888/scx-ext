@@ -3,8 +3,8 @@ package cool.scx.ext.config_manager;
 import cool.scx.core.base.BaseModelService;
 
 import static cool.scx.data.FieldFilter.ofExcluded;
-import static cool.scx.data.Query.eq;
-import static cool.scx.data.Query.query;
+import static cool.scx.data.QueryBuilder.eq;
+import static cool.scx.data.QueryBuilder.query;
 
 /**
  * <p>Abstract BaseConfigManager class.</p>

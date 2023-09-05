@@ -9,7 +9,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.List;
 
-import static cool.scx.data.Query.*;
+import static cool.scx.data.QueryBuilder.*;
 
 /**
  * UploadFileService

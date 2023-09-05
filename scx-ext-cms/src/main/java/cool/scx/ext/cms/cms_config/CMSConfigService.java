@@ -3,8 +3,8 @@ package cool.scx.ext.cms.cms_config;
 import cool.scx.core.annotation.ScxService;
 import cool.scx.core.base.BaseModelService;
 
-import static cool.scx.data.Query.eq;
-import static cool.scx.data.Query.query;
+import static cool.scx.data.QueryBuilder.eq;
+import static cool.scx.data.QueryBuilder.query;
 
 /**
  * <p>CmsConfigService class.</p>
