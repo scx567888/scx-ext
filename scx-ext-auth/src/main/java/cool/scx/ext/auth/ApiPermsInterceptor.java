@@ -50,8 +50,8 @@ public final class ApiPermsInterceptor implements ScxMvcInterceptor {
             if (currentUser == null) {
                 throw new UnauthorizedException();
             } else if (p.checkPerms
-                    && !currentUser.isAdmin
-                    && !authHandler.getPerms(currentUser).apiPerms().contains(p.permStr)
+                       && !currentUser.isAdmin
+                       && !authHandler.getPerms(currentUser).apiPerms().contains(p.permStr)
             ) {
                 //否则先查看是否需要校验权限 然后查看是否不为 admin 再查看是否权限串中不包含当前权限 都满足则表示需要执行没权限的 handler
                 throw new ForbiddenException();

@@ -6,7 +6,7 @@ import cool.scx.data.query.WhereOption;
 
 import java.util.List;
 
-import static cool.scx.data.Query.jsonContains;
+import static cool.scx.data.QueryBuilder.jsonContains;
 
 @ScxService
 public class BBService extends BaseModelService<BB> {

@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.directive;
 
 import cool.scx.data.Query;
-import cool.scx.data.QueryImpl;
+import cool.scx.data.QueryBuilder;
 import cool.scx.data.query.OrderByBody;
 import cool.scx.data.query.OrderByType;
 import cool.scx.data.query.WhereBodySet;
@@ -24,8 +24,8 @@ public final class ListDirectiveHelper {
      * @param params a
      * @return a
      */
-    public static QueryImpl createNormalListQuery(Map<?, ?> params) {
-        var query = Query.query();
+    public static Query createNormalListQuery(Map<?, ?> params) {
+        var query = QueryBuilder.query();
         var orderByColumn = ObjectUtils.convertValue(params.get("orderByColumn"), String.class);
         var sortType = ObjectUtils.convertValue(params.get("sortType"), String.class);
         var currentPage = ObjectUtils.convertValue(params.get("currentPage"), Long.class);
@@ -46,7 +46,7 @@ public final class ListDirectiveHelper {
     }
 
     public static WhereBodySet createNormalListWhereBodySet(Map<?, ?> params) {
-        var query = Query.andSet();
+        var query = QueryBuilder.andSet();
         var id = ObjectUtils.convertValue(params.get("id"), Long.class);
         query.eq("id", id, WhereOption.SKIP_IF_NULL);
         return query;

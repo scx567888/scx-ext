@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static cool.scx.ext.fss.FSSObjectService.getPhysicalFilePath;
-import static cool.scx.util.HashUtils.md5;
 import static cool.scx.util.HashUtils.md5Hex;
 import static java.nio.file.StandardOpenOption.*;
 

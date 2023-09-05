@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static cool.scx.data.FieldFilter.ofIncluded;
-import static cool.scx.data.Query.*;
+import static cool.scx.data.QueryBuilder.*;
 import static cool.scx.ext.auth.AuthHelper.*;
 
 

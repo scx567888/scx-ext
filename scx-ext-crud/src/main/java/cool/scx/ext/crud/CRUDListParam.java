@@ -3,7 +3,7 @@ package cool.scx.ext.crud;
 import cool.scx.core.base.BaseModel;
 import cool.scx.data.FieldFilter;
 import cool.scx.data.Query;
-import cool.scx.data.QueryImpl;
+import cool.scx.data.QueryBuilder;
 import cool.scx.data.field_filter.FilterMode;
 import cool.scx.data.jdbc.ColumnMapping;
 import cool.scx.data.jdbc.FieldFilterHelper;
@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static cool.scx.data.FieldFilter.ofExcluded;
 import static cool.scx.data.FieldFilter.ofIncluded;
-import static cool.scx.data.Query.query;
+import static cool.scx.data.QueryBuilder.query;
 
 /**
  * a
@@ -224,7 +224,7 @@ public final class CRUDListParam {
      * @param modelClass a {@link java.lang.Class} object
      */
     public WhereBodySet getWhereBodySet(Class<? extends BaseModel> modelClass) {
-        var l = Query.andSet();
+        var l = QueryBuilder.andSet();
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
@@ -258,7 +258,7 @@ public final class CRUDListParam {
      * @return a
      */
     public WhereBodySet getWhereBodySetOrThrow(Class<? extends BaseModel> modelClass) {
-        var l = Query.andSet();
+        var l = QueryBuilder.andSet();
         if (this.whereBodyList != null) {
             for (var crudWhereBody : this.whereBodyList) {
                 if (crudWhereBody.fieldName != null && crudWhereBody.whereType != null) {
@@ -288,7 +288,7 @@ public final class CRUDListParam {
      * @return a
      * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
-    public QueryImpl getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
+    public Query getQueryOrThrow(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var whereBodySet = getWhereBodySetOrThrow(modelClass);
         var orderByClauses = getOrderByClausesOrThrow(modelClass);
         var limit = getLimitInfoOrThrow();
@@ -312,7 +312,7 @@ public final class CRUDListParam {
      * @return a {@link cool.scx.data.Query} object
      * @throws cool.scx.mvc.exception.BadRequestException if any.
      */
-    public QueryImpl getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
+    public Query getQuery(Class<? extends BaseModel> modelClass) throws BadRequestException {
         var whereBodySet = getWhereBodySet(modelClass);
         var orderByClauses = getOrderByClauses(modelClass);
         var limit = getLimitInfo();
