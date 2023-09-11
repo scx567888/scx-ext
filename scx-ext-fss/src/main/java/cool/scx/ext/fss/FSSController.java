@@ -20,6 +20,7 @@ import java.util.List;
 
 import static cool.scx.ext.fss.FSSObjectService.getPhysicalFilePath;
 import static cool.scx.util.HashUtils.md5Hex;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.nio.file.StandardOpenOption.*;
 
 /**
@@ -248,7 +249,7 @@ public class FSSController {
             }
             //移动成功 说明文件上传成功
             //将临时文件移动并重命名到 真实的存储路径
-            FileUtils.move(uploadTempFile, fileStoragePath);
+            FileUtils.move(uploadTempFile, fileStoragePath, REPLACE_EXISTING);
             //尝试设置为只读
             fileStoragePath.toFile().setReadOnly();
             //删除临时文件夹
