@@ -2,7 +2,6 @@ package cool.scx.ext.cms.test.website;
 
 import cool.scx.core.ScxContext;
 import cool.scx.enumeration.HttpMethod;
-import cool.scx.enumeration.RawType;
 import cool.scx.ext.cms.channel.Channel;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.content.Content;
@@ -27,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import static cool.scx.constant.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
+import static cool.scx.enumeration.FileFormat.*;
 
 /**
  * 简单测试
@@ -93,7 +93,7 @@ public class WebSiteController {
         //这里返回的是一个 png 的 图片 byte 数组
         byte[] qrCode = QRCodeUtils.getQRCode(value, 300);
 
-        return Raw.of(qrCode, RawType.PNG);
+        return Raw.of(qrCode, PNG);
     }
 
     /**
