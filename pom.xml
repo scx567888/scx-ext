@@ -131,7 +131,7 @@
     <properties>
 
         <!-- *********************** 以下为依赖包版本 *********************** -->
-        <scx.version>2.4.9</scx.version>
+        <scx.version>2.4.10</scx.version>
         <zxing.version>3.5.2</zxing.version>
         <poi.version>5.2.4</poi.version>
         <slf4j.version>2.0.9</slf4j.version>
