@@ -15,6 +15,7 @@ import cool.scx.mvc.exception.BadRequestException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static cool.scx.data.FieldFilter.ofExcluded;
@@ -48,6 +49,11 @@ public final class CRUDListParam {
      * 查询列过滤参数
      */
     public CRUDSelectFilterBody selectFilterBody;
+
+    /**
+     * 拓展参数
+     */
+    public Map<String, Object> extParams;
 
     /**
      * 检查 where 类型

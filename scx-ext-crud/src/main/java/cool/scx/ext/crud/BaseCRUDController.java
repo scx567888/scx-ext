@@ -12,7 +12,6 @@ import cool.scx.mvc.vo.Result;
 import java.util.Map;
 
 import static cool.scx.data.QueryBuilder.andSet;
-import static cool.scx.data.QueryBuilder.query;
 import static cool.scx.enumeration.HttpMethod.*;
 
 /**
