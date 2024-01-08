@@ -23,7 +23,7 @@ import static cool.scx.enumeration.HttpMethod.*;
  */
 public class BaseCRUDController<T extends BaseModel> {
 
-    private final BaseModelService<T> service;
+    public final BaseModelService<T> service;
 
     public BaseCRUDController(BaseModelService<T> service) {
         this.service = service;
