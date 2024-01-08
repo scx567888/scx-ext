@@ -21,11 +21,11 @@ import static cool.scx.enumeration.HttpMethod.*;
  * @author scx567888
  * @version 2.5.2
  */
-public class BaseCRUDController<T extends BaseModel> {
+public class BaseCRUDController<T extends BaseModelService<E>, E extends BaseModel> {
 
-    private final BaseModelService<T> service;
+    protected final T service;
 
-    public BaseCRUDController(BaseModelService<T> service) {
+    public BaseCRUDController(T service) {
         this.service = service;
     }
 
@@ -74,7 +74,7 @@ public class BaseCRUDController<T extends BaseModel> {
     @ScxRoute(value = "check-unique/:fieldName", methods = POST)
     public BaseVo checkUnique(@FromPath String fieldName, @FromBody Object value, @FromBody(required = false) Long id) {
         CRUDHelper.checkFieldName(service.entityClass(), fieldName);
-        var query = query().where(andSet().eq(fieldName, value).ne("id", id, WhereOption.SKIP_IF_NULL));
+        var query = andSet().eq(fieldName, value).ne("id", id, WhereOption.SKIP_IF_NULL);
         var isUnique = service.count(query) == 0;
         return Result.ok().put("isUnique", isUnique);
     }
