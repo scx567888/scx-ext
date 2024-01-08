@@ -29,7 +29,7 @@ public interface CRUDHandler {
         var baseModelClass = CRUDHelper.getCRUDApiInfo(modelName).baseModelClass;
         CRUDHelper.checkFieldName(baseModelClass, fieldName);
         var baseModelService = CRUDHelper.getBaseModelService(baseModelClass);
-        var query = query().where(andSet().eq(fieldName, value).ne("id", id, WhereOption.SKIP_IF_NULL));
+        var query = andSet().eq(fieldName, value).ne("id", id, WhereOption.SKIP_IF_NULL);
         return baseModelService.count(query) == 0;
     }
 
