@@ -21,11 +21,11 @@ import static cool.scx.enumeration.HttpMethod.*;
  * @author scx567888
  * @version 2.5.2
  */
-public class BaseCRUDController<T extends BaseModel> {
+public class BaseCRUDController<T extends BaseModelService<E>, E extends BaseModel> {
 
-    public final BaseModelService<T> service;
+    protected final T service;
 
-    public BaseCRUDController(BaseModelService<T> service) {
+    public BaseCRUDController(T service) {
         this.service = service;
     }
 
