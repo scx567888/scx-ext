@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author scx567888
  * @version 1.3.9
  */
-@ScxRoute("/")
+@ScxRoute("")
 public class WebSiteController {
 
     private final ContentService contentService;
@@ -35,7 +35,7 @@ public class WebSiteController {
         this.webSiteHandler = ScxContext.getBean(webSiteHandlerClass);
     }
 
-    @ScxRoute(value = "/", methods = HttpMethod.GET)
+    @ScxRoute(value = "", methods = HttpMethod.GET)
     public Html index() throws Exception {
         var cmsConfig = cmsConfigService.getCMSConfig();
         var indexTemplatePath = cmsConfig.defaultIndexTemplate;

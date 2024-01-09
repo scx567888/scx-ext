@@ -35,7 +35,7 @@ import static cool.scx.enumeration.FileFormat.*;
  * @version 0.3.6
  * @since 1.3.14
  */
-@ScxRoute("/")
+@ScxRoute("")
 public class WebSiteController {
 
     @ScxRoute(methods = HttpMethod.GET)
