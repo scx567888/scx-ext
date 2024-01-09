@@ -1,13 +1,17 @@
 package cool.scx.ext.auth;
 
+import cool.scx.ext.auth.annotation.ApiPerms;
+import cool.scx.ext.auth.annotation.NoApiPerms;
 import cool.scx.ext.auth.exception.AuthException;
 import cool.scx.ext.auth.exception.UnknownDeviceException;
 import cool.scx.ext.auth.type.DeviceType;
 import cool.scx.ext.auth.type.Perms;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
+import cool.scx.util.reflect.MethodUtils;
 import io.vertx.ext.web.RoutingContext;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 
@@ -136,6 +140,24 @@ public final class AuthHelper {
             }
         }
         return new Perms(perms, pagePerms, pageElementPerms, apiPerms);
+    }
+
+    public static ApiPerms findApiPerms(Method m) {
+        var noApiPerms = m.getAnnotation(NoApiPerms.class);
+        if (noApiPerms != null) {
+            return null;
+        }
+        return findApiPerms0(m);
+    }
+
+    public static ApiPerms findApiPerms0(Method method) {
+        var annotations = MethodUtils.findAllAnnotations(method);
+        for (var a : annotations) {
+            if (a instanceof ApiPerms s) {
+                return s;
+            }
+        }
+        return null;
     }
 
 }
