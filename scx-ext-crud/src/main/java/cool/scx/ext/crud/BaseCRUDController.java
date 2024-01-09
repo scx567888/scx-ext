@@ -43,14 +43,14 @@ public class BaseCRUDController<T extends BaseModelService<E>, E extends BaseMod
         return Result.ok(info);
     }
 
-    @ScxRoute(methods = POST)
+    @ScxRoute(value = "/", methods = POST)
     public BaseVo add(@FromBody(useAllBody = true) Map<String, Object> saveModel) {
         var realObject = CRUDHelper.mapToBaseModel(saveModel, service.entityClass());
         var savedModel = service.add(realObject);
         return Result.ok(savedModel);
     }
 
-    @ScxRoute(methods = PUT)
+    @ScxRoute(value = "/", methods = PUT)
     public BaseVo update(CRUDUpdateParam crudUpdateParam) {
         var realObject = crudUpdateParam.getBaseModel(service.entityClass());
         var updateFilter = crudUpdateParam.getUpdateFilter(service.entityClass(), service.dao().tableInfo());
@@ -64,7 +64,7 @@ public class BaseCRUDController<T extends BaseModelService<E>, E extends BaseMod
         return b ? Result.ok() : Result.fail();
     }
 
-    @ScxRoute(methods = DELETE)
+    @ScxRoute(value = "/", methods = DELETE)
     public BaseVo batchDelete(@FromBody long[] deleteIDs) {
         var deletedCount = service.delete(deleteIDs);
         return Result.ok().put("deletedCount", deletedCount);
