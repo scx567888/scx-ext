@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 权限注解
+ * 权限注解 会继承,想要在子类禁止权限可使用 NoApiPerms
  *
  * @author scx567888
  * @version 1.3.14

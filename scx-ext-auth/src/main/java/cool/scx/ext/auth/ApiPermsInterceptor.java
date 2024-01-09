@@ -1,6 +1,5 @@
 package cool.scx.ext.auth;
 
-import cool.scx.ext.auth.annotation.ApiPerms;
 import cool.scx.mvc.ScxMvcInterceptor;
 import cool.scx.mvc.ScxRouteHandler;
 import cool.scx.mvc.exception.ForbiddenException;
@@ -11,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import static cool.scx.ext.auth.AuthHelper.findApiPerms;
 import static cool.scx.util.StringUtils.notBlank;
 
 /**
@@ -102,10 +102,10 @@ public final class ApiPermsInterceptor implements ScxMvcInterceptor {
          */
         public AuthPerms(Class<?> clazz, Method method) {
             var defaultPermStr = clazz.getSimpleName() + ":" + method.getName();
-            var scxPerms = method.getAnnotation(ApiPerms.class);
-            if (scxPerms != null) {
-                this.permStr = notBlank(scxPerms.value()) ? scxPerms.value() : defaultPermStr;
-                this.checkPerms = scxPerms.checkPerms();
+            var apiPerms = findApiPerms(method);
+            if (apiPerms != null) {
+                this.permStr = notBlank(apiPerms.value()) ? apiPerms.value() : defaultPermStr;
+                this.checkPerms = apiPerms.checkPerms();
                 this.needCheckPerms = true;
             } else {
                 this.permStr = defaultPermStr;
