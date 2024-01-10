@@ -47,7 +47,6 @@
         <module>scx-ext-common</module>
         <module>scx-ext-config-manager</module>
         <module>scx-ext-fix-table</module>
-        <module>scx-ext-redirects</module>
         <module>scx-ext-ws</module>
     </modules>
 
