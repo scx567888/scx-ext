@@ -64,7 +64,7 @@ public class BaseCRUDController<T extends BaseModelService<E>, E extends BaseMod
         return b ? Result.ok() : Result.fail();
     }
 
-    @ScxRoute(value = "", methods = DELETE)
+    @ScxRoute(methods = DELETE)
     public BaseVo batchDelete(@FromBody long[] deleteIDs) {
         var deletedCount = service.delete(deleteIDs);
         return Result.ok().put("deletedCount", deletedCount);
