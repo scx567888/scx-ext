@@ -36,7 +36,7 @@ public class Content extends BaseModel {
     /**
      * 文章内容
      */
-    @Column(type = "TEXT")
+    @Column(dataType = "TEXT")
     public String content;
 
     /**
