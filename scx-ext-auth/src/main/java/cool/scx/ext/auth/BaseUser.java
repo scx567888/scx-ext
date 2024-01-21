@@ -15,7 +15,7 @@ public class BaseUser extends BaseModel {
     /**
      * 用户名 (注意 !!! ,用户名在业务上是可以被修改的 所以切记不要将用户名作为任何业务的关联字段)
      */
-    @Column(notNull = true, unique = true, needIndex = true)
+    @Column(notNull = true, unique = true, index = true)
     public String username;
 
     /**
