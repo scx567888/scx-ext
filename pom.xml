@@ -44,7 +44,6 @@
     <modules>
         <module>scx-ext-auth</module>
         <module>scx-ext-cms</module>
-        <module>scx-ext-common</module>
         <module>scx-ext-config-manager</module>
         <module>scx-ext-ws</module>
     </modules>
@@ -95,6 +94,12 @@
             </dependency>
 
             <dependency>
+                <groupId>cool.scx</groupId>
+                <artifactId>scx-ext-common</artifactId>
+                <version>${scx-ext-common.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.google.zxing</groupId>
                 <artifactId>javase</artifactId>
                 <version>${zxing.version}</version>
@@ -128,6 +133,7 @@
         <!-- *********************** 以下为依赖包版本 *********************** -->
         <scx-core.version>2.5.8</scx-core.version>
         <scx-jdbc-mysql.version>0.1.1</scx-jdbc-mysql.version>
+        <scx-ext-common.version>2.5.5</scx-ext-common.version>
         <zxing.version>3.5.2</zxing.version>
         <poi.version>5.2.5</poi.version>
         <slf4j.version>2.0.11</slf4j.version>
