@@ -44,6 +44,7 @@
     <modules>
         <module>scx-ext-auth</module>
         <module>scx-ext-cms</module>
+        <module>scx-ext-common</module>
         <module>scx-ext-config-manager</module>
         <module>scx-ext-crud</module>
         <module>scx-ext-fix-table</module>
@@ -94,6 +95,12 @@
 
             <dependency>
                 <groupId>cool.scx</groupId>
+                <artifactId>scx-common</artifactId>
+                <version>${scx-common.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cool.scx</groupId>
                 <artifactId>scx-jdbc-mysql</artifactId>
                 <version>${scx-jdbc-mysql.version}</version>
             </dependency>
@@ -137,6 +144,7 @@
 
         <!-- *********************** 以下为依赖包版本 *********************** -->
         <scx-core.version>2.5.8</scx-core.version>
+        <scx-common.version>2.6.0</scx-common.version>
         <scx-jdbc-mysql.version>0.1.1</scx-jdbc-mysql.version>
         <scx-ext-common.version>2.5.5</scx-ext-common.version>
         <zxing.version>3.5.2</zxing.version>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cool.scx</groupId>
+        <artifactId>scx-ext</artifactId>
+        <version>2.5.5</version>
+        <relativePath/>
+    </parent>
+
+    <artifactId>scx-ext-common</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX Ext Common</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX Ext Common
+    </description>
+    
+
+    <dependencies>
+
+        <dependency>
+            <groupId>cool.scx</groupId>
+            <artifactId>scx-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.scx</groupId>
+            <artifactId>scx-logging</artifactId>
+            <version>${scx-logging.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- TestNG 测试包 -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <properties>
+
+        <!-- *********************** 以下为依赖包版本 *********************** -->
+        <scx-common.version>2.6.3</scx-common.version>
+        <zxing.version>3.5.2</zxing.version>
+        <poi.version>5.2.5</poi.version>
+        <scx-logging.version>2.6.0</scx-logging.version>
+        <testng.version>7.9.0</testng.version>
+
+    </properties>
+
+</project>
