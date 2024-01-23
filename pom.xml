@@ -45,6 +45,7 @@
         <module>scx-ext-auth</module>
         <module>scx-ext-cms</module>
         <module>scx-ext-config-manager</module>
+        <module>scx-ext-crud</module>
         <module>scx-ext-fss</module>
         <module>scx-ext-ws</module>
     </modules>

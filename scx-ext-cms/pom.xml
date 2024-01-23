@@ -22,9 +22,9 @@
     <dependencies>
 
         <dependency>
-            <groupId>cool.scx</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>scx-ext-crud</artifactId>
-            <version>2.5.5</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
