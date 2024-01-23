@@ -12,7 +12,6 @@
 
     <artifactId>scx-ext-fss</artifactId>
     <packaging>jar</packaging>
-    <version>2.5.6</version>
 
     <name>SCX EXT FSS</name>
     <url>https://github.com/scx567888/scx-ext</url>
