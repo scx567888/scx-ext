@@ -35,13 +35,6 @@
             <artifactId>poi-ooxml</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>cool.scx</groupId>
-            <artifactId>scx-logging</artifactId>
-            <version>${scx-logging.version}</version>
-            <scope>test</scope>
-        </dependency>
-
         <!-- TestNG 测试包 -->
         <dependency>
             <groupId>org.testng</groupId>
