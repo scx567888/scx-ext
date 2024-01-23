@@ -5,7 +5,7 @@ import cool.scx.data.jdbc.annotation.Table;
 
 @Table
 public class Apple extends BaseModel {
-    
+
     public String name;
-    
+
 }

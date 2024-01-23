@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import static cool.scx.constant.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
-import static cool.scx.enumeration.FileFormat.*;
+import static cool.scx.enumeration.FileFormat.PNG;
 
 /**
  * 简单测试
