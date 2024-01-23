@@ -1,17 +1,9 @@
 package cool.scx.ext.util.test;
 
 import cool.scx.ext.util.QRCodeUtils;
-import cool.scx.logging.ScxLoggerFactory;
-import cool.scx.util.StringUtils;
 import org.testng.annotations.Test;
 
-import static java.lang.System.Logger.Level.DEBUG;
-
 public class QRCodeTest {
-
-    static {
-        ScxLoggerFactory.rootConfig().setLevel(DEBUG);
-    }
 
     public static void main(String[] args) {
         test1();
