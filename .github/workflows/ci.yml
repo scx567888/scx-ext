@@ -7,7 +7,7 @@ jobs:
     steps:
 
       - name: 签出代码
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 启动默认的 MySQL
         run: sudo systemctl start mysql.service
