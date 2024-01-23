@@ -7,14 +7,13 @@
         <groupId>cool.scx</groupId>
         <artifactId>scx-ext</artifactId>
         <version>2.5.5</version>
-        <relativePath/>
     </parent>
 
     <artifactId>scx-ext-fix-table</artifactId>
     <packaging>jar</packaging>
 
     <name>SCX EXT Fix Table</name>
-    <url>https://github.com/scx567888/scx-ext-fix-table</url>
+    <url>https://github.com/scx567888/scx-ext</url>
     <description>
         SCX EXT Fix Table
     </description>

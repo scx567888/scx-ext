@@ -7,15 +7,13 @@
         <groupId>cool.scx</groupId>
         <artifactId>scx-ext</artifactId>
         <version>2.5.5</version>
-        <relativePath/>
     </parent>
 
     <artifactId>scx-ext-crud</artifactId>
     <packaging>jar</packaging>
-    <version>2.5.5</version>
 
     <name>SCX EXT CRUD</name>
-    <url>https://github.com/scx567888/scx-ext-crud</url>
+    <url>https://github.com/scx567888/scx-ext</url>
     <description>
         SCX EXT CRUD
     </description>
