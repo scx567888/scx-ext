@@ -12,7 +12,7 @@
 
     <artifactId>scx-ext</artifactId>
     <packaging>pom</packaging>
-    <version>2.6.0</version>
+    <version>2.7.0</version>
 
     <name>SCX Ext</name>
     <url>https://github.com/scx567888/scx-ext</url>
@@ -89,20 +89,20 @@
 
             <dependency>
                 <groupId>cool.scx</groupId>
-                <artifactId>scx</artifactId>
+                <artifactId>scx-core</artifactId>
                 <version>${scx.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>cool.scx</groupId>
                 <artifactId>scx-common</artifactId>
-                <version>${scx-common.version}</version>
+                <version>${scx.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>cool.scx</groupId>
                 <artifactId>scx-jdbc-mysql</artifactId>
-                <version>${scx-jdbc-mysql.version}</version>
+                <version>${scx.version}</version>
             </dependency>
 
             <dependency>
@@ -130,9 +130,7 @@
     <properties>
 
         <!-- *********************** 以下为依赖包版本 *********************** -->
-        <scx.version>2.6.0</scx.version>
-        <scx-common.version>2.6.3</scx-common.version>
-        <scx-jdbc-mysql.version>0.1.1</scx-jdbc-mysql.version>
+        <scx.version>2.7.0</scx.version>
         <zxing.version>3.5.2</zxing.version>
         <poi.version>5.2.5</poi.version>
         <slf4j.version>2.0.11</slf4j.version>

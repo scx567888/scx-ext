@@ -1,6 +1,5 @@
 package cool.scx.ext.config_manager;
 
-import cool.scx.enumeration.HttpMethod;
 import cool.scx.ext.auth.BaseAuthHandler;
 import cool.scx.ext.auth.annotation.ApiPerms;
 import cool.scx.ext.ws.WSContext;
@@ -10,6 +9,7 @@ import cool.scx.mvc.base.BaseWebSocketHandler;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
 import cool.scx.mvc.websocket.OnOpenRoutingContext;
+import cool.scx.standard.HttpMethod;
 import cool.scx.util.ObjectUtils;
 
 import java.util.Map;
