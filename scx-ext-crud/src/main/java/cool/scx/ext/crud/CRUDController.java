@@ -1,13 +1,13 @@
 package cool.scx.ext.crud;
 
 import cool.scx.core.ScxContext;
-import cool.scx.standard.HttpMethod;
 import cool.scx.ext.crud.exception.CRUDApiAlreadyDisableException;
 import cool.scx.mvc.annotation.FromBody;
 import cool.scx.mvc.annotation.FromPath;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
+import cool.scx.standard.HttpMethod;
 
 import java.util.Map;
 

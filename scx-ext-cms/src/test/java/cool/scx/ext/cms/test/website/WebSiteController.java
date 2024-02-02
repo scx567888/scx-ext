@@ -1,7 +1,6 @@
 package cool.scx.ext.cms.test.website;
 
 import cool.scx.core.ScxContext;
-import cool.scx.standard.HttpMethod;
 import cool.scx.ext.cms.channel.Channel;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.content.Content;
@@ -16,6 +15,7 @@ import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Download;
 import cool.scx.mvc.vo.Html;
 import cool.scx.mvc.vo.Raw;
+import cool.scx.standard.HttpMethod;
 import cool.scx.util.CryptoUtils;
 import cool.scx.util.RandomUtils;
 import cool.scx.util.StringUtils;
@@ -25,8 +25,8 @@ import io.vertx.ext.web.RoutingContext;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
-import static cool.scx.standard.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
 import static cool.scx.standard.FileFormat.PNG;
+import static cool.scx.standard.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
 
 /**
  * 简单测试

@@ -1,7 +1,6 @@
 package cool.scx.ext.auth;
 
 import cool.scx.core.base.BaseModelService;
-import cool.scx.standard.HttpMethod;
 import cool.scx.ext.auth.annotation.ApiPerms;
 import cool.scx.ext.auth.exception.AuthException;
 import cool.scx.ext.auth.type.UserInfo;
@@ -10,6 +9,7 @@ import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.exception.UnauthorizedException;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
+import cool.scx.standard.HttpMethod;
 import io.vertx.ext.web.RoutingContext;
 
 import static cool.scx.data.FieldFilter.ofIncluded;
