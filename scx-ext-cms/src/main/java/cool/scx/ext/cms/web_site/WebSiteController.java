@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.web_site;
 
 import cool.scx.core.ScxContext;
-import cool.scx.enumeration.HttpMethod;
+import cool.scx.standard.HttpMethod;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.cms_config.CMSConfigService;

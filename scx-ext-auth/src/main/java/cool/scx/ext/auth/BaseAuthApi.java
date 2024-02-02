@@ -1,7 +1,7 @@
 package cool.scx.ext.auth;
 
 import cool.scx.core.base.BaseModelService;
-import cool.scx.enumeration.HttpMethod;
+import cool.scx.standard.HttpMethod;
 import cool.scx.ext.auth.annotation.ApiPerms;
 import cool.scx.ext.auth.exception.AuthException;
 import cool.scx.ext.auth.type.UserInfo;

@@ -1,7 +1,7 @@
 package cool.scx.ext.cms.test.website;
 
 import cool.scx.core.ScxContext;
-import cool.scx.enumeration.HttpMethod;
+import cool.scx.standard.HttpMethod;
 import cool.scx.ext.cms.channel.Channel;
 import cool.scx.ext.cms.channel.ChannelService;
 import cool.scx.ext.cms.content.Content;
@@ -25,8 +25,8 @@ import io.vertx.ext.web.RoutingContext;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
-import static cool.scx.constant.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
-import static cool.scx.enumeration.FileFormat.PNG;
+import static cool.scx.standard.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
+import static cool.scx.standard.FileFormat.PNG;
 
 /**
  * 简单测试
