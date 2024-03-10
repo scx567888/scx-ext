@@ -6,16 +6,16 @@
     <parent>
         <groupId>cool.scx</groupId>
         <artifactId>scx-ext</artifactId>
-        <version>2.7.2</version>
+        <version>2.7.3</version>
     </parent>
 
     <artifactId>scx-ext-config-manager</artifactId>
     <packaging>jar</packaging>
 
-    <name>SCX Ext Config Manager</name>
+    <name>SCX EXT Config Manager</name>
     <url>https://github.com/scx567888/scx-ext</url>
     <description>
-        SCX Ext Config Manager
+        SCX EXT Config Manager
     </description>
 
     <dependencies>

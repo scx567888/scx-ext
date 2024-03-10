@@ -6,16 +6,16 @@
     <parent>
         <groupId>cool.scx</groupId>
         <artifactId>scx-ext</artifactId>
-        <version>2.7.2</version>
+        <version>2.7.3</version>
     </parent>
 
     <artifactId>scx-ext-ws</artifactId>
     <packaging>jar</packaging>
 
-    <name>SCX Ext WS</name>
+    <name>SCX EXT WS</name>
     <url>https://github.com/scx567888/scx-ext</url>
     <description>
-        SCX Ext WS
+        SCX EXT WS
     </description>
 
     <dependencies>
