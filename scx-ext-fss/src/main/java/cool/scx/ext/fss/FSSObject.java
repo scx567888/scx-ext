@@ -3,9 +3,12 @@ package cool.scx.ext.fss;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cool.scx.core.base.BaseModel;
 import cool.scx.data.jdbc.annotation.Column;
+import cool.scx.data.jdbc.annotation.DataType;
 import cool.scx.data.jdbc.annotation.Table;
 
 import java.time.LocalDateTime;
+
+import static cool.scx.jdbc.standard.StandardDataType.TEXT;
 
 /**
  * 文件上传表
@@ -41,7 +44,7 @@ public class FSSObject extends BaseModel {
     /**
      * 原始文件名
      */
-    @Column(dataType = "TEXT", notNull = true)
+    @Column(dataType = @DataType(TEXT), notNull = true)
     public String fileName;
 
     /**
@@ -58,7 +61,7 @@ public class FSSObject extends BaseModel {
     /**
      * 文件拓展名
      */
-    @Column(dataType = "TEXT")
+    @Column(dataType = @DataType(TEXT))
     public String fileExtension;
 
 }

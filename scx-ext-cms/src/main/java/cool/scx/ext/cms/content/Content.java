@@ -2,11 +2,14 @@ package cool.scx.ext.cms.content;
 
 import cool.scx.core.base.BaseModel;
 import cool.scx.data.jdbc.annotation.Column;
+import cool.scx.data.jdbc.annotation.DataType;
 import cool.scx.data.jdbc.annotation.Table;
 import cool.scx.ext.crud.annotation.UseCRUDApi;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static cool.scx.jdbc.standard.StandardDataType.TEXT;
 
 /**
  * 文章类
@@ -36,7 +39,7 @@ public class Content extends BaseModel {
     /**
      * 文章内容
      */
-    @Column(dataType = "TEXT")
+    @Column(dataType = @DataType(TEXT))
     public String content;
 
     /**
