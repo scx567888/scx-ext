@@ -1,6 +1,6 @@
-package cool.scx.ext.util.test;
+package cool.scx.ext.common.test;
 
-import cool.scx.ext.util.QRCodeUtils;
+import cool.scx.ext.common.util.QRCodeUtils;
 import org.testng.annotations.Test;
 
 public class QRCodeTest {

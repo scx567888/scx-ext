@@ -6,8 +6,8 @@ import cool.scx.ext.cms.test.auth.TestUser;
 import cool.scx.ext.cms.test.auth.TestUserService;
 import cool.scx.ext.cms.web_site.WebSiteHandler;
 import cool.scx.mvc.vo.Html;
-import cool.scx.util.CryptoUtils;
-import cool.scx.util.RandomUtils;
+import cool.scx.common.util.CryptoUtils;
+import cool.scx.common.util.RandomUtils;
 
 import java.util.ArrayList;
 

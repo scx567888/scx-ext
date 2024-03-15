@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static cool.scx.ext.auth.AuthHelper.findApiPerms;
-import static cool.scx.util.StringUtils.notBlank;
+import static cool.scx.common.util.StringUtils.notBlank;
 
 /**
  * 拦截器 用于校验权限

@@ -6,7 +6,7 @@ import cool.scx.mvc.ScxMvcRequestInfo;
 import java.lang.reflect.Parameter;
 
 import static cool.scx.mvc.parameter_handler.FromBodyParameterHandler.getValueFromBody;
-import static cool.scx.util.ObjectUtils.constructType;
+import static cool.scx.common.util.ObjectUtils.constructType;
 
 /**
  * a

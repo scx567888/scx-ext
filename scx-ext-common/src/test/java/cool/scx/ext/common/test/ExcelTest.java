@@ -1,6 +1,6 @@
-package cool.scx.ext.util.test;
+package cool.scx.ext.common.test;
 
-import cool.scx.ext.util.Excel;
+import cool.scx.ext.common.util.Excel;
 import org.testng.annotations.Test;
 
 public class ExcelTest {

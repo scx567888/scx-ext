@@ -9,7 +9,7 @@ import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.exception.UnauthorizedException;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
-import cool.scx.standard.HttpMethod;
+import cool.scx.common.standard.HttpMethod;
 import io.vertx.ext.web.RoutingContext;
 
 import static cool.scx.data.FieldFilter.ofIncluded;

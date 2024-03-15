@@ -7,7 +7,7 @@ import cool.scx.mvc.annotation.FromPath;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
-import cool.scx.standard.HttpMethod;
+import cool.scx.common.standard.HttpMethod;
 
 import java.util.Map;
 

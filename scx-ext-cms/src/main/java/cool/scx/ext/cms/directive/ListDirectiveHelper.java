@@ -6,7 +6,7 @@ import cool.scx.data.query.OrderByBody;
 import cool.scx.data.query.OrderByType;
 import cool.scx.data.query.WhereBodySet;
 import cool.scx.data.query.WhereOption;
-import cool.scx.util.ObjectUtils;
+import cool.scx.common.util.ObjectUtils;
 
 import java.util.Map;
 

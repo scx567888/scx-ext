@@ -6,9 +6,9 @@ import cool.scx.ext.auth.exception.AuthException;
 import cool.scx.ext.auth.exception.UnknownDeviceException;
 import cool.scx.ext.auth.type.DeviceType;
 import cool.scx.ext.auth.type.Perms;
-import cool.scx.util.CryptoUtils;
-import cool.scx.util.RandomUtils;
-import cool.scx.util.reflect.MethodUtils;
+import cool.scx.common.util.CryptoUtils;
+import cool.scx.common.util.RandomUtils;
+import cool.scx.common.util.reflect.MethodUtils;
 import io.vertx.ext.web.RoutingContext;
 
 import java.lang.reflect.Method;

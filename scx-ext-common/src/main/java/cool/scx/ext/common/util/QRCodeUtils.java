@@ -1,4 +1,4 @@
-package cool.scx.ext.util;
+package cool.scx.ext.common.util;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;

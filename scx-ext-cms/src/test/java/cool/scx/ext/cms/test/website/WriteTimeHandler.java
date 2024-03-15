@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 import static cool.scx.ext.ws.WSContext.wsConsumer;
 import static cool.scx.ext.ws.WSContext.wsPublishAll;
-import static cool.scx.standard.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
+import static cool.scx.common.standard.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
 
 public class WriteTimeHandler {
 

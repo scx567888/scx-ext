@@ -9,7 +9,7 @@ import cool.scx.mvc.annotation.FromPath;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.exception.NotFoundException;
 import cool.scx.mvc.vo.Html;
-import cool.scx.standard.HttpMethod;
+import cool.scx.common.standard.HttpMethod;
 
 import java.io.IOException;
 

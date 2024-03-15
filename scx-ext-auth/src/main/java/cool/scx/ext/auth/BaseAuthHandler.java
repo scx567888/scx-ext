@@ -16,10 +16,10 @@ import cool.scx.ext.ws.WSMessage;
 import cool.scx.mvc.ScxMvc;
 import cool.scx.mvc.exception.ForbiddenException;
 import cool.scx.mvc.exception.UnauthorizedException;
-import cool.scx.util.CryptoUtils;
-import cool.scx.util.ObjectUtils;
-import cool.scx.util.StringUtils;
-import cool.scx.util.ansi.Ansi;
+import cool.scx.common.util.CryptoUtils;
+import cool.scx.common.util.ObjectUtils;
+import cool.scx.common.util.StringUtils;
+import cool.scx.common.util.ansi.Ansi;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.ext.web.RoutingContext;
 

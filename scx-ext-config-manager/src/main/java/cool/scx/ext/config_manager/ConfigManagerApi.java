@@ -9,8 +9,8 @@ import cool.scx.mvc.base.BaseWebSocketHandler;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
 import cool.scx.mvc.websocket.OnOpenRoutingContext;
-import cool.scx.standard.HttpMethod;
-import cool.scx.util.ObjectUtils;
+import cool.scx.common.standard.HttpMethod;
+import cool.scx.common.util.ObjectUtils;
 
 import java.util.Map;
 

@@ -5,7 +5,7 @@ import cool.scx.mvc.annotation.FromUpload;
 import cool.scx.mvc.type.UploadedEntity;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
-import cool.scx.util.FileUtils;
+import cool.scx.common.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package cool.scx.ext.auth;
 
-import cool.scx.util.RandomUtils;
+import cool.scx.common.util.RandomUtils;
 import io.vertx.core.Handler;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.CookieSameSite;

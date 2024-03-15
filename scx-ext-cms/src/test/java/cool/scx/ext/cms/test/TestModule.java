@@ -15,7 +15,7 @@ import cool.scx.ext.fix_table.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.ext.static_server.StaticServerModule;
 import cool.scx.ext.ws.WSModule;
-import cool.scx.http_client.ScxHttpClientHelper;
+import cool.scx.common.http_client.ScxHttpClientHelper;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 

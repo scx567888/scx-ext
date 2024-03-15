@@ -7,26 +7,26 @@ import cool.scx.ext.cms.content.Content;
 import cool.scx.ext.cms.content.ContentService;
 import cool.scx.ext.cms.test.auth.TestUser;
 import cool.scx.ext.cms.test.auth.TestUserService;
-import cool.scx.ext.util.Excel;
-import cool.scx.ext.util.QRCodeUtils;
+import cool.scx.ext.common.util.Excel;
+import cool.scx.ext.common.util.QRCodeUtils;
 import cool.scx.mvc.annotation.FromQuery;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Download;
 import cool.scx.mvc.vo.Html;
 import cool.scx.mvc.vo.Raw;
-import cool.scx.standard.HttpMethod;
-import cool.scx.util.CryptoUtils;
-import cool.scx.util.RandomUtils;
-import cool.scx.util.StringUtils;
-import cool.scx.util.zip.ZipBuilder;
+import cool.scx.common.standard.HttpMethod;
+import cool.scx.common.util.CryptoUtils;
+import cool.scx.common.util.RandomUtils;
+import cool.scx.common.util.StringUtils;
+import cool.scx.common.util.zip.ZipBuilder;
 import io.vertx.ext.web.RoutingContext;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
-import static cool.scx.standard.FileFormat.PNG;
-import static cool.scx.standard.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
+import static cool.scx.common.standard.FileFormat.PNG;
+import static cool.scx.common.standard.ScxDateTimeFormatter.yyyy_MM_dd_HH_mm_ss;
 
 /**
  * 简单测试

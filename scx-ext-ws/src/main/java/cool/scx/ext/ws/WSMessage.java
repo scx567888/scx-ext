@@ -2,7 +2,7 @@ package cool.scx.ext.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import cool.scx.core.eventbus.ZeroCopyMessage;
-import cool.scx.util.ObjectUtils;
+import cool.scx.common.util.ObjectUtils;
 import io.vertx.core.http.ServerWebSocket;
 
 import java.util.HashMap;

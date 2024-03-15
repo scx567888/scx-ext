@@ -3,7 +3,7 @@ package cool.scx.ext.redirects;
 import cool.scx.core.Scx;
 import cool.scx.core.ScxModule;
 import cool.scx.mvc.vo.Redirections;
-import cool.scx.util.ansi.Ansi;
+import cool.scx.common.util.ansi.Ansi;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 
