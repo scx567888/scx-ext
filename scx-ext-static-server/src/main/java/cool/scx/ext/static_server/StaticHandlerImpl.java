@@ -1,36 +1,12 @@
 package cool.scx.ext.static_server;
 
-import static io.netty.handler.codec.http.HttpResponseStatus.FORBIDDEN;
-import static io.netty.handler.codec.http.HttpResponseStatus.NOT_MODIFIED;
-import static io.netty.handler.codec.http.HttpResponseStatus.PARTIAL_CONTENT;
-import static io.netty.handler.codec.http.HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE;
-
-import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.file.FileProps;
 import io.vertx.core.file.FileSystem;
-import io.vertx.core.http.HttpHeaders;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.http.HttpServerResponse;
-import io.vertx.core.http.HttpVersion;
+import io.vertx.core.http.*;
 import io.vertx.core.http.impl.HttpUtils;
 import io.vertx.core.http.impl.MimeMapping;
 import io.vertx.core.impl.logging.Logger;
@@ -46,6 +22,15 @@ import io.vertx.ext.web.impl.LRUCache;
 import io.vertx.ext.web.impl.ParsableMIMEValue;
 import io.vertx.ext.web.impl.Utils;
 
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static io.netty.handler.codec.http.HttpResponseStatus.*;
+
 
 /**
  * Copy From {@link io.vertx.ext.web.handler.impl.StaticHandlerImpl} Make Some private to public so we can Override
@@ -59,7 +44,13 @@ import io.vertx.ext.web.impl.Utils;
 class StaticHandlerImpl implements StaticHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(StaticHandlerImpl.class);
-
+    private static final Pattern RANGE = Pattern.compile("^bytes=(\\d+)-(\\d*)$");
+    private static final Collection<MIMEHeader> DIRECTORY_LISTING_ACCEPT = Arrays.asList(
+            new ParsableMIMEValue("text/html").forceParse(),
+            new ParsableMIMEValue("text/plain").forceParse(),
+            new ParsableMIMEValue("application/json").forceParse());
+    private final FSTune tune = new FSTune();
+    private final FSPropsCache cache = new FSPropsCache();
     // TODO change to private final after setWebRoot has been removed
     private String webRoot = DEFAULT_WEB_ROOT;
     private long maxAgeSeconds = DEFAULT_MAX_AGE_SECONDS; // One day
@@ -75,12 +66,8 @@ class StaticHandlerImpl implements StaticHandler {
     private boolean allowRootFileSystemAccess = DEFAULT_ROOT_FILESYSTEM_ACCESS;
     private boolean sendVaryHeader = DEFAULT_SEND_VARY_HEADER;
     private String defaultContentEncoding = Charset.defaultCharset().name();
-
     private Set<String> compressedMediaTypes = Collections.emptySet();
     private Set<String> compressedFileSuffixes = Collections.emptySet();
-
-    private final FSTune tune = new FSTune();
-    private final FSPropsCache cache = new FSPropsCache();
 
     /**
      * Constructor called by static factory method
@@ -154,8 +141,9 @@ class StaticHandlerImpl implements StaticHandler {
         HttpServerRequest request = context.request();
 
         if (request.method() != HttpMethod.GET && request.method() != HttpMethod.HEAD) {
-            if (LOG.isTraceEnabled())
+            if (LOG.isTraceEnabled()) {
                 LOG.trace("Not GET or HEAD so ignoring request");
+            }
             context.next();
         } else {
             if (!request.isEnded()) {
@@ -374,8 +362,6 @@ class StaticHandlerImpl implements StaticHandler {
         }
     }
 
-    private static final Pattern RANGE = Pattern.compile("^bytes=(\\d+)-(\\d*)$");
-
     private void sendFile(RoutingContext context, FileSystem fileSystem, String file, FileProps fileProps) {
         final HttpServerRequest request = context.request();
         final HttpServerResponse response = context.response();
@@ -384,8 +370,9 @@ class StaticHandlerImpl implements StaticHandler {
         Long end = null;
         MultiMap headers = null;
 
-        if (response.closed())
+        if (response.closed()) {
             return;
+        }
 
         if (rangeSupport) {
             // check if the client is making a range request
@@ -518,7 +505,7 @@ class StaticHandlerImpl implements StaticHandler {
                                 // push
                                 writeCacheHeaders(request, filePropsAsyncResult.result());
                                 links.add("<" + dependency.getFilePath() + ">; rel=preload; as="
-                                          + dependency.getExtensionTarget() + (dependency.isNoPush() ? "; nopush" : ""));
+                                        + dependency.getExtensionTarget() + (dependency.isNoPush() ? "; nopush" : ""));
                             }
                         });
                     }
@@ -699,11 +686,6 @@ class StaticHandlerImpl implements StaticHandler {
         }
         this.webRoot = webRoot;
     }
-
-    private static final Collection<MIMEHeader> DIRECTORY_LISTING_ACCEPT = Arrays.asList(
-            new ParsableMIMEValue("text/html").forceParse(),
-            new ParsableMIMEValue("text/plain").forceParse(),
-            new ParsableMIMEValue("application/json").forceParse());
 
     private void sendDirectoryListing(FileSystem fileSystem, String dir, RoutingContext context) {
         final HttpServerResponse response = context.response();
@@ -891,7 +873,7 @@ class StaticHandlerImpl implements StaticHandler {
                     if (LOG.isInfoEnabled()) {
                         LOG.info(
                                 "Switching to async file system access in static file server as fs access is slow! (Average access time of "
-                                + avg + " ns)");
+                                        + avg + " ns)");
                     }
                     enabled = false;
                 }

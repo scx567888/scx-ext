@@ -1,5 +1,6 @@
 package cool.scx.ext.cms.web_site;
 
+import cool.scx.common.standard.HttpMethod;
 import cool.scx.core.ScxContext;
 import cool.scx.ext.cms.CMSModule;
 import cool.scx.ext.cms.channel.ChannelService;
@@ -9,7 +10,6 @@ import cool.scx.mvc.annotation.FromPath;
 import cool.scx.mvc.annotation.ScxRoute;
 import cool.scx.mvc.exception.NotFoundException;
 import cool.scx.mvc.vo.Html;
-import cool.scx.common.standard.HttpMethod;
 
 import java.io.IOException;
 

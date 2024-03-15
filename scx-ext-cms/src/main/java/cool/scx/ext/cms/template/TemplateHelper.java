@@ -1,11 +1,11 @@
 package cool.scx.ext.cms.template;
 
+import cool.scx.common.util.FileUtils;
 import cool.scx.core.ScxContext;
 import cool.scx.mvc.annotation.FromUpload;
 import cool.scx.mvc.type.UploadedEntity;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
-import cool.scx.common.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

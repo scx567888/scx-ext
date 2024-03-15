@@ -1,9 +1,9 @@
 package cool.scx.ext.auth.exception;
 
+import cool.scx.common.util.CaseUtils;
 import cool.scx.mvc.exception.BadRequestException;
 import cool.scx.mvc.vo.BaseVo;
 import cool.scx.mvc.vo.Result;
-import cool.scx.common.util.CaseUtils;
 
 /**
  * 认证异常父类

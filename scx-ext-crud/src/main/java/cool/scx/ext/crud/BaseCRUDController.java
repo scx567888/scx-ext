@@ -11,8 +11,8 @@ import cool.scx.mvc.vo.Result;
 
 import java.util.Map;
 
-import static cool.scx.data.QueryBuilder.andSet;
 import static cool.scx.common.standard.HttpMethod.*;
+import static cool.scx.data.QueryBuilder.andSet;
 
 /**
  * 继承方式的 CRUD 的 controller (推荐使用)

@@ -1,5 +1,6 @@
 package cool.scx.ext.cms.test;
 
+import cool.scx.common.http_client.ScxHttpClientHelper;
 import cool.scx.core.Scx;
 import cool.scx.core.ScxContext;
 import cool.scx.core.ScxModule;
@@ -15,7 +16,6 @@ import cool.scx.ext.fix_table.FixTableModule;
 import cool.scx.ext.fss.FSSModule;
 import cool.scx.ext.static_server.StaticServerModule;
 import cool.scx.ext.ws.WSModule;
-import cool.scx.common.http_client.ScxHttpClientHelper;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
