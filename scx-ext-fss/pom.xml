@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cool.scx</groupId>
+        <artifactId>scx-ext</artifactId>
+        <version>2.7.4</version>
+    </parent>
+
+    <artifactId>scx-ext-fss</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SCX EXT FSS</name>
+    <url>https://github.com/scx567888/scx-ext</url>
+    <description>
+        SCX EXT FSS
+    </description>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>cool.scx</groupId>
+            <artifactId>scx-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
